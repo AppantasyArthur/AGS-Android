@@ -1,0 +1,54 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/FS_RLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ff0000" >
+
+    <RelativeLayout 
+        android:id="@+id/FS_RLayout_TITLE_RLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="#ffff00"
+        >       
+        <TextView
+            android:id="@+id/FS_RLayout_RLayout_Speaker_TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:padding="0dp"
+            android:gravity="center_vertical"
+            android:textColor="#ff0000"
+            android:text="Speakers"      
+            />
+    </RelativeLayout>
+    <RelativeLayout 
+        android:id="@+id/FS_RLayout_TITLE2_RLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/FS_RLayout_TITLE_RLayout"
+        android:background="#00ff00"
+        >       
+        <TextView
+            android:id="@+id/FS_RLayout_RLayout_Speaker2_TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:padding="0dp"
+            android:gravity="center_vertical"
+            android:textColor="#ffffff"
+            android:text="Currently Playing"      
+            />
+    </RelativeLayout>
+    <com.FS.SETTING.FS_SPEAKER_ExpandableListView
+        android:id="@+id/FS_RLayout_SPEAKER_EListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"       
+        android:layout_below="@+id/FS_RLayout_TITLE2_RLayout"  
+        android:background="#000000"
+        android:divider="#00000000"    
+        >        
+    </com.FS.SETTING.FS_SPEAKER_ExpandableListView>
+   
+</RelativeLayout>
