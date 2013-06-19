@@ -1,5 +1,8 @@
 package com.FS.SETTING;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.alpha.upnpui.R;
 import com.tkb.tool.ThreadReadBitMapInAssets;
 import com.tkb.tool.Tool;
@@ -9,6 +12,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -32,6 +36,7 @@ public class FS_SPEAKER_ExpandableListAdapter extends BaseExpandableListAdapter 
 	private ImageSpan stop_Span;
 	private ImageSpan pause_Span;
 	
+	
 	public FS_SPEAKER_ExpandableListAdapter(Context context,FS_SPEAKER_ExpandableListView EListView){
 		this.context = context;
 		this.EListView = EListView;
@@ -40,9 +45,9 @@ public class FS_SPEAKER_ExpandableListAdapter extends BaseExpandableListAdapter 
 	private void LoadBitmap(){
 		this.arrow_f = Tool.readBitMapInAssets(context, "pad/Speakermanagement/arrow_f.png");
 		this.arrow_n = Tool.readBitMapInAssets(context, "pad/Speakermanagement/arrow_n.png");
-		this.play_Span = new ImageSpan(context, Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "pad/Speakermanagement/status_play.png"), Tool.getHeight(15), Tool.getHeight(18), false));
-		this.stop_Span = new ImageSpan(context, Tool.readBitMapInAssets(context, "pad/Speakermanagement/status_stop.png"));
-		this.pause_Span = new ImageSpan(context, Tool.readBitMapInAssets(context, "pad/Speakermanagement/status_pause.png"));
+		this.play_Span = new ImageSpan(context, Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "pad/Speakermanagement/status_play.png"), Tool.getHeight(15), Tool.getHeight(18), false),ImageSpan.ALIGN_BASELINE);
+		this.stop_Span = new ImageSpan(context, Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "pad/Speakermanagement/status_stop.png"), Tool.getHeight(15), Tool.getHeight(18), false),ImageSpan.ALIGN_BASELINE);
+		this.pause_Span = new ImageSpan(context, Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "pad/Speakermanagement/status_pause.png"), Tool.getHeight(15), Tool.getHeight(18), false),ImageSpan.ALIGN_BASELINE);
 	}
 	
 	@Override
@@ -143,7 +148,8 @@ public class FS_SPEAKER_ExpandableListAdapter extends BaseExpandableListAdapter 
 			viewHandler = new GViewHandler(convertView);
 			basicSetGroupView(viewHandler);	
 			convertView.setTag(viewHandler);
-			new Indicator_ClickListener(viewHandler);				
+			new Indicator_ClickListener(viewHandler);
+			
 		}else{
 			viewHandler = (GViewHandler)convertView.getTag();
 		}
@@ -285,6 +291,7 @@ public class FS_SPEAKER_ExpandableListAdapter extends BaseExpandableListAdapter 
 	}
 	private void setRunState_TextView_Content(int State,String TextContent,TextView RunState_TextView){
 		SpannableStringBuilder spannalbeStringBuilder = new SpannableStringBuilder();
+		TextContent = "  "+TextContent;
 		SpannableString spannableString  = new SpannableString(TextContent);
 		switch(State){
 		case 0:
@@ -301,12 +308,16 @@ public class FS_SPEAKER_ExpandableListAdapter extends BaseExpandableListAdapter 
 		RunState_TextView.setText(spannalbeStringBuilder);
 	}
 	public void SET_GView_SELECTED(int position){
-		this.GView_SELECTED = position;
-		this.notifyDataSetChanged();
+		if((this.GView_SELECTED!=position)){
+			this.GView_SELECTED = position;
+			this.notifyDataSetChanged();
+		}
 	}
 	public void SET_CVIEW_SELECTED(int Gposition, int Cposition){
-		this.GView_SELECTED = Gposition;
-		this.CView_SELECTED = Cposition;
-		this.notifyDataSetChanged();
+		if((this.GView_SELECTED!=Gposition)||(this.CView_SELECTED!=Cposition)){
+			this.GView_SELECTED = Gposition;
+			this.CView_SELECTED = Cposition;
+			this.notifyDataSetChanged();
+		}		
 	}
 }

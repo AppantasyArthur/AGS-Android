@@ -77,11 +77,15 @@ public class FM_Music_ListView_BaseAdapter extends BaseAdapter {
 		//cellBG RLayout
 		new ThreadReadStateListInAssets(context, "pad/Playlist/playlist_btn.png", "pad/Playlist/playlist_btn_n.png", viewHandler.cell_RLayout, 3);
 		//cell_RLayout_Name_TextView
+		Tool.fitsViewTopMargin(5, viewHandler.cell_RLayout_Name_TextView);		
+		Tool.fitsViewHeight(30, viewHandler.cell_RLayout_Name_TextView);
 		Tool.fitsViewLeftMargin(30, viewHandler.cell_RLayout_Name_TextView);
-		Tool.fitsViewTextSize(10, viewHandler.cell_RLayout_Name_TextView);
+		Tool.fitsViewTextSize(8, viewHandler.cell_RLayout_Name_TextView);
 		//cell_RLayout_Image_ImageView
-		Tool.fitsViewHeight(35, viewHandler.cell_RLayout_Image_ImageView);
-		viewHandler.cell_RLayout_Image_ImageView.getLayoutParams().width = Tool.getHeight(35);
+		Tool.fitsViewHeight(13, viewHandler.cell_RLayout_Image_ImageView);
+		viewHandler.cell_RLayout_Image_ImageView.getLayoutParams().width = Tool.getHeight(7);
+		Tool.fitsViewTopMargin(13, viewHandler.cell_RLayout_Image_ImageView);
 		Tool.fitsViewRightMargin(10, viewHandler.cell_RLayout_Image_ImageView);
+		new ThreadReadStateListInAssets(context, "pad/Playlist/playlist_arrow_f.png", "pad/Playlist/playlist_arrow_n.png", viewHandler.cell_RLayout_Image_ImageView, 1);
 	}
 }

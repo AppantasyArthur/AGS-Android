@@ -1,7 +1,13 @@
 package com.FAM.SETTING;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.SeekBar;
@@ -61,9 +67,19 @@ public class FAM_VIEW_SETTING {
 		view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Sound_IButton).getLayoutParams().width = Tool.getHeight(30);
 		new ThreadReadBitMapInAssets(context, "pad/PlayBack/volumn_03.png", view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Sound_IButton), 2);
 		//Sound SeekBar
-		Tool.fitsViewHeight(30, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Sound_SeekBar));
-		view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Sound_SeekBar).getLayoutParams().width = Tool.getHeight(110);
-		Tool.fitsViewLeftMargin(10, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Sound_SeekBar));
+		SeekBar seekBar = (SeekBar)view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Sound_SeekBar);
+		Tool.fitsViewHeight(36, seekBar);
+		seekBar.getLayoutParams().width = Tool.getHeight(110);
+		Tool.fitsViewLeftMargin(10, seekBar);		
+		seekBar.setPadding(Tool.getHeight(15), Tool.getHeight(4), Tool.getHeight(15), Tool.getHeight(4));
+		Bitmap myThumbO = Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "pad/PlayBack/volumn_control.png"), Tool.getHeight(23), Tool.getHeight(27), false);
+		Bitmap myThumbR = Bitmap.createBitmap(myThumbO.getWidth(), myThumbO.getHeight()+Tool.getHeight(6), Config.ARGB_8888);
+		Canvas canvas = new Canvas(myThumbR);
+		canvas.drawBitmap(myThumbO, 0, 0,null);
+		myThumbO.recycle();
+		Drawable myThumb = new BitmapDrawable(myThumbR);
+		seekBar.setThumb(myThumb);
+		
 		//Previous ImageButton
 		Tool.fitsViewLeftMargin(444, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Previous_IButton));		
 		Tool.fitsViewHeight(34, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Previous_IButton));
@@ -124,8 +140,16 @@ public class FAM_VIEW_SETTING {
 		
 		//Music SeekBar
 		SeekBar seekBar = (SeekBar)view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Music_SeekBar);
-		Tool.fitsViewHeight(30, seekBar);
+		Tool.fitsViewHeight(36, seekBar);
 		seekBar.getLayoutParams().width = Tool.getHeight(630);
+		seekBar.setPadding(Tool.getHeight(15), Tool.getHeight(4), Tool.getHeight(15), Tool.getHeight(4));
+		Bitmap myThumbO = Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "pad/PlayBack/volumn_control.png"), Tool.getHeight(23), Tool.getHeight(27), false);
+		Bitmap myThumbR = Bitmap.createBitmap(myThumbO.getWidth(), myThumbO.getHeight()+Tool.getHeight(6), Config.ARGB_8888);
+		Canvas canvas = new Canvas(myThumbR);
+		canvas.drawBitmap(myThumbO, 0, 0,null);
+		myThumbO.recycle();
+		Drawable myThumb = new BitmapDrawable(myThumbR);
+		seekBar.setThumb(myThumb);
 		//Total TextView
 		Tool.fitsViewLeftMargin(843, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Current_TextView));	
 		Tool.fitsViewHeight(22, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Current_TextView));

@@ -8,8 +8,13 @@ import com.tkb.tool.MLog;
 import com.tkb.tool.Tool;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Bitmap.Config;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,9 +88,17 @@ public class FAM_PopupWindow extends PopupWindow {
 		viewHandler.sound_IView.getLayoutParams().width = Tool.getHeight(42);
 		Tool.fitsViewLeftMargin(5, viewHandler.sound_IView);
 		//Sound SeekBar
-		Tool.fitsViewHeight(30, viewHandler.sound_SeekBar);
+		Tool.fitsViewHeight(36, viewHandler.sound_SeekBar);
 		viewHandler.sound_SeekBar.getLayoutParams().width = Tool.getHeight(110);
 		Tool.fitsViewLeftMargin(10, viewHandler.sound_SeekBar);
+		viewHandler.sound_SeekBar.setPadding(Tool.getHeight(15), Tool.getHeight(4), Tool.getHeight(15), Tool.getHeight(4));
+		Bitmap myThumbO = Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "pad/PlayBack/volumn_control.png"), Tool.getHeight(23), Tool.getHeight(27), false);
+		Bitmap myThumbR = Bitmap.createBitmap(myThumbO.getWidth(), myThumbO.getHeight()+Tool.getHeight(6), Config.ARGB_8888);
+		Canvas canvas = new Canvas(myThumbR);
+		canvas.drawBitmap(myThumbO, 0, 0,null);
+		myThumbO.recycle();
+		Drawable myThumb = new BitmapDrawable(myThumbR);
+		viewHandler.sound_SeekBar.setThumb(myThumb);
 	}
 
 	private class ViewHandler{		

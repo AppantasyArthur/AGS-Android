@@ -1,18 +1,9 @@
 package com.tkb.tool;
 
 import java.lang.reflect.Method;
-import java.util.TimeZone;
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.Build;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 
 public class DeviceImformation {

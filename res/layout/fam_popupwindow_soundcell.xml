@@ -21,5 +21,8 @@
     	android:layout_centerVertical="true"
     	android:layout_toRightOf="@+id/FAM_PopupWindow_SoundCell_RLayout_SOUND_IView"    	
 		android:max="100"
+		android:progressDrawable="@drawable/seekbar_sort_style"
+		android:maxHeight="15dp"
+		android:thumbOffset="0dp"
   	    />
 </RelativeLayout>

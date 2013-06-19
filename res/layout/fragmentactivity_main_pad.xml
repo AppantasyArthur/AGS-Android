@@ -183,7 +183,9 @@
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:layout_centerInParent="true"
-		        android:minHeight="30dp"		       
+		        android:progressDrawable="@drawable/seekbar_style"
+		        android:maxHeight="15dp"
+		        android:thumbOffset="0dp"		       
 		        />
 		    <TextView 
 		        android:id="@+id/FAM_RLayout_LLayout_RLayout_Current_TextView"
@@ -219,6 +221,9 @@
 		        android:layout_toRightOf="@+id/FAM_RLayout_LLayout_RLayout_Sound_IButton"
 		        android:layout_centerVertical="true"		        	   
 		        android:max="100"
+		        android:progressDrawable="@drawable/seekbar_sort_style"
+		        android:maxHeight="15dp"
+		        android:thumbOffset="0dp"
 		        />		    
 		    <ImageButton 
 		        android:id="@+id/FAM_RLayout_LLayout_RLayout_Previous_IButton"

@@ -1,11 +1,13 @@
 package com.FAM.SETTING;
 
 import com.alpha.fragments.Fragment_Information;
+import com.alpha.upnpui.FragmentActivity_Setting;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -199,5 +201,21 @@ public class FAM_VIEW_LISTNER {
 			//***************************PAD*********************************
 		}
 	}
-	
+	public void Setting_IButton_LISTNER(ImageButton Setting_IButton) {
+		if(device_size==6){
+			//***************************PHONE*********************************	
+			//***************************PHONE*********************************	
+		}else{
+			//***************************PAD*********************************
+			Setting_IButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intnet = new Intent();
+					intnet.setClass(context, FragmentActivity_Setting.class);
+					context.startActivity(intnet);
+				}
+			});
+			//***************************PAD*********************************
+		}
+	}	
 }

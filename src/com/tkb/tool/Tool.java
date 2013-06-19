@@ -274,4 +274,10 @@ public class Tool {
 		fragmentTransaction.commit();
 		mLog.info(TAG, "FragmentActivity_MainAddFragment");
 	}
+	public static void FragmentActivity_MainReplaceFragment(FragmentTransaction fragmentTransaction,Fragment fragment,String Tag,int View_ID,int AnimationIn,int AnimationOut){
+		fragmentTransaction.setCustomAnimations(AnimationIn, AnimationOut);
+		fragmentTransaction.replace(View_ID, fragment,Tag);
+		fragmentTransaction.commit();
+		mLog.info(TAG, "FragmentActivity_MainReplaceFragment");
+	}
 }
