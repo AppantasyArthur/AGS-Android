@@ -89,15 +89,11 @@ public class FAM_PopupWindow extends PopupWindow {
 		Tool.fitsViewLeftMargin(5, viewHandler.sound_IView);
 		//Sound SeekBar
 		Tool.fitsViewHeight(36, viewHandler.sound_SeekBar);
-		viewHandler.sound_SeekBar.getLayoutParams().width = Tool.getHeight(110);
+		viewHandler.sound_SeekBar.getLayoutParams().width = Tool.getHeight(110);		
 		Tool.fitsViewLeftMargin(10, viewHandler.sound_SeekBar);
-		viewHandler.sound_SeekBar.setPadding(Tool.getHeight(15), Tool.getHeight(4), Tool.getHeight(15), Tool.getHeight(4));
+		viewHandler.sound_SeekBar.setPadding(Tool.getHeight(15), Tool.getHeight(8), Tool.getHeight(15), Tool.getHeight(8));
 		Bitmap myThumbO = Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "pad/PlayBack/volumn_control.png"), Tool.getHeight(23), Tool.getHeight(27), false);
-		Bitmap myThumbR = Bitmap.createBitmap(myThumbO.getWidth(), myThumbO.getHeight()+Tool.getHeight(6), Config.ARGB_8888);
-		Canvas canvas = new Canvas(myThumbR);
-		canvas.drawBitmap(myThumbO, 0, 0,null);
-		myThumbO.recycle();
-		Drawable myThumb = new BitmapDrawable(myThumbR);
+		Drawable myThumb = new BitmapDrawable(myThumbO);
 		viewHandler.sound_SeekBar.setThumb(myThumb);
 	}
 

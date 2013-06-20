@@ -13,6 +13,7 @@ import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -36,10 +38,13 @@ public class FS_SPEAKER_ExpandableListAdapter extends BaseExpandableListAdapter 
 	private ImageSpan stop_Span;
 	private ImageSpan pause_Span;
 	
+	private FS_PopupWindow popupWindow;
+	
 	
 	public FS_SPEAKER_ExpandableListAdapter(Context context,FS_SPEAKER_ExpandableListView EListView){
 		this.context = context;
 		this.EListView = EListView;
+		this.popupWindow = new FS_PopupWindow(this.context);
 		LoadBitmap();
 	}
 	private void LoadBitmap(){
@@ -148,7 +153,7 @@ public class FS_SPEAKER_ExpandableListAdapter extends BaseExpandableListAdapter 
 			viewHandler = new GViewHandler(convertView);
 			basicSetGroupView(viewHandler);	
 			convertView.setTag(viewHandler);
-			new Indicator_ClickListener(viewHandler);
+			new ClickListener(viewHandler);
 			
 		}else{
 			viewHandler = (GViewHandler)convertView.getTag();
@@ -194,7 +199,7 @@ public class FS_SPEAKER_ExpandableListAdapter extends BaseExpandableListAdapter 
 			viewHandler.Indicator_ImageView.setImageBitmap(arrow_n);
 		}else{
 			viewHandler.Indicator_ImageView.setImageBitmap(arrow_f);
-		}
+		}	
 		
 		//設定跑馬燈內容
 		setRunState_TextView_Content(0,"123456789987613000000000000000000000000000000000000000000000000000054321",viewHandler.RunState_TextView);
@@ -222,11 +227,11 @@ public class FS_SPEAKER_ExpandableListAdapter extends BaseExpandableListAdapter 
 		Tool.fitsViewLeftMargin(10, viewHandler.Name_TextView);
 		Tool.fitsViewTopMargin(15,viewHandler.Name_TextView);
 		//AddChildItem ImageView
-		viewHandler.AddChildItem_ImageView.getLayoutParams().width = Tool.getHeight(33);
-		Tool.fitsViewHeight(32, viewHandler.AddChildItem_ImageView);
-		Tool.fitsViewRightMargin(20, viewHandler.AddChildItem_ImageView);
-		Tool.fitsViewTopMargin(15, viewHandler.AddChildItem_ImageView);
-		new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/add_btn_n.png", viewHandler.AddChildItem_ImageView, 1);
+		viewHandler.AddChildItem_ImageButton.getLayoutParams().width = Tool.getHeight(33);
+		Tool.fitsViewHeight(32, viewHandler.AddChildItem_ImageButton);
+		Tool.fitsViewRightMargin(20, viewHandler.AddChildItem_ImageButton);
+		Tool.fitsViewTopMargin(15, viewHandler.AddChildItem_ImageButton);
+		new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/add_btn_n.png", viewHandler.AddChildItem_ImageButton, 2);
 		//Indicator TextView
 		viewHandler.Indicator_ImageView.getLayoutParams().width = Tool.getHeight(15);
 		Tool.fitsViewHeight(14, viewHandler.Indicator_ImageView);
@@ -240,13 +245,13 @@ public class FS_SPEAKER_ExpandableListAdapter extends BaseExpandableListAdapter 
 		private int position;
 		private RelativeLayout GCell_RLayout;			
 		private TextView Name_TextView;
-		private ImageView AddChildItem_ImageView;
+		private ImageButton AddChildItem_ImageButton;
 		private ImageView Indicator_ImageView;	
 		private TextView RunState_TextView;
 		public GViewHandler(View view){
 			this.GCell_RLayout = (RelativeLayout)view.findViewById(R.id.FS_SPEAKER_EListView_GCell_RLayout);
 			this.Name_TextView = (TextView)view.findViewById(R.id.FS_SPEAKER_EListView_GCell_RLayout_Name_TextView);
-			this.AddChildItem_ImageView = (ImageView)view.findViewById(R.id.FS_SPEAKER_EListView_GCell_RLayout_AddChildItem_ImageView);
+			this.AddChildItem_ImageButton = (ImageButton)view.findViewById(R.id.FS_SPEAKER_EListView_GCell_RLayout_AddChildItem_ImageButton);
 			this.Indicator_ImageView = (ImageView)view.findViewById(R.id.FS_SPEAKER_EListView_GCell_RLayout_Indicator_ImageView);
 			this.RunState_TextView = (TextView)view.findViewById(R.id.FS_SPEAKER_EListView_GCell_RLayout_RunState_TextView);
 		}
@@ -254,23 +259,27 @@ public class FS_SPEAKER_ExpandableListAdapter extends BaseExpandableListAdapter 
 			this.position = position;
 		}
 	}
-	private class Indicator_ClickListener {
+	private class ClickListener {
 		private GViewHandler viewHandler;
-		public Indicator_ClickListener(GViewHandler viewHandler){
+		public ClickListener(GViewHandler viewHandler){
 			this.viewHandler = viewHandler;
+			//Indicator 展開 收起
 			viewHandler.Indicator_ImageView.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					if(Indicator_ClickListener.this.viewHandler.position>=0&&!EListView.isGroupExpanded(Indicator_ClickListener.this.viewHandler.position)){
-						Indicator_ClickListener.this.viewHandler.Indicator_ImageView.setImageBitmap(arrow_n);
-						EListView.expandGroup(Indicator_ClickListener.this.viewHandler.position,true);
-					}else{						
-						EListView.collapseGroup(Indicator_ClickListener.this.viewHandler.position);						
-						Indicator_ClickListener.this.viewHandler.Indicator_ImageView.setImageBitmap(arrow_f);
+					if(ClickListener.this.viewHandler.position>=0&&!EListView.isGroupExpanded(ClickListener.this.viewHandler.position)){
+						//展開
+						ClickListener.this.viewHandler.Indicator_ImageView.setImageBitmap(arrow_n);
+						EListView.expandGroup(ClickListener.this.viewHandler.position,true);
+					}else{
+						//收起
+						EListView.collapseGroup(ClickListener.this.viewHandler.position);						
+						ClickListener.this.viewHandler.Indicator_ImageView.setImageBitmap(arrow_f);
 					}										
 				}
 			});
-			viewHandler.AddChildItem_ImageView.setOnTouchListener(new View.OnTouchListener() {
+			//AddChildItem Touch 兩態
+			viewHandler.AddChildItem_ImageButton.setOnTouchListener(new View.OnTouchListener() {
 				@Override
 				public boolean onTouch(View v, MotionEvent event) {
 					switch(event.getAction()){
@@ -284,7 +293,17 @@ public class FS_SPEAKER_ExpandableListAdapter extends BaseExpandableListAdapter 
 						new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/add_btn_n.png", v, 1);
 						break;
 					}
-					return true;
+					return false;
+				}
+			});
+			//呼叫Popupwindow
+			viewHandler.AddChildItem_ImageButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {			
+					if(popupWindow!=null&&!popupWindow.isShowing()){
+						View rootView = v.getRootView();
+						popupWindow.ShowPopupWindow(rootView, Gravity.CENTER, 0, 0 );						
+					}
 				}
 			});
 		}

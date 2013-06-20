@@ -51,14 +51,11 @@ public class FS_VIEW_LISTNER {
 						//ªø«ö Child Item
 						long packedPos = ((ExpandableListView) arg0).getExpandableListPosition(arg2);
 						int groupPosition = ExpandableListView.getPackedPositionGroup(packedPos);
-						int childPosition = ExpandableListView.getPackedPositionChild(packedPos);
-						Log.i("aaaaaa", "groupPosition = "+groupPosition);
-						Log.i("aaaaaa", "childPosition = "+childPosition);						
+						int childPosition = ExpandableListView.getPackedPositionChild(packedPos);												
 					}else if(ExpandableListView.getPackedPositionType(arg3) == ExpandableListView.PACKED_POSITION_TYPE_GROUP){
 						//ªø«ö Group Item
 						long packedPos = ((ExpandableListView) arg0).getExpandableListPosition(arg2);
-						int groupPosition = ExpandableListView.getPackedPositionGroup(packedPos);
-						Log.i("aaaaaa", "groupPosition = "+groupPosition);						
+						int groupPosition = ExpandableListView.getPackedPositionGroup(packedPos);			
 					}
 					
 					return true;

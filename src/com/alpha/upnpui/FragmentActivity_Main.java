@@ -111,13 +111,14 @@ public class FragmentActivity_Main extends FragmentActivity {
 		//Sound IButton LISTNER
 		this.VIEW_LISTNER.Sound_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Sound_IButton));
 		//Edit Button BISTNER
-		this.VIEW_LISTNER.Edit_Button_LISTNER((Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Edit_Button),
-											(Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Clear_Button),
+		this.VIEW_LISTNER.Clear_Button_LISTNER((Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Clear_Button),
+											(Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Save_Button),
 											(Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Done_Button),
 											(Fragment_Information)fragment_Infor);
+		this.VIEW_LISTNER.Save_Button_LISTNER((Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Save_Button));
 		this.VIEW_LISTNER.Done_Button_LISTNER((Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Done_Button),
-											(Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Edit_Button),
 											(Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Clear_Button),
+											(Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Save_Button),
 											(Fragment_Information)fragment_Infor);
 		this.VIEW_LISTNER.Cycle_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Cycle_IButton),
 												(ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Cycle2_IButton));
@@ -185,8 +186,8 @@ public class FragmentActivity_Main extends FragmentActivity {
 		}
 	}
 	public void ShowDoneButton(){
+		MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Save_Button).setVisibility(View.GONE);
 		MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Clear_Button).setVisibility(View.GONE);
-		MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Edit_Button).setVisibility(View.GONE);
 		MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Done_Button).setVisibility(View.VISIBLE);
 	}
 }

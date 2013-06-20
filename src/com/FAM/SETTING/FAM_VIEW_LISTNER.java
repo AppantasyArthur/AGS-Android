@@ -9,6 +9,7 @@ import com.tkb.tool.ThreadReadBitMapInAssets;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -19,6 +20,8 @@ public class FAM_VIEW_LISTNER {
 	private MLog mlog = new MLog();
 	private static final String TAG = "FAM_VIEW_LISTNER";
 	private int device_size = 0;
+	
+	private FAM_Save_PopupWindow popupWindow;
 	public FAM_VIEW_LISTNER(Context context, int device_size) {
 		this.context = context;
 		this.mlog.LogSwitch = true;
@@ -47,16 +50,34 @@ public class FAM_VIEW_LISTNER {
 			}
 		});
 	}	
-	public void Edit_Button_LISTNER(Button Edit_Button,final Button Clear_Button,final Button Done_Button,final Fragment_Information fragment_Infor){
+	public void Clear_Button_LISTNER(Button Clear_Button,final Button Save_Button,final Button Done_Button,final Fragment_Information fragment_Infor){
 		if(device_size==6){
 			//***************************PHONE*********************************	
 			//***************************PHONE*********************************	
 		}else{
 			//***************************PAD*********************************
-			Edit_Button.setOnClickListener(new View.OnClickListener() {
+			Clear_Button.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					
+				}
+			});
+			//***************************PAD*********************************
+		}
+	}
+	public void Save_Button_LISTNER(Button Save_Button){
+		if(device_size==6){
+			//***************************PHONE*********************************	
+			//***************************PHONE*********************************	
+		}else{
+			//***************************PAD*********************************
+			Save_Button.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if(popupWindow==null){
+						popupWindow = new FAM_Save_PopupWindow(context);
+					}
+					popupWindow.ShowPopupWindow(v.getRootView(), Gravity.CENTER, 0, 0);
 				}
 			});
 			//***************************PAD*********************************

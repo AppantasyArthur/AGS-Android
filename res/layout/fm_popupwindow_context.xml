@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:background="#333333"
+        android:clickable="true"
         >
         <TextView 
             android:id="@+id/FM_PopupWindow_RLayout_TITLE_TextView"

@@ -71,13 +71,9 @@ public class FAM_VIEW_SETTING {
 		Tool.fitsViewHeight(36, seekBar);
 		seekBar.getLayoutParams().width = Tool.getHeight(110);
 		Tool.fitsViewLeftMargin(10, seekBar);		
-		seekBar.setPadding(Tool.getHeight(15), Tool.getHeight(4), Tool.getHeight(15), Tool.getHeight(4));
+		seekBar.setPadding(Tool.getHeight(15), Tool.getHeight(8), Tool.getHeight(15), Tool.getHeight(8));
 		Bitmap myThumbO = Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "pad/PlayBack/volumn_control.png"), Tool.getHeight(23), Tool.getHeight(27), false);
-		Bitmap myThumbR = Bitmap.createBitmap(myThumbO.getWidth(), myThumbO.getHeight()+Tool.getHeight(6), Config.ARGB_8888);
-		Canvas canvas = new Canvas(myThumbR);
-		canvas.drawBitmap(myThumbO, 0, 0,null);
-		myThumbO.recycle();
-		Drawable myThumb = new BitmapDrawable(myThumbR);
+		Drawable myThumb = new BitmapDrawable(myThumbO);
 		seekBar.setThumb(myThumb);
 		
 		//Previous ImageButton
@@ -142,13 +138,9 @@ public class FAM_VIEW_SETTING {
 		SeekBar seekBar = (SeekBar)view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Music_SeekBar);
 		Tool.fitsViewHeight(36, seekBar);
 		seekBar.getLayoutParams().width = Tool.getHeight(630);
-		seekBar.setPadding(Tool.getHeight(15), Tool.getHeight(4), Tool.getHeight(15), Tool.getHeight(4));
+		seekBar.setPadding(Tool.getHeight(15), Tool.getHeight(8), Tool.getHeight(15), Tool.getHeight(8));
 		Bitmap myThumbO = Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "pad/PlayBack/volumn_control.png"), Tool.getHeight(23), Tool.getHeight(27), false);
-		Bitmap myThumbR = Bitmap.createBitmap(myThumbO.getWidth(), myThumbO.getHeight()+Tool.getHeight(6), Config.ARGB_8888);
-		Canvas canvas = new Canvas(myThumbR);
-		canvas.drawBitmap(myThumbO, 0, 0,null);
-		myThumbO.recycle();
-		Drawable myThumb = new BitmapDrawable(myThumbR);
+		Drawable myThumb = new BitmapDrawable(myThumbO);
 		seekBar.setThumb(myThumb);
 		//Total TextView
 		Tool.fitsViewLeftMargin(843, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Current_TextView));	
@@ -183,13 +175,13 @@ public class FAM_VIEW_SETTING {
 		Tool.fitsViewWidth(412, view.findViewById(R.id.FAM_RLayout_RLayout_BCENTER_RLayout));
 		Tool.fitsViewLeftMargin(270, view.findViewById(R.id.FAM_RLayout_RLayout_BCENTER_RLayout));
 		//Edit Button
-		Tool.fitsViewLeftMargin(50, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Edit_Button));
-		Tool.fitsViewHeight(35, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Edit_Button));
-		Tool.fitsViewWidth(100, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Edit_Button));
-		//Clear Button
-		Tool.fitsViewLeftMargin(150, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Clear_Button));
+		Tool.fitsViewLeftMargin(50, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Clear_Button));
 		Tool.fitsViewHeight(35, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Clear_Button));
 		Tool.fitsViewWidth(100, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Clear_Button));
+		//Clear Button
+		Tool.fitsViewLeftMargin(150, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Save_Button));
+		Tool.fitsViewHeight(35, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Save_Button));
+		Tool.fitsViewWidth(100, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Save_Button));
 		//Done Button
 		Tool.fitsViewLeftMargin(50, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Done_Button));
 		Tool.fitsViewHeight(33, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Done_Button));
