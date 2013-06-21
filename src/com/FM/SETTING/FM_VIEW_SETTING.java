@@ -81,7 +81,22 @@ public class FM_VIEW_SETTING {
 		new ThreadReadBitMapInAssets(context, "pad/Playlist/playlist_back_btn.png", view.findViewById(R.id.FM_RLayout_RLayout_MusicBack_Button), 3);
 	}
 	private void PAD_FM_RLayout_TITLE3_RLayout(View view) {		
-//		Tool.fitsViewHeight(44, view);
+		//SerchCondition1_Button
+		Tool.fitsViewHeight(44, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition1_Button));
+		Tool.fitsViewWidth(60, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition1_Button));
+		Tool.fitsViewLeftMargin(5, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition1_Button));
+		//SerchCondition2_Button
+		Tool.fitsViewHeight(44, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition2_Button));
+		Tool.fitsViewWidth(60, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition2_Button));
+		Tool.fitsViewLeftMargin(65, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition2_Button));
+		//SerchCondition3_Button
+		Tool.fitsViewHeight(44, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition3_Button));
+		Tool.fitsViewWidth(60, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition3_Button));
+		Tool.fitsViewLeftMargin(125, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition3_Button));
+		//SerchCondition4_Button
+		Tool.fitsViewHeight(44, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition4_Button));
+		Tool.fitsViewWidth(60, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition4_Button));
+		Tool.fitsViewLeftMargin(185, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition4_Button));
 	}
 	private void PAD_FM_RLayout_Music_ListView(View view) {
 		//Music ListView

@@ -1,5 +1,8 @@
 package com.FM.SETTING;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadStateListInAssets;
@@ -22,15 +25,32 @@ public class FM_Music_ListView_BaseAdapter extends BaseAdapter {
 	private MLog mlog = new MLog();
 	private static final String TAG = "FM_Music_ListView_BaseAdapter";
 		
+	private List<String> dataList = new ArrayList<String>();
+	private List<String> dataList2 = new ArrayList<String>();
+	private boolean showNext = false;
 	public FM_Music_ListView_BaseAdapter(Context context){
 		this.context = context;		
 		this.mlog.LogSwitch = true;
-	
+		dataList.clear();
+		for(int i = 0;i<10;i++){
+			dataList.add("A ="+i);
+		}
+		dataList2.clear();
+		for(int i = 0;i<15;i++){
+			dataList2.add("ABCD"+i+".mp3");
+		}
 	}
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
-		return 100;
+		if(showNext){
+			return dataList2.size();
+		}else{
+			return dataList.size();
+		}
+	}
+	public void setshowNext(boolean showNext){
+		this.showNext = showNext;
+		this.notifyDataSetChanged();
 	}
 
 	@Override
@@ -56,7 +76,11 @@ public class FM_Music_ListView_BaseAdapter extends BaseAdapter {
 		}else{
 			viewHandler = (ViewHandler)convertView.getTag();
 		}		
-				
+		if(showNext){
+			viewHandler.cell_RLayout_Name_TextView.setText(dataList2.get(position));
+		}else{
+			viewHandler.cell_RLayout_Name_TextView.setText(dataList.get(position));
+		}
 		return convertView;
 	}
 	

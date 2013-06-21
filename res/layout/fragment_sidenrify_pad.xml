@@ -10,7 +10,7 @@
     	android:layout_width="match_parent"
    		android:layout_height="wrap_content"
    		android:layout_alignParentTop="true"
-   		android:background="#ffff00"
+   		android:background="#474747"
 	    >  
 	    <TextView 
             android:id="@+id/FSI_RLayout_RLayout_Title_TextView"
@@ -29,7 +29,7 @@
     	android:layout_width="match_parent"
    		android:layout_height="match_parent"
    		android:layout_below="@+id/FSI_RLayout_TITLE_RLayout"
-   		android:background="#0000ff"
+   		android:background="#373737"
 	    >  
 	    <ListView 
 	        android:id="@+id/FSI_RLayout_RLayout_IdSpeaker_ListView"
@@ -37,7 +37,8 @@
 	   		android:layout_height="match_parent"
 	   		android:layout_alignParentTop="true"
 	   		android:layout_alignParentLeft="true"
-	   		android:background="#ff0000"
+	   		android:divider="#00000000"
+	   		android:background="#00000000"
 	        ></ListView>
 	</RelativeLayout>
 </RelativeLayout>

@@ -133,7 +133,9 @@ public class FI_ViewFlipper extends ViewFlipper {
 		this.addView(new_View);
 	}
 	//³]©w¤¶­±
-	private void SetView(View view) {		
+	private void SetView(View view) {
+		//Cell RLayout
+		new ThreadReadBitMapInAssets(context, "pad/Nowplaying/nowplaying_bg_f.png", view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout), 3);
 		//MusicName TextView
 		Tool.fitsViewWidth(212, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView));
 		Tool.fitsViewHeight(30, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView));

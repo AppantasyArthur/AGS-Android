@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-	
 	<RelativeLayout 
 	    android:id="@+id/FAM_RLayout_LEFT_RLayout"
 	    android:layout_width="wrap_content"
@@ -39,14 +38,15 @@
 	    android:id="@+id/FAM_RLayout_BOTTOM_RLayout"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:layout_alignParentBottom="true"	    
+	    android:layout_alignParentBottom="true"
+	    android:background="#00000000"	    
 	    >
 		<RelativeLayout 
 		    android:id="@+id/FAM_RLayout_RLayout_BLEFT_RLayout"
 		    android:layout_width="wrap_content"
 		    android:layout_height="match_parent"
 		    android:layout_alignParentLeft="true"
-		    android:background="#7fffff00"
+		    android:background="#00000000"
 		    >	
 		    <Button 
 		        android:id="@+id/FAM_RLayout_RLayout_RLayout_PauseALL_Button"
@@ -64,7 +64,7 @@
 		    android:layout_width="wrap_content"
 		    android:layout_height="match_parent"
 		    android:layout_alignParentLeft="true"	
-		    android:background="#7f00ff00"		   
+		    android:background="#00000000"		   
 	   		>	
 	   		<Button 
 		        android:id="@+id/FAM_RLayout_RLayout_RLayout_Clear_Button"
@@ -104,7 +104,7 @@
 		    android:layout_width="wrap_content"
 		    android:layout_height="match_parent"
 		    android:layout_alignParentRight="true"	
-		    android:background="#7f00ffff"		 		   
+		    android:background="#00000000"		 		   
 	   		>
 		    <ImageButton 
 		        android:id="@+id/FAM_RLayout_RLayout_RLayout_Setting_IButton"
@@ -175,7 +175,7 @@
 		        android:layout_centerVertical="true"
 		        android:padding="0dp"	
 		        android:gravity="center"
-		        android:background="#ff0000"			        
+		        android:background="#00000000"			        
 		        android:text="00:00"        
 		        />
 		    <SeekBar 
@@ -195,7 +195,7 @@
 		        android:layout_centerVertical="true"
 		        android:padding="0dp"
 		        android:gravity="center"	
-		        android:background="#ff0000"		         
+		        android:background="#00000000"		         
 		        android:text="-00:00"      	
 		        />
 		</RelativeLayout>

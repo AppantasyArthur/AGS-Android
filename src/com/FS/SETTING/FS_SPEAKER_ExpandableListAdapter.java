@@ -119,10 +119,10 @@ public class FS_SPEAKER_ExpandableListAdapter extends BaseExpandableListAdapter 
 	
 	@Override
 	public int getChildrenCount(int groupPosition) {
-		if(groupPosition%2==0){
-			return 3;
-		}else{
+		if(groupPosition<2){
 			return 0;
+		}else{
+			return 2;	
 		}		
 	}
 	
@@ -135,7 +135,7 @@ public class FS_SPEAKER_ExpandableListAdapter extends BaseExpandableListAdapter 
 	@Override
 	public int getGroupCount() {
 		// TODO Auto-generated method stub
-		return 100;
+		return 3;
 	}
 
 	@Override

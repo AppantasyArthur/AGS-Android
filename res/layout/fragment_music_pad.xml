@@ -3,14 +3,14 @@
     android:id="@+id/FM_RLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent" 
-    android:background="#ff0000"
+    android:background="#000000"
     >
     <RelativeLayout 
         android:id="@+id/FM_RLayout_TITLE_RLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:background="#ffff00"
+        android:background="#575757"
         >       
         <TextView
             android:id="@+id/FM_RLayout_RLayout_Music_TextView"
@@ -61,7 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/FM_RLayout_TITLE_RLayout"
-        android:background="#00ff00"
+        android:background="#525252"
         >       
         <TextView
             android:id="@+id/FM_RLayout_RLayout_Music2_TextView"
@@ -73,7 +73,7 @@
             android:textColor="#ffffff"
             android:text="Artist"            
             />
-        <ImageButton 
+        <Button 
             android:id="@+id/FM_RLayout_RLayout_MusicBack_Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/FM_RLayout_TITLE_RLayout"
-        android:background="#00ff00"
+        android:background="#373737"
         android:clickable="true"
         android:visibility="gone"
         >    
@@ -124,6 +124,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/FM_RLayout_TITLE2_RLayout"
-        android:divider="#00000000"
+        android:divider="#000000"
         ></com.FM.SETTING.FM_ListView >
 </RelativeLayout>

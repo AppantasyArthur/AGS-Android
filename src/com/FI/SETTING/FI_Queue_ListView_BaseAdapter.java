@@ -38,13 +38,13 @@ public class FI_Queue_ListView_BaseAdapter extends BaseAdapter {
 		this.context = context;		
 		this.mlog.LogSwitch = true;
 		dataList.clear();
-		for(int i = 0;i<100;i++){
+		for(int i = 0;i<2;i++){
 			dataList.add(""+i);
 		}
 	}
 	@Override
 	public int getCount() {
-		if(InsertPosition>0){
+		if(InsertPosition>=0){
 			return dataList.size()+1;		
 		}else{
 			return dataList.size();		

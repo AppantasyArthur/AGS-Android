@@ -151,15 +151,18 @@ public class FAM_VIEW_SETTING {
 	private void PAD_FAM_RLayout_LEFT_RLayout(View view) {
 		Tool.fitsViewWidth(282, view);
 		Tool.fitsViewTopMargin(-6, view);
+		Tool.fitsViewBottomMargin(-5, view);
 	}
 	private void PAD_FAM_RLayout_CENTER_RLayout(View view) {
 		Tool.fitsViewWidth(410, view);
 		Tool.fitsViewLeftMargin(270, view);
 		Tool.fitsViewTopMargin(-6, view);
+		Tool.fitsViewBottomMargin(-5, view);
 	}
 	private void PAD_FAM_RLayout_RIGHT_RLayout(View view) {
 		Tool.fitsViewWidth(357, view);
-		Tool.fitsViewTopMargin(-6, view);		
+		Tool.fitsViewTopMargin(-6, view);	
+		Tool.fitsViewBottomMargin(-5, view);
 	}
 	private void PAD_FAM_RLayout_BOTTOM_RLayout(View view) {
 		Tool.fitsViewHeight(53, view);

@@ -17,7 +17,7 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentTop="true"
-	        android:background="#00ff00"
+	        android:background="#000000"
 	        >       
 	        <TextView
 	            android:id="@+id/FI_RLayout_RLayout_RLayout_PLAYING_TextView"
@@ -60,7 +60,7 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentTop="true"
-	        android:background="#00ff00"
+	        android:background="#575757"
 	        >       
 	        <TextView
 	            android:id="@+id/FI_RLayout_RLayout_RLayout_QUEUE_TextView"

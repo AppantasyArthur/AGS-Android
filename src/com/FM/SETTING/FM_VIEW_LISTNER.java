@@ -3,7 +3,6 @@ package com.FM.SETTING;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import com.tkb.tool.Tool;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -18,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -43,8 +43,13 @@ public class FM_VIEW_LISTNER {
 				private FM_PopupWindow fm_PopupWindow = new FM_PopupWindow(context);
 				@Override
 				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {					
-					View rootView = arg0.getRootView();
-					fm_PopupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0 );				
+					if(arg2>5){
+						View rootView = arg0.getRootView();
+						fm_PopupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0 );	
+					}else{
+						((FM_Music_ListView_BaseAdapter)arg0.getAdapter()).setshowNext(true);
+					}
+								
 				}
 			});
 			Music_ListView.setOnItemLongClickListener(new OnItemLongClickListener(){
@@ -81,5 +86,14 @@ public class FM_VIEW_LISTNER {
 			});
 			//***************************PAD*********************************	
 		}		
+	}
+
+	public void SET_MusicBack_Button_Listner(Button MusicBack,final FM_ListView Music_ListView) {
+		MusicBack.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				((FM_Music_ListView_BaseAdapter)Music_ListView.getAdapter()).setshowNext(false);
+			}
+		});
 	}
 }

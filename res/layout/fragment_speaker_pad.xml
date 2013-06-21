@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:background="#ffff00"
+        android:background="#575757"
         >       
         <TextView
             android:id="@+id/FS_RLayout_RLayout_Speaker_TextView"
@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/FS_RLayout_TITLE_RLayout"
-        android:background="#00ff00"
+        android:background="#525252"
         >       
         <TextView
             android:id="@+id/FS_RLayout_RLayout_Speaker2_TextView"
