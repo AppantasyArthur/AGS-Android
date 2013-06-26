@@ -51,7 +51,7 @@ public class DeviceImformation {
     	   device = 6;
        }
        mlog.info(TAG, "device = "+device);
-		return device;
+		return 7;
 	}
 //	private String getDeviceType(){
 //		String deviceType = "";
