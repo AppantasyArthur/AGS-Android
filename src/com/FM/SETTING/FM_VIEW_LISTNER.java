@@ -66,21 +66,15 @@ public class FM_VIEW_LISTNER {
 						((FM_Music_ListView_BaseAdapter)adapterView.getAdapter()).setChooseDevice((Device)((ViewHandler)view.getTag()).object);
 						Log.i(TAG, "device = "+device.getDetails().getFriendlyName());					
 						Service service = device.findService(new UDAServiceType("ContentDirectory"));
-						
 						Browse browse = new Browse(service, "0", browseFlag, "", 0, 0l, null){
 							@Override
 							public void received(ActionInvocation arg0,	DIDLContent arg1) {	
-								List<Container> listC = arg1.getContainers();								
-								for(int i =0;i<listC.size();i++){
-									Container container = listC.get(i);
-									mlog.info(TAG, "PID="+container.getParentID());
-									mlog.info(TAG, "ID="+container.getId());
-									mlog.info(TAG, "Title="+container.getTitle());
-									mlog.info(TAG, "CC"+container.getChildCount());
-									mlog.info(TAG, "S="+container.toString());
-								}			
-								FM_Music_ListView_BaseAdapter FMLBA = (FM_Music_ListView_BaseAdapter)adapterView.getAdapter();
-								FMLBA.ShowNextPrivousFile("0", listC, null, true);
+								//取得Container List
+								List<Container> listC = arg1.getContainers();
+								//取得 Item List
+								List<Item> listI = arg1.getItems();
+								//更新FM_Music_ListView_BaseAdapter
+								((FM_Music_ListView_BaseAdapter)adapterView.getAdapter()).ShowFile("0", listC,listI);
 								
 							}
 							@Override
@@ -102,30 +96,16 @@ public class FM_VIEW_LISTNER {
 						}
 						Browse browse = new Browse(device.findService(new UDAServiceType("ContentDirectory")), ObjectID, BrowseFlag.DIRECT_CHILDREN, "", 0, 0l, null){
 							@Override
-							public void received(ActionInvocation arg0,	DIDLContent arg1) {								
+							public void received(ActionInvocation arg0,	DIDLContent arg1) {	
+								//取得Container List
 								List<Container> listC = arg1.getContainers();
+								//取得 Item List
 								List<Item> listI = arg1.getItems();
-								((FM_Music_ListView_BaseAdapter)adapterView.getAdapter()).ShowNextPrivousFile(ParentID, listC,listI,true);
-								for(int i =0;i<listC.size();i++){
-									Container container = listC.get(i);
-									mlog.info(TAG, "PID="+container.getParentID());
-									mlog.info(TAG, "ID="+container.getId());
-									mlog.info(TAG, "Title="+container.getTitle());
-									mlog.info(TAG, "CC"+container.getChildCount());
-									mlog.info(TAG, "S="+container.toString());
-								}								
-								for(int i =0;i<listI.size();i++){
-									Item item = listI.get(i);
-									mlog.info(TAG, "Item PID="+item.getParentID());
-									mlog.info(TAG, "Item ID="+item.getId());
-									mlog.info(TAG, "Item Title="+item.getTitle());
-									mlog.info(TAG, "RFID"+item.getRefID());
-									mlog.info(TAG, "Item S="+item.toString());
-								}
+								//更新FM_Music_ListView_BaseAdapter
+								((FM_Music_ListView_BaseAdapter)adapterView.getAdapter()).ShowFile(ParentID, listC,listI);
 							}
 							@Override
-							public void updateStatus(Status arg0) {								
-							}
+							public void updateStatus(Status arg0) {	}
 							@Override
 							public void failure(ActionInvocation arg0,UpnpResponse arg1, String arg2) {		
 								Log.i(TAG, "Container failure = "+arg1);

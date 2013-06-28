@@ -9,16 +9,11 @@ import org.teleal.cling.model.message.UpnpResponse;
 import org.teleal.cling.model.meta.Device;
 import org.teleal.cling.model.types.UDAServiceType;
 import org.teleal.cling.support.contentdirectory.callback.Browse;
-import org.teleal.cling.support.contentdirectory.callback.Browse.Status;
 import org.teleal.cling.support.model.BrowseFlag;
 import org.teleal.cling.support.model.DIDLContent;
 import org.teleal.cling.support.model.SortCriterion;
 import org.teleal.cling.support.model.container.Container;
 import org.teleal.cling.support.model.item.Item;
-import org.teleal.cling.support.model.item.MusicTrack;
-
-import com.FS.SETTING.FS_SPEAKER_ExpandableListAdapter;
-import com.FS.SETTING.FS_SPEAKER_ExpandableListAdapter_Listner;
 import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.R;
@@ -26,7 +21,6 @@ import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadStateListInAssets;
 import com.tkb.tool.Tool;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -72,6 +66,29 @@ public class FM_Music_ListView_BaseAdapter extends BaseAdapter {
 				}
 				break;	
 			case 10:
+				
+				FM_Music_ListView_BaseAdapter.this.notifyDataSetChanged();
+				break;
+			case 11:
+				FileContent fileContent = (FileContent)msg.obj;
+				if(fileContent.ParentID!=null){
+					FM_Music_ListView_BaseAdapter.this.ParentID.add(fileContent.ParentID);
+				}		
+				FM_Music_ListView_BaseAdapter.this.ContainerList.clear();
+				FM_Music_ListView_BaseAdapter.this.MusicTrackList.clear();
+				if(fileContent.ContainerList!=null){
+					for(int i=0;i<fileContent.ContainerList.size();i++){
+						FM_Music_ListView_BaseAdapter.this.ContainerList.add(fileContent.ContainerList.get(i));
+					}
+				}
+				if(fileContent.Itemlist!=null){
+					for(int i=0;i<fileContent.Itemlist.size();i++){
+						Item item = fileContent.Itemlist.get(i);
+						if(item.getClass().getName().equals("org.teleal.cling.support.model.item.MusicTrack")||item.getClass().getName().equals("org.teleal.cling.support.model.item.AudioItem")){
+							FM_Music_ListView_BaseAdapter.this.MusicTrackList.add(item);
+						}
+					}
+				}	
 				FM_Music_ListView_BaseAdapter.this.notifyDataSetChanged();
 				break;
 			}
@@ -199,26 +216,38 @@ public class FM_Music_ListView_BaseAdapter extends BaseAdapter {
 		Tool.fitsViewRightMargin(10, viewHandler.cell_RLayout_Image_ImageView);
 		new ThreadReadStateListInAssets(context, "pad/Playlist/playlist_arrow_f.png", "pad/Playlist/playlist_arrow_n.png", viewHandler.cell_RLayout_Image_ImageView, 1);
 	}
-	public void ShowNextPrivousFile(String ParentID,List<Container> ContainerList,List<Item> Itemlist,boolean isNext){
-		if(ParentID!=null){
-			this.ParentID.add(ParentID);
-		}		
-		this.ContainerList.clear();
-		this.MusicTrackList.clear();
+	public void ShowFile(String ParentID,List<Container> ContainerList,List<Item> Itemlist){
 		if(ContainerList!=null){
-			for(int i=0;i<ContainerList.size();i++){
-				this.ContainerList.add(ContainerList.get(i));
-			}
+			for(int i =0;i<ContainerList.size();i++){
+				Container container = ContainerList.get(i);
+				mlog.info(TAG, "PID="+container.getParentID());
+				mlog.info(TAG, "ID="+container.getId());
+				mlog.info(TAG, "Title="+container.getTitle());
+				mlog.info(TAG, "CC"+container.getChildCount());
+				mlog.info(TAG, "S="+container.toString());
+			}		
 		}
 		if(Itemlist!=null){
-			for(int i=0;i<Itemlist.size();i++){
+			for(int i =0;i<Itemlist.size();i++){
 				Item item = Itemlist.get(i);
-				if(item.getClass().getName().equals("org.teleal.cling.support.model.item.MusicTrack")||item.getClass().getName().equals("org.teleal.cling.support.model.item.AudioItem")){
-					this.MusicTrackList.add(item);
-				}
+				mlog.info(TAG, "Item PID="+item.getParentID());
+				mlog.info(TAG, "Item ID="+item.getId());
+				mlog.info(TAG, "Item Title="+item.getTitle());
+				mlog.info(TAG, "RFID"+item.getRefID());
+				mlog.info(TAG, "Item S="+item.toString());
 			}
 		}		
-		handler.obtainMessage(10).sendToTarget();
+		handler.obtainMessage(11,new FileContent(ParentID,ContainerList,Itemlist)).sendToTarget();
+	}
+	private class FileContent{
+		private String ParentID;
+		private List<Container> ContainerList;
+		private List<Item> Itemlist;
+		public FileContent(String ParentID,List<Container> ContainerList,List<Item> Itemlist){
+			this.ParentID = ParentID;
+			this.ContainerList = ContainerList;
+			this.Itemlist = Itemlist;
+		}
 	}
 	public void ShowPrivousFile(){
 		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
@@ -230,7 +259,7 @@ public class FM_Music_ListView_BaseAdapter extends BaseAdapter {
 					FM_Music_ListView_BaseAdapter.this.ParentID.remove(FM_Music_ListView_BaseAdapter.this.ParentID.size()-1);
 					List<Container> listC = arg1.getContainers();
 					List<Item> listI = arg1.getItems();
-					FM_Music_ListView_BaseAdapter.this.ShowNextPrivousFile(null, listC,listI,true);
+					FM_Music_ListView_BaseAdapter.this.ShowFile(null, listC,listI);
 					for(int i =0;i<listC.size();i++){
 						Container container = listC.get(i);
 						mlog.info(TAG, "PID="+container.getParentID());
