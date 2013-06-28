@@ -3,14 +3,14 @@
     android:id="@+id/FS_RLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ff0000" >
+    android:background="#00000000" >
 
     <RelativeLayout 
         android:id="@+id/FS_RLayout_TITLE_RLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:background="#575757"
+        android:background="#00000000"
         >       
         <TextView
             android:id="@+id/FS_RLayout_RLayout_Speaker_TextView"
@@ -23,12 +23,12 @@
             android:text="Speakers"      
             />
     </RelativeLayout>
-    <RelativeLayout 
+    <!--<RelativeLayout 
         android:id="@+id/FS_RLayout_TITLE2_RLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/FS_RLayout_TITLE_RLayout"
-        android:background="#525252"
+        android:background="#"
         >       
         <TextView
             android:id="@+id/FS_RLayout_RLayout_Speaker2_TextView"
@@ -40,13 +40,13 @@
             android:textColor="#ffffff"
             android:text="Currently Playing"      
             />
-    </RelativeLayout>
+    </RelativeLayout>-->
     <com.FS.SETTING.FS_SPEAKER_ExpandableListView
         android:id="@+id/FS_RLayout_SPEAKER_EListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"       
-        android:layout_below="@+id/FS_RLayout_TITLE2_RLayout"  
-        android:background="#000000"
+        android:layout_below="@+id/FS_RLayout_TITLE_RLayout"  
+        android:background="#00000000"
         android:divider="#00000000"    
         >        
     </com.FS.SETTING.FS_SPEAKER_ExpandableListView>

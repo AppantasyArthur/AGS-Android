@@ -3,14 +3,14 @@
     android:id="@+id/FM_RLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent" 
-    android:background="#000000"
+    android:background="#00000000"
     >
     <RelativeLayout 
         android:id="@+id/FM_RLayout_TITLE_RLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:background="#575757"
+        android:background="#00000000"
         >       
         <TextView
             android:id="@+id/FM_RLayout_RLayout_Music_TextView"
@@ -31,7 +31,8 @@
             android:layout_alignParentRight="true"            
             android:gravity="center_vertical"
             android:focusable="true" 
-            android:focusableInTouchMode="true"   
+            android:focusableInTouchMode="true"
+            android:background="#00000000"   
             >
             <ImageButton 
                 android:id="@+id/FM_RLayout_RLayout_LLayout_SearchMusic_IButton"
@@ -61,7 +62,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/FM_RLayout_TITLE_RLayout"
-        android:background="#525252"
+        android:background="#00000000"
         >       
         <TextView
             android:id="@+id/FM_RLayout_RLayout_Music2_TextView"
@@ -86,44 +87,76 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/FM_RLayout_TITLE_RLayout"
-        android:background="#373737"
+        android:background="#00000000"
         android:clickable="true"
         android:visibility="gone"
         >    
-        <ImageButton 
+        <ImageView 
+            android:id="@+id/FM_RLayout_RLayout_SerchConditionBG_ImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:scaleType="fitXY"
+            android:background="#00000000"
+            />
+        <Button 
             android:id="@+id/FM_RLayout_RLayout_SerchCondition1_Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
+            android:layout_alignParentTop="true"
+            android:background="#00000000"            
+            android:gravity="center"
+            android:padding="0dp"
+            android:textColor="#ffffff"
+            android:text="Artists"
             />
-        <ImageButton 
-             android:id="@+id/FM_RLayout_RLayout_SerchCondition2_Button"
+        <Button 
+            android:id="@+id/FM_RLayout_RLayout_SerchCondition2_Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/FM_RLayout_RLayout_SerchCondition1_Button"
+            android:layout_alignParentTop="true"
+            android:background="#00000000"
+            android:gravity="center"
+            android:padding="0dp"
+            android:textColor="#ffffff"
+            android:text="Album"
             />
-        <ImageButton 
+        <Button 
             android:id="@+id/FM_RLayout_RLayout_SerchCondition3_Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/FM_RLayout_RLayout_SerchCondition2_Button"
+            android:layout_alignParentTop="true"
+            android:background="#00000000"
+            android:gravity="center"
+            android:padding="0dp"
+            android:textColor="#ffffff"
+            android:text="Compersers"
             />
-        <ImageButton 
-             android:id="@+id/FM_RLayout_RLayout_SerchCondition4_Button"
+        <Button 
+            android:id="@+id/FM_RLayout_RLayout_SerchCondition4_Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/FM_RLayout_RLayout_SerchCondition3_Button"
+            android:layout_alignParentTop="true"
+            android:background="#00000000"
+            android:gravity="center"
+            android:padding="0dp"
+            android:textColor="#ffffff"
+            android:text="Tracks"
             /> 
     </RelativeLayout>   
     <com.FM.SETTING.FM_ListView 
         android:id="@+id/FM_RLayout_Music_ListView"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_below="@+id/FM_RLayout_TITLE2_RLayout"
+        android:layout_alignParentRight="true"
+        android:background="#00000000"
+        android:listSelector="@android:color/transparent"
         android:divider="#000000"
         ></com.FM.SETTING.FM_ListView >
 </RelativeLayout>

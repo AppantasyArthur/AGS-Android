@@ -47,8 +47,10 @@ public class FI_VIEW_SETTING {
 		Tool.fitsViewBottomMargin(20, view.findViewById(R.id.FI_RLayout_RLayout_Point_LLayout));
 	}
 	private void PAD_FI_RLayout_DOWN_RLayout(View view){
+		new ThreadReadBitMapInAssets(context, "pad/Queqe/queqe_bg.png", view, 3);
 		//DTITLE RLayout
-		Tool.fitsViewHeight(30, view.findViewById(R.id.FI_RLayout_RLayout_DTITLE_RLayout));
+		Tool.fitsViewHeight(35, view.findViewById(R.id.FI_RLayout_RLayout_DTITLE_RLayout));
+		new ThreadReadBitMapInAssets(context, "pad/Queqe/queqe_navigation.png", view.findViewById(R.id.FI_RLayout_RLayout_DTITLE_RLayout), 3);
 		//QUEUE TextView
 		Tool.fitsViewLeftMargin(30, view.findViewById(R.id.FI_RLayout_RLayout_RLayout_QUEUE_TextView));
 		Tool.fitsViewTextSize(8, view.findViewById(R.id.FI_RLayout_RLayout_RLayout_QUEUE_TextView));

@@ -3,11 +3,18 @@ package com.FS.SETTING;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.teleal.cling.model.meta.Device;
+
+import com.alpha.UPNP.DeviceDisplay;
+import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.R;
+import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
 import com.tkb.tool.Tool;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -40,12 +47,72 @@ public class FS_SPEAKER_ExpandableListAdapter extends BaseExpandableListAdapter 
 	
 	private FS_PopupWindow popupWindow;
 	
+	private FS_SPEAKER_ExpandableListAdapter_Listner FSELAListner;
+	
+	private List<DeviceDisplay> GroupList;
+	private List<List<DeviceDisplay>> ChildList;
+	
+	private static String TAG = "FS_SPEAKER_ExpandableListAdapter";
+	private MLog mlog = new MLog();
+	
+	private Handler handler = new Handler(){
+		public void handleMessage (Message msg) {
+			switch(msg.what){
+			case 0:
+				if(GroupList!=null){
+					GroupList.add((DeviceDisplay)msg.obj);
+					FS_SPEAKER_ExpandableListAdapter.this.notifyDataSetChanged();
+				}
+				break;
+			case 1:
+				if(GroupList!=null){
+					GroupList.remove((DeviceDisplay)msg.obj);
+					FS_SPEAKER_ExpandableListAdapter.this.notifyDataSetChanged();
+				}
+				break;
+			case 2:
+				
+				break;
+			case 3:
+				
+				break;
+			}
+		}
+	};
 	
 	public FS_SPEAKER_ExpandableListAdapter(Context context,FS_SPEAKER_ExpandableListView EListView){
+		this.mlog.LogSwitch = true;
 		this.context = context;
 		this.EListView = EListView;
+		this.GroupList = new ArrayList<DeviceDisplay>();
+		this.ChildList = new ArrayList<List<DeviceDisplay>>();
 		this.popupWindow = new FS_PopupWindow(this.context);
 		LoadBitmap();
+		SetList();
+		SetListner();
+	}
+	private void SetList(){
+		//分類MRList
+		List<DeviceDisplay> MRList = ((FragmentActivity_Main)context).GETDeviceDisplayList().getMediaRendererList();
+		if(MRList==null||MRList.size()==0){
+			return;
+		}
+	}
+	private void SetListner(){
+		FSELAListner = new FS_SPEAKER_ExpandableListAdapter_Listner(){
+			@Override
+			public void AddMediaRenderer(DeviceDisplay deviceDisplay) {
+				handler.obtainMessage(0, deviceDisplay).sendToTarget();
+				mlog.info(TAG, "AddMediaRenderer");
+			}
+
+			@Override
+			public void RemoveMediaRenderer(DeviceDisplay deviceDisplay) {
+				
+				mlog.info(TAG, "AddMediaRenderer");
+			}
+		};
+		((FragmentActivity_Main)context).GETDeviceDisplayList().setSpeakerListner(FSELAListner);
 	}
 	private void LoadBitmap(){
 		this.arrow_f = Tool.readBitMapInAssets(context, "pad/Speakermanagement/arrow_f.png");
@@ -83,19 +150,21 @@ public class FS_SPEAKER_ExpandableListAdapter extends BaseExpandableListAdapter 
 		
 		if(childPosition==0&&!isLastChild){
 			//第一個
+			Tool.fitsViewHeight(36,viewHandler.CCell_RLayout);
 			new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/menu_01.png", viewHandler.CCell_RLayout, 3);
 		}else if(isLastChild){
 			//最後一個
+			Tool.fitsViewHeight(40,viewHandler.CCell_RLayout);
 			new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/menu_03.png", viewHandler.CCell_RLayout, 3);
 		}else{
 			//其他
+			Tool.fitsViewHeight(37,viewHandler.CCell_RLayout);
 			new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/menu_02.png", viewHandler.CCell_RLayout, 3);
 		}
 		return convertView;
 	}
 	private void basicSetChildView(CViewHandler viewHandler){
-		//EListView_GCell_RLayout
-		Tool.fitsViewHeight(38,viewHandler.CCell_RLayout);
+		//EListView_GCell_RLayout		
 		Tool.fitsViewWidth(228, viewHandler.CCell_RLayout);
 		//Name_TextView
 		Tool.fitsViewTextSize(8, viewHandler.Name_TextView);
@@ -135,7 +204,7 @@ public class FS_SPEAKER_ExpandableListAdapter extends BaseExpandableListAdapter 
 	@Override
 	public int getGroupCount() {
 		// TODO Auto-generated method stub
-		return 3;
+		return GroupList.size();
 	}
 
 	@Override
@@ -204,6 +273,7 @@ public class FS_SPEAKER_ExpandableListAdapter extends BaseExpandableListAdapter 
 		//設定跑馬燈內容
 		setRunState_TextView_Content(0,"123456789987613000000000000000000000000000000000000000000000000000054321",viewHandler.RunState_TextView);
 		viewHandler.RunState_TextView.setSelected(true);
+		viewHandler.Name_TextView.setText(GroupList.get(groupPosition).getDevice().getDetails().getFriendlyName());
 		return convertView;
 	}
 

@@ -52,6 +52,7 @@ public class FM_VIEW_SETTING {
 //***************************PAD*********************************	
 	private void PAD_FM_RLayout_TITLE_RLayout(View view) {		
 		Tool.fitsViewHeight(44, view);
+		new ThreadReadBitMapInAssets(context, "pad/Playlist/Navigation_01.png", view, 3);
 		//Music TextView
 		Tool.fitsViewWidth(58, view.findViewById(R.id.FM_RLayout_RLayout_Music_TextView));
 		Tool.fitsViewLeftMargin(30, view.findViewById(R.id.FM_RLayout_RLayout_Music_TextView));
@@ -71,7 +72,9 @@ public class FM_VIEW_SETTING {
 		Tool.fitsViewLeftMargin(5, view.findViewById(R.id.FM_RLayout_RLayout_LLayout_SearchMusic_EText));			
 	}
 	private void PAD_FM_RLayout_TITLE2_RLayout(View view) {		
-		Tool.fitsViewHeight(44, view);
+		Tool.fitsViewHeight(47, view);
+		Tool.fitsViewTopMargin(4, view);
+		new ThreadReadBitMapInAssets(context, "pad/Playlist/Navigation_02.png", view, 3);
 		//Music2 TextView		
 		Tool.fitsViewTextSize(8, view.findViewById(R.id.FM_RLayout_RLayout_Music2_TextView));
 		//MusicBack IButton
@@ -80,25 +83,44 @@ public class FM_VIEW_SETTING {
 		Tool.fitsViewLeftMargin(30, view.findViewById(R.id.FM_RLayout_RLayout_MusicBack_Button));
 		new ThreadReadBitMapInAssets(context, "pad/Playlist/playlist_back_btn.png", view.findViewById(R.id.FM_RLayout_RLayout_MusicBack_Button), 3);
 	}
-	private void PAD_FM_RLayout_TITLE3_RLayout(View view) {		
+	private void PAD_FM_RLayout_TITLE3_RLayout(View view) {
+		Tool.fitsViewHeight(47, view);
+		Tool.fitsViewTopMargin(4, view);
+		new ThreadReadBitMapInAssets(context, "pad/Playlist/Navigation_02.png", view, 3);
+		//SerchConditionBG_ImageView
+		Tool.fitsViewHeight(29, view.findViewById(R.id.FM_RLayout_RLayout_SerchConditionBG_ImageView));
+		Tool.fitsViewWidth(337, view.findViewById(R.id.FM_RLayout_RLayout_SerchConditionBG_ImageView));
+		Tool.fitsViewTopMargin(9, view.findViewById(R.id.FM_RLayout_RLayout_SerchConditionBG_ImageView));
+		Tool.fitsViewLeftMargin(16, view.findViewById(R.id.FM_RLayout_RLayout_SerchConditionBG_ImageView));
+		view.findViewById(R.id.FM_RLayout_RLayout_SerchConditionBG_ImageView).setTag(0);
+		new ThreadReadBitMapInAssets(context, "pad/Playlist/search_btn_00.png", view.findViewById(R.id.FM_RLayout_RLayout_SerchConditionBG_ImageView), 1);
 		//SerchCondition1_Button
-		Tool.fitsViewHeight(44, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition1_Button));
-		Tool.fitsViewWidth(60, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition1_Button));
-		Tool.fitsViewLeftMargin(5, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition1_Button));
+		Tool.fitsViewHeight(29, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition1_Button));
+		Tool.fitsViewWidth(84, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition1_Button));
+		Tool.fitsViewTopMargin(9, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition1_Button));
+		Tool.fitsViewLeftMargin(16, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition1_Button));
+		Tool.fitsViewTextSize(6, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition1_Button));
 		//SerchCondition2_Button
-		Tool.fitsViewHeight(44, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition2_Button));
-		Tool.fitsViewWidth(60, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition2_Button));
-		Tool.fitsViewLeftMargin(65, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition2_Button));
+		Tool.fitsViewHeight(29, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition2_Button));
+		Tool.fitsViewWidth(84, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition2_Button));
+		Tool.fitsViewTopMargin(9, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition2_Button));
+		Tool.fitsViewLeftMargin(1, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition2_Button));
+		Tool.fitsViewTextSize(6, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition2_Button));
 		//SerchCondition3_Button
-		Tool.fitsViewHeight(44, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition3_Button));
-		Tool.fitsViewWidth(60, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition3_Button));
-		Tool.fitsViewLeftMargin(125, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition3_Button));
+		Tool.fitsViewHeight(29, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition3_Button));
+		Tool.fitsViewWidth(84, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition3_Button));
+		Tool.fitsViewTopMargin(9, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition3_Button));
+		Tool.fitsViewLeftMargin(1, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition3_Button));
+		Tool.fitsViewTextSize(6, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition3_Button));
 		//SerchCondition4_Button
-		Tool.fitsViewHeight(44, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition4_Button));
-		Tool.fitsViewWidth(60, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition4_Button));
-		Tool.fitsViewLeftMargin(185, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition4_Button));
+		Tool.fitsViewHeight(29, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition4_Button));
+		Tool.fitsViewWidth(84, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition4_Button));
+		Tool.fitsViewTopMargin(9, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition4_Button));
+		Tool.fitsViewLeftMargin(1, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition4_Button));
+		Tool.fitsViewTextSize(6, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition4_Button));
 	}
 	private void PAD_FM_RLayout_Music_ListView(View view) {
+		Tool.fitsViewWidth(344, view);
 		//Music ListView
 		ListView listView = (ListView)view;
 		FM_Music_ListView_BaseAdapter baseAdapter = new FM_Music_ListView_BaseAdapter(context);

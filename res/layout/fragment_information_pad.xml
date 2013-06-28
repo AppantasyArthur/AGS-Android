@@ -33,9 +33,9 @@
         <com.FI.SETTING.FI_ViewFlipper
             android:id="@+id/FI_RLayout_RLayout_INFOR_ViewFlipper"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" 
+            android:layout_height="match_parent" 
             android:layout_below="@+id/FI_RLayout_RLayout_UTITLE_RLayout"
-            android:background="#ffffff"
+            android:background="#00000000"
             >
         </com.FI.SETTING.FI_ViewFlipper>
         <com.FI.SETTING.FI_PointLiLayout
@@ -60,7 +60,7 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentTop="true"
-	        android:background="#575757"
+	        android:background="#00000000"
 	        >       
 	        <TextView
 	            android:id="@+id/FI_RLayout_RLayout_RLayout_QUEUE_TextView"
@@ -79,7 +79,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/FI_RLayout_RLayout_DTITLE_RLayout"
-            android:background="#000000"
+            android:background="#00000000"
+            android:listSelector="@android:color/transparent"
             android:divider="#00000000"
             >
         </com.FI.SETTING.FI_ListView>

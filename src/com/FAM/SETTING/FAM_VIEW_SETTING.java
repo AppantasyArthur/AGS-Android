@@ -73,7 +73,7 @@ public class FAM_VIEW_SETTING {
 		Tool.fitsViewLeftMargin(10, seekBar);		
 		seekBar.setPadding(Tool.getHeight(15), Tool.getHeight(8), Tool.getHeight(15), Tool.getHeight(8));
 		Bitmap myThumbO = Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "pad/PlayBack/volumn_control.png"), Tool.getHeight(23), Tool.getHeight(27), false);
-		Drawable myThumb = new BitmapDrawable(myThumbO);
+		Drawable myThumb = new BitmapDrawable(context.getResources(),myThumbO);
 		seekBar.setThumb(myThumb);
 		
 		//Previous ImageButton
@@ -102,32 +102,19 @@ public class FAM_VIEW_SETTING {
 		Tool.fitsViewTopMargin(-6, view);
 		new ThreadReadBitMapInAssets(context, "pad/PlayBack/mash_bg.png", view, 3);
 		//Cycle IButton
-		Tool.fitsViewHeight(30, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Cycle_IButton));
-		view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Cycle_IButton).getLayoutParams().width = Tool.getHeight(35);
+		Tool.fitsViewHeight(39, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Cycle_IButton));
+		view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Cycle_IButton).getLayoutParams().width = Tool.getHeight(50);
 		Tool.fitsViewLeftMargin(30, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Cycle_IButton));
 		Tool.fitsViewTopMargin(4, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Cycle_IButton));
 		view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Cycle_IButton).setTag(0);
 		new ThreadReadBitMapInAssets(context, "pad/PlayBack/repeat_n.png", view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Cycle_IButton), 2);
-		//Cycle IButton2
-		Tool.fitsViewHeight(10, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Cycle2_IButton));
-		view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Cycle2_IButton).getLayoutParams().width = Tool.getHeight(48);
-		Tool.fitsViewLeftMargin(25, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Cycle2_IButton));
-		view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Cycle2_IButton).setTag(0);
-		new ThreadReadBitMapInAssets(context, "pad/PlayBack/repeat_off.png", view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Cycle2_IButton), 2);
 		//Random IButton
-		Tool.fitsViewHeight(21, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Random_IButton));
-		view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Random_IButton).getLayoutParams().width = Tool.getHeight(31);
+		Tool.fitsViewHeight(39, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Random_IButton));
+		view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Random_IButton).getLayoutParams().width = Tool.getHeight(50);
 		Tool.fitsViewLeftMargin(15, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Random_IButton));
-		Tool.fitsViewTopMargin(10, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Random_IButton));
+		Tool.fitsViewTopMargin(4, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Random_IButton));
 		view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Random_IButton).setTag(0);
 		new ThreadReadBitMapInAssets(context, "pad/PlayBack/shuffle_n.png", view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Random_IButton), 2);
-		//Random2 IButton
-		Tool.fitsViewHeight(10, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Random2_IButton));
-		view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Random2_IButton).getLayoutParams().width = Tool.getHeight(45);
-		Tool.fitsViewLeftMargin(8, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Random2_IButton));
-		Tool.fitsViewTopMargin(4, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Random2_IButton));
-		view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Random2_IButton).setTag(0);
-		new ThreadReadBitMapInAssets(context, "pad/PlayBack/shuffle_off.png", view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Random2_IButton), 2);
 		//Total TextView
 		Tool.fitsViewLeftMargin(145, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Total_TextView));		
 		Tool.fitsViewHeight(22, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Total_TextView));
@@ -140,7 +127,7 @@ public class FAM_VIEW_SETTING {
 		seekBar.getLayoutParams().width = Tool.getHeight(630);
 		seekBar.setPadding(Tool.getHeight(15), Tool.getHeight(8), Tool.getHeight(15), Tool.getHeight(8));
 		Bitmap myThumbO = Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "pad/PlayBack/volumn_control.png"), Tool.getHeight(23), Tool.getHeight(27), false);
-		Drawable myThumb = new BitmapDrawable(myThumbO);
+		Drawable myThumb = new BitmapDrawable(context.getResources(),myThumbO);
 		seekBar.setThumb(myThumb);
 		//Total TextView
 		Tool.fitsViewLeftMargin(843, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Current_TextView));	
@@ -149,23 +136,22 @@ public class FAM_VIEW_SETTING {
 		Tool.fitsViewTextSize(6, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Current_TextView));		
 	}
 	private void PAD_FAM_RLayout_LEFT_RLayout(View view) {
-		Tool.fitsViewWidth(282, view);
-		Tool.fitsViewTopMargin(-6, view);
-		Tool.fitsViewBottomMargin(-5, view);
+		Tool.fitsViewWidth(284, view);
+		new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/speaker_bg.png", view, 3);
+		Tool.fitsViewTopMargin(-6, view);		
 	}
 	private void PAD_FAM_RLayout_CENTER_RLayout(View view) {
 		Tool.fitsViewWidth(410, view);
 		Tool.fitsViewLeftMargin(270, view);
-		Tool.fitsViewTopMargin(-6, view);
-		Tool.fitsViewBottomMargin(-5, view);
+		Tool.fitsViewTopMargin(-6, view);		
 	}
 	private void PAD_FAM_RLayout_RIGHT_RLayout(View view) {
 		Tool.fitsViewWidth(357, view);
-		Tool.fitsViewTopMargin(-6, view);	
-		Tool.fitsViewBottomMargin(-5, view);
+		new ThreadReadBitMapInAssets(context, "pad/Playlist/playlist_bg.png", view, 3);
+		Tool.fitsViewTopMargin(-6, view);		
 	}
 	private void PAD_FAM_RLayout_BOTTOM_RLayout(View view) {
-		Tool.fitsViewHeight(53, view);
+		Tool.fitsViewHeight(48, view);
 		new ThreadReadBitMapInAssets(context, "pad/Settingsbar/settings_bar.png", view, 3);
 		//BLEFT RLayout
 		Tool.fitsViewWidth(270, view.findViewById(R.id.FAM_RLayout_RLayout_BLEFT_RLayout));
@@ -177,14 +163,22 @@ public class FAM_VIEW_SETTING {
 		//BCENTER RLayout
 		Tool.fitsViewWidth(412, view.findViewById(R.id.FAM_RLayout_RLayout_BCENTER_RLayout));
 		Tool.fitsViewLeftMargin(270, view.findViewById(R.id.FAM_RLayout_RLayout_BCENTER_RLayout));
-		//Edit Button
-		Tool.fitsViewLeftMargin(50, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Clear_Button));
-		Tool.fitsViewHeight(35, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Clear_Button));
-		Tool.fitsViewWidth(100, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Clear_Button));
+		//ButtonsBG_ImageView
+		Tool.fitsViewWidth(212, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_ButtonsBG_ImageView));
+		Tool.fitsViewHeight(33, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_ButtonsBG_ImageView));		
+		Tool.fitsViewLeftMargin(50, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_ButtonsBG_ImageView));
+		new ThreadReadBitMapInAssets(context, "pad/Settingsbar/clear&save_00.png", view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_ButtonsBG_ImageView), 1);
+		view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_ButtonsBG_ImageView).setTag(0);
 		//Clear Button
-		Tool.fitsViewLeftMargin(150, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Save_Button));
-		Tool.fitsViewHeight(35, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Save_Button));
-		Tool.fitsViewWidth(100, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Save_Button));
+		Tool.fitsViewLeftMargin(50, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Clear_Button));
+		Tool.fitsViewHeight(33, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Clear_Button));
+		Tool.fitsViewWidth(106, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Clear_Button));
+		Tool.fitsViewTextSize(6,  view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Clear_Button));
+		//Save Button
+		Tool.fitsViewLeftMargin(156, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Save_Button));
+		Tool.fitsViewHeight(33, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Save_Button));
+		Tool.fitsViewWidth(106, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Save_Button));
+		Tool.fitsViewTextSize(6,  view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Save_Button));
 		//Done Button
 		Tool.fitsViewLeftMargin(50, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Done_Button));
 		Tool.fitsViewHeight(33, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Done_Button));

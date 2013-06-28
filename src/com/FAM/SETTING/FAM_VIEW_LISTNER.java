@@ -10,9 +10,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 public class FAM_VIEW_LISTNER {
@@ -50,7 +52,7 @@ public class FAM_VIEW_LISTNER {
 			}
 		});
 	}	
-	public void Clear_Button_LISTNER(Button Clear_Button,final Button Save_Button,final Button Done_Button,final Fragment_Information fragment_Infor){
+	public void Clear_Button_LISTNER(Button Clear_Button,final ImageView ButtonsBG_ImageView){
 		if(device_size==6){
 			//***************************PHONE*********************************	
 			//***************************PHONE*********************************	
@@ -62,10 +64,37 @@ public class FAM_VIEW_LISTNER {
 					
 				}
 			});
+			Clear_Button.setOnTouchListener(new View.OnTouchListener() {
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					int Tag = (Integer)ButtonsBG_ImageView.getTag();
+					switch(event.getAction()){
+					case MotionEvent.ACTION_DOWN:
+						if(Tag==0){
+							new ThreadReadBitMapInAssets(context, "pad/Settingsbar/clear&save_01.png",ButtonsBG_ImageView, 1);
+							ButtonsBG_ImageView.setTag(1);
+						}
+						break;
+					case MotionEvent.ACTION_UP:
+						if(Tag==1){
+							new ThreadReadBitMapInAssets(context, "pad/Settingsbar/clear&save_00.png",ButtonsBG_ImageView, 1);
+							ButtonsBG_ImageView.setTag(0);
+						}
+						break;
+					case MotionEvent.ACTION_CANCEL:
+						if(Tag==1){
+							new ThreadReadBitMapInAssets(context, "pad/Settingsbar/clear&save_00.png",ButtonsBG_ImageView, 1);
+							ButtonsBG_ImageView.setTag(0);
+						}
+						break;
+					}
+					return false;
+				}
+			});
 			//***************************PAD*********************************
 		}
 	}
-	public void Save_Button_LISTNER(Button Save_Button){
+	public void Save_Button_LISTNER(Button Save_Button,final ImageView ButtonsBG_ImageView){
 		if(device_size==6){
 			//***************************PHONE*********************************	
 			//***************************PHONE*********************************	
@@ -78,6 +107,33 @@ public class FAM_VIEW_LISTNER {
 						popupWindow = new FAM_Save_PopupWindow(context);
 					}
 					popupWindow.ShowPopupWindow(v.getRootView(), Gravity.CENTER, 0, 0);
+				}
+			});
+			Save_Button.setOnTouchListener(new View.OnTouchListener() {
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					int Tag = (Integer)ButtonsBG_ImageView.getTag();
+					switch(event.getAction()){
+					case MotionEvent.ACTION_DOWN:
+						if(Tag==0){
+							new ThreadReadBitMapInAssets(context, "pad/Settingsbar/clear&save_02.png",ButtonsBG_ImageView, 1);
+							ButtonsBG_ImageView.setTag(2);
+						}
+						break;
+					case MotionEvent.ACTION_UP:
+						if(Tag==2){
+							new ThreadReadBitMapInAssets(context, "pad/Settingsbar/clear&save_00.png",ButtonsBG_ImageView, 1);
+							ButtonsBG_ImageView.setTag(0);
+						}
+						break;
+					case MotionEvent.ACTION_CANCEL:
+						if(Tag==2){
+							new ThreadReadBitMapInAssets(context, "pad/Settingsbar/clear&save_00.png",ButtonsBG_ImageView, 1);
+							ButtonsBG_ImageView.setTag(0);
+						}
+						break;
+					}
+					return false;
 				}
 			});
 			//***************************PAD*********************************
@@ -108,7 +164,7 @@ public class FAM_VIEW_LISTNER {
 			//***************************PAD*********************************
 		}
 	}
-	public void Cycle_IButton_LISTNER(final ImageButton Cycle_IButton,final ImageButton Cycle2_IButton){
+	public void Cycle_IButton_LISTNER(final ImageButton Cycle_IButton){
 		if(device_size==6){
 			//***************************PHONE*********************************	
 			//***************************PHONE*********************************	
@@ -121,57 +177,24 @@ public class FAM_VIEW_LISTNER {
 					Log.i(TAG, "Tag = "+Tag);
 					switch(Tag){
 					case 0:
-						new ThreadReadBitMapInAssets(context, "pad/PlayBack/repeat_f.png", Cycle_IButton, 2);
-						new ThreadReadBitMapInAssets(context, "pad/PlayBack/repeat_all.png", Cycle2_IButton, 2);
-						Cycle_IButton.setTag(1);
-						Cycle2_IButton.setTag(1);
+						new ThreadReadBitMapInAssets(context, "pad/PlayBack/Repeat all.png", Cycle_IButton, 2);
+						Cycle_IButton.setTag(1);						
 						break;
 					case 1:
-						new ThreadReadBitMapInAssets(context, "pad/PlayBack/repeat_one_f.png", Cycle_IButton, 2);
-						new ThreadReadBitMapInAssets(context, "pad/PlayBack/repeat_one.png", Cycle2_IButton, 2);
-						Cycle_IButton.setTag(2);
-						Cycle2_IButton.setTag(2);
+						new ThreadReadBitMapInAssets(context, "pad/PlayBack/Repeat one.png", Cycle_IButton, 2);
+						Cycle_IButton.setTag(2);						
 						break;
 					case 2:
 						new ThreadReadBitMapInAssets(context, "pad/PlayBack/repeat_n.png", Cycle_IButton, 2);
-						new ThreadReadBitMapInAssets(context, "pad/PlayBack/repeat_off.png", Cycle2_IButton, 2);
-						Cycle_IButton.setTag(0);
-						Cycle2_IButton.setTag(0);
+						Cycle_IButton.setTag(0);						
 						break;
 					}
 				}
-			});
-			Cycle2_IButton.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					int Tag = (Integer)v.getTag();
-					Log.i(TAG, "Tag = "+Tag);
-					switch(Tag){
-					case 0:
-						new ThreadReadBitMapInAssets(context, "pad/PlayBack/repeat_f.png", Cycle_IButton, 2);
-						new ThreadReadBitMapInAssets(context, "pad/PlayBack/repeat_all.png", Cycle2_IButton, 2);
-						Cycle_IButton.setTag(1);
-						Cycle2_IButton.setTag(1);
-						break;
-					case 1:
-						new ThreadReadBitMapInAssets(context, "pad/PlayBack/repeat_one_f.png", Cycle_IButton, 2);
-						new ThreadReadBitMapInAssets(context, "pad/PlayBack/repeat_one.png", Cycle2_IButton, 2);
-						Cycle_IButton.setTag(2);
-						Cycle2_IButton.setTag(2);
-						break;
-					case 2:
-						new ThreadReadBitMapInAssets(context, "pad/PlayBack/repeat_n.png", Cycle_IButton, 2);
-						new ThreadReadBitMapInAssets(context, "pad/PlayBack/repeat_off.png", Cycle2_IButton, 2);
-						Cycle_IButton.setTag(0);
-						Cycle2_IButton.setTag(0);
-						break;
-					}
-				}
-			});
+			});		
 			//***************************PAD*********************************
 		}
 	}
-	public void Random_IButton_LISTNER(final ImageButton Random_IButton,final ImageButton Random2_IButton){
+	public void Random_IButton_LISTNER(final ImageButton Random_IButton){
 		if(device_size==6){
 			//***************************PHONE*********************************	
 			//***************************PHONE*********************************	
@@ -185,40 +208,15 @@ public class FAM_VIEW_LISTNER {
 					switch(Tag){
 					case 0:
 						new ThreadReadBitMapInAssets(context, "pad/PlayBack/shuffle_f.png", Random_IButton, 2);
-						new ThreadReadBitMapInAssets(context, "pad/PlayBack/shuffle_on.png", Random2_IButton, 2);
-						Random_IButton.setTag(1);
-						Random2_IButton.setTag(1);
+						Random_IButton.setTag(1);						
 						break;
 					case 1:
 						new ThreadReadBitMapInAssets(context, "pad/PlayBack/shuffle_n.png", Random_IButton, 2);
-						new ThreadReadBitMapInAssets(context, "pad/PlayBack/shuffle_off.png", Random2_IButton, 2);
 						Random_IButton.setTag(0);
-						Random2_IButton.setTag(0);
 						break;					
 					}
 				}
-			});
-			Random2_IButton.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					int Tag = (Integer)v.getTag();
-					Log.i(TAG, "Tag = "+Tag);
-					switch(Tag){
-					case 0:
-						new ThreadReadBitMapInAssets(context, "pad/PlayBack/shuffle_f.png", Random_IButton, 2);
-						new ThreadReadBitMapInAssets(context, "pad/PlayBack/shuffle_on.png", Random2_IButton, 2);
-						Random_IButton.setTag(1);
-						Random2_IButton.setTag(1);
-						break;
-					case 1:
-						new ThreadReadBitMapInAssets(context, "pad/PlayBack/shuffle_n.png", Random_IButton, 2);
-						new ThreadReadBitMapInAssets(context, "pad/PlayBack/shuffle_off.png", Random2_IButton, 2);
-						Random_IButton.setTag(0);
-						Random2_IButton.setTag(0);
-						break;					
-					}
-				}
-			});
+			});			
 			//***************************PAD*********************************
 		}
 	}
@@ -238,5 +236,5 @@ public class FAM_VIEW_LISTNER {
 			});
 			//***************************PAD*********************************
 		}
-	}	
+	}
 }

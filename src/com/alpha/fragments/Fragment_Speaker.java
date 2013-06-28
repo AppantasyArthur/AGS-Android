@@ -60,7 +60,7 @@ public class Fragment_Speaker extends Fragment {
 	private void findView() {
 		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FS_RLayout));
 		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FS_RLayout_TITLE_RLayout));
-		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FS_RLayout_TITLE2_RLayout));
+//		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FS_RLayout_TITLE2_RLayout));
 		FS_SPEAKER_EListView = (FS_SPEAKER_ExpandableListView)Fragment_MainView.findViewById(R.id.FS_RLayout_SPEAKER_EListView);
 		VIEW_SETTING.VIEWSET(FS_SPEAKER_EListView);
 		mlog.info(TAG, "findView OK");

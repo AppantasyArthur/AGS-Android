@@ -1,7 +1,15 @@
 package com.alpha.upnpui;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.teleal.cling.android.AndroidUpnpService;
+import org.teleal.cling.android.AndroidUpnpServiceImpl;
 import com.FAM.SETTING.FAM_VIEW_LISTNER;
 import com.FAM.SETTING.FAM_VIEW_SETTING;
+import com.alpha.UPNP.BrowseRegistryListener;
+import com.alpha.UPNP.DeviceDisplayList;
+import com.alpha.UPNP.UpnpServiceConnection;
 import com.alpha.fragments.Fragment_Information;
 import com.alpha.fragments.Fragment_Music;
 import com.alpha.fragments.Fragment_Speaker;
@@ -11,6 +19,7 @@ import com.tkb.tool.RoomSize;
 import com.tkb.tool.Tool;
 import android.os.Bundle;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.support.v4.app.Fragment;
@@ -18,13 +27,13 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Display;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 public class FragmentActivity_Main extends FragmentActivity {
@@ -42,6 +51,12 @@ public class FragmentActivity_Main extends FragmentActivity {
 	
 	//Fragment Manager
 	private FragmentManager fragmentManager = null;
+	
+	//Upnp
+	private BrowseRegistryListener browseRegistryListener;
+	private UpnpServiceConnection upnpServiceConnection;
+	//Device List
+	private DeviceDisplayList deviceDisplayList;
 	
 	private static String TAG = "FragmentActivity_Main";
 	private MLog mlog = new MLog();
@@ -70,11 +85,14 @@ public class FragmentActivity_Main extends FragmentActivity {
 	    	//加入Fragment_Speaker
 	    	set_PAD_First_Fragment();
 	    	//設定LISTNER
-	    	PAD_findLISTNER();
-	    	
+	    	PAD_findLISTNER();	
 	    }
+	    //Create UPNP	
+	    CreateUpnpService();
+	    StartUpnpService();
+	    
 	}
-	
+
 	
 
 	private void CreateProcess(){
@@ -92,7 +110,8 @@ public class FragmentActivity_Main extends FragmentActivity {
         //取得View_SETTING
         this.VIEW_SETTING = new FAM_VIEW_SETTING(this.context,this.device_size);
         this.VIEW_LISTNER = new FAM_VIEW_LISTNER(this.context,this.device_size);
-        
+        //建立Device主要清單
+        deviceDisplayList = new DeviceDisplayList();
 	}
 	private void PAD_findVIEW() {
 		//設定PAD介面
@@ -112,18 +131,15 @@ public class FragmentActivity_Main extends FragmentActivity {
 		this.VIEW_LISTNER.Sound_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Sound_IButton));
 		//Edit Button BISTNER
 		this.VIEW_LISTNER.Clear_Button_LISTNER((Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Clear_Button),
-											(Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Save_Button),
-											(Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Done_Button),
-											(Fragment_Information)fragment_Infor);
-		this.VIEW_LISTNER.Save_Button_LISTNER((Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Save_Button));
+											(ImageView)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_ButtonsBG_ImageView));
+		this.VIEW_LISTNER.Save_Button_LISTNER((Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Save_Button),
+											(ImageView)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_ButtonsBG_ImageView));
 		this.VIEW_LISTNER.Done_Button_LISTNER((Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Done_Button),
 											(Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Clear_Button),
 											(Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Save_Button),
 											(Fragment_Information)fragment_Infor);
-		this.VIEW_LISTNER.Cycle_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Cycle_IButton),
-												(ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Cycle2_IButton));
-		this.VIEW_LISTNER.Random_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Random_IButton),
-												(ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Random2_IButton));
+		this.VIEW_LISTNER.Cycle_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Cycle_IButton));
+		this.VIEW_LISTNER.Random_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Random_IButton));
 		this.VIEW_LISTNER.Setting_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Setting_IButton));
 	}
 	private void set_PAD_First_Fragment() {		
@@ -133,6 +149,20 @@ public class FragmentActivity_Main extends FragmentActivity {
 		Tool.FragmentActivity_MainAddFragment(fragmentManager.beginTransaction(), fragment_Infor, "Fragment_Infor", R.id.FAM_RLayout_CENTER_RLayout, R.animator.alpha_in, R.animator.alpha_out);
 		fragment_Music = new Fragment_Music();
 		Tool.FragmentActivity_MainAddFragment(fragmentManager.beginTransaction(), fragment_Music, "Fragment_Music", R.id.FAM_RLayout_RIGHT_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+	}
+	private void CreateUpnpService() {		
+		browseRegistryListener = new BrowseRegistryListener(deviceDisplayList);
+		upnpServiceConnection = new UpnpServiceConnection(browseRegistryListener);
+	}
+	private void StartUpnpService() {		
+		Intent intent = new Intent(context,AndroidUpnpServiceImpl.class);
+    	this.bindService(intent, upnpServiceConnection, Context.BIND_AUTO_CREATE);
+	}
+	public DeviceDisplayList GETDeviceDisplayList(){
+		return this.deviceDisplayList;
+	}
+	public AndroidUpnpService GETUPnPService(){
+		return upnpServiceConnection.getUPnPService();
 	}
 	@Override
 	protected void onRestart() {
@@ -168,7 +198,8 @@ public class FragmentActivity_Main extends FragmentActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		Log.v(TAG,"onDestroy");
+		this.unbindService(upnpServiceConnection);
+		Log.v(TAG,"onDestroy");		
 	}
 	
 	

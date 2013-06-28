@@ -2,24 +2,17 @@ package com.FAM.SETTING;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import com.tkb.tool.Tool;
-
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Bitmap.Config;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -93,7 +86,7 @@ public class FAM_PopupWindow extends PopupWindow {
 		Tool.fitsViewLeftMargin(10, viewHandler.sound_SeekBar);
 		viewHandler.sound_SeekBar.setPadding(Tool.getHeight(15), Tool.getHeight(8), Tool.getHeight(15), Tool.getHeight(8));
 		Bitmap myThumbO = Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "pad/PlayBack/volumn_control.png"), Tool.getHeight(23), Tool.getHeight(27), false);
-		Drawable myThumb = new BitmapDrawable(myThumbO);
+		Drawable myThumb = new BitmapDrawable(context.getResources(),myThumbO);
 		viewHandler.sound_SeekBar.setThumb(myThumb);
 	}
 

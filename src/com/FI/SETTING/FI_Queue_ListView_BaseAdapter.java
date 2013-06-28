@@ -90,11 +90,14 @@ public class FI_Queue_ListView_BaseAdapter extends BaseAdapter {
 		}
 		//排序設定
 		if(position==startDragPosition&&startDragPosition==holdDragPosition){
-			viewHandler.cell_RLayout.setVisibility(View.INVISIBLE);			
+			viewHandler.cell_RLayout.setVisibility(View.INVISIBLE);
+			new ThreadReadBitMapInAssets(context, "pad/Queqe/drag_bar.png", viewHandler.cellBG_RLayout, 3);
 		}else if(position == holdDragPosition){			
-			viewHandler.cell_RLayout.setVisibility(View.INVISIBLE);			
+			viewHandler.cell_RLayout.setVisibility(View.INVISIBLE);
+			new ThreadReadBitMapInAssets(context, "pad/Queqe/drag_bar.png", viewHandler.cellBG_RLayout, 3);
 		}else{
 			viewHandler.cell_RLayout.setVisibility(View.VISIBLE);
+			new ThreadReadBitMapInAssets(context, "pad/Playlist/playlist_btn_n.png", viewHandler.cellBG_RLayout, 3);
 		}		
 		
 		if(startDragPosition>holdDragPosition&&position>holdDragPosition&&position<=startDragPosition){
@@ -115,11 +118,14 @@ public class FI_Queue_ListView_BaseAdapter extends BaseAdapter {
 		if(InsertPosition!=-1){
 			if(position ==InsertPosition){
 				viewHandler.cell_RLayout.setVisibility(View.INVISIBLE);
+				new ThreadReadBitMapInAssets(context, "pad/Queqe/drag_bar.png", viewHandler.cellBG_RLayout, 3);
 			}else if(position>InsertPosition){
 				viewHandler.NameUP_TextView.setText("position = "+dataList.get(position-1));			
 				viewHandler.cell_RLayout.setVisibility(View.VISIBLE);
+				new ThreadReadBitMapInAssets(context, "pad/Playlist/playlist_btn_n.png", viewHandler.cellBG_RLayout, 3);
 			}else{
 				viewHandler.NameUP_TextView.setText("position = "+dataList.get(position));
+				new ThreadReadBitMapInAssets(context, "pad/Playlist/playlist_btn_n.png", viewHandler.cellBG_RLayout, 3);
 			}
 		}
 		
@@ -149,7 +155,6 @@ public class FI_Queue_ListView_BaseAdapter extends BaseAdapter {
 		}
 	}
 	private void basicSetView(ViewHandler viewHandler) {		
-		new ThreadReadBitMapInAssets(context, "pad/Queqe/drag_bar.png", viewHandler.cellBG_RLayout, 3);
 		//Delete ImageView
 		Tool.fitsViewLeftMargin(10, viewHandler.Delete_ImageView);
 		viewHandler.Delete_ImageView.getLayoutParams().width = Tool.getHeight(19);
