@@ -14,6 +14,7 @@ public class DeviceDisplayList {
 	private static String TAG = "DeviceDisplayList";
 	private MLog mlog = new MLog();
 	
+	private DeviceDisplay ChooseMediaRenderer;
 	private List<DeviceDisplay> DDList;
 	private List<DeviceDisplay> MRList;//MediaRenderer List;
 	private List<DeviceDisplay> MSList;//MediaServer List;
@@ -23,12 +24,17 @@ public class DeviceDisplayList {
 	
 	public DeviceDisplayList(){
 		this.mlog.LogSwitch = true;
+		ChooseMediaRenderer = null;
 		DDList = new ArrayList<DeviceDisplay>();
 		MRList = new ArrayList<DeviceDisplay>();
 		MSList = new ArrayList<DeviceDisplay>();
 	}
 	public void addDeviceDisplay(DeviceDisplay dd) {
 		DeviceType deviceType = dd.getDevice().getType();
+		if(MRList.indexOf(dd)!=-1||MSList.indexOf(dd)!=-1||DDList.indexOf(dd)!=-1){
+			mlog.info(TAG, "addDeviceDisplay = return");
+			return;
+		}
 		if(deviceType.getType().toString().equals("MediaRenderer")){
 			//MediaRenderer List
 			MRList.add(dd);
@@ -39,7 +45,7 @@ public class DeviceDisplayList {
 			//MediaServer List
 			MSList.add(dd);
 			if(FMLBAListner!=null){
-				FMLBAListner.AddMediaRenderer(dd);
+				FMLBAListner.AddMediaServer(dd);
 			}
 		}else{
 			DDList.add(dd);
@@ -57,13 +63,20 @@ public class DeviceDisplayList {
 			MRList.remove(dd);
 		}else if(deviceType.getType().toString().equals("MediaServer")){
 			if(FMLBAListner!=null){
-				FMLBAListner.AddMediaRenderer(dd);
+				FMLBAListner.RemoveMediaServer(dd);
 			}
+			mlog.info(TAG, "removeDeviceDisplay = MS");
 			MSList.remove(dd);
 		}else{
 			DDList.remove(dd);
 			mlog.info(TAG, "removeDeviceDisplay = DD");
 		}
+	}
+	public void setChooseMediaRenderer(DeviceDisplay mediaRenderer){
+		this.ChooseMediaRenderer = mediaRenderer;
+	}
+	public DeviceDisplay getChooseMediaRenderer(){
+		return this.ChooseMediaRenderer;
 	}
 	public List<DeviceDisplay> getDeviceDisplayList(){
 		return DDList;

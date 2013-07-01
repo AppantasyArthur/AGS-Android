@@ -115,15 +115,15 @@ public class FM_Music_ListView_BaseAdapter extends BaseAdapter {
 	private void SetListner(){
 		FMLBAListner = new FM_Music_ListView_BaseAdapter_Listner(){
 			@Override
-			public void AddMediaRenderer(DeviceDisplay deviceDisplay) {
+			public void AddMediaServer(DeviceDisplay deviceDisplay) {
 				handler.obtainMessage(0, deviceDisplay).sendToTarget();
-				mlog.info(TAG, "AddMediaRenderer");
+				mlog.info(TAG, "AddMediaServer");
 			}
 
 			@Override
-			public void RemoveMediaRenderer(DeviceDisplay deviceDisplay) {
-				
-				mlog.info(TAG, "AddMediaRenderer");
+			public void RemoveMediaServer(DeviceDisplay deviceDisplay) {
+				handler.obtainMessage(1, deviceDisplay).sendToTarget();
+				mlog.info(TAG, "RemoveMediaServer");
 			}
 		};
 		((FragmentActivity_Main)context).GETDeviceDisplayList().setMusicListner(FMLBAListner);

@@ -108,7 +108,7 @@ public class FS_SPEAKER_ExpandableListAdapter extends BaseExpandableListAdapter 
 
 			@Override
 			public void RemoveMediaRenderer(DeviceDisplay deviceDisplay) {
-				
+				handler.obtainMessage(1, deviceDisplay).sendToTarget();
 				mlog.info(TAG, "AddMediaRenderer");
 			}
 		};
@@ -399,6 +399,7 @@ public class FS_SPEAKER_ExpandableListAdapter extends BaseExpandableListAdapter 
 	public void SET_GView_SELECTED(int position){
 		if((this.GView_SELECTED!=position)){
 			this.GView_SELECTED = position;
+			((FragmentActivity_Main)context).GETDeviceDisplayList().setChooseMediaRenderer(this.GroupList.get(position));
 			this.notifyDataSetChanged();
 		}
 	}

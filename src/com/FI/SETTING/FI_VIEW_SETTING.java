@@ -37,6 +37,7 @@ public class FI_VIEW_SETTING {
 //***************************PAD*********************************
 	private void PAD_FI_RLayout_UP_RLayout(View view){
 		Tool.fitsViewHeight(342, view);
+		new ThreadReadBitMapInAssets(context, "pad/Nowplaying/nowplaying_bg_f.png", view, 3);
 		//DTITLE RLayout
 		Tool.fitsViewHeight(38, view.findViewById(R.id.FI_RLayout_RLayout_UTITLE_RLayout));		
 		//Playing TextView
