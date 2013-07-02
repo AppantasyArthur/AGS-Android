@@ -3,14 +3,19 @@ package com.alpha.UPNP;
 import org.teleal.cling.android.AndroidUpnpService;
 import org.teleal.cling.model.meta.Device;
 
+import com.alpha.upnpui.FragmentActivity_Main;
+
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 
 public class UpnpServiceConnection implements ServiceConnection{
+	private Context context;
 	private AndroidUpnpService upnpService;
 	private BrowseRegistryListener browseRegistryListener;
-	public UpnpServiceConnection(BrowseRegistryListener browseRegistryListener){
+	public UpnpServiceConnection(Context context,BrowseRegistryListener browseRegistryListener){
+		this.context = context;
 		this.browseRegistryListener = browseRegistryListener;
 	}
 	public AndroidUpnpService getUPnPService(){
@@ -31,7 +36,7 @@ public class UpnpServiceConnection implements ServiceConnection{
 
 	@Override
 	public void onServiceDisconnected(ComponentName name) {
-		if(upnpService!=null){
+		if(upnpService!=null){		
 			upnpService.getRegistry().removeListener(browseRegistryListener);
 		}
 		upnpService = null;

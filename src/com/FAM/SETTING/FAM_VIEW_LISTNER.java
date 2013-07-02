@@ -247,7 +247,7 @@ public class FAM_VIEW_LISTNER {
 			//***************************PAD*********************************
 		}
 	}
-	public void Play_IButton_LISTNER(ImageButton Play_IButton) {
+	public void Play_IButton_LISTNER(final ImageButton Play_IButton) {
 		if(device_size==6){
 			//***************************PHONE*********************************	
 			//***************************PHONE*********************************	
@@ -261,6 +261,12 @@ public class FAM_VIEW_LISTNER {
 			});
 			//***************************PAD*********************************
 		}
+		Play_IButton_Listner PI_Listner = new Play_IButton_Listner(){
+			@Override
+			public void SetPlay_IButton_State(String MR_State) {
+				mlog.info(TAG, "SetPlay_IButton_State = "+MR_State);
+			}
+		};
 		
 	}
 	private void StopMusic(){

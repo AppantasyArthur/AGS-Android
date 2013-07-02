@@ -18,6 +18,7 @@ import com.tkb.tool.MLog;
 import com.tkb.tool.RoomSize;
 import com.tkb.tool.Tool;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -66,6 +67,17 @@ public class FragmentActivity_Main extends FragmentActivity {
 	private int device_size = 0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+		.detectDiskReads()
+		.detectDiskWrites()
+		.detectNetwork() 
+		.penaltyLog()
+		.build());
+		StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+		.detectLeakedSqlLiteObjects() 
+	    .penaltyLog() 
+ 	    .penaltyDeath()
+		.build()); 
 		super.onCreate(savedInstanceState);
 		Log.v(TAG,"onCreate");
 		CreateProcess();
@@ -111,7 +123,7 @@ public class FragmentActivity_Main extends FragmentActivity {
         this.VIEW_SETTING = new FAM_VIEW_SETTING(this.context,this.device_size);
         this.VIEW_LISTNER = new FAM_VIEW_LISTNER(this.context,this.device_size);
         //建立Device主要清單
-        deviceDisplayList = new DeviceDisplayList();
+        deviceDisplayList = new DeviceDisplayList(context);
 	}
 	private void PAD_findVIEW() {
 		//設定PAD介面
@@ -153,7 +165,7 @@ public class FragmentActivity_Main extends FragmentActivity {
 	}
 	private void CreateUpnpService() {		
 		browseRegistryListener = new BrowseRegistryListener(deviceDisplayList);
-		upnpServiceConnection = new UpnpServiceConnection(browseRegistryListener);
+		upnpServiceConnection = new UpnpServiceConnection(context,browseRegistryListener);
 	}
 	private void StartUpnpService() {		
 		Intent intent = new Intent(context,AndroidUpnpServiceImpl.class);
@@ -199,7 +211,8 @@ public class FragmentActivity_Main extends FragmentActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		this.unbindService(upnpServiceConnection);
+		FragmentActivity_Main.this.GETDeviceDisplayList().Stop_Device_StateCallBack();
+		FragmentActivity_Main.this.unbindService(upnpServiceConnection);
 		Log.v(TAG,"onDestroy");		
 	}
 	
@@ -213,7 +226,7 @@ public class FragmentActivity_Main extends FragmentActivity {
 	}
 	
 	public void FMTransformTouchToFI(MotionEvent FM_Event){
-		if(fragment_Infor!=null){
+		if(fragment_Infor!=null){			
 			((Fragment_Information)fragment_Infor).GET_TRANSFROM_FROM_FM(FM_Event);
 		}
 	}

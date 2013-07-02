@@ -128,7 +128,7 @@ public class FM_VIEW_LISTNER {
 							}							
 						};											
 						upnpServer.getControlPoint().execute(browse);
-					}else if(kind ==2){	
+					}else if(kind ==2){							
 						//¨ú±oMR Device
 						DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
 						mlog.info(TAG, "MR_Device = "+MR_Device);
@@ -153,6 +153,7 @@ public class FM_VIEW_LISTNER {
 							mlog.info(TAG, "============Start=============");
 							mlog.info(TAG, item.getId());							
 							mlog.info(TAG, item.getTitle());
+							mlog.info(TAG, item.getFirstResource().toString());
 							mlog.info(TAG, "RES = "+item.getFirstResource().getValue());
 							mlog.info(TAG, "RES = "+item.getFirstResource().getDuration());
 							mlog.info(TAG, "RES = "+item.getFirstResource().getProtocolInfo());
@@ -165,7 +166,7 @@ public class FM_VIEW_LISTNER {
 							mlog.info(TAG, "============End=============");
 						}catch(Exception e){
 							
-						}
+						}						
 						if(AVTransportService!=null){					
 							SetAVTransportURI setAVTransportURI = new SetAVTransportURI(instanceId,AVTransportService,item.getFirstResource().getValue().toString(), "NO METADATA"){
 								@Override
@@ -184,7 +185,7 @@ public class FM_VIEW_LISTNER {
 							};						
 							upnpServer.getControlPoint().execute(setAVTransportURI);
 						}
-						
+//						
 						
 //						for(int i = 0;i<MR_Device.getDevice().findServices().length;i++){
 //							Service service = MR_Device.getDevice().findServices()[i];							

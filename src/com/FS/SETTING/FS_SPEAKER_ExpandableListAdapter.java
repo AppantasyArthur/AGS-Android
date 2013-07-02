@@ -248,21 +248,19 @@ public class FS_SPEAKER_ExpandableListAdapter extends BaseExpandableListAdapter 
 			}
 		}
 		//設定selected
-		if(GView_SELECTED == groupPosition){
+		if(((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer()!=null&&((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer().equals(GroupList.get(groupPosition))){
 			if(ChildrenCount>0){
 				new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/group_f.png", viewHandler.GCell_RLayout, 3);
 			}else{
 				new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/single_f.png", viewHandler.GCell_RLayout, 3);
 			}
-			
 		}else{
 			if(ChildrenCount>0){
 				new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/group_n.png", viewHandler.GCell_RLayout, 3);
 			}else{
 				new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/single_n.png", viewHandler.GCell_RLayout, 3);
-			}				
-		}
-		
+			}	
+		}		
 		//設定Indicator 圖片
 		if(isExpanded){
 			viewHandler.Indicator_ImageView.setImageBitmap(arrow_n);
@@ -407,6 +405,7 @@ public class FS_SPEAKER_ExpandableListAdapter extends BaseExpandableListAdapter 
 		if((this.GView_SELECTED!=Gposition)||(this.CView_SELECTED!=Cposition)){
 			this.GView_SELECTED = Gposition;
 			this.CView_SELECTED = Cposition;
+			((FragmentActivity_Main)context).GETDeviceDisplayList().setChooseMediaRenderer(this.GroupList.get(Gposition));
 			this.notifyDataSetChanged();
 		}		
 	}
