@@ -1,11 +1,14 @@
 package com.FI.SETTING;
 
+import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
 import com.tkb.tool.Tool;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -13,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 public class FI_ViewFlipper extends ViewFlipper {
@@ -33,6 +37,41 @@ public class FI_ViewFlipper extends ViewFlipper {
 	
 	private boolean isTouchDownHere = false;//是不是在這個VIEW上Touch Down
 	
+	private Handler handler = new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			if(new_View==null){
+				return;
+			}
+			String str = (String)msg.obj;
+			switch(msg.what){
+			case 0:
+				TextView MusicName_TextView = (TextView)new_View.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView);
+				if(MusicName_TextView!=null){
+					MusicName_TextView.setText(str);
+				}
+				break;
+			case 1:
+				TextView MusicArtist_TextView = (TextView)new_View.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView);
+				if(MusicArtist_TextView!=null){
+					MusicArtist_TextView.setText("Artist : "+str);
+				}
+				break;
+			case 2:
+				TextView MusicAlbum_TextView = (TextView)new_View.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicAlbum_TextView);
+				if(MusicAlbum_TextView!=null){
+					MusicAlbum_TextView.setText("Album : "+str);
+				}
+				break;
+			case 3:
+				TextView MusicGenre_TextView = (TextView)new_View.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView);
+				if(MusicGenre_TextView!=null){
+					MusicGenre_TextView.setText("Genre : "+str);
+				}
+				break;
+			}
+		}
+	};
 	public FI_ViewFlipper(Context context) {
 		super(context);	
 		this.context = context;
@@ -56,8 +95,28 @@ public class FI_ViewFlipper extends ViewFlipper {
 	private void CreateProcess(){
 		this.mlog.LogSwitch = true;
 		ViewGestureDetector = new GestureDetector(context,new MyGestureListener());
+		CreateMusicInfor_Listner();
 	}
-	
+	private void CreateMusicInfor_Listner(){
+		MusicInfo_Listner musicInfo = new MusicInfo_Listner(){
+			@Override
+			public void SetMusicInfo_State(String Title, String Artist,String Album, String Genre,String AlbumURI) {
+				if(Title!=null&&Title!=""){
+					handler.obtainMessage(0, Title).sendToTarget();
+				}
+				if(Artist!=null&&Artist!=""){
+					handler.obtainMessage(1, Artist).sendToTarget();
+				}
+				if(Album!=null&&Album!=""){
+					handler.obtainMessage(2, Album).sendToTarget();
+				}
+				if(Genre!=null&&Genre!=""){
+					handler.obtainMessage(3, Genre).sendToTarget();
+				}
+			}
+		};
+		((FragmentActivity_Main)context).GETDeviceDisplayList().setMusicInfo_Listner(musicInfo);
+	}
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		
@@ -183,7 +242,6 @@ public class FI_ViewFlipper extends ViewFlipper {
 		new ThreadReadBitMapInAssets(context, "pad/Nowplaying/NoCover.png", view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_RLayout_Image_ImageView), 1);
 	}
 	private class MyGestureListener extends SimpleOnGestureListener{
-
 		@Override
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,	float velocityY) {
 			mlog.info(TAG, "onFling");
@@ -199,4 +257,5 @@ public class FI_ViewFlipper extends ViewFlipper {
 			return false;
 		}
 	}
+	
 }

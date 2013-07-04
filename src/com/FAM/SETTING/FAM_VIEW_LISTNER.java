@@ -6,6 +6,7 @@ import org.teleal.cling.model.message.UpnpResponse;
 import org.teleal.cling.model.meta.Service;
 import org.teleal.cling.model.types.UDAServiceId;
 import org.teleal.cling.model.types.UnsignedIntegerFourBytes;
+import org.teleal.cling.support.avtransport.callback.Play;
 import org.teleal.cling.support.avtransport.callback.Stop;
 
 import com.alpha.UPNP.DeviceDisplay;
@@ -15,6 +16,7 @@ import com.alpha.upnpui.FragmentActivity_Setting;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
+import com.tkb.tool.ThreadReadStateListInAssets;
 
 import android.content.Context;
 import android.content.Intent;
@@ -256,7 +258,16 @@ public class FAM_VIEW_LISTNER {
 			Play_IButton.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					StopMusic();
+					int tag = (Integer)v.getTag();
+					switch(tag){
+					case 0:
+						
+						break;
+					case 1:
+						StopMusic();
+						break;
+					}
+					
 				}
 			});
 			//***************************PAD*********************************
@@ -264,9 +275,29 @@ public class FAM_VIEW_LISTNER {
 		Play_IButton_Listner PI_Listner = new Play_IButton_Listner(){
 			@Override
 			public void SetPlay_IButton_State(String MR_State) {
+				if(MR_State.equals("STOPPED")){
+					Play_IButton.post(new Runnable(){
+						@Override
+						public void run() {
+							Play_IButton.setTag(0);
+							new ThreadReadStateListInAssets(context, "pad/PlayBack/play_f.png","pad/PlayBack/play_n.png", Play_IButton, 2);	
+						}
+					});
+					
+				}else if(MR_State.equals("PLAYING")){
+					Play_IButton.post(new Runnable(){
+						@Override
+						public void run() {
+							Play_IButton.setTag(1);
+							new ThreadReadStateListInAssets(context, "pad/PlayBack/stop_f.png","pad/PlayBack/stop_n.png", Play_IButton, 2);	
+						}
+					});
+				}
 				mlog.info(TAG, "SetPlay_IButton_State = "+MR_State);
 			}
 		};
+		//注測Play EVEN
+		((FragmentActivity_Main)context).GETDeviceDisplayList().setPlay_IButton_Listner(PI_Listner);
 		
 	}
 	private void StopMusic(){
@@ -299,5 +330,36 @@ public class FAM_VIEW_LISTNER {
 			};
 			upnpServer.getControlPoint().execute(ActionCallback);
 		}
+	}
+	private void PlayMusic(){
+		//取得upnpServer
+		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+		//取得MR Device
+		DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+		//取得instanceId
+		UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
+		//取得service
+		Service PlayService = null;	
+		//檢查 MR_Device
+		if(MR_Device!=null){
+			//取得device 的 "AVTransport" service
+			PlayService = MR_Device.getDevice().findService( new UDAServiceId("AVTransport"));
+		}else{
+			return;
+		}
+		//檢查StopService
+		if(PlayService!=null){
+			Play ActionCallback = new Play(instanceId,PlayService){
+				@Override
+			    public void success(ActionInvocation invocation) {
+					mlog.info(TAG, "Play success");
+				}
+				@Override
+				public void failure(ActionInvocation arg0,UpnpResponse arg1, String arg2) {
+					mlog.info(TAG, "Play failure");							
+				}
+			};
+			upnpServer.getControlPoint().execute(ActionCallback);
+		}		
 	}
 }

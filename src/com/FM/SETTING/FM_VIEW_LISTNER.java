@@ -16,6 +16,7 @@ import org.teleal.cling.model.types.UnsignedIntegerFourBytes;
 import org.teleal.cling.support.avtransport.callback.Play;
 import org.teleal.cling.support.avtransport.callback.SetAVTransportURI;
 import org.teleal.cling.support.avtransport.callback.Stop;
+import org.teleal.cling.support.contentdirectory.DIDLParser;
 import org.teleal.cling.support.contentdirectory.callback.Browse;
 import org.teleal.cling.support.model.BrowseFlag;
 import org.teleal.cling.support.model.DIDLContent;
@@ -129,62 +130,118 @@ public class FM_VIEW_LISTNER {
 						};											
 						upnpServer.getControlPoint().execute(browse);
 					}else if(kind ==2){							
-						//取得MR Device
-						DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
-						mlog.info(TAG, "MR_Device = "+MR_Device);
+						
 						//取得 item
-						Item item = (Item)((ViewHandler)view.getTag()).object;	
-						//取得item res
-						Res res = item.getFirstResource();
-						//取得instanceId
-						UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
-						//取得service
-						ServiceId serviceId = new UDAServiceId("AVTransport");
-						Service AVTransportService = null;
-						//檢查Device 跟 res
-						if(MR_Device!=null&&res!=null){
-							//取得device 的 "AVTransport" service
-							AVTransportService = MR_Device.getDevice().findService(serviceId);
-						}else{
-							return;
-						}
+						Item item = (Item)((ViewHandler)view.getTag()).object;
+						//取得MS Device
+						Device device = ((FM_Music_ListView_BaseAdapter)adapterView.getAdapter()).getChooseDevice();
 					
-						try{
-							mlog.info(TAG, "============Start=============");
-							mlog.info(TAG, item.getId());							
-							mlog.info(TAG, item.getTitle());
-							mlog.info(TAG, item.getFirstResource().toString());
-							mlog.info(TAG, "RES = "+item.getFirstResource().getValue());
-							mlog.info(TAG, "RES = "+item.getFirstResource().getDuration());
-							mlog.info(TAG, "RES = "+item.getFirstResource().getProtocolInfo());
-							mlog.info(TAG, "RES = "+item.getFirstResource().getSize());
-							mlog.info(TAG, "RES = "+item.getProperties().size());
-							
-							for(int i =0;i<item.getProperties().size();i++){
-								mlog.info(TAG, "Propertie = "+item.getProperties().get(i).getValue());	
+						Browse browse = new Browse(device.findService(new UDAServiceType("ContentDirectory")), item.getId(), BrowseFlag.METADATA, "*", 0, 1l, sortCriterion){
+							@Override
+							public void received(ActionInvocation arg0,	DIDLContent arg1) {
+								if(arg0.getOutput().length<=0||arg1.getItems().size()<=0){
+									return;
+								}
+								//取得upnpServer
+								AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+								//取得MR Device
+								DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+								mlog.info(TAG, "MR_Device = "+MR_Device);
+								//取得MetaData								
+								String MetaData = arg0.getOutput()[0].toString();	
+								mlog.info(TAG, "MetaData = "+MetaData);
+								//取得 item
+								Item item = (Item)((ViewHandler)view.getTag()).object;
+								//取得item res
+								Res res = item.getFirstResource();
+								//取得instanceId
+								UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
+								//取得service
+								ServiceId serviceId = new UDAServiceId("AVTransport");
+								Service AVTransportService = null;
+								//檢查Device 跟 res
+								if(MR_Device!=null&&res!=null){
+									//取得device 的 "AVTransport" service
+									AVTransportService = MR_Device.getDevice().findService(serviceId);
+								}else{
+									return;
+								}
+								//res顯示內容
+								try{
+									mlog.info(TAG, "============Start=============");
+									mlog.info(TAG, item.getId());							
+									mlog.info(TAG, item.getTitle());
+									mlog.info(TAG, item.getFirstResource().toString());
+									mlog.info(TAG, "RES = "+item.getFirstResource().getValue());
+									mlog.info(TAG, "RES = "+item.getFirstResource().getDuration());
+									mlog.info(TAG, "RES = "+item.getFirstResource().getProtocolInfo());
+									mlog.info(TAG, "RES = "+item.getFirstResource().getSize());
+									mlog.info(TAG, "RES = "+item.getProperties().size());									
+									for(int i =0;i<item.getProperties().size();i++){
+										mlog.info(TAG, "Propertie = "+item.getProperties().get(i).getValue());	
+									}							
+									mlog.info(TAG, "============End=============");
+								}catch(Exception e){
+									mlog.info(TAG, e.toString());
+								}						
+								if(AVTransportService!=null){					
+									SetAVTransportURI setAVTransportURI = new SetAVTransportURI(instanceId,AVTransportService,item.getFirstResource().getValue().toString(), MetaData){
+										@Override
+									    public void success(ActionInvocation invocation) {
+											for(int i =0;i<invocation.getOutput().length;i++){
+												mlog.info(TAG, "OT = "+invocation.getOutputMap().toString());	
+											}	
+											mlog.info(TAG, "setAVTransportURI success");
+											PlayMusic();
+										}
+										@Override
+										public void failure(ActionInvocation arg0,UpnpResponse arg1, String arg2) {
+											mlog.info(TAG, "setAVTransportURI arg2"+arg2);
+											mlog.info(TAG, "setAVTransportURI failure");
+										}
+									};						
+									upnpServer.getControlPoint().execute(setAVTransportURI);
+								}
+							}
+							@Override
+							public void updateStatus(Status arg0) {	}
+							@Override
+							public void failure(ActionInvocation arg0,UpnpResponse arg1, String arg2) {		
+								mlog.info(TAG, "Container failure = "+arg1);
 							}							
-							mlog.info(TAG, "============End=============");
-						}catch(Exception e){
-							
-						}						
-						if(AVTransportService!=null){					
-							SetAVTransportURI setAVTransportURI = new SetAVTransportURI(instanceId,AVTransportService,item.getFirstResource().getValue().toString(), "NO METADATA"){
-								@Override
-							    public void success(ActionInvocation invocation) {
-									for(int i =0;i<invocation.getOutput().length;i++){
-										mlog.info(TAG, "OT = "+invocation.getOutputMap().toString());	
-									}	
-									mlog.info(TAG, "setAVTransportURI success");
-									PlayMusic();
-								}
-								@Override
-								public void failure(ActionInvocation arg0,UpnpResponse arg1, String arg2) {
-									mlog.info(TAG, "setAVTransportURI arg2"+arg2);
-									mlog.info(TAG, "setAVTransportURI failure");
-								}
-							};						
-							upnpServer.getControlPoint().execute(setAVTransportURI);
-						}
+						};											
+						upnpServer.getControlPoint().execute(browse);
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+//						
+//					
 //						
 						
 //						for(int i = 0;i<MR_Device.getDevice().findServices().length;i++){

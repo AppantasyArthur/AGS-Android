@@ -85,6 +85,7 @@ public class FAM_VIEW_SETTING {
 		Tool.fitsViewLeftMargin(492, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Play_IButton));		
 		Tool.fitsViewHeight(45, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Play_IButton));
 		view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Play_IButton).getLayoutParams().width = Tool.getHeight(45);
+		view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Play_IButton).setTag(0);
 		new ThreadReadStateListInAssets(context, "pad/PlayBack/play_f.png","pad/PlayBack/play_n.png", view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Play_IButton), 2);
 		//Next ImageButton
 		Tool.fitsViewLeftMargin(550, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Next_IButton));		
