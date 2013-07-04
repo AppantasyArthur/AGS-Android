@@ -117,16 +117,26 @@ public class ItemHandler extends DefaultHandler {
 			  String chars = new String(ch, start, length);   
 			  chars = chars.trim();  
 			  
-			  if (inTitle)
+			  if (inTitle){
 				  _data.setTitle(chars);
-			  else if (inArtist)
+				  inTitle = false;
+			  }
+			  else if (inArtist){
 				  _data.setArtist(chars);
-			  else if (inGenre)
+				  inArtist = false;
+			  }
+			  else if (inGenre){
 				  _data.setGenre(chars);
-			  else if (inAlbum)
+				  inGenre = false;
+			  }
+			  else if (inAlbum){
 				  _data.setAlbum(chars);
-			  else if (inAlbumURI)
+				  inAlbum = false;
+			  }
+			  else if (inAlbumURI){
 				  _data.setAlbumURI(chars);
+				  inAlbumURI = false;
+			  }
 		 
 		  }
 	
