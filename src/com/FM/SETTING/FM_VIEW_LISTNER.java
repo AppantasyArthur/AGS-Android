@@ -33,6 +33,7 @@ import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
 import android.content.Context;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
@@ -67,7 +68,7 @@ public class FM_VIEW_LISTNER {
 				public void onItemClick(final AdapterView<?> adapterView, final View view, int arg2, long arg3) {
 					AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
 					int kind = ((ViewHandler)view.getTag()).kindOfItme;					
-					SortCriterion[] sortCriterion = new SortCriterion[]{new SortCriterion("+cd:title")};
+					SortCriterion[] sortCriterion = new SortCriterion[]{new SortCriterion("+dc:title")};
 					BrowseFlag browseFlag = BrowseFlag.DIRECT_CHILDREN;					
 					if(kind == 0){
 						//取得Device
@@ -134,116 +135,7 @@ public class FM_VIEW_LISTNER {
 						//取得 item
 						Item item = (Item)((ViewHandler)view.getTag()).object;
 						//取得MS Device
-						Device device = ((FM_Music_ListView_BaseAdapter)adapterView.getAdapter()).getChooseDevice();
-					
-						Browse browse = new Browse(device.findService(new UDAServiceType("ContentDirectory")), item.getId(), BrowseFlag.METADATA, "*", 0, 1l, sortCriterion){
-							@Override
-							public void received(ActionInvocation arg0,	DIDLContent arg1) {
-								if(arg0.getOutput().length<=0||arg1.getItems().size()<=0){
-									return;
-								}
-								//取得upnpServer
-								AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
-								//取得MR Device
-								DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
-								mlog.info(TAG, "MR_Device = "+MR_Device);
-								//取得MetaData								
-								String MetaData = arg0.getOutput()[0].toString();	
-								mlog.info(TAG, "MetaData = "+MetaData);
-								//取得 item
-								Item item = (Item)((ViewHandler)view.getTag()).object;
-								//取得item res
-								Res res = item.getFirstResource();
-								//取得instanceId
-								UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
-								//取得service
-								ServiceId serviceId = new UDAServiceId("AVTransport");
-								Service AVTransportService = null;
-								//檢查Device 跟 res
-								if(MR_Device!=null&&res!=null){
-									//取得device 的 "AVTransport" service
-									AVTransportService = MR_Device.getDevice().findService(serviceId);
-								}else{
-									return;
-								}
-								//res顯示內容
-								try{
-									mlog.info(TAG, "============Start=============");
-									mlog.info(TAG, item.getId());							
-									mlog.info(TAG, item.getTitle());
-									mlog.info(TAG, item.getFirstResource().toString());
-									mlog.info(TAG, "RES = "+item.getFirstResource().getValue());
-									mlog.info(TAG, "RES = "+item.getFirstResource().getDuration());
-									mlog.info(TAG, "RES = "+item.getFirstResource().getProtocolInfo());
-									mlog.info(TAG, "RES = "+item.getFirstResource().getSize());
-									mlog.info(TAG, "RES = "+item.getProperties().size());									
-									for(int i =0;i<item.getProperties().size();i++){
-										mlog.info(TAG, "Propertie = "+item.getProperties().get(i).getValue());	
-									}							
-									mlog.info(TAG, "============End=============");
-								}catch(Exception e){
-									mlog.info(TAG, e.toString());
-								}						
-								if(AVTransportService!=null){					
-									SetAVTransportURI setAVTransportURI = new SetAVTransportURI(instanceId,AVTransportService,item.getFirstResource().getValue().toString(), MetaData){
-										@Override
-									    public void success(ActionInvocation invocation) {
-											for(int i =0;i<invocation.getOutput().length;i++){
-												mlog.info(TAG, "OT = "+invocation.getOutputMap().toString());	
-											}	
-											mlog.info(TAG, "setAVTransportURI success");
-											PlayMusic();
-										}
-										@Override
-										public void failure(ActionInvocation arg0,UpnpResponse arg1, String arg2) {
-											mlog.info(TAG, "setAVTransportURI arg2"+arg2);
-											mlog.info(TAG, "setAVTransportURI failure");
-										}
-									};						
-									upnpServer.getControlPoint().execute(setAVTransportURI);
-								}
-							}
-							@Override
-							public void updateStatus(Status arg0) {	}
-							@Override
-							public void failure(ActionInvocation arg0,UpnpResponse arg1, String arg2) {		
-								mlog.info(TAG, "Container failure = "+arg1);
-							}							
-						};											
-						upnpServer.getControlPoint().execute(browse);
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-//						
-//					
-//						
-						
+						Device device = ((FM_Music_ListView_BaseAdapter)adapterView.getAdapter()).getChooseDevice();		
 //						for(int i = 0;i<MR_Device.getDevice().findServices().length;i++){
 //							Service service = MR_Device.getDevice().findServices()[i];							
 //							mlog.info(TAG, ""+service.toString());	
@@ -252,8 +144,9 @@ public class FM_VIEW_LISTNER {
 //								mlog.info(TAG, ""+action.toString());	
 //							}
 //						}
-//						View rootView = adapterView.getRootView();
-//						fm_PopupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0 );
+						View rootView = adapterView.getRootView();
+						fm_PopupWindow.SetItemChooseDevice(item, device);
+						fm_PopupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0 );
 					}
 				}
 			});
@@ -274,37 +167,37 @@ public class FM_VIEW_LISTNER {
 			//***************************PAD*********************************	
 		}		
 	}
-	private void PlayMusic(){
-		//取得upnpServer
-		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
-		//取得MR Device
-		DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
-		//取得instanceId
-		UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
-		//取得service
-		Service StopService = null;	
-		//檢查 MR_Device
-		if(MR_Device!=null){
-			//取得device 的 "AVTransport" service
-			StopService = MR_Device.getDevice().findService( new UDAServiceId("AVTransport"));
-		}else{
-			return;
-		}
-		//檢查StopService
-		if(StopService!=null){
-			Play ActionCallback = new Play(instanceId,StopService){
-				@Override
-			    public void success(ActionInvocation invocation) {
-					mlog.info(TAG, "Play success");
-				}
-				@Override
-				public void failure(ActionInvocation arg0,UpnpResponse arg1, String arg2) {
-					mlog.info(TAG, "Play failure");							
-				}
-			};
-			upnpServer.getControlPoint().execute(ActionCallback);
-		}
-	}
+//	private void PlayMusic(){
+//		//取得upnpServer
+//		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+//		//取得MR Device
+//		DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+//		//取得instanceId
+//		UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
+//		//取得service
+//		Service StopService = null;	
+//		//檢查 MR_Device
+//		if(MR_Device!=null){
+//			//取得device 的 "AVTransport" service
+//			StopService = MR_Device.getDevice().findService( new UDAServiceId("AVTransport"));
+//		}else{
+//			return;
+//		}
+//		//檢查StopService
+//		if(StopService!=null){
+//			Play ActionCallback = new Play(instanceId,StopService){
+//				@Override
+//			    public void success(ActionInvocation invocation) {
+//					mlog.info(TAG, "Play success");
+//				}
+//				@Override
+//				public void failure(ActionInvocation arg0,UpnpResponse arg1, String arg2) {
+//					mlog.info(TAG, "Play failure");							
+//				}
+//			};
+//			upnpServer.getControlPoint().execute(ActionCallback);
+//		}
+//	}
 	public void SET_SearchMusic_RLayout_Listner(final RelativeLayout SearchMusic_RLayout,final RelativeLayout TITLE2_RLayout,final RelativeLayout TITLE3_RLayout){
 		if(device_size==6){
 			//***************************PHONE*********************************	

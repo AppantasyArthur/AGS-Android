@@ -169,10 +169,11 @@ public class FM_Music_ListView_BaseAdapter extends BaseAdapter {
 				viewHandler.object = ContainerList.get(position);
 				viewHandler.cell_RLayout_Image_ImageView.setVisibility(View.VISIBLE);
 			}else{
+				int musicPosition = position-ContainerList.size();
 				//顯示Leaf
-				viewHandler.cell_RLayout_Name_TextView.setText(MusicTrackList.get(position).getTitle());
+				viewHandler.cell_RLayout_Name_TextView.setText(MusicTrackList.get(musicPosition).getTitle());
 				viewHandler.kindOfItme = 2;
-				viewHandler.object = MusicTrackList.get(position);
+				viewHandler.object = MusicTrackList.get(musicPosition);
 				viewHandler.cell_RLayout_Image_ImageView.setVisibility(View.GONE);
 			}
 		}else{

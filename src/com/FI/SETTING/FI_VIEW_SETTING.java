@@ -57,7 +57,7 @@ public class FI_VIEW_SETTING {
 		Tool.fitsViewTextSize(8, view.findViewById(R.id.FI_RLayout_RLayout_RLayout_QUEUE_TextView));
 		//INFOR ListView
 		FI_ListView fi_ListView = (FI_ListView)view.findViewById(R.id.FI_RLayout_RLayout_QUEUE_ListView);
-		fi_ListView.setAdapter(new FI_Queue_ListView_BaseAdapter(context));
+		fi_ListView.setAdapter(new FI_Queqe_ListView_BaseAdapter(context));
 	}
 //***************************PAD*********************************
 	

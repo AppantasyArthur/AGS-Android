@@ -6,6 +6,7 @@ import org.teleal.cling.model.message.UpnpResponse;
 import org.teleal.cling.model.meta.Service;
 import org.teleal.cling.model.types.UDAServiceId;
 import org.teleal.cling.model.types.UnsignedIntegerFourBytes;
+import org.teleal.cling.support.avtransport.callback.Pause;
 import org.teleal.cling.support.avtransport.callback.Play;
 import org.teleal.cling.support.avtransport.callback.Stop;
 
@@ -261,7 +262,7 @@ public class FAM_VIEW_LISTNER {
 					int tag = (Integer)v.getTag();
 					switch(tag){
 					case 0:
-						
+						PlayMusic();
 						break;
 					case 1:
 						StopMusic();

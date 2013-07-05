@@ -47,7 +47,7 @@ public class FI_ListView extends ListView {
 				check = FI_ListView.this.getFirstVisiblePosition()-1;
 				if(check>=0){
 					holdPosition = check;
-					((FI_Queue_ListView_BaseAdapter)FI_ListView.this.getAdapter()).SET_DRAG_HOLD_POSITION(holdPosition);
+					((FI_Queqe_ListView_BaseAdapter)FI_ListView.this.getAdapter()).SET_DRAG_HOLD_POSITION(holdPosition);
 					FI_ListView.this.setSelection(holdPosition);
 					mlog.info(TAG, "handler previous");
 				}									
@@ -57,7 +57,7 @@ public class FI_ListView extends ListView {
 				check = FI_ListView.this.getLastVisiblePosition()+1;
 				if(check<=FI_ListView.this.getCount()){					
 					holdPosition = check-1;					
-					((FI_Queue_ListView_BaseAdapter)FI_ListView.this.getAdapter()).SET_DRAG_HOLD_POSITION(holdPosition);
+					((FI_Queqe_ListView_BaseAdapter)FI_ListView.this.getAdapter()).SET_DRAG_HOLD_POSITION(holdPosition);
 					FI_ListView.this.setSelection(FI_ListView.this.getFirstVisiblePosition()+1);
 					mlog.info(TAG, "handler next");
 				}				
@@ -115,7 +115,7 @@ public class FI_ListView extends ListView {
 									Animation.RELATIVE_TO_SELF, 1, Animation.RELATIVE_TO_SELF, 0);
 						}
 						this.holdPosition = check; 
-						((FI_Queue_ListView_BaseAdapter)FI_ListView.this.getAdapter()).SET_DRAG_HOLD_POSITION(holdPosition);
+						((FI_Queqe_ListView_BaseAdapter)FI_ListView.this.getAdapter()).SET_DRAG_HOLD_POSITION(holdPosition);
 						move.setDuration(200);						
 						move.setFillBefore(true);
 						move.setStartTime(10);
@@ -158,8 +158,8 @@ public class FI_ListView extends ListView {
 				if(check!=AdapterView.INVALID_POSITION){
 					this.holdPosition = check;
 				}
-				((FI_Queue_ListView_BaseAdapter)this.getAdapter()).SET_SORT(this.holdPosition);//設定排序位置
-				((FI_Queue_ListView_BaseAdapter)this.getAdapter()).SET_DRAG_START_POSITION(-1);//還原Start Hold position
+				((FI_Queqe_ListView_BaseAdapter)this.getAdapter()).SET_SORT(this.holdPosition);//設定排序位置
+				((FI_Queqe_ListView_BaseAdapter)this.getAdapter()).SET_DRAG_START_POSITION(-1);//還原Start Hold position
 				mlog.info(TAG, "holdPosition = "+holdPosition+",StarPosition = "+this.StarPosition);
 				break;
 			}
@@ -207,7 +207,7 @@ public class FI_ListView extends ListView {
 			ScrollSlop = itemView.getHeight()/2;
 			
 			StartDrag(bm,location[0],location[1]);
-			((FI_Queue_ListView_BaseAdapter)this.getAdapter()).SET_DRAG_START_POSITION(this.StarPosition);
+			((FI_Queqe_ListView_BaseAdapter)this.getAdapter()).SET_DRAG_START_POSITION(this.StarPosition);
 			return false;
 		}
 		

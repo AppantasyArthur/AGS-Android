@@ -18,15 +18,13 @@ import org.teleal.cling.model.meta.Service;
 import org.teleal.cling.model.state.StateVariableValue;
 import org.teleal.cling.model.types.DeviceType;
 import org.teleal.cling.model.types.UDAServiceId;
-import org.teleal.cling.support.contentdirectory.DIDLParser;
-import org.teleal.cling.support.model.DIDLContent;
-import org.teleal.cling.support.model.item.Item;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import android.content.Context;
 import android.util.Log;
 import com.FAM.SETTING.Play_IButton_Listner;
+import com.FI.SETTING.FI_Queqe_ListView_BaseAdapter_Queqe_Listner;
 import com.FI.SETTING.MusicInfo_Listner;
 import com.FM.SETTING.FM_Music_ListView_BaseAdapter_Listner;
 import com.FS.SETTING.FS_SPEAKER_ExpandableListAdapter_Listner;
@@ -50,6 +48,7 @@ public class DeviceDisplayList {
 	private FM_Music_ListView_BaseAdapter_Listner FMLBAListner;
 	private Play_IButton_Listner PIListner;
 	private MusicInfo_Listner MIListner;
+	private FI_Queqe_ListView_BaseAdapter_Queqe_Listner queqe_listner;
 	private SubscriptionCallback Device_StateCallBack;
 	
 	public DeviceDisplayList(Context context){
@@ -125,6 +124,9 @@ public class DeviceDisplayList {
 		if(Device_StateCallBack!=null){
 			Device_StateCallBack.end();
 		}
+		if(MIListner!=null){
+			MIListner.ClearMusicInfo_State();
+		}
 		//設定StateCallBack
 		Device_StateCallBack = new SubscriptionCallback(StateService){
 			@Override
@@ -158,7 +160,7 @@ public class DeviceDisplayList {
 				
 				 //播放狀態
 				 String MR_State = lastChangeDO.getTransportState();				
-				 if(MR_State!=null&&MR_State!=""&&PIListner!=null){
+				 if(MR_State!=null&&!MR_State.equals("")&&PIListner!=null){
 					 PIListner.SetPlay_IButton_State(MR_State);
 					 mlog.info(TAG, "==========EVEN STAR==========");
 					 mlog.info(TAG, "lastChangeDO MR_State= "+MR_State);
@@ -166,10 +168,8 @@ public class DeviceDisplayList {
 				 }	
 				 String Item_MetaData = lastChangeDO.getCurrentTrackEmbeddedMetaData();	
 				 ItemDO itemDO =null;
-				 if(Item_MetaData!=null&&Item_MetaData!=""){
-					 mlog.info(TAG, "============Start=============");
-					 Item_MetaData = Item_MetaData.replace(" dlna:profileID=\"JPEG_TN\"", "");
-					 Item_MetaData = Item_MetaData.replace("pv:", ""); 
+				 if(Item_MetaData!=null&&!Item_MetaData.equals("")){
+					 mlog.info(TAG, "============Start=============");					 
 					 mlog.info(TAG, "Item_MetaData = "+Item_MetaData);
 					 itemDO =  _parseItem(Item_MetaData);
 					 mlog.info(TAG, "============End=============");
@@ -205,6 +205,12 @@ public class DeviceDisplayList {
 			}
 		};		
 		upnpServer.getControlPoint().execute(Device_StateCallBack);
+		
+		//設定QueqeCallBack
+		//Queqe 歸零
+		if(queqe_listner!=null){
+			queqe_listner.ClearQueqeList();
+		}
 	}
 	private LastChangeDO _parseLastChangeEvent(String xml) {   
 		LastChangeDO data = null;   
@@ -219,7 +225,7 @@ public class DeviceDisplayList {
 		    LastChangeHandler dataHandler = new LastChangeHandler();   
 		    xr.setContentHandler(dataHandler);   
 		    
-		    if(true){
+		    if(true){		    	
 		    	xr.parse(new InputSource(new StringReader(xml))); 
 			    data = dataHandler.getData();  
 		    } 
@@ -248,6 +254,8 @@ public class DeviceDisplayList {
 		    xr.setContentHandler(dataHandler);   
 		    
 		    if(true){
+		    	xml = xml.replace(" dlna:profileID=\"JPEG_TN\"", "");
+		    	xml = xml.replace("pv:", ""); 
 		    	xr.parse(new InputSource(new StringReader(xml))); 
 			    data = dataHandler.getData();  
 		    } 
@@ -290,5 +298,8 @@ public class DeviceDisplayList {
 	}
 	public void setMusicInfo_Listner(MusicInfo_Listner MIListner){
 		this.MIListner = MIListner;
+	}
+	public void setQueqe_Listner(FI_Queqe_ListView_BaseAdapter_Queqe_Listner queqe_listner) {
+		this.queqe_listner = queqe_listner;
 	}
 }

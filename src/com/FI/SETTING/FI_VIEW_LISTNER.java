@@ -37,8 +37,8 @@ public class FI_VIEW_LISTNER {
 			QUEUE_ListView.setOnItemLongClickListener(new OnItemLongClickListener(){
 				@Override
 				public boolean onItemLongClick(AdapterView<?> arg0, View arg1,int arg2, long arg3) {
-					if(!((FI_Queue_ListView_BaseAdapter)arg0.getAdapter()).GET_Edite()){
-						((FI_Queue_ListView_BaseAdapter)arg0.getAdapter()).SET_Edite(true);
+					if(!((FI_Queqe_ListView_BaseAdapter)arg0.getAdapter()).GET_Edite()){
+						((FI_Queqe_ListView_BaseAdapter)arg0.getAdapter()).SET_Edite(true);
 						((FragmentActivity_Main)context).ShowDoneButton();
 					}
 					return false;

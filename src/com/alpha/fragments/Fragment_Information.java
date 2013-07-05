@@ -2,7 +2,7 @@ package com.alpha.fragments;
 
 import com.FI.SETTING.FI_ListView;
 import com.FI.SETTING.FI_PointLiLayout;
-import com.FI.SETTING.FI_Queue_ListView_BaseAdapter;
+import com.FI.SETTING.FI_Queqe_ListView_BaseAdapter;
 import com.FI.SETTING.FI_VIEW_LISTNER;
 import com.FI.SETTING.FI_VIEW_SETTING;
 import com.FI.SETTING.FI_ViewFlipper;
@@ -139,10 +139,10 @@ public class Fragment_Information extends Fragment {
 				if(FM_Event.getRawX()>=Queue_location[0]&&FM_Event.getRawX()<=Queue_location[0]+fi_Queue_ListView.getWidth()&&FM_Event.getRawY()>=Queue_location[1]&&FM_Event.getRawY()<=Queue_location[1]+fi_Queue_ListView.getHeight()){
 					int position = fi_Queue_ListView.pointToPosition((int)(FM_Event.getRawX()-Queue_location[0]), (int)(FM_Event.getRawY()-Queue_location[1]));
 					if(position!=AdapterView.INVALID_POSITION){
-						((FI_Queue_ListView_BaseAdapter)fi_Queue_ListView.getAdapter()).SET_INSERT_POSITION(position);
+						((FI_Queqe_ListView_BaseAdapter)fi_Queue_ListView.getAdapter()).SET_INSERT_POSITION(position);
 					}
 				}else{
-					((FI_Queue_ListView_BaseAdapter)fi_Queue_ListView.getAdapter()).SET_INSERT_POSITION(-1);
+					((FI_Queqe_ListView_BaseAdapter)fi_Queue_ListView.getAdapter()).SET_INSERT_POSITION(-1);
 				}
 				break;
 			case MotionEvent.ACTION_UP:
@@ -150,17 +150,17 @@ public class Fragment_Information extends Fragment {
 				if(FM_Event.getRawX()>=Info_location[0]&&FM_Event.getRawX()<=Info_location[0]+fi_Info_ViewFlipper.getWidth()&&FM_Event.getRawY()>=Info_location[1]&&FM_Event.getRawY()<=Info_location[1]+fi_Info_ViewFlipper.getHeight()){
 					
 				}
-				((FI_Queue_ListView_BaseAdapter)fi_Queue_ListView.getAdapter()).SET_INSERT_POSITION(-1);
+				((FI_Queqe_ListView_BaseAdapter)fi_Queue_ListView.getAdapter()).SET_INSERT_POSITION(-1);
 				break;
 			}
 		}		
 	}
 	public boolean SET_FI_ListView_Edite(boolean isEdit){
 		if(!isEdit){
-			((FI_Queue_ListView_BaseAdapter)this.fi_Queue_ListView.getAdapter()).SET_Edite(false);
+			((FI_Queqe_ListView_BaseAdapter)this.fi_Queue_ListView.getAdapter()).SET_Edite(false);
 		}else{
-			((FI_Queue_ListView_BaseAdapter)this.fi_Queue_ListView.getAdapter()).SET_Edite(true);
+			((FI_Queqe_ListView_BaseAdapter)this.fi_Queue_ListView.getAdapter()).SET_Edite(true);
 		}
-		return ((FI_Queue_ListView_BaseAdapter)this.fi_Queue_ListView.getAdapter()).GET_Edite();
+		return ((FI_Queqe_ListView_BaseAdapter)this.fi_Queue_ListView.getAdapter()).GET_Edite();
 	}
 }

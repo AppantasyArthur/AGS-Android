@@ -100,6 +100,13 @@ public class FI_ViewFlipper extends ViewFlipper {
 	private void CreateMusicInfor_Listner(){
 		MusicInfo_Listner musicInfo = new MusicInfo_Listner(){
 			@Override
+			public void ClearMusicInfo_State() {
+				handler.obtainMessage(0, "").sendToTarget();
+				handler.obtainMessage(1, "").sendToTarget();
+				handler.obtainMessage(2, "").sendToTarget();
+				handler.obtainMessage(3, "").sendToTarget();				
+			}
+			@Override
 			public void SetMusicInfo_State(String Title, String Artist,String Album, String Genre,String AlbumURI) {
 				if(Title!=null&&Title!=""){
 					handler.obtainMessage(0, Title).sendToTarget();
@@ -113,7 +120,7 @@ public class FI_ViewFlipper extends ViewFlipper {
 				if(Genre!=null&&Genre!=""){
 					handler.obtainMessage(3, Genre).sendToTarget();
 				}
-			}
+			}			
 		};
 		((FragmentActivity_Main)context).GETDeviceDisplayList().setMusicInfo_Listner(musicInfo);
 	}
