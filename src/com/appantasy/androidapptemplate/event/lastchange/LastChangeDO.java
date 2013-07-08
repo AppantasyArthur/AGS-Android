@@ -2,6 +2,14 @@ package com.appantasy.androidapptemplate.event.lastchange;
 
 public class LastChangeDO {
 
+	public String getAVTransportURIMetaData() {
+		return AVTransportURIMetaData;
+	}
+
+	public void setAVTransportURIMetaData(String AVTransportURIMetaData) {
+		this.AVTransportURIMetaData = AVTransportURIMetaData;
+	}
+
 	public static String TRANSPORT_STATE = "TransportState";
 	public static String CURRENT_TRACK_DURATION = "CurrentTrackDuration";
 	public static String RELATIVE_TIME_POSITION = "RelativeTimePosition";
@@ -29,6 +37,7 @@ public class LastChangeDO {
 	
 	private String currentTrackURI;
 	private String currentTrackEmbeddedMetaData;
+	private String AVTransportURIMetaData;
 	
 	
 	public String getCurrentTrackURI() {

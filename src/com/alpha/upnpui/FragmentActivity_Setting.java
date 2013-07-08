@@ -4,7 +4,7 @@ import com.FAS.SETTING.FAS_VIEW_LISTNER;
 import com.FAS.SETTING.FAS_VIEW_SETTING;
 import com.alpha.fragments.Fragment_SMenu;
 import com.alpha.fragments.Fragment_Speaker;
-import com.tkb.tool.DeviceImformation;
+import com.tkb.tool.DeviceInformation;
 import com.tkb.tool.MLog;
 import com.tkb.tool.RoomSize;
 import com.tkb.tool.Tool;
@@ -40,7 +40,7 @@ public class FragmentActivity_Setting extends FragmentActivity {
 	private MLog mlog = new MLog();
 	private Context context;
 	private Display display;
-	private DeviceImformation deviceImformation;
+	private DeviceInformation deviceImformation;
 	private int device_size = 0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +55,7 @@ public class FragmentActivity_Setting extends FragmentActivity {
 	    	//PAD介面
 	    	this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 	    	setContentView(R.layout.fragmentactivity_setting_pad);
-	    	Tool.roomSize = new RoomSize(this.display);
+	    	Tool.roomSize = new RoomSize(this.display,this.deviceImformation);
 	    	//取得最底層的VIEW
 	    	this.MainView = this.getWindow().getDecorView().findViewById(R.id.FAS_RLayout);
 	    	//設定PAD介面
@@ -76,7 +76,7 @@ public class FragmentActivity_Setting extends FragmentActivity {
 	    this.context = this;
 	    this.mlog.LogSwitch = true;//顯示LOG
 	    this.display = this.getWindowManager().getDefaultDisplay();	   
-	    this.deviceImformation = new DeviceImformation(this.context);
+	    this.deviceImformation = new DeviceInformation(this.context);
 	    this.device_size = deviceImformation.getDevice();
 	    //取得fragmentManager
 	    this.fragmentManager = this.getSupportFragmentManager();         

@@ -4,11 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.teleal.cling.android.AndroidUpnpService;
+import org.teleal.cling.controlpoint.ActionCallback;
+import org.teleal.cling.model.action.ActionArgumentValue;
+import org.teleal.cling.model.action.ActionInvocation;
+import org.teleal.cling.model.message.UpnpResponse;
+import org.teleal.cling.model.meta.Action;
+import org.teleal.cling.model.meta.ActionArgument;
+import org.teleal.cling.model.meta.Service;
+import org.teleal.cling.model.types.ServiceId;
+import org.teleal.cling.model.types.UDAServiceId;
 import org.teleal.cling.support.model.item.Item;
 
 import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.R;
+import com.appantasy.androidapptemplate.event.lastchange.TrackDO;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
 import com.tkb.tool.Tool;
@@ -40,7 +50,7 @@ public class FI_Queqe_ListView_BaseAdapter extends BaseAdapter {
 	private int holdDragPosition = -1;
 	private int InsertPosition = -1;
 	private int SelectedPosition = -1;
-	private List<String> dataList = new ArrayList<String>();
+	private List<TrackDO> dataList = new ArrayList<TrackDO>();
 	
 	private Handler handler = new Handler(){
 		@Override
@@ -56,11 +66,15 @@ public class FI_Queqe_ListView_BaseAdapter extends BaseAdapter {
 				if(FI_Queqe_ListView_BaseAdapter.this.dataList!=null){
 					FI_Queqe_ListView_BaseAdapter.this.dataList.clear();
 				}else{
-					FI_Queqe_ListView_BaseAdapter.this.dataList = new ArrayList<String>();
+					FI_Queqe_ListView_BaseAdapter.this.dataList = new ArrayList<TrackDO>();
 				}
-				List<Item> queueList = (List<Item>)msg.obj;
+				List<TrackDO> queueList = (List<TrackDO>)msg.obj;
 				for(int i = 0;i< queueList.size();i++){
-					FI_Queqe_ListView_BaseAdapter.this.dataList.add(queueList.get(i).getTitle());
+					mlog.info(TAG, "==========EVEN STAR==========");
+					mlog.info(TAG, "Track ID valeu= "+queueList.get(i).getId());
+					mlog.info(TAG, "Track Title valeu= "+queueList.get(i).getTitle());
+					mlog.info(TAG, "==========EVEN END==========");
+					FI_Queqe_ListView_BaseAdapter.this.dataList.add(queueList.get(i));
 				}
 				FI_Queqe_ListView_BaseAdapter.this.notifyDataSetChanged();	
 				break;
@@ -77,15 +91,13 @@ public class FI_Queqe_ListView_BaseAdapter extends BaseAdapter {
 				handler.obtainMessage(0).sendToTarget();
 			}
 			@Override
-			public void AddQueqeList(List<Item> queqeList) {				
-				handler.obtainMessage(1,queqeList).sendToTarget();
+			public void AddQueqeList(List<TrackDO> trackList) {
+				handler.obtainMessage(1,trackList).sendToTarget();
+				mlog.info(TAG, "AddQueqeList");	
 			}			
 		};
 		((FragmentActivity_Main)context).GETDeviceDisplayList().setQueqe_Listner(queqe_listner);
 		dataList.clear();
-		for(int i = 0;i<20;i++){
-			dataList.add(""+i);
-		}
 	}
 	@Override
 	public int getCount() {
@@ -146,17 +158,17 @@ public class FI_Queqe_ListView_BaseAdapter extends BaseAdapter {
 		}		
 		
 		if(startDragPosition>holdDragPosition&&position>holdDragPosition&&position<=startDragPosition){
-			viewHandler.NameUP_TextView.setText("position = "+dataList.get(position-1));
+			viewHandler.NameUP_TextView.setText("position = "+dataList.get(position-1).getTitle());
 		}else if(startDragPosition<holdDragPosition&&position<holdDragPosition&&position>=startDragPosition){
 			Log.i(TAG, "startDragPosition = "+startDragPosition);
 			Log.i(TAG, "holdDragPosition = "+holdDragPosition);
 			Log.i(TAG, "position = "+position);
 			if((position+1)<dataList.size()){
-				viewHandler.NameUP_TextView.setText("position = "+dataList.get(position+1));
+				viewHandler.NameUP_TextView.setText(""+dataList.get(position+1).getTitle());
 			}			
 		}else{
 			if((position)<dataList.size()){
-				viewHandler.NameUP_TextView.setText("position = "+dataList.get(position));
+				viewHandler.NameUP_TextView.setText(""+dataList.get(position).getTitle());
 			}
 		}
 		//Insert設定
@@ -165,11 +177,11 @@ public class FI_Queqe_ListView_BaseAdapter extends BaseAdapter {
 				viewHandler.cell_RLayout.setVisibility(View.INVISIBLE);
 				new ThreadReadBitMapInAssets(context, "pad/Queqe/drag_bar.png", viewHandler.cellBG_RLayout, 3);
 			}else if(position>InsertPosition){
-				viewHandler.NameUP_TextView.setText("position = "+dataList.get(position-1));			
+				viewHandler.NameUP_TextView.setText("position = "+dataList.get(position-1).getTitle());			
 				viewHandler.cell_RLayout.setVisibility(View.VISIBLE);
 				new ThreadReadBitMapInAssets(context, "pad/Playlist/playlist_btn_n.png", viewHandler.cellBG_RLayout, 3);
 			}else{
-				viewHandler.NameUP_TextView.setText("position = "+dataList.get(position));
+				viewHandler.NameUP_TextView.setText("position = "+dataList.get(position).getTitle());
 				new ThreadReadBitMapInAssets(context, "pad/Playlist/playlist_btn_n.png", viewHandler.cellBG_RLayout, 3);
 			}
 		}
@@ -204,12 +216,42 @@ public class FI_Queqe_ListView_BaseAdapter extends BaseAdapter {
 				@Override
 				public void onClick(View v) {
 					Log.i(TAG, "delete = "+position);
-					//item 項次
-//					position
 					//取得upnpServer
 					AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
 					//取得MR Device
 					DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+					
+					ServiceId serviceId = new UDAServiceId("AVTransport");
+					Service AVTransportService = null;
+					//檢查Device 跟 res
+					if(MR_Device!=null){
+						//取得device 的 "AVTransport" service
+						AVTransportService = MR_Device.getDevice().findService(serviceId);
+					}else{
+						return;
+					}
+					ActionArgumentValue[] values = new ActionArgumentValue[2];
+					Action action = AVTransportService.getAction("RemoveTrackInQueue");
+					ActionArgument InstanceID = action.getInputArgument("InstanceID");
+					ActionArgument TrackID = action.getInputArgument("TrackID");
+					if(InstanceID!=null&&TrackID!=null){
+						values[0] =new ActionArgumentValue(InstanceID, "0");
+						values[1] =new ActionArgumentValue(TrackID, dataList.get(position).getId());
+						
+						ActionInvocation ai = new ActionInvocation(action,values);
+						
+						ActionCallback RemoveTrackInQueueActionCallBack = new ActionCallback(ai){
+							@Override
+							public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
+								mlog.info(TAG, "RemoveTrackInQueueActionCallBack failure = "+arg2);
+							}
+							@Override
+							public void success(ActionInvocation arg0) {									
+								mlog.info(TAG, "RemoveTrackInQueueActionCallBack success");
+							}											
+						};
+						upnpServer.getControlPoint().execute(RemoveTrackInQueueActionCallBack);
+					}				
 				}
 			});
 		}
@@ -265,7 +307,7 @@ public class FI_Queqe_ListView_BaseAdapter extends BaseAdapter {
 	public void SET_SORT(int holdDragPosition){
 		this.holdDragPosition = holdDragPosition;	
 		
-		String aaa = dataList.get(startDragPosition);
+		TrackDO aaa = dataList.get(startDragPosition);
 		dataList.remove(startDragPosition);
 		dataList.add(holdDragPosition, aaa);
 		mlog.info(TAG, "holdDragPosition = "+holdDragPosition);

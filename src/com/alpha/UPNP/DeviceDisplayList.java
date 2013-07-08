@@ -33,6 +33,8 @@ import com.appantasy.androidapptemplate.event.lastchange.ItemDO;
 import com.appantasy.androidapptemplate.event.lastchange.ItemHandler;
 import com.appantasy.androidapptemplate.event.lastchange.LastChangeDO;
 import com.appantasy.androidapptemplate.event.lastchange.LastChangeHandler;
+import com.appantasy.androidapptemplate.event.lastchange.TrackDO;
+import com.appantasy.androidapptemplate.event.lastchange.TrackHanlder;
 import com.tkb.tool.MLog;
 
 public class DeviceDisplayList {
@@ -149,48 +151,70 @@ public class DeviceDisplayList {
 			@Override
 			protected void eventReceived(GENASubscription arg0) {				
 				 Map<String, StateVariableValue> values = arg0.getCurrentValues();
+//				 for(Map.Entry<String, StateVariableValue> value:values.entrySet()){
+//					 mlog.info(TAG, "==========EVEN STAR==========");
+//					 mlog.info(TAG, "key= "+value.getKey().toString());
+//					 mlog.info(TAG, "==========EVEN END==========");
+//				 }
 				 StateVariableValue status = values.get("LastChange");
-				 if(status==null){
-					 return;
-				 }
-				 mlog.info(TAG, "==========EVEN STAR==========");
-				 mlog.info(TAG, "LastChange valeu= "+status.toString());
-				 mlog.info(TAG, "==========EVEN END==========");				 
-				 LastChangeDO lastChangeDO = _parseLastChangeEvent(status.toString());
-				
-				 //¼½©ñª¬ºA
-				 String MR_State = lastChangeDO.getTransportState();				
-				 if(MR_State!=null&&!MR_State.equals("")&&PIListner!=null){
-					 PIListner.SetPlay_IButton_State(MR_State);
+				 if(status!=null){				 
+					 mlog.info(TAG, "==========EVEN STAR==========");
+					 mlog.info(TAG, "LastChange valeu= "+status.toString());
+					 mlog.info(TAG, "==========EVEN END==========");				 
+					 LastChangeDO lastChangeDO = _parseLastChangeEvent(status.toString());
+					
+					 //Playª¬ºA
+					 String MR_State = lastChangeDO.getTransportState();				
+					 if(MR_State!=null&&!MR_State.equals("")&&PIListner!=null){
+						 PIListner.SetPlay_IButton_State(MR_State);
+						 mlog.info(TAG, "==========EVEN STAR==========");
+						 mlog.info(TAG, "lastChangeDO MR_State= "+MR_State);
+						 mlog.info(TAG, "============End=============");					 
+					 }	
+					 String Item_MetaData = lastChangeDO.getAVTransportURIMetaData();					 
+//					 String CurrentTrackEmbeddedMetaData = lastChangeDO.getCurrentTrackEmbeddedMetaData();	
+					 ItemDO itemDO =null;
+					 if(Item_MetaData!=null&&!Item_MetaData.equals("")){
+						 mlog.info(TAG, "============Start=============");					 
+						 mlog.info(TAG, "Item_MetaData = "+Item_MetaData);
+						 itemDO =  _parseItem(Item_MetaData);
+						 mlog.info(TAG, "============End=============");
+					 }
+					 //info
+					 if(itemDO!=null){
+						 MIListner.SetMusicInfo_State(itemDO.getTitle(), itemDO.getArtist(), itemDO.getAlbum(), itemDO.getGenre(),itemDO.getAlbumURI());
+						 mlog.info(TAG, "============Start=============");
+					 	 mlog.info(TAG, "Title = "+itemDO.getTitle());							
+						 mlog.info(TAG, "Artist = "+itemDO.getArtist());
+						 mlog.info(TAG, "Album = "+itemDO.getAlbum());
+						 mlog.info(TAG, "Genre = "+itemDO.getGenre());	
+						 mlog.info(TAG, "AlbumURI = "+itemDO.getAlbumURI());										
+						 mlog.info(TAG, "============End=============");
+					 }
+	
 					 mlog.info(TAG, "==========EVEN STAR==========");
 					 mlog.info(TAG, "lastChangeDO MR_State= "+MR_State);
-					 mlog.info(TAG, "============End=============");					 
-				 }	
-				 String Item_MetaData = lastChangeDO.getCurrentTrackEmbeddedMetaData();	
-				 ItemDO itemDO =null;
-				 if(Item_MetaData!=null&&!Item_MetaData.equals("")){
-					 mlog.info(TAG, "============Start=============");					 
-					 mlog.info(TAG, "Item_MetaData = "+Item_MetaData);
-					 itemDO =  _parseItem(Item_MetaData);
-					 mlog.info(TAG, "============End=============");
+					 mlog.info(TAG, "lastChangeDO valeu= "+lastChangeDO.getCurrentTrackEmbeddedMetaData());
+					 mlog.info(TAG, "lastChangeDO valeu= "+lastChangeDO.getRelativeTimePosition());
+					 mlog.info(TAG, "lastChangeDO valeu= "+lastChangeDO.getCurrentTrackDuration());
+					 mlog.info(TAG, "==========EVEN END==========");	
 				 }
-				 if(itemDO!=null){
-					 MIListner.SetMusicInfo_State(itemDO.getTitle(), itemDO.getArtist(), itemDO.getAlbum(), itemDO.getGenre(),itemDO.getAlbumURI());
-					 mlog.info(TAG, "============Start=============");
-				 	 mlog.info(TAG, "Title = "+itemDO.getTitle());							
-					 mlog.info(TAG, "Artist = "+itemDO.getArtist());
-					 mlog.info(TAG, "Album = "+itemDO.getAlbum());
-					 mlog.info(TAG, "Genre = "+itemDO.getGenre());	
-					 mlog.info(TAG, "AlbumURI = "+itemDO.getAlbumURI());										
-					 mlog.info(TAG, "============End=============");
+				 //Queue
+				 StateVariableValue q_Status = values.get("TracksInQueue");
+				 if(q_Status!=null){
+					 mlog.info(TAG, "==========EVEN STAR==========");
+					 mlog.info(TAG, "Queue valeu= "+q_Status.toString());
+					 mlog.info(TAG, "==========EVEN END==========");	
+					 
+					 List<TrackDO> trackList = _parseTrack(q_Status.toString());
+					 
+					 if(queqe_listner!=null){
+						 mlog.info(TAG, "trackList size = "+trackList.size());	
+						 queqe_listner.AddQueqeList(trackList);
+					 }
+					 
+					 
 				 }
-
-				 mlog.info(TAG, "==========EVEN STAR==========");
-				 mlog.info(TAG, "lastChangeDO MR_State= "+MR_State);
-				 mlog.info(TAG, "lastChangeDO valeu= "+lastChangeDO.getCurrentTrackEmbeddedMetaData());
-				 mlog.info(TAG, "lastChangeDO valeu= "+lastChangeDO.getRelativeTimePosition());
-				 mlog.info(TAG, "lastChangeDO valeu= "+lastChangeDO.getCurrentTrackDuration());
-				 mlog.info(TAG, "==========EVEN END==========");	
 			}
 
 			@Override
@@ -256,6 +280,33 @@ public class DeviceDisplayList {
 		    if(true){
 		    	xml = xml.replace(" dlna:profileID=\"JPEG_TN\"", "");
 		    	xml = xml.replace("pv:", ""); 
+		    	xr.parse(new InputSource(new StringReader(xml))); 
+			    data = dataHandler.getData();  
+		    } 
+		  } catch(ParserConfigurationException pce) {   
+		    Log.e("SAX XML", "sax parse error", pce);   
+		  } catch(SAXException se) {   
+		    Log.e("SAX XML", "sax error", se);   
+		  } catch(IOException ioe) {   
+		    Log.e("SAX XML", "sax parse io error", ioe);   
+		  } catch(Exception e) {
+			  e.printStackTrace();
+		  }  
+		  return data;   
+	}
+	private List<TrackDO> _parseTrack(String xml){
+		List<TrackDO> data = null;   
+
+		  // sax stuff   
+		  try { 			  
+			SAXParserFactory spf = SAXParserFactory.newInstance();   
+		    SAXParser sp = spf.newSAXParser();   
+		    XMLReader xr = sp.getXMLReader();  
+
+		    TrackHanlder dataHandler = new TrackHanlder();   
+		    xr.setContentHandler(dataHandler);   
+		    
+		    if(true){		    	
 		    	xr.parse(new InputSource(new StringReader(xml))); 
 			    data = dataHandler.getData();  
 		    } 

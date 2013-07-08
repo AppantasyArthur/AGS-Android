@@ -1,9 +1,14 @@
 package com.FAM.SETTING;
 
 import org.teleal.cling.android.AndroidUpnpService;
+import org.teleal.cling.controlpoint.ActionCallback;
+import org.teleal.cling.model.action.ActionArgumentValue;
 import org.teleal.cling.model.action.ActionInvocation;
 import org.teleal.cling.model.message.UpnpResponse;
+import org.teleal.cling.model.meta.Action;
+import org.teleal.cling.model.meta.ActionArgument;
 import org.teleal.cling.model.meta.Service;
+import org.teleal.cling.model.types.ServiceId;
 import org.teleal.cling.model.types.UDAServiceId;
 import org.teleal.cling.model.types.UnsignedIntegerFourBytes;
 import org.teleal.cling.support.avtransport.callback.Pause;
@@ -74,7 +79,43 @@ public class FAM_VIEW_LISTNER {
 			Clear_Button.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
+					Log.i(TAG, "Clear_Button On Click");
+					//取得upnpServer
+					AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+					//取得MR Device
+					DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
 					
+					ServiceId serviceId = new UDAServiceId("AVTransport");
+					Service AVTransportService = null;
+					//檢查Device 跟 res
+					if(MR_Device!=null){
+						//取得device 的 "AVTransport" service
+						AVTransportService = MR_Device.getDevice().findService(serviceId);
+					}else{
+						return;
+					}					
+					Action action = AVTransportService.getAction("RemoveAllTracksInQueue");				
+					if(action!=null){		
+						ActionArgumentValue[] values = new ActionArgumentValue[1];
+						ActionArgument InstanceID = action.getInputArgument("InstanceID");
+						if(InstanceID!=null){
+							values[0] =new ActionArgumentValue(InstanceID, "0");						
+							
+							ActionInvocation ai = new ActionInvocation(action,values);
+							
+							ActionCallback RemoveAllTracksInQueueActionCallBack = new ActionCallback(ai){
+								@Override
+								public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
+									mlog.info(TAG, "RemoveAllTracksInQueueActionCallBack failure = "+arg2);
+								}
+								@Override
+								public void success(ActionInvocation arg0) {									
+									mlog.info(TAG, "RemoveAllTracksInQueueActionCallBack success");
+								}											
+							};
+							upnpServer.getControlPoint().execute(RemoveAllTracksInQueueActionCallBack);
+						}						
+					}				
 				}
 			});
 			Clear_Button.setOnTouchListener(new View.OnTouchListener() {
@@ -250,6 +291,122 @@ public class FAM_VIEW_LISTNER {
 			//***************************PAD*********************************
 		}
 	}
+	
+	public void Previous_IButton_LISTNER(ImageButton Previous_IButton){
+		if(device_size==6){
+			//***************************PHONE*********************************	
+			//***************************PHONE*********************************	
+		}else{
+			//***************************PAD*********************************
+			Previous_IButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					//取得upnpServer
+					AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+					//取得MR Device
+					DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+					//取得instanceId
+					UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
+					//取得service
+					Service AVTransportService = null;	
+					//檢查 MR_Device
+					if(MR_Device!=null){
+						//取得device 的 "AVTransport" service
+						AVTransportService = MR_Device.getDevice().findService( new UDAServiceId("AVTransport"));
+					}else{
+						return;
+					}
+					Action action = AVTransportService.getAction("Previous");
+					
+					if(action!=null){
+						ActionArgumentValue[] values = new ActionArgumentValue[1];
+						//GET ActionArgument 
+						ActionArgument InstanceID = action.getInputArgument("InstanceID");						
+						//設定值
+						if(InstanceID!=null){
+							values[0] =new ActionArgumentValue(InstanceID, "0");							
+							
+							ActionInvocation ai = new ActionInvocation(action,values);
+							
+							ActionCallback PreviousCallBack = new ActionCallback(ai){
+								@Override
+								public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
+									mlog.info(TAG, "PreviousCallBack failure = "+arg2);
+									PlayMusic();
+								}
+								@Override
+								public void success(ActionInvocation arg0) {									
+									mlog.info(TAG, "PreviousCallBack success");
+									PlayMusic();
+								}											
+							};
+							upnpServer.getControlPoint().execute(PreviousCallBack);	
+						}
+					}								
+				}
+			});
+			//***************************PAD*********************************
+		}
+	}
+	
+	public void Next_IButton_LISTNER(ImageButton Next_IButton){
+		if(device_size==6){
+			//***************************PHONE*********************************	
+			//***************************PHONE*********************************	
+		}else{
+			//***************************PAD*********************************
+			Next_IButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					//取得upnpServer
+					AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+					//取得MR Device
+					DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+					//取得instanceId
+					UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
+					//取得service
+					Service AVTransportService = null;	
+					//檢查 MR_Device
+					if(MR_Device!=null){
+						//取得device 的 "AVTransport" service
+						AVTransportService = MR_Device.getDevice().findService( new UDAServiceId("AVTransport"));
+					}else{
+						return;
+					}
+					Action action = AVTransportService.getAction("Next");
+					
+					if(action!=null){
+						ActionArgumentValue[] values = new ActionArgumentValue[1];
+						//GET ActionArgument 
+						ActionArgument InstanceID = action.getInputArgument("InstanceID");						
+						//設定值
+						if(InstanceID!=null){
+							values[0] =new ActionArgumentValue(InstanceID, "0");							
+							
+							ActionInvocation ai = new ActionInvocation(action,values);
+							
+							ActionCallback NextCallBack = new ActionCallback(ai){
+								@Override
+								public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
+									mlog.info(TAG, "NextCallBack failure = "+arg2);
+									PlayMusic();
+								}
+								@Override
+								public void success(ActionInvocation arg0) {									
+									mlog.info(TAG, "NextCallBack success");
+									PlayMusic();
+								}											
+							};
+							upnpServer.getControlPoint().execute(NextCallBack);	
+						}
+					}								
+				}
+			});
+			//***************************PAD*********************************
+		}
+	}
+	
+	
 	public void Play_IButton_LISTNER(final ImageButton Play_IButton) {
 		if(device_size==6){
 			//***************************PHONE*********************************	

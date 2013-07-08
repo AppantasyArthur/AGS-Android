@@ -1,22 +1,26 @@
 package com.appantasy.androidapptemplate.event.lastchange;
 
+import java.util.ArrayList;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import android.util.Log;
 
-public class LastChangeHandler extends DefaultHandler {
+import com.appantasy.androidapptemplate.event.lastchange.LastChangeDO;
 
-	  // this holds the data   
-	  private LastChangeDO _data;   
+public class TrackHanlder extends DefaultHandler  {
+
+	 // this holds the data   
+	  private ArrayList<TrackDO> _data;   
 	  
 	  /**  
 	   * Returns the data object  
 	   *  
 	   * @return  
 	   */   
-	  public LastChangeDO getData() {   
+	  public ArrayList<TrackDO> getData() {   
 	    return _data;   
 	  }   
 	  
@@ -28,8 +32,8 @@ public class LastChangeHandler extends DefaultHandler {
 	  @Override   
 	  public void startDocument() throws SAXException {
 		  
-		  // ?ÉÊ??á‰ª∂?ãÂ?
-	    _data = new LastChangeDO();
+		  // ÔøΩÔÅ∂ÔøΩÔøΩÔã®Ëæ£ÔøΩÔïùÔøΩ
+	    _data = new ArrayList<TrackDO>();
 	    
 	  }   
 	  
@@ -56,22 +60,17 @@ public class LastChangeHandler extends DefaultHandler {
 	  @Override   
 	  public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {   
 	  
-		  String val = atts.getValue("val");
-		  Log.d("startElement", localName + " : " + val);
+		  String id = atts.getValue("id");
+		  String title = atts.getValue("title");
 		  
-		  if(localName.equalsIgnoreCase("TransportState")){
-			  _data.setTransportState(val);
-		  } else if(localName.equalsIgnoreCase("CurrentTrackURI")){
-			  _data.setCurrentTrackURI(val);
-		  } else if(localName.equalsIgnoreCase("CurrentTrackEmbeddedMetaData")){
-			  _data.setCurrentTrackEmbeddedMetaData(val);
-		  } else if(localName.equalsIgnoreCase("AVTransportURIMetaData")){
-			  _data.setAVTransportURIMetaData(val);
-		  } else if(localName.equalsIgnoreCase("CurrentTrackDuration")){
-			  _data.setCurrentTrackDuration(val);
-		  } else if(localName.equalsIgnoreCase("InstanceID")){
-			 
-		  } 
+		  if(localName.equalsIgnoreCase("Track")){
+			  
+			  TrackDO doTrack = new TrackDO();
+			  doTrack.setId(id);
+			  doTrack.setTitle(title);
+			  _data.add(doTrack);
+			  
+		  }
 	    
 	  }   
 	  

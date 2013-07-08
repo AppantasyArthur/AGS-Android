@@ -10,21 +10,37 @@ public class RoomSize {
 	private static float heightRoomSize;//高的比例
 	private static float textRoomSize;
 	
-	public RoomSize(Display display){
+	public RoomSize(Display display,DeviceInformation deviceInformation){
 		
 		DisplayMetrics displayMetrics = new DisplayMetrics();
 		display.getMetrics(displayMetrics);//取得DisplayMetrics
-		if(displayMetrics.heightPixels>displayMetrics.widthPixels){
-			//直向比例
-			heightRoomSize = (float)displayMetrics.heightPixels/(float)1024;//高的比例
-			widthRoomSize = (float)displayMetrics.widthPixels/(float)768;//寬的比例
-			textRoomSize = ((float)displayMetrics.widthPixels/(float)displayMetrics.densityDpi)/((float)480/(float)240);
+		if(deviceInformation.getDevice()==6){
+			//手機
+			if(displayMetrics.heightPixels>displayMetrics.widthPixels){
+				//直向比例
+				heightRoomSize = (float)displayMetrics.heightPixels/(float)480;//高的比例
+				widthRoomSize = (float)displayMetrics.widthPixels/(float)320;//寬的比例
+				textRoomSize = ((float)displayMetrics.widthPixels/(float)displayMetrics.densityDpi)/((float)480/(float)240);
+			}else{
+				//橫向比例
+				heightRoomSize = (float)displayMetrics.heightPixels/(float)320;//寬的比例
+				widthRoomSize = (float)displayMetrics.widthPixels/(float)480;//高的比例
+				textRoomSize = ((float)displayMetrics.heightPixels/(float)displayMetrics.densityDpi)/((float)480/(float)240);
+			}
 		}else{
-			//橫向比例
-			heightRoomSize = (float)displayMetrics.heightPixels/(float)768;//寬的比例
-			widthRoomSize = (float)displayMetrics.widthPixels/(float)1024;//高的比例
-			textRoomSize = ((float)displayMetrics.heightPixels/(float)displayMetrics.densityDpi)/((float)480/(float)240);
-		}
+			//平板
+			if(displayMetrics.heightPixels>displayMetrics.widthPixels){
+				//直向比例
+				heightRoomSize = (float)displayMetrics.heightPixels/(float)1024;//高的比例
+				widthRoomSize = (float)displayMetrics.widthPixels/(float)768;//寬的比例
+				textRoomSize = ((float)displayMetrics.widthPixels/(float)displayMetrics.densityDpi)/((float)480/(float)240);
+			}else{
+				//橫向比例
+				heightRoomSize = (float)displayMetrics.heightPixels/(float)768;//寬的比例
+				widthRoomSize = (float)displayMetrics.widthPixels/(float)1024;//高的比例
+				textRoomSize = ((float)displayMetrics.heightPixels/(float)displayMetrics.densityDpi)/((float)480/(float)240);
+			}
+		}		
 	}
 	
 	public float getWidthRoomSize() {

@@ -13,7 +13,7 @@ import com.alpha.UPNP.UpnpServiceConnection;
 import com.alpha.fragments.Fragment_Information;
 import com.alpha.fragments.Fragment_Music;
 import com.alpha.fragments.Fragment_Speaker;
-import com.tkb.tool.DeviceImformation;
+import com.tkb.tool.DeviceInformation;
 import com.tkb.tool.MLog;
 import com.tkb.tool.RoomSize;
 import com.tkb.tool.Tool;
@@ -63,7 +63,7 @@ public class FragmentActivity_Main extends FragmentActivity {
 	private MLog mlog = new MLog();
 	private Context context;
 	private Display display;
-	private DeviceImformation deviceImformation;
+	private DeviceInformation deviceImformation;
 	private int device_size = 0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -85,16 +85,25 @@ public class FragmentActivity_Main extends FragmentActivity {
 		//6、手機 7、平板
 	    if(this.device_size==6){
 	    	//PHONE介面
+	    	this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+	    	setContentView(R.layout.fragmentactivity_main_phone);
+	    	Tool.roomSize = new RoomSize(this.display,this.deviceImformation);
+	    	//取得最底層的VIEW
+	    	this.MainView = this.getWindow().getDecorView().findViewById(R.id.pFAM_RLayout);
+	    	//設定PAD介面
+	    	Phone_findVIEW();
+	    	//加入Fragment
+	    	set_Phone_First_Fragment();
 	    }else{	 
 	    	//PAD介面
 	    	this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 	    	setContentView(R.layout.fragmentactivity_main_pad);
-	    	Tool.roomSize = new RoomSize(this.display);
+	    	Tool.roomSize = new RoomSize(this.display,this.deviceImformation);
 	    	//取得最底層的VIEW
 	    	this.MainView = this.getWindow().getDecorView().findViewById(R.id.FAM_RLayout);
 	    	//設定PAD介面
 	    	PAD_findVIEW();
-	    	//加入Fragment_Speaker
+	    	//加入Fragment
 	    	set_PAD_First_Fragment();
 	    	//設定LISTNER
 	    	PAD_findLISTNER();	
@@ -105,8 +114,6 @@ public class FragmentActivity_Main extends FragmentActivity {
 	    
 	}
 
-	
-
 	private void CreateProcess(){
 		//設定NO TITLE 、 全螢幕
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -115,7 +122,7 @@ public class FragmentActivity_Main extends FragmentActivity {
 	    this.context = this;
 	    this.mlog.LogSwitch = true;//顯示LOG
 	    this.display = this.getWindowManager().getDefaultDisplay();	   
-	    this.deviceImformation = new DeviceImformation(this.context);
+	    this.deviceImformation = new DeviceInformation(this.context);
 	    this.device_size = deviceImformation.getDevice();
 	    //取得fragmentManager
 	    this.fragmentManager = this.getSupportFragmentManager();         
@@ -124,6 +131,18 @@ public class FragmentActivity_Main extends FragmentActivity {
         this.VIEW_LISTNER = new FAM_VIEW_LISTNER(this.context,this.device_size);
         //建立Device主要清單
         deviceDisplayList = new DeviceDisplayList(context);
+	}
+	private void Phone_findVIEW() {
+		
+		
+	}
+	private void set_Phone_First_Fragment() {		
+		fragment_Speaker = new Fragment_Speaker();		
+		Tool.FragmentActivity_MainAddFragment(fragmentManager.beginTransaction(), fragment_Speaker, "Fragment_Speaker", R.id.pFAM_RLayout_ViewFlipper_Speaker_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+//		fragment_Infor = new Fragment_Information();
+//		Tool.FragmentActivity_MainAddFragment(fragmentManager.beginTransaction(), fragment_Infor, "Fragment_Infor", R.id.pFAM_RLayout_ViewFlipper_Information_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+//		fragment_Music = new Fragment_Music();
+//		Tool.FragmentActivity_MainAddFragment(fragmentManager.beginTransaction(), fragment_Music, "Fragment_Music", R.id.pFAM_RLayout_ViewFlipper_Music_RLayout, R.animator.alpha_in, R.animator.alpha_out);
 	}
 	private void PAD_findVIEW() {
 		//設定PAD介面
@@ -153,6 +172,8 @@ public class FragmentActivity_Main extends FragmentActivity {
 		this.VIEW_LISTNER.Cycle_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Cycle_IButton));
 		this.VIEW_LISTNER.Random_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Random_IButton));
 		this.VIEW_LISTNER.Setting_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Setting_IButton));
+		this.VIEW_LISTNER.Previous_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Previous_IButton));
+		this.VIEW_LISTNER.Next_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Next_IButton));
 		this.VIEW_LISTNER.Play_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Play_IButton));
 	}
 	private void set_PAD_First_Fragment() {		
@@ -163,6 +184,7 @@ public class FragmentActivity_Main extends FragmentActivity {
 		fragment_Music = new Fragment_Music();
 		Tool.FragmentActivity_MainAddFragment(fragmentManager.beginTransaction(), fragment_Music, "Fragment_Music", R.id.FAM_RLayout_RIGHT_RLayout, R.animator.alpha_in, R.animator.alpha_out);
 	}
+	
 	private void CreateUpnpService() {		
 		browseRegistryListener = new BrowseRegistryListener(deviceDisplayList);
 		upnpServiceConnection = new UpnpServiceConnection(context,browseRegistryListener);
