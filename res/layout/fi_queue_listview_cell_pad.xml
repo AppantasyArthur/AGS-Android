@@ -25,7 +25,8 @@
 	    	android:layout_height="match_parent"
 	    	android:layout_toRightOf="@+id/FI_QUEUE_ListView_Cell_RLayout_Delete_ImageView"
 	    	android:layout_toLeftOf="@+id/FI_QUEUE_ListView_Cell_RLayout_Drag_ImageView"	
-	    	android:layout_alignWithParentIfMissing="true"    	
+	    	android:layout_alignWithParentIfMissing="true" 
+	    	android:layout_centerVertical="true"   	
 	    	android:background="#00000000"  
 	        >
 	        <ImageView 

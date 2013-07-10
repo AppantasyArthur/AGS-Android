@@ -3,7 +3,21 @@ package com.FS.SETTING;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.teleal.cling.android.AndroidUpnpService;
+import org.teleal.cling.controlpoint.ActionCallback;
+import org.teleal.cling.model.action.ActionArgumentValue;
+import org.teleal.cling.model.action.ActionInvocation;
+import org.teleal.cling.model.message.UpnpResponse;
+import org.teleal.cling.model.meta.Action;
+import org.teleal.cling.model.meta.ActionArgument;
+import org.teleal.cling.model.meta.Device;
+import org.teleal.cling.model.meta.Service;
+import org.teleal.cling.model.types.UDAServiceId;
+
+import com.alpha.UPNP.DeviceDisplay;
+import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.R;
+import com.appantasy.androidapptemplate.event.lastchange.GroupVO;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
 import com.tkb.tool.Tool;
@@ -26,6 +40,7 @@ public class FS_PopupWindow extends PopupWindow {
 	private MLog mlog = new MLog();
 	private static final String TAG = "FS_PopupWindow";
 	private List<OptionButton> OptionButtonsList;
+	private DeviceDisplay addDeviceDisplay;
 	public FS_PopupWindow(Context context){
 		super(context);
 		this.mlog.LogSwitch = true;
@@ -86,10 +101,13 @@ public class FS_PopupWindow extends PopupWindow {
 		mlog.info(TAG, "CreateContentView");
 	}
 	public void ShowPopupWindow(View parent,int gravity,int x,int y){
-		CreateOptionButtons((LinearLayout)contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_ScrollView_ChooseScroll_LLayout));
 		this.showAtLocation(parent, gravity, x, y);
 	}
-	private void CreateOptionButtons(LinearLayout ChooseScroll_LLayout){		
+	public void SetAddDeviceDisplay(DeviceDisplay addDeviceDisplay){
+		this.addDeviceDisplay = addDeviceDisplay;
+	}
+	public void SetOptionButtons(List<GroupVO> groupVOList){	
+		LinearLayout ChooseScroll_LLayout = (LinearLayout)contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_ScrollView_ChooseScroll_LLayout);
 		ChooseScroll_LLayout.removeAllViews();
 		if(OptionButtonsList!=null){
 			OptionButtonsList.clear();
@@ -97,8 +115,8 @@ public class FS_PopupWindow extends PopupWindow {
 			OptionButtonsList = new ArrayList<OptionButton>();
 		}
 		
-		for(int i =0 ;i<10;i++){
-			OptionButton optionButton = new OptionButton();
+		for(int i =0 ;i<groupVOList.size();i++){
+			OptionButton optionButton = new OptionButton(i,groupVOList.get(i));
 			ChooseScroll_LLayout.addView(optionButton.cellView);
 			this.OptionButtonsList.add(optionButton);
 		}
@@ -123,6 +141,14 @@ public class FS_PopupWindow extends PopupWindow {
 		this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Done_Button).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				for(int i=0;i<OptionButtonsList.size();i++){
+					if(OptionButtonsList.get(i).isSelected){
+						SetRelationWithMaster(OptionButtonsList.get(i).groupVO.getUdn(),true);
+					}else{
+						SetRelationWithMaster(OptionButtonsList.get(i).groupVO.getUdn(),false);
+					}					
+				}
+				mlog.info(TAG, "Done");
 				FS_PopupWindow.this.dismiss();				
 			}
 		});	
@@ -140,13 +166,58 @@ public class FS_PopupWindow extends PopupWindow {
 			}
 		});
 	}
+	private void SetRelationWithMaster(String SUDN,boolean isAdd){
+		//¨ú±oupnpServer
+		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+		Device mMMDevice = addDeviceDisplay.getMMDevice();
+		String MUDN = mMMDevice.getIdentity().getUdn().toString();
+		Device MMDevice = ((FragmentActivity_Main)context).GETDeviceDisplayList().GetMMDevice(SUDN);
+		if(MMDevice==null){
+			return;
+		}
+		Service GroupService = MMDevice.findService(new UDAServiceId("Group"));
+		if(GroupService!=null){
+			Action SetRelationWithMasterAction = GroupService.getAction("SetRelationWithMaster");
+			if(SetRelationWithMasterAction!=null){				
+				ActionArgumentValue[] values = new ActionArgumentValue[2];
+				ActionArgument DeviceUDN = SetRelationWithMasterAction.getInputArgument("DeviceUDN");
+				ActionArgument RelationAction = SetRelationWithMasterAction.getInputArgument("RelationAction");
+				if(DeviceUDN!=null&&RelationAction!=null){
+					values[0] =new ActionArgumentValue(DeviceUDN, MUDN);
+					if(isAdd){
+						values[1] =new ActionArgumentValue(RelationAction, "Add");
+					}else{
+						values[1] =new ActionArgumentValue(RelationAction, "Remove");
+					}
+					mlog.info(TAG, "DeviceUDN  = "+values[0].toString());
+					mlog.info(TAG, "RelationAction = "+values[1].toString());
+					ActionInvocation ai = new ActionInvocation(SetRelationWithMasterAction,values);
+					ActionCallback SetRelationWithMasterActionCallBack = new ActionCallback(ai){
+						@Override
+						public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
+							mlog.info(TAG, "SetRelationWithMasterActionCallBack failure = "+arg2);
+						}
+						@Override
+						public void success(ActionInvocation arg0) {									
+							mlog.info(TAG, "SetRelationWithMasterActionCallBack success");
+						}											
+					};
+					upnpServer.getControlPoint().execute(SetRelationWithMasterActionCallBack);	
+				}
+			}			
+		}		
+	}
 	private class OptionButton{
 		public View cellView;
 		public RelativeLayout ChooseScroll_RLayout;
 		public ImageButton Radio_ImageButton;
 		public TextView Name_TextView;
-		
-		public OptionButton(){
+		private boolean isSelected;
+		private int position;
+		public GroupVO groupVO;
+		public OptionButton(int position,GroupVO groupVO){
+			this.position = position;
+			this.groupVO = groupVO;
 			cellView = LayoutInflater.from(context).inflate(R.layout.fs_popupwindow_choosescroll_cell, null);
 			cellView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,Tool.getHeight(40)));
 			findView(cellView);
@@ -162,7 +233,14 @@ public class FS_PopupWindow extends PopupWindow {
 			//Radio ImageButton
 			Tool.fitsViewHeight(22, this.Radio_ImageButton);
 			this.Radio_ImageButton.getLayoutParams().width = Tool.getHeight(22);
-			if(true){
+			if(groupVO.isSlave()){
+				//¤w¿ï¨ú
+				isSelected = true;
+			}else{
+				//¥¼¿ï¨ú	
+				isSelected = false;
+			}			
+			if(isSelected){
 				//¤w¿ï¨ú
 				new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/group_n.png", this.Radio_ImageButton, 2);
 			}else{
@@ -171,17 +249,22 @@ public class FS_PopupWindow extends PopupWindow {
 			}
 			//Name TextView
 			Tool.fitsViewTextSize(6, this.Name_TextView);
+			this.Name_TextView.setText(groupVO.getName());
 		}
 		private void ClickListener(){
 			this.Radio_ImageButton.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {				
-					if(true){
+					if(isSelected){
 						//§ï¦¨¥¼¿ï
+						isSelected = false;
 						new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/group_n.png", v, 2);
+						mlog.info(TAG, "isSelected = "+isSelected);
 					}else{
 						//§ï¦¨¤w¿ï
+						isSelected = true;
 						new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/group_n.png", v, 2);
+						mlog.info(TAG, "isSelected = "+isSelected);
 					}
 				}
 			});

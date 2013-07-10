@@ -17,6 +17,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
 public class Fragment_Speaker extends Fragment {
 	//VIEWS
@@ -66,34 +68,35 @@ public class Fragment_Speaker extends Fragment {
 		return Fragment_MainView;
 	}
 	private void Phone_findView() {
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_TITLE_RLayout));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_TITLE_TextView));
+		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout));		
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_TITLE2_RLayout));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayou_RLayout_Nowplaying_Button));
+		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Nowplaying_Button));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Center_TextView));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayou_RLayout_Music_Button));
+		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Music_Button));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_TITLE3_RLayout));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Sound_IButton));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Sound_SeekBar));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Previous_IButton));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Play_IButton));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Next_IButton));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_TITLE4_IButton));
+		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_ShowTITLE4_IButton));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_TITLE4_RLayout));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Cycle_IButton));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Random_IButton));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Current_TextView));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Music_SeekBar));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Total_TextView));
-//		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pfs));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Total_TextView));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Total_TextView));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Total_TextView));
+		FS_SPEAKER_EListView = (FS_SPEAKER_ExpandableListView)Fragment_MainView.findViewById(R.id.pFS_RLayout_SPEAKER_EListView);
+		this.VIEW_SETTING.VIEWSET(FS_SPEAKER_EListView);
+		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_Bottom_RLayout));
+		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Setting_IButton));
+		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_PASUEALL_Button));
 		mlog.info(TAG, "findView OK");
 	}
-	private void Phone_findViewListner() {		
-		
+	private void Phone_findViewListner() {
+		this.VIEW_LISTNER.ShowTITLE4_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_ShowTITLE4_IButton),
+														(RelativeLayout)Fragment_MainView.findViewById(R.id.pFS_RLayout_TITLE4_RLayout));
+		this.VIEW_LISTNER.SET_SPEAKER_EListView_Listner(FS_SPEAKER_EListView);
 	}
 	
 	private void PAD_findView() {

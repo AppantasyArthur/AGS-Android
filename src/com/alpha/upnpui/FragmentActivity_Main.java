@@ -138,7 +138,7 @@ public class FragmentActivity_Main extends FragmentActivity {
 	}
 	private void set_Phone_First_Fragment() {		
 		fragment_Speaker = new Fragment_Speaker();		
-		Tool.FragmentActivity_MainAddFragment(fragmentManager.beginTransaction(), fragment_Speaker, "Fragment_Speaker", R.id.pFAM_RLayout_ViewFlipper_Speaker_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+		Tool.FragmentActivity_MainAddFragment(fragmentManager.beginTransaction(), fragment_Speaker, "Fragment_Speaker", R.id.pFAM_RLayout_ViewFlipper_Information_RLayout, R.animator.alpha_in, R.animator.alpha_out);
 //		fragment_Infor = new Fragment_Information();
 //		Tool.FragmentActivity_MainAddFragment(fragmentManager.beginTransaction(), fragment_Infor, "Fragment_Infor", R.id.pFAM_RLayout_ViewFlipper_Information_RLayout, R.animator.alpha_in, R.animator.alpha_out);
 //		fragment_Music = new Fragment_Music();

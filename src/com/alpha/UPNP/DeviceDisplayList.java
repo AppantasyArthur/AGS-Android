@@ -9,10 +9,16 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import org.teleal.cling.android.AndroidUpnpService;
+import org.teleal.cling.controlpoint.ActionCallback;
 import org.teleal.cling.controlpoint.SubscriptionCallback;
+import org.teleal.cling.model.action.ActionArgumentValue;
+import org.teleal.cling.model.action.ActionInvocation;
 import org.teleal.cling.model.gena.CancelReason;
 import org.teleal.cling.model.gena.GENASubscription;
 import org.teleal.cling.model.message.UpnpResponse;
+import org.teleal.cling.model.meta.Action;
+import org.teleal.cling.model.meta.ActionArgument;
+import org.teleal.cling.model.meta.Device;
 import org.teleal.cling.model.meta.DeviceDetails;
 import org.teleal.cling.model.meta.Service;
 import org.teleal.cling.model.state.StateVariableValue;
@@ -29,6 +35,8 @@ import com.FI.SETTING.MusicInfo_Listner;
 import com.FM.SETTING.FM_Music_ListView_BaseAdapter_Listner;
 import com.FS.SETTING.FS_SPEAKER_ExpandableListAdapter_Listner;
 import com.alpha.upnpui.FragmentActivity_Main;
+import com.appantasy.androidapptemplate.event.lastchange.GroupHandler;
+import com.appantasy.androidapptemplate.event.lastchange.GroupVO;
 import com.appantasy.androidapptemplate.event.lastchange.ItemDO;
 import com.appantasy.androidapptemplate.event.lastchange.ItemHandler;
 import com.appantasy.androidapptemplate.event.lastchange.LastChangeDO;
@@ -71,7 +79,21 @@ public class DeviceDisplayList {
 			//MediaRenderer List
 			MRList.add(dd);
 			if(FSELAListner!=null){
-				FSELAListner.AddMediaRenderer(dd);
+				DeviceType deviceType_f = new DeviceType("schemas-upnp-org", "DeviceManager");
+				Device[] devices = dd.getDevice().findDevices(deviceType_f);
+				if(devices!=null&&devices.length>0){
+					//有Group
+					Device MMDevice = devices[0];
+					mlog.info(TAG, "Namespace = "+MMDevice.getType().getNamespace());
+					mlog.info(TAG, "Type = "+MMDevice.getType().getType());
+					mlog.info(TAG, "Version = "+MMDevice.getType().getVersion());					
+					dd.setMMDevice(MMDevice);					
+					GroupEventHandler groupEventHandler = new GroupEventHandler(dd);
+					groupEventHandler.checkMasterORSingle();					
+				}else{
+					//沒有Group
+					FSELAListner.AddMediaRenderer(dd);	
+				}				
 			}
 		}else if(deviceType.getType().toString().equals("MediaServer")){
 			//MediaServer List
@@ -162,42 +184,43 @@ public class DeviceDisplayList {
 					 mlog.info(TAG, "LastChange valeu= "+status.toString());
 					 mlog.info(TAG, "==========EVEN END==========");				 
 					 LastChangeDO lastChangeDO = _parseLastChangeEvent(status.toString());
-					
-					 //Play狀態
-					 String MR_State = lastChangeDO.getTransportState();				
-					 if(MR_State!=null&&!MR_State.equals("")&&PIListner!=null){
-						 PIListner.SetPlay_IButton_State(MR_State);
+					 if(lastChangeDO!=null){					 
+						 //Play狀態
+						 String MR_State = lastChangeDO.getTransportState();				
+						 if(MR_State!=null&&!MR_State.equals("")&&PIListner!=null){
+							 PIListner.SetPlay_IButton_State(MR_State);
+							 mlog.info(TAG, "==========EVEN STAR==========");
+							 mlog.info(TAG, "lastChangeDO MR_State= "+MR_State);
+							 mlog.info(TAG, "============End=============");					 
+						 }	
+						 String Item_MetaData = lastChangeDO.getAVTransportURIMetaData();					 
+	//					 String CurrentTrackEmbeddedMetaData = lastChangeDO.getCurrentTrackEmbeddedMetaData();	
+						 ItemDO itemDO =null;
+						 if(Item_MetaData!=null&&!Item_MetaData.equals("")){
+							 mlog.info(TAG, "============Start=============");					 
+							 mlog.info(TAG, "Item_MetaData = "+Item_MetaData);
+							 itemDO =  _parseItem(Item_MetaData);
+							 mlog.info(TAG, "============End=============");
+						 }
+						 //info
+						 if(itemDO!=null){
+							 MIListner.SetMusicInfo_State(itemDO.getTitle(), itemDO.getArtist(), itemDO.getAlbum(), itemDO.getGenre(),itemDO.getAlbumURI());
+							 mlog.info(TAG, "============Start=============");
+						 	 mlog.info(TAG, "Title = "+itemDO.getTitle());							
+							 mlog.info(TAG, "Artist = "+itemDO.getArtist());
+							 mlog.info(TAG, "Album = "+itemDO.getAlbum());
+							 mlog.info(TAG, "Genre = "+itemDO.getGenre());	
+							 mlog.info(TAG, "AlbumURI = "+itemDO.getAlbumURI());										
+							 mlog.info(TAG, "============End=============");
+						 }				 
+	
 						 mlog.info(TAG, "==========EVEN STAR==========");
 						 mlog.info(TAG, "lastChangeDO MR_State= "+MR_State);
-						 mlog.info(TAG, "============End=============");					 
-					 }	
-					 String Item_MetaData = lastChangeDO.getAVTransportURIMetaData();					 
-//					 String CurrentTrackEmbeddedMetaData = lastChangeDO.getCurrentTrackEmbeddedMetaData();	
-					 ItemDO itemDO =null;
-					 if(Item_MetaData!=null&&!Item_MetaData.equals("")){
-						 mlog.info(TAG, "============Start=============");					 
-						 mlog.info(TAG, "Item_MetaData = "+Item_MetaData);
-						 itemDO =  _parseItem(Item_MetaData);
-						 mlog.info(TAG, "============End=============");
+						 mlog.info(TAG, "lastChangeDO valeu= "+lastChangeDO.getCurrentTrackEmbeddedMetaData());
+						 mlog.info(TAG, "lastChangeDO valeu= "+lastChangeDO.getRelativeTimePosition());
+						 mlog.info(TAG, "lastChangeDO valeu= "+lastChangeDO.getCurrentTrackDuration());
+						 mlog.info(TAG, "==========EVEN END==========");
 					 }
-					 //info
-					 if(itemDO!=null){
-						 MIListner.SetMusicInfo_State(itemDO.getTitle(), itemDO.getArtist(), itemDO.getAlbum(), itemDO.getGenre(),itemDO.getAlbumURI());
-						 mlog.info(TAG, "============Start=============");
-					 	 mlog.info(TAG, "Title = "+itemDO.getTitle());							
-						 mlog.info(TAG, "Artist = "+itemDO.getArtist());
-						 mlog.info(TAG, "Album = "+itemDO.getAlbum());
-						 mlog.info(TAG, "Genre = "+itemDO.getGenre());	
-						 mlog.info(TAG, "AlbumURI = "+itemDO.getAlbumURI());										
-						 mlog.info(TAG, "============End=============");
-					 }
-	
-					 mlog.info(TAG, "==========EVEN STAR==========");
-					 mlog.info(TAG, "lastChangeDO MR_State= "+MR_State);
-					 mlog.info(TAG, "lastChangeDO valeu= "+lastChangeDO.getCurrentTrackEmbeddedMetaData());
-					 mlog.info(TAG, "lastChangeDO valeu= "+lastChangeDO.getRelativeTimePosition());
-					 mlog.info(TAG, "lastChangeDO valeu= "+lastChangeDO.getCurrentTrackDuration());
-					 mlog.info(TAG, "==========EVEN END==========");	
 				 }
 				 //Queue
 				 StateVariableValue q_Status = values.get("TracksInQueue");
@@ -295,8 +318,7 @@ public class DeviceDisplayList {
 		  return data;   
 	}
 	private List<TrackDO> _parseTrack(String xml){
-		List<TrackDO> data = null;   
-
+		List<TrackDO> data = null;  
 		  // sax stuff   
 		  try { 			  
 			SAXParserFactory spf = SAXParserFactory.newInstance();   
@@ -333,6 +355,20 @@ public class DeviceDisplayList {
 	public List<DeviceDisplay> getMediaServerList(){
 		return MSList;
 	}
+	public Device GetMMDevice(String MMDeviceUDN){
+		for(DeviceDisplay deviceDisplay :MRList){
+			Device MMDevice = deviceDisplay.getMMDevice();
+			mlog.info(TAG, "MMDeviceUDN = "+MMDeviceUDN);
+			if(MMDevice!=null){
+				mlog.info(TAG, "MMDeviceUDN2 = "+MMDevice.getIdentity().getUdn());
+			}
+			
+			if(MMDevice!=null&&MMDevice.getIdentity().getUdn().toString().equals(MMDeviceUDN)){
+				return MMDevice;
+			}
+		}
+		return null;
+	}
 	public void Stop_Device_StateCallBack(){
 		if(this.Device_StateCallBack!=null){
 			this.Device_StateCallBack.end();
@@ -352,5 +388,124 @@ public class DeviceDisplayList {
 	}
 	public void setQueqe_Listner(FI_Queqe_ListView_BaseAdapter_Queqe_Listner queqe_listner) {
 		this.queqe_listner = queqe_listner;
+	}
+	private class GroupEventHandler{
+		private DeviceDisplay deviceDisplay;
+		private SubscriptionCallback Device_DisplayInfoCallBack;
+		private AndroidUpnpService upnpServer;
+		public GroupEventHandler(DeviceDisplay deviceDisplay){
+			this.deviceDisplay = deviceDisplay;
+			//取得upnpServer
+			this.upnpServer = ((FragmentActivity_Main)context).GETUPnPService();			
+			RegistGroupEvent();
+		}
+		public void checkMasterORSingle(){
+			Device MMDevice = this.deviceDisplay.getMMDevice();			
+			Service GroupService = MMDevice.findService(new UDAServiceId("Group"));
+			if(GroupService!=null){
+				Action GetDisplayInfoAction = GroupService.getAction("GetDisplayInfo");				
+				if(GetDisplayInfoAction!=null){				
+					ActionInvocation ai = new ActionInvocation(GetDisplayInfoAction,null);
+					ActionCallback GetDisplayInfoActionCallBack = new ActionCallback(ai){
+						@Override
+						public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
+							mlog.info(TAG, "GetDisplayInfoActionCallBack failure = "+arg2);
+						}
+						@Override
+						public void success(ActionInvocation arg0) {
+							ActionArgument DisplayInfo = arg0.getAction().getOutputArgument("DisplayInfo");
+							ActionArgumentValue actionArgumentValue = arg0.getOutput(DisplayInfo);
+							GroupVO groupVO = _parseGroup(actionArgumentValue.toString());
+							mlog.info(TAG, "GetDisplayInfoActionCallBack  = "+actionArgumentValue.toString());
+							mlog.info(TAG, "GetDisplayInfoActionCallBack  = "+groupVO.getName());
+							mlog.info(TAG, "GetDisplayInfoActionCallBack success");
+							deviceDisplay.setGroupVO(groupVO);
+							if(FSELAListner!=null){
+								if(!groupVO.isSlave()){
+									FSELAListner.AddMediaRenderer(deviceDisplay);		
+								}								
+							}
+						}											
+					};
+					upnpServer.getControlPoint().execute(GetDisplayInfoActionCallBack);	
+				}
+			}
+		}
+		public void RegistGroupEvent(){
+			Device MMDevice = this.deviceDisplay.getMMDevice();			
+			Service GroupService = MMDevice.findService(new UDAServiceId("Group"));
+			if(GroupService!=null){
+				Device_DisplayInfoCallBack = new SubscriptionCallback(GroupService){
+					@Override
+					protected void ended(GENASubscription arg0, CancelReason arg1, UpnpResponse arg2) {
+					}
+	
+					@Override
+					protected void established(GENASubscription arg0) {
+					}
+	
+					@Override
+					protected void eventReceived(GENASubscription arg0) {	
+						Map<String, StateVariableValue> values = arg0.getCurrentValues();
+						StateVariableValue status = values.get("DisplayInfo");
+						mlog.info(TAG,"aaaaaFriendlyName = "+GroupEventHandler.this.deviceDisplay.getDevice().getDetails().getFriendlyName());
+						for(Map.Entry<String, StateVariableValue>value:values.entrySet()){
+							mlog.info(TAG, "even = "+value.getKey()+"  value = "+value.getValue().toString());
+						}
+						if(status!=null){
+							GroupVO groupVO = _parseGroup(status.toString());
+							if(groupVO.isSlave()){
+								if(FSELAListner!=null){
+									FSELAListner.RemoveMediaRenderer(GroupEventHandler.this.deviceDisplay);
+								}
+							}else{
+								if(FSELAListner!=null){
+									GroupEventHandler.this.deviceDisplay.setGroupVO(groupVO);
+									FSELAListner.AddMediaRenderer(GroupEventHandler.this.deviceDisplay);
+								}
+							}
+						}
+						
+						
+					}
+	
+					@Override
+					protected void eventsMissed(GENASubscription arg0, int arg1) {					
+					}
+	
+					@Override
+					protected void failed(GENASubscription arg0, UpnpResponse arg1,	Exception arg2, String arg3) {
+					}
+				};
+				upnpServer.getControlPoint().execute(Device_DisplayInfoCallBack);
+			}
+		}
+	}
+	private GroupVO _parseGroup(String xml){
+		GroupVO data = null;   
+
+		  // sax stuff   
+		  try { 			  
+			SAXParserFactory spf = SAXParserFactory.newInstance();   
+		    SAXParser sp = spf.newSAXParser();   
+		    XMLReader xr = sp.getXMLReader();  
+
+		    GroupHandler dataHandler = new GroupHandler();   
+		    xr.setContentHandler(dataHandler);   
+		    
+		    if(true){		    	
+		    	xr.parse(new InputSource(new StringReader(xml))); 
+			    data = dataHandler.getData();  
+		    } 
+		  } catch(ParserConfigurationException pce) {   
+		    Log.e("SAX XML", "sax parse error", pce);   
+		  } catch(SAXException se) {   
+		    Log.e("SAX XML", "sax error", se);   
+		  } catch(IOException ioe) {   
+		    Log.e("SAX XML", "sax parse io error", ioe);   
+		  } catch(Exception e) {
+			  e.printStackTrace();
+		  }  
+		  return data;   
 	}
 }

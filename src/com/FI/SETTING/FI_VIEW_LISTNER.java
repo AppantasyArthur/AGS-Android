@@ -24,7 +24,16 @@ public class FI_VIEW_LISTNER {
 	}
 	public void SET_QUEUE_ListView_Listner(FI_ListView QUEUE_ListView){
 		if(device_size==6){
-			//***************************PHONE*********************************	
+			//***************************PHONE*********************************
+			QUEUE_ListView.setOnItemLongClickListener(new OnItemLongClickListener(){
+				@Override
+				public boolean onItemLongClick(AdapterView<?> arg0, View arg1,int arg2, long arg3) {
+					if(!((FI_Queqe_ListView_BaseAdapter_Phone)arg0.getAdapter()).GET_Edite()){
+						((FI_Queqe_ListView_BaseAdapter_Phone)arg0.getAdapter()).SET_Edite(true);
+					}
+					return false;
+				}			
+			});
 			//***************************PHONE*********************************	
 		}else{
 			//***************************PAD*********************************
@@ -37,8 +46,8 @@ public class FI_VIEW_LISTNER {
 			QUEUE_ListView.setOnItemLongClickListener(new OnItemLongClickListener(){
 				@Override
 				public boolean onItemLongClick(AdapterView<?> arg0, View arg1,int arg2, long arg3) {
-					if(!((FI_Queqe_ListView_BaseAdapter)arg0.getAdapter()).GET_Edite()){
-						((FI_Queqe_ListView_BaseAdapter)arg0.getAdapter()).SET_Edite(true);
+					if(!((FI_Queqe_ListView_BaseAdapter_PAD)arg0.getAdapter()).GET_Edite()){
+						((FI_Queqe_ListView_BaseAdapter_PAD)arg0.getAdapter()).SET_Edite(true);
 						((FragmentActivity_Main)context).ShowDoneButton();
 					}
 					return false;

@@ -29,24 +29,18 @@ public class FS_VIEW_SETTING {
 			switch(view.getId()){
 			case R.id.pFS_RLayout:
 				pFS_RLayout(view);
-				break;
-			case R.id.pFS_RLayout_TITLE_RLayout:
-				pFS_RLayout_TITLE_RLayout(view);
-				break;
-			case R.id.pFS_RLayout_RLayout_TITLE_TextView:
-				pFS_RLayout_RLayout_TITLE_TextView(view);
-				break;
+				break;			
 			case R.id.pFS_RLayout_TITLE2_RLayout:
 				pFS_RLayout_TITLE2_RLayout(view);
 				break;
-			case R.id.pFS_RLayou_RLayout_Nowplaying_Button:
-				pFS_RLayou_RLayout_Nowplaying_Button(view);
+			case R.id.pFS_RLayout_RLayout_Nowplaying_Button:
+				pFS_RLayout_RLayout_Nowplaying_Button(view);
 				break;
 			case R.id.pFS_RLayout_RLayout_Center_TextView:
 				pFS_RLayout_RLayout_Center_TextView(view);
 				break;
-			case R.id.pFS_RLayou_RLayout_Music_Button:
-				pFS_RLayou_RLayout_Music_Button(view);
+			case R.id.pFS_RLayout_RLayout_Music_Button:
+				pFS_RLayout_RLayout_Music_Button(view);
 				break;	
 			case R.id.pFS_RLayout_TITLE3_RLayout:
 				pFS_RLayout_TITLE3_RLayout(view);
@@ -66,8 +60,8 @@ public class FS_VIEW_SETTING {
 			case R.id.pFS_RLayout_RLayout_Next_IButton:
 				pFS_RLayout_RLayout_Next_IButton(view);
 				break;
-			case R.id.pFS_RLayout_RLayout_TITLE4_IButton:
-				pFS_RLayout_RLayout_TITLE4_IButton(view);
+			case R.id.pFS_RLayout_RLayout_ShowTITLE4_IButton:
+				pFS_RLayout_RLayout_ShowTITLE4_IButton(view);
 				break;
 			case R.id.pFS_RLayout_TITLE4_RLayout:
 				pFS_RLayout_TITLE4_RLayout(view);
@@ -87,6 +81,18 @@ public class FS_VIEW_SETTING {
 			case R.id.pFS_RLayout_RLayout_Total_TextView:
 				pFS_RLayout_RLayout_Total_TextView(view);
 				break;
+			case R.id.pFS_RLayout_SPEAKER_EListView:
+				pFS_RLayout_SPEAKER_EListView(view);
+				break;
+			case R.id.pFS_RLayout_Bottom_RLayout:
+				pFS_RLayout_Bottom_RLayout(view);
+				break;
+			case R.id.pFS_RLayout_RLayout_Setting_IButton:
+				pFS_RLayout_RLayout_Setting_IButton(view);
+				break;
+			case R.id.pFS_RLayout_RLayout_PASUEALL_Button:
+				pFS_RLayout_RLayout_PASUEALL_Button(view);
+				break;			
 			}
 		}else{
 			switch(view.getId()){
@@ -105,38 +111,30 @@ public class FS_VIEW_SETTING {
 			}	
 		}
 	}	
+	
 	//***************************PHONE*********************************	
 	
 	private void pFS_RLayout(View view) {
 		new ThreadReadBitMapInAssets(context, "phone/speaker/bg.PNG", view, 3);
-	}
-	private void pFS_RLayout_TITLE_RLayout(View view) {
-		Tool.fitsViewHeight(20, view);		
-	}
-	private void pFS_RLayout_RLayout_TITLE_TextView(View view) {
-		Tool.fitsViewLeftMargin(7, view);
-		Tool.fitsViewTextSize(12, view);	
-	}
+	}	
 	private void pFS_RLayout_TITLE2_RLayout(View view) {
-		Tool.fitsViewHeight(30, view);
+		Tool.fitsViewHeight(36, view);
 		new ThreadReadBitMapInAssets(context, "phone/grouprooms/top_talie.PNG", view, 3);
 	}
-	private void pFS_RLayou_RLayout_Nowplaying_Button(View view) {
+	private void pFS_RLayout_RLayout_Nowplaying_Button(View view) {
 		Tool.fitsViewLeftMargin(7, view);
-		Tool.fitsViewHeight(25, view);
-		Tool.fitsViewWidth(67, view);
+		Tool.fitsViewHeight(26, view);
+		Tool.fitsViewWidth(59, view);
 		Tool.fitsViewTextSize(10, view);
 		new ThreadReadStateListInAssets(context, "phone/speaker/bottom_button_f.png","phone/speaker/bottom_button_single.png", view, 4);
 	}
 	private void pFS_RLayout_RLayout_Center_TextView(View view) {
 		Tool.fitsViewTextSize(18, view);
-		Tool.fitsViewTopMargin(-10, view);
-		
 	}
-	private void pFS_RLayou_RLayout_Music_Button(View view) {
+	private void pFS_RLayout_RLayout_Music_Button(View view) {
 		Tool.fitsViewRightMargin(7, view);
-		Tool.fitsViewHeight(25, view);
-		Tool.fitsViewWidth(67, view);
+		Tool.fitsViewHeight(26, view);
+		Tool.fitsViewWidth(59, view);
 		Tool.fitsViewTextSize(10, view);
 		new ThreadReadStateListInAssets(context, "phone/speaker/bottom_button_f.png","phone/speaker/bottom_button_single.png", view, 4);
 	}
@@ -151,9 +149,9 @@ public class FS_VIEW_SETTING {
 		new ThreadReadBitMapInAssets(context, "phone/play_volume/volume.png", view, 2);
 	}
 	private void pFS_RLayout_RLayout_Sound_SeekBar(View view) {
-		Tool.fitsViewWidth(67, view);
+		Tool.fitsViewWidth(72, view);
 		view.getLayoutParams().height = Tool.getWidth(23);	
-		Tool.fitsViewLeftMargin(1, view);		
+		Tool.fitsViewLeftMargin(4, view);		
 		view.setPadding(Tool.getWidth(6), Tool.getWidth(6), Tool.getWidth(6), Tool.getWidth(6));
 		Bitmap myThumbO = Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "phone/play_volume/base_icon.png"), Tool.getWidth(12), Tool.getWidth(14), false);
 		Drawable myThumb = new BitmapDrawable(context.getResources(),myThumbO);
@@ -161,37 +159,36 @@ public class FS_VIEW_SETTING {
 	}
 	private void pFS_RLayout_RLayout_Previous_IButton(View view) {
 		//Previous ImageButton
-		Tool.fitsViewLeftMargin(98, view);		
-		Tool.fitsViewWidth(20, view);
-		view.getLayoutParams().height = Tool.getWidth(20);
+		Tool.fitsViewLeftMargin(126, view);		
+		Tool.fitsViewWidth(33, view);
+		view.getLayoutParams().height = Tool.getWidth(34);
 		new ThreadReadStateListInAssets(context, "phone/play_volume/arrow_left_f.png","phone/play_volume/arrow_left_n.png", view, 2);
 	}
 	private void pFS_RLayout_RLayout_Play_IButton(View view) {
-		//Previous ImageButton
-		Tool.fitsViewLeftMargin(119, view);		
-		Tool.fitsViewWidth(24, view);
-		view.getLayoutParams().height = Tool.getWidth(26);		
+		//Play ImageButton
+		Tool.fitsViewLeftMargin(175, view);		
+		Tool.fitsViewWidth(40, view);
+		view.getLayoutParams().height = Tool.getWidth(41);		
 		view.setTag(0);
 		new ThreadReadStateListInAssets(context, "phone/play_volume/play_f.png","phone/play_volume/play_n.png", view, 2);
 	}
 	private void pFS_RLayout_RLayout_Next_IButton(View view) {
-		//Previous ImageButton
-		Tool.fitsViewLeftMargin(144, view);		
-		Tool.fitsViewWidth(20, view);
-		view.getLayoutParams().height = Tool.getWidth(20);
+		//Next ImageButton
+		Tool.fitsViewLeftMargin(229, view);		
+		Tool.fitsViewWidth(33, view);
+		view.getLayoutParams().height = Tool.getWidth(34);
 		new ThreadReadStateListInAssets(context, "phone/play_volume/arrow_right_f.png","phone/play_volume/arrow_right_n.png", view, 2);
 	}
-	private void pFS_RLayout_RLayout_TITLE4_IButton(View view) {
+	private void pFS_RLayout_RLayout_ShowTITLE4_IButton(View view) {
 		//SHOW TITLE4_IButton
-		Tool.fitsViewWidth(17, view);
-		view.getLayoutParams().height = Tool.getWidth(16);
+		Tool.fitsViewWidth(22, view);
+		view.getLayoutParams().height = Tool.getWidth(20);
 		Tool.fitsViewRightMargin(6, view);
 		new ThreadReadBitMapInAssets(context, "phone/play_volume/timeline_open.png", view, 2);
 	}
 	private void pFS_RLayout_TITLE4_RLayout(View view) {
 		Tool.fitsViewHeight(37, view);			
 		new ThreadReadBitMapInAssets(context, "phone/play_volume/volume_bar.png", view, 3);
-		
 	}
 	private void pFS_RLayout_RLayout_Cycle_IButton(View view) {
 		//Cycle IButton
@@ -225,13 +222,34 @@ public class FS_VIEW_SETTING {
 		Bitmap myThumbO = Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "phone/play_volume/base_icon.png"), Tool.getWidth(12), Tool.getWidth(14), false);
 		Drawable myThumb = new BitmapDrawable(context.getResources(),myThumbO);
 		((SeekBar)view).setThumb(myThumb);
-
 	}
 	private void pFS_RLayout_RLayout_Total_TextView(View view) {		
 		Tool.fitsViewWidth(35, view);
 		view.getLayoutParams().height = Tool.getWidth(20);
 		Tool.fitsViewRightMargin(6, view);
 		Tool.fitsViewTextSize(10, view);
+	}
+	private void pFS_RLayout_SPEAKER_EListView(View view) {
+		FS_SPEAKER_ExpandableListAdapter_Phone EBaseAdapter = new FS_SPEAKER_ExpandableListAdapter_Phone(context,(FS_SPEAKER_ExpandableListView)view);
+		((FS_SPEAKER_ExpandableListView)view).setAdapter(EBaseAdapter);
+		((FS_SPEAKER_ExpandableListView)view).setItemsCanFocus(true);
+		((FS_SPEAKER_ExpandableListView)view).setGroupIndicator(null);
+	}
+	private void pFS_RLayout_Bottom_RLayout(View view) {
+		Tool.fitsViewHeight(30, view);			
+		new ThreadReadBitMapInAssets(context, "phone/grouprooms/setting_bar.png", view, 3);		
+	}
+	private void pFS_RLayout_RLayout_Setting_IButton(View view) {
+		Tool.fitsViewWidth(24, view);
+		view.getLayoutParams().height = Tool.getWidth(30);
+		Tool.fitsViewLeftMargin(7, view);		
+		new ThreadReadBitMapInAssets(context, "phone/grouprooms/setting.png", view, 2);
+	}
+	private void pFS_RLayout_RLayout_PASUEALL_Button(View view) {
+		Tool.fitsViewWidth(66, view);
+		view.getLayoutParams().height = Tool.getWidth(27);		
+		Tool.fitsViewTextSize(10, view);			
+		new ThreadReadStateListInAssets(context, "phone/speaker/bottom_button_f.png","phone/speaker/bottom_button_single.png", view, 4);
 	}
 //***************************PHONE*********************************
 //***************************PAD*********************************	
@@ -253,11 +271,10 @@ public class FS_VIEW_SETTING {
 //	}
 	private void PAD_FS_RLayout_SPEAKER_EListView(View view) {		
 		Tool.fitsViewWidth(270, view);	
-		FS_SPEAKER_ExpandableListAdapter EBaseAdapter = new FS_SPEAKER_ExpandableListAdapter(context,(FS_SPEAKER_ExpandableListView)view);
+		FS_SPEAKER_ExpandableListAdapter_Pad EBaseAdapter = new FS_SPEAKER_ExpandableListAdapter_Pad(context,(FS_SPEAKER_ExpandableListView)view);
 		((FS_SPEAKER_ExpandableListView)view).setAdapter(EBaseAdapter);
 		((FS_SPEAKER_ExpandableListView)view).setItemsCanFocus(true);
 		((FS_SPEAKER_ExpandableListView)view).setGroupIndicator(null);
-		
 	}
 //***************************PAD*********************************
 	

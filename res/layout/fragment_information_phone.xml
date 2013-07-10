@@ -1,18 +1,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/pFS_RLayout"
+    android:id="@+id/pFI_RLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#00000000" >
+	
     <RelativeLayout 
-        android:id="@+id/pFS_RLayout_TITLE2_RLayout"
+        android:id="@+id/pFI_RLayout_TITLE2_RLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:background="#00000000"
         >   
         <Button 
-            android:id="@+id/pFS_RLayout_RLayout_Nowplaying_Button"
+            android:id="@+id/pFI_RLayout_RLayout_Speaker_Button"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_centerVertical="true"
@@ -21,10 +22,10 @@
 	        android:gravity="center"
 	        android:textColor="#ffffff"	        
 	        android:padding="0dp"
-	        android:text="Now playing"
+	        android:text="Speaker"
             />    
         <TextView
-            android:id="@+id/pFS_RLayout_RLayout_Center_TextView"
+            android:id="@+id/pFI_RLayout_RLayout_Center_TextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
@@ -35,7 +36,7 @@
             android:text="Speakers"      
             />
         <Button 
-            android:id="@+id/pFS_RLayout_RLayout_Music_Button"
+            android:id="@+id/pFI_RLayout_RLayout_Music_Button"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_centerVertical="true"
@@ -48,14 +49,47 @@
             />    
     </RelativeLayout>
     <RelativeLayout 
-		android:id="@+id/pFS_RLayout_TITLE3_RLayout"
+        android:id="@+id/pFI_RLayout_TITLE2_1_RLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="#00000000"
+        android:visibility="gone"
+        android:clickable="true"
+        >   
+        <Button 
+            android:id="@+id/pFI_RLayout_RLayout_Close_Button"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerVertical="true"
+	        android:layout_alignParentLeft="true"	        
+	        android:background="#00000000"
+	        android:gravity="center"
+	        android:textColor="#ffffff"	        
+	        android:padding="0dp"
+	        android:text="Close"
+            />    
+        <TextView
+            android:id="@+id/pFI_RLayout_RLayout_Center2_TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:textStyle="bold"
+            android:padding="0dp"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:text="Queue"      
+            />        
+    </RelativeLayout>
+    <RelativeLayout 
+		android:id="@+id/pFI_RLayout_TITLE3_RLayout"
 		android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:layout_below="@+id/pFS_RLayout_TITLE2_RLayout"
+	    android:layout_below="@+id/pFI_RLayout_TITLE2_RLayout"
 	    android:background="#00000000"
 		>
 		<ImageButton 
-		    android:id="@+id/pFS_RLayout_RLayout_Sound_IButton"
+		    android:id="@+id/pFI_RLayout_RLayout_Sound_IButton"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:layout_alignParentLeft="true"
@@ -64,17 +98,17 @@
 		    android:background="#00000000"
 		    />
 		<SeekBar
-		    android:id="@+id/pFS_RLayout_RLayout_Sound_SeekBar"
+		    android:id="@+id/pFI_RLayout_RLayout_Sound_SeekBar"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:layout_toRightOf="@+id/pFS_RLayout_RLayout_Sound_IButton"
+		    android:layout_toRightOf="@+id/pFI_RLayout_RLayout_Sound_IButton"
 		    android:layout_centerVertical="true"	        	   
 		    android:max="100"
 		    android:progressDrawable="@drawable/seekbar_sort_style"		        
 		    android:thumbOffset="0dp"
 		    />	        	        
 		<ImageButton 
-		    android:id="@+id/pFS_RLayout_RLayout_Previous_IButton"
+		    android:id="@+id/pFI_RLayout_RLayout_Previous_IButton"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:layout_alignParentLeft="true"
@@ -83,7 +117,7 @@
 		    android:background="#00000000"		       
 		    />
 		<ImageButton 
-		    android:id="@+id/pFS_RLayout_RLayout_Play_IButton"
+		    android:id="@+id/pFI_RLayout_RLayout_Play_IButton"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:layout_alignParentLeft="true"
@@ -92,7 +126,7 @@
 		    android:background="#00000000"
 		    />
 		<ImageButton 
-		    android:id="@+id/pFS_RLayout_RLayout_Next_IButton"
+		    android:id="@+id/pFI_RLayout_RLayout_Next_IButton"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:layout_alignParentLeft="true"
@@ -101,7 +135,7 @@
 		    android:background="#00000000"
 		    />
 		<ImageButton 
-		    android:id="@+id/pFS_RLayout_RLayout_ShowTITLE4_IButton"
+		    android:id="@+id/pFI_RLayout_RLayout_ShowTITLE4_IButton"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:layout_alignParentRight="true"
@@ -110,24 +144,67 @@
 		    android:background="#00000000"
 		    />
 	</RelativeLayout>	 
-    <com.FS.SETTING.FS_SPEAKER_ExpandableListView
-        android:id="@+id/pFS_RLayout_SPEAKER_EListView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"       
-        android:layout_below="@+id/pFS_RLayout_TITLE3_RLayout"
-        android:layout_above="@+id/pFS_RLayout_Bottom_RLayout"    
-        android:background="#00000000"
-        android:divider="#00000000"    
-        >        
-    </com.FS.SETTING.FS_SPEAKER_ExpandableListView>  
+    <ViewFlipper 
+	    android:id="@+id/pFI_RLayout_ViewContent_ViewFlipper"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_below="@+id/pFI_RLayout_TITLE3_RLayout"
+	    android:layout_above="@+id/pFI_RLayout_Bottom_RLayout"
+	    android:background="#00000000"
+	    
+	    >     
+	   <RelativeLayout 
+	        android:id="@+id/pFI_RLayout_DOWN_RLayout"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"	        
+	        android:background="#00000000"
+	        >       
+	        <com.FI.SETTING.FI_ListView
+	            android:id="@+id/pFI_RLayout_RLayout_QUEUE_ListView"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:background="#00000000"
+	            android:listSelector="@android:color/transparent"
+	            android:divider="#00000000"
+	            >
+	        </com.FI.SETTING.FI_ListView>	
+	    </RelativeLayout>
+	    <RelativeLayout 
+	        android:id="@+id/pFI_RLayout_UP_RLayout"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"	        
+	        android:background="#ff0000"
+	        >  	   
+	        
+	        <com.FI.SETTING.FI_ViewFlipper
+	            android:id="@+id/pFI_RLayout_RLayout_INFOR_ViewFlipper"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent" 	            
+	            android:background="#00000000"
+	            >
+	        </com.FI.SETTING.FI_ViewFlipper>	         
+	        <com.FI.SETTING.FI_PointLiLayout
+	            android:id="@+id/pFI_RLayout_RLayout_Point_LLayout"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" 
+	            android:layout_alignParentBottom="true"
+	            android:layout_centerHorizontal="true"
+	            android:background="#00000000"
+	            >         
+	        </com.FI.SETTING.FI_PointLiLayout>		              
+	    </RelativeLayout>
+	     
+	    
+    </ViewFlipper>
     <RelativeLayout 
-	    android:id="@+id/pFS_RLayout_TITLE4_RLayout"
+	    android:id="@+id/pFI_RLayout_TITLE4_RLayout"
 		android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:layout_below="@+id/pFS_RLayout_TITLE3_RLayout"	    
+	    android:layout_below="@+id/pFI_RLayout_TITLE3_RLayout"	
+	    android:visibility="gone"    
 	    >
 		<ImageButton 
-			android:id="@+id/pFS_RLayout_RLayout_Cycle_IButton"
+			android:id="@+id/pFI_RLayout_RLayout_Cycle_IButton"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:layout_alignParentLeft="true"
@@ -136,16 +213,16 @@
 		    android:background="#00000000"
 		    />		   
 		<ImageButton 
-		    android:id="@+id/pFS_RLayout_RLayout_Random_IButton"
+		    android:id="@+id/pFI_RLayout_RLayout_Random_IButton"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:layout_toRightOf="@+id/pFS_RLayout_RLayout_Cycle_IButton"		        
+		    android:layout_toRightOf="@+id/pFI_RLayout_RLayout_Cycle_IButton"		        
 		    android:layout_alignParentTop="true"
 		    android:scaleType="fitXY"
 		    android:background="#00000000"
 		    />		     
 		<TextView 
-		    android:id="@+id/pFS_RLayout_RLayout_Current_TextView"
+		    android:id="@+id/pFI_RLayout_RLayout_Current_TextView"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:layout_alignParentLeft="true"
@@ -156,18 +233,18 @@
 		    android:text="00:00"        
 		    />
 		<SeekBar 
-		    android:id="@+id/pFS_RLayout_RLayout_Music_SeekBar"
+		    android:id="@+id/pFI_RLayout_RLayout_Music_SeekBar"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:layout_centerVertical="true"
-		    android:layout_toLeftOf="@+id/pFS_RLayout_RLayout_Total_TextView"
-		    android:layout_toRightOf="@+id/pFS_RLayout_RLayout_Current_TextView"
+		    android:layout_toLeftOf="@+id/pFI_RLayout_RLayout_Total_TextView"
+		    android:layout_toRightOf="@+id/pFI_RLayout_RLayout_Current_TextView"
 		    android:progressDrawable="@drawable/seekbar_style"		        
 		    android:thumbOffset="0dp"		        
 		    android:background="#00000000"		       
 		    />
 		<TextView 		    
-		    android:id="@+id/pFS_RLayout_RLayout_Total_TextView"
+		    android:id="@+id/pFI_RLayout_RLayout_Total_TextView"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:layout_alignParentRight="true"
@@ -179,13 +256,13 @@
 		    />
 	</RelativeLayout>	
     <RelativeLayout 
-        android:id="@+id/pFS_RLayout_Bottom_RLayout"
+        android:id="@+id/pFI_RLayout_Bottom_RLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentBottom="true"       
         >
        	<ImageButton 
-       	    android:id="@+id/pFS_RLayout_RLayout_Setting_IButton"
+       	    android:id="@+id/pFI_RLayout_RLayout_Setting_IButton"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentLeft="true"
@@ -194,7 +271,7 @@
 	        android:scaleType="fitXY"
        	    />
        	<Button 
-       	    android:id="@+id/pFS_RLayout_RLayout_PASUEALL_Button"
+       	    android:id="@+id/pFI_RLayout_RLayout_Queue_Button"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"	        
 	        android:layout_centerInParent="true"
@@ -202,7 +279,7 @@
 	        android:scaleType="fitXY"
 	        android:padding="0dp"
 		    android:textColor="#ffffff"
-		    android:text="Pasue ALL"
+		    android:text="Queue"
 		    android:textStyle="bold"
        	    />
     </RelativeLayout>  

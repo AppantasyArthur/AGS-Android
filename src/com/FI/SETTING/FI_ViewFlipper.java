@@ -15,6 +15,7 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -36,6 +37,7 @@ public class FI_ViewFlipper extends ViewFlipper {
 	private Context context;
 	
 	private boolean isTouchDownHere = false;//是不是在這個VIEW上Touch Down
+	private int device_size = 0;
 	
 	private Handler handler = new Handler(){
 		@Override
@@ -95,6 +97,7 @@ public class FI_ViewFlipper extends ViewFlipper {
 	private void CreateProcess(){
 		this.mlog.LogSwitch = true;
 		ViewGestureDetector = new GestureDetector(context,new MyGestureListener());
+		device_size = ((FragmentActivity_Main)context).getDevice_Size();
 		CreateMusicInfor_Listner();
 	}
 	private void CreateMusicInfor_Listner(){
@@ -195,11 +198,66 @@ public class FI_ViewFlipper extends ViewFlipper {
 		old_View = new_View;		
 		new_View = LayoutInflater.from(context).inflate(R.layout.fi_infor_viewflipper_cell_pad, null);
 		new_View.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-		SetView(new_View);
+		if(device_size==6){
+			Phone_SetView(new_View);
+		}else{
+			PAD_SetView(new_View);
+		}
+		
 		this.addView(new_View);
 	}
 	//設定介面
-	private void SetView(View view) {
+	private void Phone_SetView(View view) {
+		//Cell RLayout
+		new ThreadReadBitMapInAssets(context, "phone/nowplaying/now playing_bg.PNG", view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout), 3);
+		//MusicName TextView
+		Tool.fitsViewWidth(270, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView));
+		Tool.fitsViewHeight(19, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView));
+		Tool.fitsViewTopMargin(212, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView));
+		Tool.fitsViewLeftMargin(65, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView));
+		Tool.fitsViewTextSize(12, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView));
+		//MusicCount TextView
+		Tool.fitsViewWidth(183, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicCount_TextView));
+		Tool.fitsViewHeight(8, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicCount_TextView));
+		Tool.fitsViewTopMargin(3, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicCount_TextView));
+		Tool.fitsViewLeftMargin(65, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicCount_TextView));
+		Tool.fitsViewTextSize(5, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicCount_TextView));
+		//MusicArtist TextView
+		Tool.fitsViewWidth(255, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView));
+		Tool.fitsViewHeight(14, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView));
+		Tool.fitsViewTopMargin(250, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView));
+		Tool.fitsViewLeftMargin(65, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView));
+		Tool.fitsViewTextSize(8, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView));
+		//MusicAlbum TextView
+		Tool.fitsViewWidth(255, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicAlbum_TextView));
+		Tool.fitsViewHeight(14, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicAlbum_TextView));
+		Tool.fitsViewTopMargin(3, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicAlbum_TextView));
+		Tool.fitsViewLeftMargin(65, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicAlbum_TextView));
+		Tool.fitsViewTextSize(8, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicAlbum_TextView));
+		//MusicGenre TextView
+		Tool.fitsViewWidth(255, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView));
+		Tool.fitsViewHeight(14, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView));
+		Tool.fitsViewTopMargin(3, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView));
+		Tool.fitsViewLeftMargin(65, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView));
+		Tool.fitsViewTextSize(8, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView));
+		//MusicNext TextView
+		Tool.fitsViewWidth(212, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicNext_TextView));
+		Tool.fitsViewHeight(13, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicNext_TextView));
+		Tool.fitsViewBottomMargin(35, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicNext_TextView));
+		Tool.fitsViewLeftMargin(65, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicNext_TextView));
+		Tool.fitsViewTextSize(8, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicNext_TextView));
+		//Image_RLayout
+		view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_Image_RLayout).getLayoutParams().height = Tool.getWidth(160);
+		Tool.fitsViewWidth(158, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_Image_RLayout));
+		Tool.fitsViewTopMargin(64, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_Image_RLayout));
+		Tool.fitsViewRightMargin(80, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_Image_RLayout));
+		//Image_ImageView
+		view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_RLayout_Image_ImageView).getLayoutParams().height = Tool.getWidth(160);
+		Tool.fitsViewWidth(158, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_RLayout_Image_ImageView));
+		new ThreadReadBitMapInAssets(context, "pad/Nowplaying/NoCover.png", view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_RLayout_Image_ImageView), 1);
+	}	
+	//設定介面
+	private void PAD_SetView(View view) {
 		//Cell RLayout
 		new ThreadReadBitMapInAssets(context, "pad/Nowplaying/nowplaying_bg_f.png", view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout), 3);
 		//MusicName TextView

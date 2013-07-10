@@ -1,5 +1,6 @@
 package com.FI.SETTING;
 
+import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 
@@ -36,6 +37,7 @@ public class FI_ListView extends ListView {
 	private int[] QUEUE_ListView_Location = new int[2];
 	private int TouchSlop;
 	private int ScrollSlop;
+	private int device_size = 0;
 	
 	private Handler handler = new Handler (){
 		@Override
@@ -47,7 +49,11 @@ public class FI_ListView extends ListView {
 				check = FI_ListView.this.getFirstVisiblePosition()-1;
 				if(check>=0){
 					holdPosition = check;
-					((FI_Queqe_ListView_BaseAdapter)FI_ListView.this.getAdapter()).SET_DRAG_HOLD_POSITION(holdPosition);
+					if(device_size==6){
+						((FI_Queqe_ListView_BaseAdapter_Phone)FI_ListView.this.getAdapter()).SET_DRAG_HOLD_POSITION(holdPosition);
+					}else{
+						((FI_Queqe_ListView_BaseAdapter_PAD)FI_ListView.this.getAdapter()).SET_DRAG_HOLD_POSITION(holdPosition);
+					}					
 					FI_ListView.this.setSelection(holdPosition);
 					mlog.info(TAG, "handler previous");
 				}									
@@ -56,8 +62,13 @@ public class FI_ListView extends ListView {
 				//顯示下一個
 				check = FI_ListView.this.getLastVisiblePosition()+1;
 				if(check<=FI_ListView.this.getCount()){					
-					holdPosition = check-1;					
-					((FI_Queqe_ListView_BaseAdapter)FI_ListView.this.getAdapter()).SET_DRAG_HOLD_POSITION(holdPosition);
+					holdPosition = check-1;		
+					if(device_size==6){
+						((FI_Queqe_ListView_BaseAdapter_Phone)FI_ListView.this.getAdapter()).SET_DRAG_HOLD_POSITION(holdPosition);
+					}else{
+						((FI_Queqe_ListView_BaseAdapter_PAD)FI_ListView.this.getAdapter()).SET_DRAG_HOLD_POSITION(holdPosition);
+					}
+					
 					FI_ListView.this.setSelection(FI_ListView.this.getFirstVisiblePosition()+1);
 					mlog.info(TAG, "handler next");
 				}				
@@ -84,6 +95,7 @@ public class FI_ListView extends ListView {
 	private void CreateProcess(){
 		this.context = this.getContext();
 		this.mlog.LogSwitch = true;
+		this.device_size = ((FragmentActivity_Main)context).getDevice_Size();
 		this.windowManager = (WindowManager)this.context.getSystemService(Context.WINDOW_SERVICE);
 		this.ScrollSlop = 10;//自動上下一個的範圍
 		mlog.info(TAG, "CreateProcess");
@@ -115,7 +127,11 @@ public class FI_ListView extends ListView {
 									Animation.RELATIVE_TO_SELF, 1, Animation.RELATIVE_TO_SELF, 0);
 						}
 						this.holdPosition = check; 
-						((FI_Queqe_ListView_BaseAdapter)FI_ListView.this.getAdapter()).SET_DRAG_HOLD_POSITION(holdPosition);
+						if(device_size==6){
+							((FI_Queqe_ListView_BaseAdapter_Phone)FI_ListView.this.getAdapter()).SET_DRAG_HOLD_POSITION(holdPosition);
+						}else{
+							((FI_Queqe_ListView_BaseAdapter_PAD)FI_ListView.this.getAdapter()).SET_DRAG_HOLD_POSITION(holdPosition);
+						}						
 						move.setDuration(200);						
 						move.setFillBefore(true);
 						move.setStartTime(10);
@@ -158,8 +174,14 @@ public class FI_ListView extends ListView {
 				if(check!=AdapterView.INVALID_POSITION){
 					this.holdPosition = check;
 				}
-				((FI_Queqe_ListView_BaseAdapter)this.getAdapter()).SET_SORT(this.holdPosition);//設定排序位置
-				((FI_Queqe_ListView_BaseAdapter)this.getAdapter()).SET_DRAG_START_POSITION(-1);//還原Start Hold position
+				if(device_size==6){
+					((FI_Queqe_ListView_BaseAdapter_Phone)this.getAdapter()).SET_SORT(this.holdPosition);//設定排序位置
+					((FI_Queqe_ListView_BaseAdapter_Phone)this.getAdapter()).SET_DRAG_START_POSITION(-1);//還原Start Hold position
+				}else{
+					((FI_Queqe_ListView_BaseAdapter_PAD)this.getAdapter()).SET_SORT(this.holdPosition);//設定排序位置
+					((FI_Queqe_ListView_BaseAdapter_PAD)this.getAdapter()).SET_DRAG_START_POSITION(-1);//還原Start Hold position
+				}
+				
 				mlog.info(TAG, "holdPosition = "+holdPosition+",StarPosition = "+this.StarPosition);
 				break;
 			}
@@ -207,7 +229,12 @@ public class FI_ListView extends ListView {
 			ScrollSlop = itemView.getHeight()/2;
 			
 			StartDrag(bm,location[0],location[1]);
-			((FI_Queqe_ListView_BaseAdapter)this.getAdapter()).SET_DRAG_START_POSITION(this.StarPosition);
+			if(device_size==6){
+				((FI_Queqe_ListView_BaseAdapter_Phone)this.getAdapter()).SET_DRAG_START_POSITION(this.StarPosition);
+			}else{
+				((FI_Queqe_ListView_BaseAdapter_PAD)this.getAdapter()).SET_DRAG_START_POSITION(this.StarPosition);
+			}
+			
 			return false;
 		}
 		
