@@ -7,17 +7,17 @@
 	    android:id="@+id/pFAM_RLayout_ViewContent_ViewFlipper"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    >	     
+	    >	
 	    <RelativeLayout 
 	        android:id="@+id/pFAM_RLayout_ViewFlipper_Information_RLayout"
 		    android:layout_width="match_parent"
 		    android:layout_height="match_parent"
-	        ></RelativeLayout>
+	        ></RelativeLayout>  	    
 	    <RelativeLayout 
 	        android:id="@+id/pFAM_RLayout_ViewFlipper_Speaker_RLayout"
 		    android:layout_width="match_parent"
 		    android:layout_height="match_parent"
-	        ></RelativeLayout>	   
+	        ></RelativeLayout>     
 	    <RelativeLayout 
 	        android:id="@+id/pFAM_RLayout_ViewFlipper_Music_RLayout"
 		    android:layout_width="match_parent"

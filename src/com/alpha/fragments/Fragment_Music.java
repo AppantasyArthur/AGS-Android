@@ -51,21 +51,35 @@ public class Fragment_Music extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
-		Fragment_MainView = (ViewGroup)inflater.inflate(R.layout.fragment_music_pad, null);
-		Fragment_MainView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-		findView();
-		findViewListner();
+		if(device_size==6){
+			Fragment_MainView = (ViewGroup)inflater.inflate(R.layout.fragment_music_phone, null);
+			Fragment_MainView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+			Phone_findView();
+			Phone_findViewListner();
+		}else{
+			Fragment_MainView = (ViewGroup)inflater.inflate(R.layout.fragment_music_pad, null);
+			Fragment_MainView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+			PAD_findView();
+			PAD_findViewListner();	
+		}	
 		return Fragment_MainView;
 	}
+	private void Phone_findView() {
+		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFM_RLayout));
+		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFM_RLayout_TITLE2_RLayout));
+	}
+	private void Phone_findViewListner(){
+		
+	}
 
-	private void findView() {
+	private void PAD_findView() {
 		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FM_RLayout_TITLE_RLayout));
 		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FM_RLayout_TITLE2_RLayout));
 		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FM_RLayout_TITLE3_RLayout));
 		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FM_RLayout_Music_ListView));
 		mlog.info(TAG, "findView OK");
 	}	
-	private void findViewListner(){
+	private void PAD_findViewListner(){
 		VIEW_LISTNER.SET_Music_ListView_Listner((FM_ListView)Fragment_MainView.findViewById(R.id.FM_RLayout_Music_ListView));
 		VIEW_LISTNER.SET_SearchMusic_RLayout_Listner((RelativeLayout)Fragment_MainView.findViewById(R.id.FM_RLayout_TITLE_RLayout),
 													(RelativeLayout)Fragment_MainView.findViewById(R.id.FM_RLayout_TITLE2_RLayout),

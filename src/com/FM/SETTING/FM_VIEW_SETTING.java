@@ -13,6 +13,7 @@ import android.widget.ListView;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
+import com.tkb.tool.ThreadReadStateListInAssets;
 import com.tkb.tool.Tool;
 
 public class FM_VIEW_SETTING {
@@ -28,7 +29,14 @@ public class FM_VIEW_SETTING {
 	}
 	public void VIEWSET(View view){
 		if(this.device_size==6){
-			
+			switch(view.getId()){
+			case R.id.pFM_RLayout:
+				pFM_RLayout(view);
+				break;
+			case R.id.pFM_RLayout_TITLE2_RLayout:
+				pFM_RLayout_TITLE2_RLayout(view);
+				break;
+			}
 		}else{
 			switch(view.getId()){
 			case R.id.FM_RLayout_TITLE_RLayout:
@@ -47,7 +55,29 @@ public class FM_VIEW_SETTING {
 		}
 	}
 
+
 //***************************PHONE*********************************
+	private void pFM_RLayout(View view) {		
+		new ThreadReadBitMapInAssets(context, "phone/speaker/bg.PNG", view, 3);
+	}
+	private void pFM_RLayout_TITLE2_RLayout(View view) {
+		Tool.fitsViewHeight(36, view);
+		new ThreadReadBitMapInAssets(context, "phone/grouprooms/top_talie.PNG", view, 3);		
+		//Speaker_Button
+		Tool.fitsViewLeftMargin(7, view.findViewById(R.id.pFM_RLayout_RLayout_Speaker_Button));
+		Tool.fitsViewHeight(26, view.findViewById(R.id.pFM_RLayout_RLayout_Speaker_Button));
+		Tool.fitsViewWidth(59, view.findViewById(R.id.pFM_RLayout_RLayout_Speaker_Button));
+		Tool.fitsViewTextSize(10, view.findViewById(R.id.pFM_RLayout_RLayout_Speaker_Button));
+		new ThreadReadStateListInAssets(context, "phone/speaker/bottom_button_f.png","phone/speaker/bottom_button_single.png", view.findViewById(R.id.pFM_RLayout_RLayout_Speaker_Button), 4);
+		//Center_TextView
+		Tool.fitsViewTextSize(18, view.findViewById(R.id.pFM_RLayout_RLayout_Center_TextView));
+		//NowPlaying_Button
+		Tool.fitsViewRightMargin(7, view.findViewById(R.id.pFM_RLayout_RLayout_NowPlaying_Button));
+		Tool.fitsViewHeight(26, view.findViewById(R.id.pFM_RLayout_RLayout_NowPlaying_Button));
+		Tool.fitsViewWidth(59, view.findViewById(R.id.pFM_RLayout_RLayout_NowPlaying_Button));
+		Tool.fitsViewTextSize(10, view.findViewById(R.id.pFM_RLayout_RLayout_NowPlaying_Button));
+		new ThreadReadStateListInAssets(context, "phone/speaker/bottom_button_f.png","phone/speaker/bottom_button_single.png", view.findViewById(R.id.pFM_RLayout_RLayout_NowPlaying_Button), 4);
+	}
 //***************************PHONE*********************************
 //***************************PAD*********************************	
 	private void PAD_FM_RLayout_TITLE_RLayout(View view) {		

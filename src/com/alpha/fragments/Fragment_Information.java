@@ -79,25 +79,9 @@ public class Fragment_Information extends Fragment {
 	private void Phone_findView() {
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout));		
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_TITLE2_RLayout));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Speaker_Button));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Center_TextView));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Music_Button));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_TITLE2_1_RLayout));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Close_Button));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Center2_TextView));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_TITLE3_RLayout));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Sound_IButton));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Sound_SeekBar));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Previous_IButton));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Play_IButton));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Next_IButton));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_ShowTITLE4_IButton));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_TITLE4_RLayout));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Cycle_IButton));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Random_IButton));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Current_TextView));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Music_SeekBar));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Total_TextView));
 		//==========UP================
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_UP_RLayout));
 		fi_Info_ViewFlipper = (FI_ViewFlipper)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_INFOR_ViewFlipper);
@@ -108,8 +92,6 @@ public class Fragment_Information extends Fragment {
 		fi_Queue_ListView = (FI_ListView)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_QUEUE_ListView);
 		//==========down================
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_Bottom_RLayout));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Setting_IButton));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Queue_Button));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_Bottom2_RLayout));
 	}
 	private void Phone_findViewListner() {
@@ -121,24 +103,24 @@ public class Fragment_Information extends Fragment {
 		this.VIEW_LISTNER.CycleRandom_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Cycle_IButton),
 														(ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Random_IButton));
 		this.VIEW_LISTNER.SET_QUEUE_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Queue_Button),
-											(RelativeLayout)Fragment_MainView.findViewById(R.id.pFI_RLayout_TITLE2_1_RLayout),
-											(RelativeLayout)Fragment_MainView.findViewById(R.id.pFI_RLayout_Bottom2_RLayout),
-											(ViewFlipper)Fragment_MainView.findViewById(R.id.pFI_RLayout_ViewContent_ViewFlipper));
+													(RelativeLayout)Fragment_MainView.findViewById(R.id.pFI_RLayout_TITLE2_1_RLayout),
+													(RelativeLayout)Fragment_MainView.findViewById(R.id.pFI_RLayout_Bottom2_RLayout),
+													(ViewFlipper)Fragment_MainView.findViewById(R.id.pFI_RLayout_ViewContent_ViewFlipper));
 		this.VIEW_LISTNER.SET_Close_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Close_Button),
-											(RelativeLayout)Fragment_MainView.findViewById(R.id.pFI_RLayout_TITLE2_1_RLayout),
-											(RelativeLayout)Fragment_MainView.findViewById(R.id.pFI_RLayout_Bottom2_RLayout),
-											(ViewFlipper)Fragment_MainView.findViewById(R.id.pFI_RLayout_ViewContent_ViewFlipper));
+													(RelativeLayout)Fragment_MainView.findViewById(R.id.pFI_RLayout_TITLE2_1_RLayout),
+													(RelativeLayout)Fragment_MainView.findViewById(R.id.pFI_RLayout_Bottom2_RLayout),
+													(ViewFlipper)Fragment_MainView.findViewById(R.id.pFI_RLayout_ViewContent_ViewFlipper));
 		this.VIEW_LISTNER.ShowTITLE4_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_ShowTITLE4_IButton),
-											(RelativeLayout)Fragment_MainView.findViewById(R.id.pFI_RLayout_TITLE4_RLayout));
+														(RelativeLayout)Fragment_MainView.findViewById(R.id.pFI_RLayout_TITLE4_RLayout));
 		this.VIEW_LISTNER.SET_QUEUE_ListView_Listner(fi_Queue_ListView);	
 		this.VIEW_LISTNER.Clear_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Clear_Button),
 												(ImageView)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_ButtonsBG_ImageView));
 		this.VIEW_LISTNER.Save_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Save_Button),
 												(ImageView)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_ButtonsBG_ImageView));
 		this.VIEW_LISTNER.Done_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Done_Button),
-										(Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Clear_Button),
-										(Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Save_Button),
-										this);
+												(Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Clear_Button),
+												(Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Save_Button),
+												this);
 	}
 	private void PAD_findView() {		
 		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FI_RLayout_UP_RLayout));

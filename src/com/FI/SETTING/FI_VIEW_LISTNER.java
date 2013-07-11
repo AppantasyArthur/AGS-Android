@@ -233,7 +233,7 @@ public class FI_VIEW_LISTNER {
 		Music_Button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				((FragmentActivity_Main)context).ShowViewContent_ViewFlipperDisplay(2,R.animator.translate_right_in,0);
+				((FragmentActivity_Main)context).ShowViewContent_ViewFlipperDisplay(2,R.animator.translate_right_in,R.animator.alpha_out);
 			}
 		});
 	}

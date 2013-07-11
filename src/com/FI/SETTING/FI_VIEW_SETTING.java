@@ -34,64 +34,17 @@ public class FI_VIEW_SETTING {
 				break;			
 			case R.id.pFI_RLayout_TITLE2_RLayout:
 				pFI_RLayout_TITLE2_RLayout(view);
-				break;
-			case R.id.pFI_RLayout_RLayout_Speaker_Button:
-				pFI_RLayout_RLayout_Speaker_Button(view);
-				break;
-			case R.id.pFI_RLayout_RLayout_Center_TextView:
-				pFI_RLayout_RLayout_Center_TextView(view);
-				break;
-			case R.id.pFI_RLayout_RLayout_Music_Button:
-				pFI_RLayout_RLayout_Music_Button(view);
-				break;
+				break;		
 			case R.id.pFI_RLayout_TITLE2_1_RLayout:
 				pFI_RLayout_TITLE2_1_RLayout(view);
-				break;
-			case R.id.pFI_RLayout_RLayout_Close_Button:
-				pFI_RLayout_RLayout_Close_Button(view);
-				break;
-			case R.id.pFI_RLayout_RLayout_Center2_TextView:
-				pFI_RLayout_RLayout_Center2_TextView(view);
-				break;	
+				break;					
 			case R.id.pFI_RLayout_TITLE3_RLayout:
 				pFI_RLayout_TITLE3_RLayout(view);
-				break;
-			case R.id.pFI_RLayout_RLayout_Sound_IButton:
-				pFI_RLayout_RLayout_Sound_IButton(view);
-				break;
-			case R.id.pFI_RLayout_RLayout_Sound_SeekBar:
-				pFI_RLayout_RLayout_Sound_SeekBar(view);
-				break;
-			case R.id.pFI_RLayout_RLayout_Previous_IButton:
-				pFI_RLayout_RLayout_Previous_IButton(view);
-				break;
-			case R.id.pFI_RLayout_RLayout_Play_IButton:
-				pFI_RLayout_RLayout_Play_IButton(view);
-				break;
-			case R.id.pFI_RLayout_RLayout_Next_IButton:
-				pFI_RLayout_RLayout_Next_IButton(view);
-				break;
-			case R.id.pFI_RLayout_RLayout_ShowTITLE4_IButton:
-				pFI_RLayout_RLayout_ShowTITLE4_IButton(view);
-				break;
+				break;		
+			
 			case R.id.pFI_RLayout_TITLE4_RLayout:
 				pFI_RLayout_TITLE4_RLayout(view);
-				break;
-			case R.id.pFI_RLayout_RLayout_Cycle_IButton:
-				pFI_RLayout_RLayout_Cycle_IButton(view);
-				break;
-			case R.id.pFI_RLayout_RLayout_Random_IButton:
-				pFI_RLayout_RLayout_Random_IButton(view);
-				break;
-			case R.id.pFI_RLayout_RLayout_Current_TextView:
-				pFI_RLayout_RLayout_Current_TextView(view);
-				break;
-			case R.id.pFI_RLayout_RLayout_Music_SeekBar:
-				pFI_RLayout_RLayout_Music_SeekBar(view);
-				break;
-			case R.id.pFI_RLayout_RLayout_Total_TextView:
-				pFI_RLayout_RLayout_Total_TextView(view);
-				break;	
+				break;			
 			case R.id.pFI_RLayout_UP_RLayout:
 				pFI_RLayout_UP_RLayout(view);
 				break;				
@@ -100,12 +53,6 @@ public class FI_VIEW_SETTING {
 				break;
 			case R.id.pFI_RLayout_Bottom_RLayout:
 				pFI_RLayout_Bottom_RLayout(view);
-				break;
-			case R.id.pFI_RLayout_RLayout_Setting_IButton:
-				pFI_RLayout_RLayout_Setting_IButton(view);
-				break;
-			case R.id.pFI_RLayout_RLayout_Queue_Button:
-				pFI_RLayout_RLayout_Queue_Button(view);
 				break;
 			case R.id.pFI_RLayout_Bottom2_RLayout:
 				pFI_RLayout_Bottom2_RLayout(view);
@@ -130,127 +77,108 @@ public class FI_VIEW_SETTING {
 	private void pFI_RLayout_TITLE2_RLayout(View view) {
 		Tool.fitsViewHeight(36, view);
 		new ThreadReadBitMapInAssets(context, "phone/grouprooms/top_talie.PNG", view, 3);		
-	}
-	private void pFI_RLayout_RLayout_Speaker_Button(View view) {
-		Tool.fitsViewLeftMargin(7, view);
-		Tool.fitsViewHeight(26, view);
-		Tool.fitsViewWidth(59, view);
-		Tool.fitsViewTextSize(10, view);
-		new ThreadReadStateListInAssets(context, "phone/speaker/bottom_button_f.png","phone/speaker/bottom_button_single.png", view, 4);
-	}
-	private void pFI_RLayout_RLayout_Center_TextView(View view) {
-		Tool.fitsViewTextSize(18, view);		
-	}
-	private void pFI_RLayout_RLayout_Music_Button(View view) {
-		Tool.fitsViewRightMargin(7, view);
-		Tool.fitsViewHeight(26, view);
-		Tool.fitsViewWidth(59, view);
-		Tool.fitsViewTextSize(10, view);
-		new ThreadReadStateListInAssets(context, "phone/speaker/bottom_button_f.png","phone/speaker/bottom_button_single.png", view, 4);
-	}
+		//Speaker_Button
+		Tool.fitsViewLeftMargin(7, view.findViewById(R.id.pFI_RLayout_RLayout_Speaker_Button));
+		Tool.fitsViewHeight(26, view.findViewById(R.id.pFI_RLayout_RLayout_Speaker_Button));
+		Tool.fitsViewWidth(59, view.findViewById(R.id.pFI_RLayout_RLayout_Speaker_Button));
+		Tool.fitsViewTextSize(10, view.findViewById(R.id.pFI_RLayout_RLayout_Speaker_Button));
+		new ThreadReadStateListInAssets(context, "phone/speaker/bottom_button_f.png","phone/speaker/bottom_button_single.png", view.findViewById(R.id.pFI_RLayout_RLayout_Speaker_Button), 4);
+		//Center_TextView
+		Tool.fitsViewTextSize(18, view.findViewById(R.id.pFI_RLayout_RLayout_Center_TextView));	
+		//Music_Button
+		Tool.fitsViewRightMargin(7, view.findViewById(R.id.pFI_RLayout_RLayout_Music_Button));
+		Tool.fitsViewHeight(26, view.findViewById(R.id.pFI_RLayout_RLayout_Music_Button));
+		Tool.fitsViewWidth(59, view.findViewById(R.id.pFI_RLayout_RLayout_Music_Button));
+		Tool.fitsViewTextSize(10, view.findViewById(R.id.pFI_RLayout_RLayout_Music_Button));
+		new ThreadReadStateListInAssets(context, "phone/speaker/bottom_button_f.png","phone/speaker/bottom_button_single.png", view.findViewById(R.id.pFI_RLayout_RLayout_Music_Button), 4);
+	}	
 	private void pFI_RLayout_TITLE2_1_RLayout(View view) {
 		Tool.fitsViewHeight(36, view);
 		new ThreadReadBitMapInAssets(context, "phone/grouprooms/top_talie.PNG", view, 3);	
-	}
-	private void pFI_RLayout_RLayout_Close_Button(View view) {
-		Tool.fitsViewLeftMargin(7, view);
-		Tool.fitsViewHeight(26, view);
-		Tool.fitsViewWidth(59, view);
-		Tool.fitsViewTextSize(10, view);
-		new ThreadReadStateListInAssets(context, "phone/speaker/bottom_button_f.png","phone/speaker/bottom_button_single.png", view, 4);
-	}
-	private void pFI_RLayout_RLayout_Center2_TextView(View view) {
-		Tool.fitsViewTextSize(18, view);		
+		//Close_Button
+		Tool.fitsViewLeftMargin(7, view.findViewById(R.id.pFI_RLayout_RLayout_Close_Button));
+		Tool.fitsViewHeight(26, view.findViewById(R.id.pFI_RLayout_RLayout_Close_Button));
+		Tool.fitsViewWidth(59, view.findViewById(R.id.pFI_RLayout_RLayout_Close_Button));
+		Tool.fitsViewTextSize(10, view.findViewById(R.id.pFI_RLayout_RLayout_Close_Button));
+		new ThreadReadStateListInAssets(context, "phone/speaker/bottom_button_f.png","phone/speaker/bottom_button_single.png", view.findViewById(R.id.pFI_RLayout_RLayout_Close_Button), 4);
+		//Center2_TextView
+		Tool.fitsViewTextSize(18, view.findViewById(R.id.pFI_RLayout_RLayout_Center2_TextView));	
 	}
 	private void pFI_RLayout_TITLE3_RLayout(View view) {
 		Tool.fitsViewHeight(43, view);
 		new ThreadReadBitMapInAssets(context, "phone/play_volume/play_bar.png", view, 3);
-	}
-	private void pFI_RLayout_RLayout_Sound_IButton(View view) {
-		Tool.fitsViewWidth(23, view);
-		view.getLayoutParams().height = Tool.getWidth(23);
-		Tool.fitsViewLeftMargin(7, view);
-		new ThreadReadBitMapInAssets(context, "phone/play_volume/volume.png", view, 2);
-	}
-	private void pFI_RLayout_RLayout_Sound_SeekBar(View view) {
-		Tool.fitsViewWidth(72, view);
-		view.getLayoutParams().height = Tool.getWidth(23);	
-		Tool.fitsViewLeftMargin(4, view);		
-		view.setPadding(Tool.getWidth(6), Tool.getWidth(6), Tool.getWidth(6), Tool.getWidth(6));
+		//Sound_IButton
+		Tool.fitsViewWidth(23, view.findViewById(R.id.pFI_RLayout_RLayout_Sound_IButton));
+		view.findViewById(R.id.pFI_RLayout_RLayout_Sound_IButton).getLayoutParams().height = Tool.getWidth(23);
+		Tool.fitsViewLeftMargin(7, view.findViewById(R.id.pFI_RLayout_RLayout_Sound_IButton));
+		new ThreadReadBitMapInAssets(context, "phone/play_volume/volume.png", view.findViewById(R.id.pFI_RLayout_RLayout_Sound_IButton), 2);
+		//Sound_SeekBar
+		Tool.fitsViewWidth(72, view.findViewById(R.id.pFI_RLayout_RLayout_Sound_SeekBar));
+		view.findViewById(R.id.pFI_RLayout_RLayout_Sound_SeekBar).getLayoutParams().height = Tool.getWidth(23);	
+		Tool.fitsViewLeftMargin(4, view.findViewById(R.id.pFI_RLayout_RLayout_Sound_SeekBar));		
+		view.findViewById(R.id.pFI_RLayout_RLayout_Sound_SeekBar).setPadding(Tool.getWidth(6), Tool.getWidth(6), Tool.getWidth(6), Tool.getWidth(6));
 		Bitmap myThumbO = Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "phone/play_volume/base_icon.png"), Tool.getWidth(12), Tool.getWidth(14), false);
 		Drawable myThumb = new BitmapDrawable(context.getResources(),myThumbO);
-		((SeekBar)view).setThumb(myThumb);
-	}
-	private void pFI_RLayout_RLayout_Previous_IButton(View view) {
+		((SeekBar)view.findViewById(R.id.pFI_RLayout_RLayout_Sound_SeekBar)).setThumb(myThumb);
+		
 		//Previous ImageButton
-		Tool.fitsViewLeftMargin(126, view);		
-		Tool.fitsViewWidth(33, view);
-		view.getLayoutParams().height = Tool.getWidth(34);
-		new ThreadReadStateListInAssets(context, "phone/play_volume/arrow_left_f.png","phone/play_volume/arrow_left_n.png", view, 2);
-	}
-	private void pFI_RLayout_RLayout_Play_IButton(View view) {
-		Tool.fitsViewLeftMargin(175, view);		
-		Tool.fitsViewWidth(40, view);
-		view.getLayoutParams().height = Tool.getWidth(41);		
-		view.setTag(0);
-		new ThreadReadStateListInAssets(context, "phone/play_volume/play_f.png","phone/play_volume/play_n.png", view, 2);
-	}
-	private void pFI_RLayout_RLayout_Next_IButton(View view) {
+		Tool.fitsViewLeftMargin(126, view.findViewById(R.id.pFI_RLayout_RLayout_Previous_IButton));		
+		Tool.fitsViewWidth(33, view.findViewById(R.id.pFI_RLayout_RLayout_Previous_IButton));
+		view.findViewById(R.id.pFI_RLayout_RLayout_Previous_IButton).getLayoutParams().height = Tool.getWidth(34);
+		new ThreadReadStateListInAssets(context, "phone/play_volume/arrow_left_f.png","phone/play_volume/arrow_left_n.png", view.findViewById(R.id.pFI_RLayout_RLayout_Previous_IButton), 2);
+		//Play_IButton
+		Tool.fitsViewLeftMargin(175, view.findViewById(R.id.pFI_RLayout_RLayout_Play_IButton));		
+		Tool.fitsViewWidth(40, view.findViewById(R.id.pFI_RLayout_RLayout_Play_IButton));
+		view.findViewById(R.id.pFI_RLayout_RLayout_Play_IButton).getLayoutParams().height = Tool.getWidth(41);		
+		view.findViewById(R.id.pFI_RLayout_RLayout_Play_IButton).setTag(0);
+		new ThreadReadStateListInAssets(context, "phone/play_volume/play_f.png","phone/play_volume/play_n.png", view.findViewById(R.id.pFI_RLayout_RLayout_Play_IButton), 2);
 		//Next ImageButton
-		Tool.fitsViewLeftMargin(229, view);		
-		Tool.fitsViewWidth(33, view);
-		view.getLayoutParams().height = Tool.getWidth(34);
-		new ThreadReadStateListInAssets(context, "phone/play_volume/arrow_right_f.png","phone/play_volume/arrow_right_n.png", view, 2);
-	}
-	private void pFI_RLayout_RLayout_ShowTITLE4_IButton(View view) {
+		Tool.fitsViewLeftMargin(229, view.findViewById(R.id.pFI_RLayout_RLayout_Next_IButton));		
+		Tool.fitsViewWidth(33, view.findViewById(R.id.pFI_RLayout_RLayout_Next_IButton));
+		view.findViewById(R.id.pFI_RLayout_RLayout_Next_IButton).getLayoutParams().height = Tool.getWidth(34);
+		new ThreadReadStateListInAssets(context, "phone/play_volume/arrow_right_f.png","phone/play_volume/arrow_right_n.png", view.findViewById(R.id.pFI_RLayout_RLayout_Next_IButton), 2);
 		//SHOW TITLE4_IButton
-		Tool.fitsViewWidth(22, view);
-		view.getLayoutParams().height = Tool.getWidth(20);
-		Tool.fitsViewRightMargin(6, view);
-		new ThreadReadBitMapInAssets(context, "phone/play_volume/timeline_open.png", view, 2);
-	}
+		Tool.fitsViewWidth(22, view.findViewById(R.id.pFI_RLayout_RLayout_ShowTITLE4_IButton));
+		view.findViewById(R.id.pFI_RLayout_RLayout_ShowTITLE4_IButton).getLayoutParams().height = Tool.getWidth(20);
+		Tool.fitsViewRightMargin(6, view.findViewById(R.id.pFI_RLayout_RLayout_ShowTITLE4_IButton));
+		new ThreadReadBitMapInAssets(context, "phone/play_volume/timeline_open.png", view.findViewById(R.id.pFI_RLayout_RLayout_ShowTITLE4_IButton), 2);
+	}	
 	private void pFI_RLayout_TITLE4_RLayout(View view) {
 		Tool.fitsViewHeight(37, view);			
 		new ThreadReadBitMapInAssets(context, "phone/play_volume/volume_bar.png", view, 3);
-	}
-	private void pFI_RLayout_RLayout_Cycle_IButton(View view) {
 		//Cycle IButton
-		Tool.fitsViewWidth(39, view);
-		view.getLayoutParams().height = Tool.getWidth(30);
-		Tool.fitsViewLeftMargin(7, view);
-		Tool.fitsViewTopMargin(4, view);
-		view.setTag(0);
-		new ThreadReadBitMapInAssets(context, "phone/play_volume/repeat off_f.png", view, 2);
-	}
-	private void pFI_RLayout_RLayout_Random_IButton(View view) {		
+		Tool.fitsViewWidth(39, view.findViewById(R.id.pFI_RLayout_RLayout_Cycle_IButton));
+		view.findViewById(R.id.pFI_RLayout_RLayout_Cycle_IButton).getLayoutParams().height = Tool.getWidth(30);
+		Tool.fitsViewLeftMargin(7, view.findViewById(R.id.pFI_RLayout_RLayout_Cycle_IButton));
+		Tool.fitsViewTopMargin(4, view.findViewById(R.id.pFI_RLayout_RLayout_Cycle_IButton));
+		view.findViewById(R.id.pFI_RLayout_RLayout_Cycle_IButton).setTag(0);
+		new ThreadReadBitMapInAssets(context, "phone/play_volume/repeat off_f.png", view.findViewById(R.id.pFI_RLayout_RLayout_Cycle_IButton), 2);
 		//Random IButton
-		Tool.fitsViewWidth(39, view);
-		view.getLayoutParams().height = Tool.getWidth(30);
-		Tool.fitsViewLeftMargin(2, view);
-		Tool.fitsViewTopMargin(4, view);
-		view.setTag(0);
-		new ThreadReadBitMapInAssets(context, "phone/play_volume/shuffle off_f.PNG", view, 2);
-	}
-	private void pFI_RLayout_RLayout_Current_TextView(View view) {
-		Tool.fitsViewWidth(35, view);
-		view.getLayoutParams().height = Tool.getWidth(20);
-		Tool.fitsViewLeftMargin(90, view);
-		Tool.fitsViewTextSize(10, view);
-	}
-	private void pFI_RLayout_RLayout_Music_SeekBar(View view) {
-		view.getLayoutParams().height = Tool.getWidth(23);	
-		Tool.fitsViewLeftMargin(1, view);		
-		Tool.fitsViewRightMargin(1, view);
-		view.setPadding(Tool.getWidth(6), Tool.getWidth(6), Tool.getWidth(6), Tool.getWidth(6));
+		Tool.fitsViewWidth(39, view.findViewById(R.id.pFI_RLayout_RLayout_Random_IButton));
+		view.findViewById(R.id.pFI_RLayout_RLayout_Random_IButton).getLayoutParams().height = Tool.getWidth(30);
+		Tool.fitsViewLeftMargin(2, view.findViewById(R.id.pFI_RLayout_RLayout_Random_IButton));
+		Tool.fitsViewTopMargin(4, view.findViewById(R.id.pFI_RLayout_RLayout_Random_IButton));
+		view.findViewById(R.id.pFI_RLayout_RLayout_Random_IButton).setTag(0);
+		new ThreadReadBitMapInAssets(context, "phone/play_volume/shuffle off_f.PNG", view.findViewById(R.id.pFI_RLayout_RLayout_Random_IButton), 2);
+		//Current_TextView
+		Tool.fitsViewWidth(35, view.findViewById(R.id.pFI_RLayout_RLayout_Current_TextView));
+		view.findViewById(R.id.pFI_RLayout_RLayout_Current_TextView).getLayoutParams().height = Tool.getWidth(20);
+		Tool.fitsViewLeftMargin(90, view.findViewById(R.id.pFI_RLayout_RLayout_Current_TextView));
+		Tool.fitsViewTextSize(10, view.findViewById(R.id.pFI_RLayout_RLayout_Current_TextView));
+		//Music_SeekBar
+		view.findViewById(R.id.pFI_RLayout_RLayout_Music_SeekBar).getLayoutParams().height = Tool.getWidth(23);	
+		Tool.fitsViewLeftMargin(1, view.findViewById(R.id.pFI_RLayout_RLayout_Music_SeekBar));		
+		Tool.fitsViewRightMargin(1, view.findViewById(R.id.pFI_RLayout_RLayout_Music_SeekBar));
+		view.findViewById(R.id.pFI_RLayout_RLayout_Music_SeekBar).setPadding(Tool.getWidth(6), Tool.getWidth(6), Tool.getWidth(6), Tool.getWidth(6));
 		Bitmap myThumbO = Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "phone/play_volume/base_icon.png"), Tool.getWidth(12), Tool.getWidth(14), false);
 		Drawable myThumb = new BitmapDrawable(context.getResources(),myThumbO);
-		((SeekBar)view).setThumb(myThumb);
-	}
-	private void pFI_RLayout_RLayout_Total_TextView(View view) {
-		Tool.fitsViewWidth(35, view);
-		view.getLayoutParams().height = Tool.getWidth(20);
-		Tool.fitsViewRightMargin(6, view);
-		Tool.fitsViewTextSize(10, view);
+		((SeekBar)view.findViewById(R.id.pFI_RLayout_RLayout_Music_SeekBar)).setThumb(myThumb);
+		//Total_TextView
+		Tool.fitsViewWidth(35, view.findViewById(R.id.pFI_RLayout_RLayout_Total_TextView));
+		view.findViewById(R.id.pFI_RLayout_RLayout_Total_TextView).getLayoutParams().height = Tool.getWidth(20);
+		Tool.fitsViewRightMargin(6, view.findViewById(R.id.pFI_RLayout_RLayout_Total_TextView));
+		Tool.fitsViewTextSize(10, view.findViewById(R.id.pFI_RLayout_RLayout_Total_TextView));
+		
 	}
 	private void pFI_RLayout_UP_RLayout(View view){		
 		new ThreadReadBitMapInAssets(context, "phone/nowplaying/now playing_bg.PNG", view, 3);
@@ -267,19 +195,18 @@ public class FI_VIEW_SETTING {
 	private void pFI_RLayout_Bottom_RLayout(View view) {
 		Tool.fitsViewHeight(30, view);			
 		new ThreadReadBitMapInAssets(context, "phone/grouprooms/setting_bar.png", view, 3);
+		//Setting_IButton
+		Tool.fitsViewWidth(24, view.findViewById(R.id.pFI_RLayout_RLayout_Setting_IButton));
+		view.findViewById(R.id.pFI_RLayout_RLayout_Setting_IButton).getLayoutParams().height = Tool.getWidth(30);
+		Tool.fitsViewLeftMargin(7, view.findViewById(R.id.pFI_RLayout_RLayout_Setting_IButton));		
+		new ThreadReadBitMapInAssets(context, "phone/grouprooms/setting.png", view.findViewById(R.id.pFI_RLayout_RLayout_Setting_IButton), 2);
+		//Queue_Button
+		Tool.fitsViewWidth(66, view.findViewById(R.id.pFI_RLayout_RLayout_Queue_Button));
+		view.findViewById(R.id.pFI_RLayout_RLayout_Queue_Button).getLayoutParams().height = Tool.getWidth(27);		
+		Tool.fitsViewTextSize(10, view.findViewById(R.id.pFI_RLayout_RLayout_Queue_Button));			
+		new ThreadReadStateListInAssets(context, "phone/speaker/bottom_button_f.png","phone/speaker/bottom_button_single.png", view.findViewById(R.id.pFI_RLayout_RLayout_Queue_Button), 4);
 	}
-	private void pFI_RLayout_RLayout_Setting_IButton(View view) {
-		Tool.fitsViewWidth(24, view);
-		view.getLayoutParams().height = Tool.getWidth(30);
-		Tool.fitsViewLeftMargin(7, view);		
-		new ThreadReadBitMapInAssets(context, "phone/grouprooms/setting.png", view, 2);
-	}
-	private void pFI_RLayout_RLayout_Queue_Button(View view) {
-		Tool.fitsViewWidth(66, view);
-		view.getLayoutParams().height = Tool.getWidth(27);		
-		Tool.fitsViewTextSize(10, view);			
-		new ThreadReadStateListInAssets(context, "phone/speaker/bottom_button_f.png","phone/speaker/bottom_button_single.png", view, 4);
-	}
+	
 	private void pFI_RLayout_Bottom2_RLayout(View view) {
 		Tool.fitsViewHeight(30, view);			
 		new ThreadReadBitMapInAssets(context, "phone/grouprooms/setting_bar.png", view, 3);
