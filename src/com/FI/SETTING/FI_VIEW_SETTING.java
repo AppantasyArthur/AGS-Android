@@ -106,7 +106,10 @@ public class FI_VIEW_SETTING {
 				break;
 			case R.id.pFI_RLayout_RLayout_Queue_Button:
 				pFI_RLayout_RLayout_Queue_Button(view);
-				break;			
+				break;
+			case R.id.pFI_RLayout_Bottom2_RLayout:
+				pFI_RLayout_Bottom2_RLayout(view);
+				break;
 			}
 		}else{
 			switch(view.getId()){
@@ -276,6 +279,38 @@ public class FI_VIEW_SETTING {
 		view.getLayoutParams().height = Tool.getWidth(27);		
 		Tool.fitsViewTextSize(10, view);			
 		new ThreadReadStateListInAssets(context, "phone/speaker/bottom_button_f.png","phone/speaker/bottom_button_single.png", view, 4);
+	}
+	private void pFI_RLayout_Bottom2_RLayout(View view) {
+		Tool.fitsViewHeight(30, view);			
+		new ThreadReadBitMapInAssets(context, "phone/grouprooms/setting_bar.png", view, 3);
+		
+		//ButtonsBG_ImageView
+		Tool.fitsViewWidth(132, view.findViewById(R.id.pFI_RLayout_RLayout_ButtonsBG_ImageView));
+		Tool.fitsViewHeight(27, view.findViewById(R.id.pFI_RLayout_RLayout_ButtonsBG_ImageView));		
+		Tool.fitsViewLeftMargin(99, view.findViewById(R.id.pFI_RLayout_RLayout_ButtonsBG_ImageView));
+		new ThreadReadBitMapInAssets(context, "pad/Settingsbar/clear&save_00.png", view.findViewById(R.id.pFI_RLayout_RLayout_ButtonsBG_ImageView), 1);
+		view.findViewById(R.id.pFI_RLayout_RLayout_ButtonsBG_ImageView).setTag(0);
+		//Clear Button
+		Tool.fitsViewLeftMargin(99, view.findViewById(R.id.pFI_RLayout_RLayout_Clear_Button));
+		Tool.fitsViewHeight(27, view.findViewById(R.id.pFI_RLayout_RLayout_Clear_Button));
+		Tool.fitsViewWidth(66, view.findViewById(R.id.pFI_RLayout_RLayout_Clear_Button));
+		Tool.fitsViewTextSize(10,  view.findViewById(R.id.pFI_RLayout_RLayout_Clear_Button));
+		//Save Button
+		Tool.fitsViewLeftMargin(165, view.findViewById(R.id.pFI_RLayout_RLayout_Save_Button));
+		Tool.fitsViewHeight(27, view.findViewById(R.id.pFI_RLayout_RLayout_Save_Button));
+		Tool.fitsViewWidth(66, view.findViewById(R.id.pFI_RLayout_RLayout_Save_Button));
+		Tool.fitsViewTextSize(10,  view.findViewById(R.id.pFI_RLayout_RLayout_Save_Button));
+		//Done Button
+		Tool.fitsViewLeftMargin(99, view.findViewById(R.id.pFI_RLayout_RLayout_Done_Button));
+		Tool.fitsViewHeight(27, view.findViewById(R.id.pFI_RLayout_RLayout_Done_Button));
+		Tool.fitsViewWidth(132, view.findViewById(R.id.pFI_RLayout_RLayout_Done_Button));
+		Tool.fitsViewTextSize(10,  view.findViewById(R.id.pFI_RLayout_RLayout_Done_Button));
+		new ThreadReadStateListInAssets(context, "phone/queue/done_button_f.PNG", "phone/queue/done_button_n.PNG", view.findViewById(R.id.pFI_RLayout_RLayout_Done_Button), 4);
+		//Setting2_IButton
+		Tool.fitsViewWidth(24, view.findViewById(R.id.pFI_RLayout_RLayout_Setting2_IButton));
+		view.findViewById(R.id.pFI_RLayout_RLayout_Setting2_IButton).getLayoutParams().height = Tool.getWidth(30);
+		Tool.fitsViewLeftMargin(7, view.findViewById(R.id.pFI_RLayout_RLayout_Setting2_IButton));		
+		new ThreadReadBitMapInAssets(context, "phone/grouprooms/setting.png", view.findViewById(R.id.pFI_RLayout_RLayout_Setting2_IButton), 2);
 	}
 //***************************PHONE*********************************
 //***************************PAD*********************************

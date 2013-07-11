@@ -36,6 +36,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ViewFlipper;
 
 public class FragmentActivity_Main extends FragmentActivity {
 	
@@ -137,10 +138,10 @@ public class FragmentActivity_Main extends FragmentActivity {
 		
 	}
 	private void set_Phone_First_Fragment() {		
+		fragment_Infor = new Fragment_Information();
+		Tool.FragmentActivity_MainAddFragment(fragmentManager.beginTransaction(), fragment_Infor, "Fragment_Infor", R.id.pFAM_RLayout_ViewFlipper_Information_RLayout, R.animator.alpha_in, R.animator.alpha_out);
 		fragment_Speaker = new Fragment_Speaker();		
-		Tool.FragmentActivity_MainAddFragment(fragmentManager.beginTransaction(), fragment_Speaker, "Fragment_Speaker", R.id.pFAM_RLayout_ViewFlipper_Information_RLayout, R.animator.alpha_in, R.animator.alpha_out);
-//		fragment_Infor = new Fragment_Information();
-//		Tool.FragmentActivity_MainAddFragment(fragmentManager.beginTransaction(), fragment_Infor, "Fragment_Infor", R.id.pFAM_RLayout_ViewFlipper_Information_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+		Tool.FragmentActivity_MainAddFragment(fragmentManager.beginTransaction(), fragment_Speaker, "Fragment_Speaker", R.id.pFAM_RLayout_ViewFlipper_Speaker_RLayout, R.animator.alpha_in, R.animator.alpha_out);
 //		fragment_Music = new Fragment_Music();
 //		Tool.FragmentActivity_MainAddFragment(fragmentManager.beginTransaction(), fragment_Music, "Fragment_Music", R.id.pFAM_RLayout_ViewFlipper_Music_RLayout, R.animator.alpha_in, R.animator.alpha_out);
 	}
@@ -254,8 +255,45 @@ public class FragmentActivity_Main extends FragmentActivity {
 		}
 	}
 	public void ShowDoneButton(){
-		MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Save_Button).setVisibility(View.GONE);
-		MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Clear_Button).setVisibility(View.GONE);
-		MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Done_Button).setVisibility(View.VISIBLE);
+		if(device_size==6){
+			MainView.findViewById(R.id.pFI_RLayout_RLayout_Clear_Button).setVisibility(View.GONE);
+			MainView.findViewById(R.id.pFI_RLayout_RLayout_Save_Button).setVisibility(View.GONE);
+			MainView.findViewById(R.id.pFI_RLayout_RLayout_Done_Button).setVisibility(View.VISIBLE);
+		}else{
+			MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Save_Button).setVisibility(View.GONE);
+			MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Clear_Button).setVisibility(View.GONE);
+			MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Done_Button).setVisibility(View.VISIBLE);
+		}		
+	}
+	public void ShowViewContent_ViewFlipperDisplay(int Page,int InAnimation,int OutAnimation){
+		View ViewContent_ViewFlipper = MainView.findViewById(R.id.pFAM_RLayout_ViewContent_ViewFlipper);
+		if(ViewContent_ViewFlipper==null){
+			return;
+		}
+		if(InAnimation!=0){
+			((ViewFlipper)ViewContent_ViewFlipper).setInAnimation(getApplicationContext(), InAnimation);
+		}else{
+			((ViewFlipper)ViewContent_ViewFlipper).setInAnimation(null);
+		}
+		if(InAnimation!=0){
+			((ViewFlipper)ViewContent_ViewFlipper).setOutAnimation(getApplicationContext(), OutAnimation);
+		}else{
+			((ViewFlipper)ViewContent_ViewFlipper).setOutAnimation(null);
+		}
+		
+		switch(Page){
+		case 0:
+			//Fragment_Information
+			((ViewFlipper)ViewContent_ViewFlipper).setDisplayedChild(0);
+			break;
+		case 1:
+			//Fragment_Speaker
+			((ViewFlipper)ViewContent_ViewFlipper).setDisplayedChild(1);
+			break;
+		case 2:
+			//Fragment_Music
+			((ViewFlipper)ViewContent_ViewFlipper).setDisplayedChild(2);
+			break;
+		}
 	}
 }

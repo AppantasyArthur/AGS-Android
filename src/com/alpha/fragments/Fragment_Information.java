@@ -3,6 +3,7 @@ package com.alpha.fragments;
 import com.FI.SETTING.FI_ListView;
 import com.FI.SETTING.FI_PointLiLayout;
 import com.FI.SETTING.FI_Queqe_ListView_BaseAdapter_PAD;
+import com.FI.SETTING.FI_Queqe_ListView_BaseAdapter_Phone;
 import com.FI.SETTING.FI_VIEW_LISTNER;
 import com.FI.SETTING.FI_VIEW_SETTING;
 import com.FI.SETTING.FI_ViewFlipper;
@@ -21,6 +22,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.ViewFlipper;
 
 public class Fragment_Information extends Fragment {
 	//VIEWS
@@ -104,11 +110,37 @@ public class Fragment_Information extends Fragment {
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_Bottom_RLayout));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Setting_IButton));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Queue_Button));
+		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_Bottom2_RLayout));
 	}
 	private void Phone_findViewListner() {
-		VIEW_LISTNER.SET_QUEUE_ListView_Listner(fi_Queue_ListView);		
+		this.VIEW_LISTNER.Speaker_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Speaker_Button));
+		this.VIEW_LISTNER.Music_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Music_Button));
+		this.VIEW_LISTNER.Previous_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Previous_IButton));
+		this.VIEW_LISTNER.Next_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Next_IButton));
+		this.VIEW_LISTNER.Play_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Play_IButton));
+		this.VIEW_LISTNER.CycleRandom_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Cycle_IButton),
+														(ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Random_IButton));
+		this.VIEW_LISTNER.SET_QUEUE_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Queue_Button),
+											(RelativeLayout)Fragment_MainView.findViewById(R.id.pFI_RLayout_TITLE2_1_RLayout),
+											(RelativeLayout)Fragment_MainView.findViewById(R.id.pFI_RLayout_Bottom2_RLayout),
+											(ViewFlipper)Fragment_MainView.findViewById(R.id.pFI_RLayout_ViewContent_ViewFlipper));
+		this.VIEW_LISTNER.SET_Close_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Close_Button),
+											(RelativeLayout)Fragment_MainView.findViewById(R.id.pFI_RLayout_TITLE2_1_RLayout),
+											(RelativeLayout)Fragment_MainView.findViewById(R.id.pFI_RLayout_Bottom2_RLayout),
+											(ViewFlipper)Fragment_MainView.findViewById(R.id.pFI_RLayout_ViewContent_ViewFlipper));
+		this.VIEW_LISTNER.ShowTITLE4_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_ShowTITLE4_IButton),
+											(RelativeLayout)Fragment_MainView.findViewById(R.id.pFI_RLayout_TITLE4_RLayout));
+		this.VIEW_LISTNER.SET_QUEUE_ListView_Listner(fi_Queue_ListView);	
+		this.VIEW_LISTNER.Clear_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Clear_Button),
+												(ImageView)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_ButtonsBG_ImageView));
+		this.VIEW_LISTNER.Save_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Save_Button),
+												(ImageView)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_ButtonsBG_ImageView));
+		this.VIEW_LISTNER.Done_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Done_Button),
+										(Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Clear_Button),
+										(Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Save_Button),
+										this);
 	}
-	private void PAD_findView() {
+	private void PAD_findView() {		
 		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FI_RLayout_UP_RLayout));
 		fi_Info_ViewFlipper = (FI_ViewFlipper)Fragment_MainView.findViewById(R.id.FI_RLayout_RLayout_INFOR_ViewFlipper);
 		fi_Info_ViewFlipper.setFI_PointLiLayout((FI_PointLiLayout)Fragment_MainView.findViewById(R.id.FI_RLayout_RLayout_Point_LLayout));
@@ -203,10 +235,23 @@ public class Fragment_Information extends Fragment {
 	}
 	public boolean SET_FI_ListView_Edite(boolean isEdit){
 		if(!isEdit){
-			((FI_Queqe_ListView_BaseAdapter_PAD)this.fi_Queue_ListView.getAdapter()).SET_Edite(false);
+			if(device_size==6){
+				((FI_Queqe_ListView_BaseAdapter_Phone)this.fi_Queue_ListView.getAdapter()).SET_Edite(false);
+			}else{
+				((FI_Queqe_ListView_BaseAdapter_PAD)this.fi_Queue_ListView.getAdapter()).SET_Edite(false);
+			}
 		}else{
-			((FI_Queqe_ListView_BaseAdapter_PAD)this.fi_Queue_ListView.getAdapter()).SET_Edite(true);
+			if(device_size==6){
+				((FI_Queqe_ListView_BaseAdapter_Phone)this.fi_Queue_ListView.getAdapter()).SET_Edite(true);
+			}else{
+				((FI_Queqe_ListView_BaseAdapter_PAD)this.fi_Queue_ListView.getAdapter()).SET_Edite(true);
+			}
 		}
-		return ((FI_Queqe_ListView_BaseAdapter_PAD)this.fi_Queue_ListView.getAdapter()).GET_Edite();
+		if(device_size==6){
+			return ((FI_Queqe_ListView_BaseAdapter_Phone)this.fi_Queue_ListView.getAdapter()).GET_Edite();
+		}else{
+			return ((FI_Queqe_ListView_BaseAdapter_PAD)this.fi_Queue_ListView.getAdapter()).GET_Edite();
+		}
+		
 	}
 }

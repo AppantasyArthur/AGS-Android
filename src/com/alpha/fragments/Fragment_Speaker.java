@@ -1,3 +1,4 @@
+
 package com.alpha.fragments;
 
 import com.FS.SETTING.FS_SPEAKER_ExpandableListView;
@@ -17,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
@@ -94,6 +96,13 @@ public class Fragment_Speaker extends Fragment {
 		mlog.info(TAG, "findView OK");
 	}
 	private void Phone_findViewListner() {
+		this.VIEW_LISTNER.NowPlaying_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Nowplaying_Button));
+		this.VIEW_LISTNER.Music_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Music_Button));
+		this.VIEW_LISTNER.Previous_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Previous_IButton));
+		this.VIEW_LISTNER.Next_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Next_IButton));
+		this.VIEW_LISTNER.Play_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Play_IButton));
+		this.VIEW_LISTNER.CycleRandom_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Cycle_IButton),
+														(ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Random_IButton));
 		this.VIEW_LISTNER.ShowTITLE4_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_ShowTITLE4_IButton),
 														(RelativeLayout)Fragment_MainView.findViewById(R.id.pFS_RLayout_TITLE4_RLayout));
 		this.VIEW_LISTNER.SET_SPEAKER_EListView_Listner(FS_SPEAKER_EListView);

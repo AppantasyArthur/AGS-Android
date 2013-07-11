@@ -238,6 +238,7 @@ public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAd
 			convertView.getLayoutParams().height = Tool.getHeight(110);
 			Tool.fitsViewHeight(87, viewHandler.GCell_RLayout);
 			Tool.fitsViewTopMargin(8,viewHandler.Name_TextView);
+			Tool.fitsViewTopMargin(19, viewHandler.Indicator_ImageView);
 			Tool.fitsViewTopMargin(19, viewHandler.AddChildItem_ImageButton);
 			if(viewHandler.Indicator_ImageView.getVisibility()!=View.VISIBLE){
 				viewHandler.Indicator_ImageView.setVisibility(View.VISIBLE);
@@ -248,6 +249,7 @@ public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAd
 			Tool.fitsViewHeight(65, viewHandler.GCell_RLayout);
 			Tool.fitsViewTopMargin(1,viewHandler.Name_TextView);
 			Tool.fitsViewTopMargin(13, viewHandler.AddChildItem_ImageButton);
+			Tool.fitsViewTopMargin(13, viewHandler.Indicator_ImageView);
 			if(viewHandler.Indicator_ImageView.getVisibility()!=View.GONE){
 				viewHandler.Indicator_ImageView.setVisibility(View.GONE);
 			}
@@ -309,11 +311,11 @@ public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAd
 		//AddChildItem ImageView
 		Tool.fitsViewWidth(21, viewHandler.AddChildItem_ImageButton);
 		viewHandler.AddChildItem_ImageButton.getLayoutParams().height = Tool.getWidth(22);		
-		Tool.fitsViewRightMargin(20, viewHandler.AddChildItem_ImageButton);		
+		Tool.fitsViewRightMargin(5, viewHandler.AddChildItem_ImageButton);	
 		new ThreadReadBitMapInAssets(context, "phone/speaker/group_icon.PNG", viewHandler.AddChildItem_ImageButton, 2);
 		//Indicator TextView
-		viewHandler.Indicator_ImageView.getLayoutParams().height = Tool.getWidth(13);
-		Tool.fitsViewWidth(12, viewHandler.Indicator_ImageView);
+		viewHandler.Indicator_ImageView.getLayoutParams().height = Tool.getWidth(22);
+		Tool.fitsViewWidth(21, viewHandler.Indicator_ImageView);
 		Tool.fitsViewRightMargin(5, viewHandler.Indicator_ImageView);
 		//RunState TextView
 		Tool.fitsViewHeight(24, viewHandler.RunState_TextView);
@@ -363,13 +365,13 @@ public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAd
 				public boolean onTouch(View v, MotionEvent event) {
 					switch(event.getAction()){
 					case MotionEvent.ACTION_DOWN:
-						new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/add_btn_f.png", v, 1);
+						new ThreadReadBitMapInAssets(context, "phone/speaker/group_icon.PNG", v, 1);
 						break;
 					case MotionEvent.ACTION_UP:
-						new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/add_btn_n.png", v, 1);
+						new ThreadReadBitMapInAssets(context, "phone/speaker/group_icon.PNG", v, 1);
 						break;
 					case MotionEvent.ACTION_CANCEL:
-						new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/add_btn_n.png", v, 1);
+						new ThreadReadBitMapInAssets(context, "phone/speaker/group_icon.PNG", v, 1);
 						break;
 					}
 					return false;

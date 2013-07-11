@@ -523,7 +523,7 @@ public class FAM_VIEW_LISTNER {
 						@Override
 						public void run() {
 							Play_IButton.setTag(0);
-							new ThreadReadStateListInAssets(context, "pad/PlayBack/play_f.png","pad/PlayBack/play_n.png", Play_IButton, 2);	
+							new ThreadReadStateListInAssets(context, "phone/play_volume/play_f.png","phone/play_volume/play_n.png", Play_IButton, 2);	
 						}
 					});
 					
@@ -532,7 +532,7 @@ public class FAM_VIEW_LISTNER {
 						@Override
 						public void run() {
 							Play_IButton.setTag(1);
-							new ThreadReadStateListInAssets(context, "pad/PlayBack/stop_f.png","pad/PlayBack/stop_n.png", Play_IButton, 2);	
+							new ThreadReadStateListInAssets(context, "phone/play_volume/stop_f.png","phone/play_volume/stop_n.png", Play_IButton, 2);	
 						}
 					});
 				}

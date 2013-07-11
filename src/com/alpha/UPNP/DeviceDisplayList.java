@@ -61,7 +61,9 @@ public class DeviceDisplayList {
 	private FS_SPEAKER_ExpandableListAdapter_Listner FSELAListner;
 	private FM_Music_ListView_BaseAdapter_Listner FMLBAListner;
 	private Play_IButton_Listner PIListner;
+	private Play_IButton_Listner Info_PIListner;
 	private PlayMode_IButton_Listner PMIListner;
+	private PlayMode_IButton_Listner Info_PMIListner;
 	private MusicInfo_Listner MIListner;
 	private FI_Queqe_ListView_BaseAdapter_Queqe_Listner queqe_listner;
 	private SubscriptionCallback Device_StateCallBack;
@@ -193,18 +195,28 @@ public class DeviceDisplayList {
 						 //Playª¬ºA
 						 String MR_State = lastChangeDO.getTransportState();				
 						 if(MR_State!=null&&!MR_State.equals("")&&PIListner!=null){
+							//Phone Speaker Play_IButton_Listner&& PAD MAIN Play_IButton_Listner
 							 PIListner.SetPlay_IButton_State(MR_State);
 							 mlog.info(TAG, "==========EVEN STAR==========");
 							 mlog.info(TAG, "lastChangeDO MR_State= "+MR_State);
-							 mlog.info(TAG, "============End=============");					 
+							 mlog.info(TAG, "============End=============");
+							 //Phone Info Play_IButton_Listner
+							 if(Info_PIListner!=null){
+								 Info_PIListner.SetPlay_IButton_State(MR_State);
+							 }							
 						 }	
 						 //CurrentPlayMode
 						 String MR_PlayMode = lastChangeDO.getCurrentPlayMode();
 						 if(MR_PlayMode!=null&&!MR_PlayMode.equals("")&&PMIListner!=null){
+							//Phone Speaker PlayMode_IButton_Listner&& PAD MAIN PlayMode_IButton_Listner
 							 PMIListner.SetPlayMode_IButton_State(MR_PlayMode);
 							 mlog.info(TAG, "==========EVEN STAR==========");
 							 mlog.info(TAG, "lastChangeDO MR_PlayMode= "+MR_PlayMode);
-							 mlog.info(TAG, "============End=============");	
+							 mlog.info(TAG, "============End=============");
+							//Phone Info PlayMode_IButton_Listner
+							 if(Info_PMIListner!=null){
+								 Info_PMIListner.SetPlayMode_IButton_State(MR_PlayMode);
+							 }
 						 }						 
 						 String Item_MetaData = lastChangeDO.getAVTransportURIMetaData();					 
 	//					 String CurrentTrackEmbeddedMetaData = lastChangeDO.getCurrentTrackEmbeddedMetaData();	
@@ -400,8 +412,15 @@ public class DeviceDisplayList {
 	public void setPlay_IButton_Listner(Play_IButton_Listner PIListner){
 		this.PIListner = PIListner;
 	}
+	public void setInfo_Play_IButton_Listner(Play_IButton_Listner Info_PIListner){
+		this.Info_PIListner = Info_PIListner;
+	}
 	public void setPlayMode_IButton_Listner(PlayMode_IButton_Listner PMIListner){
 		this.PMIListner = PMIListner;
+	}
+	
+	public void setInfo_PlayMode_IButton_Listner(PlayMode_IButton_Listner Info_PMIListner){
+		this.Info_PMIListner = Info_PMIListner;
 	}
 	public void setMusicInfo_Listner(MusicInfo_Listner MIListner){
 		this.MIListner = MIListner;

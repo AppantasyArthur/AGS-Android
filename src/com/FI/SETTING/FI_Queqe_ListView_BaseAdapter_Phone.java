@@ -97,14 +97,7 @@ public class FI_Queqe_ListView_BaseAdapter_Phone extends BaseAdapter {
 			}			
 		};
 		((FragmentActivity_Main)context).GETDeviceDisplayList().setQueqe_Listner(queqe_listner);
-		dataList.clear();
-		for(int i =0;i<10;i++){
-			TrackDO data = new TrackDO();
-			data.setId(""+i);
-			data.setTitle("TITLE = "+i);
-			dataList.add(data);
-		}
-		
+		dataList.clear();	
 	}
 	@Override
 	public int getCount() {
@@ -266,9 +259,9 @@ public class FI_Queqe_ListView_BaseAdapter_Phone extends BaseAdapter {
 	private void basicSetView(ViewHandler viewHandler) {		
 		//Delete ImageView
 		Tool.fitsViewLeftMargin(7, viewHandler.Delete_ImageView);
-		viewHandler.Delete_ImageView.getLayoutParams().height = Tool.getWidth(18);
-		Tool.fitsViewWidth(18, viewHandler.Delete_ImageView);
-		new ThreadReadBitMapInAssets(context, "phone/queue/delete_icon.PNG", viewHandler.Delete_ImageView, 1);
+		viewHandler.Delete_ImageView.getLayoutParams().height = Tool.getWidth(27);
+		Tool.fitsViewWidth(53, viewHandler.Delete_ImageView);
+		new ThreadReadBitMapInAssets(context, "phone/queue/delete.png", viewHandler.Delete_ImageView, 1);
 		//Content RLayout
 		Tool.fitsViewLeftMargin(7, viewHandler.Content_RLayout);
 		Tool.fitsViewRightMargin(7, viewHandler.Content_RLayout);

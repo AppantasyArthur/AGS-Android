@@ -152,23 +152,7 @@
 	    android:layout_above="@+id/pFI_RLayout_Bottom_RLayout"
 	    android:background="#00000000"
 	    
-	    >     
-	   <RelativeLayout 
-	        android:id="@+id/pFI_RLayout_DOWN_RLayout"
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent"	        
-	        android:background="#00000000"
-	        >       
-	        <com.FI.SETTING.FI_ListView
-	            android:id="@+id/pFI_RLayout_RLayout_QUEUE_ListView"
-	            android:layout_width="match_parent"
-	            android:layout_height="match_parent"
-	            android:background="#00000000"
-	            android:listSelector="@android:color/transparent"
-	            android:divider="#00000000"
-	            >
-	        </com.FI.SETTING.FI_ListView>	
-	    </RelativeLayout>
+	    >      
 	    <RelativeLayout 
 	        android:id="@+id/pFI_RLayout_UP_RLayout"
 	        android:layout_width="match_parent"
@@ -193,15 +177,28 @@
 	            >         
 	        </com.FI.SETTING.FI_PointLiLayout>		              
 	    </RelativeLayout>
-	     
-	    
+		<RelativeLayout 
+	        android:id="@+id/pFI_RLayout_DOWN_RLayout"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"	        
+	        android:background="#00000000"
+	        >       
+	        <com.FI.SETTING.FI_ListView
+	            android:id="@+id/pFI_RLayout_RLayout_QUEUE_ListView"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:background="#00000000"
+	            android:listSelector="@android:color/transparent"
+	            android:divider="#00000000"
+	            >
+	        </com.FI.SETTING.FI_ListView>	
+	     </RelativeLayout>		    
     </ViewFlipper>
     <RelativeLayout 
 	    android:id="@+id/pFI_RLayout_TITLE4_RLayout"
 		android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:layout_below="@+id/pFI_RLayout_TITLE3_RLayout"	
-	    android:visibility="gone"    
+	    android:layout_below="@+id/pFI_RLayout_TITLE3_RLayout"    
 	    >
 		<ImageButton 
 			android:id="@+id/pFI_RLayout_RLayout_Cycle_IButton"
@@ -259,8 +256,7 @@
         android:id="@+id/pFI_RLayout_Bottom_RLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"       
-        >
+        android:layout_alignParentBottom="true"        		>
        	<ImageButton 
        	    android:id="@+id/pFI_RLayout_RLayout_Setting_IButton"
 	        android:layout_width="wrap_content"
@@ -282,5 +278,71 @@
 		    android:text="Queue"
 		    android:textStyle="bold"
        	    />
-    </RelativeLayout>  
+    </RelativeLayout>
+	<RelativeLayout 
+	    android:id="@+id/pFI_RLayout_Bottom2_RLayout"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentBottom="true"	
+	    android:background="#00000000"
+	    android:clickable="true"
+	    android:visibility="gone"		   
+		>	
+		<ImageButton 
+       	    android:id="@+id/pFI_RLayout_RLayout_Setting2_IButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_centerVertical="true"
+	        android:background="#00000000"
+	        android:scaleType="fitXY"
+       	    />
+	   	<ImageView 
+	   	    android:id="@+id/pFI_RLayout_RLayout_ButtonsBG_ImageView"
+	   	    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_centerVertical="true"
+		    android:layout_alignParentLeft="true"
+		    android:background="#00000000"
+		    android:scaleType="fitXY"
+	   	    />
+	   	<Button 
+		    android:id="@+id/pFI_RLayout_RLayout_Clear_Button"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_centerVertical="true"
+		    android:layout_alignParentLeft="true"
+		    android:gravity="center"
+		    android:background="#00000000"
+		    android:padding="0dp"
+		    android:text="Clear"
+		    android:textStyle="bold"
+		    android:textColor="#ffffff"
+		    />	    
+		<Button 
+		    android:id="@+id/pFI_RLayout_RLayout_Save_Button"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_centerVertical="true"
+		    android:layout_alignParentLeft="true"
+		    android:gravity="center"
+		    android:background="#00000000"
+		    android:padding="0dp"
+		    android:text="Save"
+		    android:textStyle="bold"
+		    android:textColor="#ffffff"
+		    />
+		<Button 
+		    android:id="@+id/pFI_RLayout_RLayout_Done_Button"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_centerVertical="true"
+		    android:layout_alignParentLeft="true"
+		    android:visibility="gone"
+		    android:padding="0dp"
+		    android:textColor="#ffffff"
+		    android:text="Done"
+		    android:textStyle="bold"
+		    />	    	        
+	</RelativeLayout>
 </RelativeLayout>
