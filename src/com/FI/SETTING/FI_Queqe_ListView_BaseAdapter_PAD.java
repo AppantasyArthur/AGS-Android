@@ -259,9 +259,9 @@ public class FI_Queqe_ListView_BaseAdapter_PAD extends BaseAdapter {
 	private void basicSetView(ViewHandler viewHandler) {		
 		//Delete ImageView
 		Tool.fitsViewLeftMargin(10, viewHandler.Delete_ImageView);
-		viewHandler.Delete_ImageView.getLayoutParams().width = Tool.getHeight(19);
-		Tool.fitsViewHeight(19, viewHandler.Delete_ImageView);
-		new ThreadReadBitMapInAssets(context, "pad/Queqe/queqe_delete.png", viewHandler.Delete_ImageView, 1);
+		viewHandler.Delete_ImageView.getLayoutParams().width = Tool.getHeight(58);
+		Tool.fitsViewHeight(36, viewHandler.Delete_ImageView);
+		new ThreadReadBitMapInAssets(context, "pad/Queqe/delete.png", viewHandler.Delete_ImageView, 1);
 		//Content RLayout
 		Tool.fitsViewLeftMargin(10, viewHandler.Content_RLayout);
 		Tool.fitsViewRightMargin(10, viewHandler.Content_RLayout);

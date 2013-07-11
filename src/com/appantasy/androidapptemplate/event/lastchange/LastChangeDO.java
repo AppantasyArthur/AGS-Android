@@ -34,7 +34,7 @@ public class LastChangeDO {
 	private String transportState;
 	private String currentTrackDuration;
 	private String relativeTimePosition;
-	
+	private String CurrentPlayMode;
 	private String currentTrackURI;
 	private String currentTrackEmbeddedMetaData;
 	private String AVTransportURIMetaData;
@@ -79,6 +79,14 @@ public class LastChangeDO {
 	public void setRelativeTimePosition(String relativeTimePosition) {
 		this.relativeTimePosition = relativeTimePosition;
 	}
+	
+	public String getCurrentPlayMode() {
+		return CurrentPlayMode;
+	}
+
+	public void setCurrentPlayMode(String currentPlayMode) {
+		CurrentPlayMode = currentPlayMode;
+	} 
 
 	// I know this could be an int, but this is just to show you how it works   
 	public String sectionId;   
@@ -92,7 +100,9 @@ public class LastChangeDO {
 		
 		return ret.toString();
 		
-	} 
+	}
+
+	
 	
 	
 	

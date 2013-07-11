@@ -63,7 +63,9 @@ public class LastChangeHandler extends DefaultHandler {
 			  _data.setTransportState(val);
 		  } else if(localName.equalsIgnoreCase("CurrentTrackURI")){
 			  _data.setCurrentTrackURI(val);
-		  } else if(localName.equalsIgnoreCase("CurrentTrackEmbeddedMetaData")){
+		  }else if(localName.equalsIgnoreCase("CurrentPlayMode")){
+			  _data.setCurrentPlayMode(val);
+		  }else if(localName.equalsIgnoreCase("CurrentTrackEmbeddedMetaData")){
 			  _data.setCurrentTrackEmbeddedMetaData(val);
 		  } else if(localName.equalsIgnoreCase("AVTransportURIMetaData")){
 			  _data.setAVTransportURIMetaData(val);

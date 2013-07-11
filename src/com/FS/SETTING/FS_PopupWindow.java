@@ -22,6 +22,7 @@ import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
 import com.tkb.tool.Tool;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -231,8 +232,8 @@ public class FS_PopupWindow extends PopupWindow {
 		}
 		private void basicSetView() {
 			//Radio ImageButton
-			Tool.fitsViewHeight(22, this.Radio_ImageButton);
-			this.Radio_ImageButton.getLayoutParams().width = Tool.getHeight(22);
+			Tool.fitsViewHeight(36, this.Radio_ImageButton);
+			this.Radio_ImageButton.getLayoutParams().width = Tool.getHeight(36);
 			if(groupVO.isSlave()){
 				//¤w¿ï¨ú
 				isSelected = true;
@@ -243,9 +244,11 @@ public class FS_PopupWindow extends PopupWindow {
 			if(isSelected){
 				//¤w¿ï¨ú
 				new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/group_n.png", this.Radio_ImageButton, 2);
+				ChooseScroll_RLayout.setBackgroundColor(Color.parseColor("#0000ff"));
 			}else{
 				//¥¼¿ï¨ú
 				new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/group_n.png", this.Radio_ImageButton, 2);
+				ChooseScroll_RLayout.setBackgroundColor(Color.parseColor("#00ff00"));
 			}
 			//Name TextView
 			Tool.fitsViewTextSize(6, this.Name_TextView);
@@ -259,11 +262,13 @@ public class FS_PopupWindow extends PopupWindow {
 						//§ï¦¨¥¼¿ï
 						isSelected = false;
 						new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/group_n.png", v, 2);
+						ChooseScroll_RLayout.setBackgroundColor(Color.parseColor("#00ff00"));
 						mlog.info(TAG, "isSelected = "+isSelected);
 					}else{
 						//§ï¦¨¤w¿ï
 						isSelected = true;
 						new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/group_n.png", v, 2);
+						ChooseScroll_RLayout.setBackgroundColor(Color.parseColor("#0000ff"));
 						mlog.info(TAG, "isSelected = "+isSelected);
 					}
 				}

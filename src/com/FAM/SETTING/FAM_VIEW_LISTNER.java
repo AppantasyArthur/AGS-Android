@@ -218,7 +218,7 @@ public class FAM_VIEW_LISTNER {
 			//***************************PAD*********************************
 		}
 	}
-	public void Cycle_IButton_LISTNER(final ImageButton Cycle_IButton){
+	public void CycleRandom_IButton_LISTNER(final ImageButton Cycle_IButton,final ImageButton Random_IButton){
 		if(device_size==6){
 			//***************************PHONE*********************************	
 			//***************************PHONE*********************************	
@@ -231,49 +231,134 @@ public class FAM_VIEW_LISTNER {
 					Log.i(TAG, "Tag = "+Tag);
 					switch(Tag){
 					case 0:
-						new ThreadReadBitMapInAssets(context, "pad/PlayBack/Repeat all.png", Cycle_IButton, 2);
-						Cycle_IButton.setTag(1);						
+						SetPlayMode(1);
 						break;
-					case 1:
-						new ThreadReadBitMapInAssets(context, "pad/PlayBack/Repeat one.png", Cycle_IButton, 2);
-						Cycle_IButton.setTag(2);						
+					case 1:	
+						SetPlayMode(2);
 						break;
 					case 2:
-						new ThreadReadBitMapInAssets(context, "pad/PlayBack/repeat_n.png", Cycle_IButton, 2);
-						Cycle_IButton.setTag(0);						
+						SetPlayMode(3);
+						break;
+					case 3:
+						SetPlayMode(0);
 						break;
 					}
 				}
 			});		
 			//***************************PAD*********************************
-		}
-	}
-	public void Random_IButton_LISTNER(final ImageButton Random_IButton){
-		if(device_size==6){
-			//***************************PHONE*********************************	
-			//***************************PHONE*********************************	
-		}else{
-			//***************************PAD*********************************
-			Random_IButton.setOnClickListener(new View.OnClickListener() {
+			PlayMode_IButton_Listner PMI_Listner = new PlayMode_IButton_Listner(){
 				@Override
-				public void onClick(View v) {
-					int Tag = (Integer)v.getTag();
-					Log.i(TAG, "Tag = "+Tag);
-					switch(Tag){
-					case 0:
-						new ThreadReadBitMapInAssets(context, "pad/PlayBack/shuffle_f.png", Random_IButton, 2);
-						Random_IButton.setTag(1);						
-						break;
-					case 1:
-						new ThreadReadBitMapInAssets(context, "pad/PlayBack/shuffle_n.png", Random_IButton, 2);
-						Random_IButton.setTag(0);
-						break;					
-					}
+				public void SetPlayMode_IButton_State(final String MR_PlayMode) {
+					Cycle_IButton.post(new Runnable(){
+						@Override
+						public void run() {
+							if(MR_PlayMode.equals("NORMAL")){
+								new ThreadReadBitMapInAssets(context, "pad/PlayBack/repeat_n.png", Cycle_IButton, 2);
+								new ThreadReadBitMapInAssets(context, "pad/PlayBack/shuffle_n.png", Random_IButton, 2);
+								Cycle_IButton.setTag(0);
+							}else if(MR_PlayMode.equals("REPEAT_ALL")){
+								new ThreadReadBitMapInAssets(context, "pad/PlayBack/Repeat all.png", Cycle_IButton, 2);
+								new ThreadReadBitMapInAssets(context, "pad/PlayBack/shuffle_n.png", Random_IButton, 2);
+								Cycle_IButton.setTag(1);
+							}else if(MR_PlayMode.equals("REPEAT_ONE")){
+								new ThreadReadBitMapInAssets(context, "pad/PlayBack/Repeat one.png", Cycle_IButton, 2);
+								new ThreadReadBitMapInAssets(context, "pad/PlayBack/shuffle_n.png", Random_IButton, 2);
+								Cycle_IButton.setTag(2);	
+							}else if(MR_PlayMode.equals("SHUFFLE")||MR_PlayMode.equals("RANDOM")){
+								new ThreadReadBitMapInAssets(context, "pad/PlayBack/repeat_n.png", Cycle_IButton, 2);
+								new ThreadReadBitMapInAssets(context, "pad/PlayBack/shuffle_f.png", Random_IButton, 2);
+								Cycle_IButton.setTag(3);
+							}
+							mlog.info(TAG, "SetPlay_IButton_State = "+MR_PlayMode);
+						}
+					});
+					
 				}
-			});			
-			//***************************PAD*********************************
+			};
+			//注測PlayMode EVEN
+			((FragmentActivity_Main)context).GETDeviceDisplayList().setPlayMode_IButton_Listner(PMI_Listner);
 		}
 	}
+	private void SetPlayMode(int Mode){
+		//取得upnpServer
+		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+		//取得MR Device
+		DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+		//取得instanceId
+		UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
+		//取得service
+		Service AVTransportService = null;	
+		//檢查 MR_Device
+		if(MR_Device!=null){
+			//取得device 的 "AVTransport" service
+			AVTransportService = MR_Device.getDevice().findService( new UDAServiceId("AVTransport"));
+		}else{
+			return;
+		}
+		Action SetPlayModeAction = AVTransportService.getAction("SetPlayMode");
+		if(SetPlayModeAction!=null){
+			ActionArgumentValue[] values = new ActionArgumentValue[2];
+			//GET ActionArgument 
+			ActionArgument InstanceID = SetPlayModeAction.getInputArgument("InstanceID");
+			ActionArgument NewPlayMode = SetPlayModeAction.getInputArgument("NewPlayMode");
+			if(InstanceID!=null&&NewPlayMode!=null&&Mode<4){
+				values[0] =new ActionArgumentValue(InstanceID, "0");
+				switch(Mode){
+				case 0:
+					values[1] =new ActionArgumentValue(NewPlayMode, "NORMAL");
+					break;
+				case 1:
+					values[1] =new ActionArgumentValue(NewPlayMode, "REPEAT_ALL");
+					break;
+				case 2:
+					values[1] =new ActionArgumentValue(NewPlayMode, "REPEAT_ONE");
+					break;
+				case 3:
+					values[1] =new ActionArgumentValue(NewPlayMode, "SHUFFLE");
+					break;
+				}
+				ActionInvocation ai = new ActionInvocation(SetPlayModeAction,values);
+				
+				ActionCallback SetPlayModeActionCallBack = new ActionCallback(ai){
+					@Override
+					public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
+						mlog.info(TAG, "SetPlayModeActionCallBack failure = "+arg2);
+					}
+					@Override
+					public void success(ActionInvocation arg0) {									
+						mlog.info(TAG, "SetPlayModeActionCallBack success");
+					}											
+				};
+				upnpServer.getControlPoint().execute(SetPlayModeActionCallBack);	
+			}
+		}
+	}
+//	public void Random_IButton_LISTNER(final ImageButton Random_IButton){
+//		if(device_size==6){
+//			//***************************PHONE*********************************	
+//			//***************************PHONE*********************************	
+//		}else{
+//			//***************************PAD*********************************
+//			Random_IButton.setOnClickListener(new View.OnClickListener() {
+//				@Override
+//				public void onClick(View v) {
+//					int Tag = (Integer)v.getTag();
+//					Log.i(TAG, "Tag = "+Tag);
+//					switch(Tag){
+//					case 0:
+//						new ThreadReadBitMapInAssets(context, "pad/PlayBack/shuffle_f.png", Random_IButton, 2);
+//						Random_IButton.setTag(1);						
+//						break;
+//					case 1:
+//						new ThreadReadBitMapInAssets(context, "pad/PlayBack/shuffle_n.png", Random_IButton, 2);
+//						Random_IButton.setTag(0);
+//						break;					
+//					}
+//				}
+//			});			
+//			//***************************PAD*********************************
+//		}
+//	}
 	public void Setting_IButton_LISTNER(ImageButton Setting_IButton) {
 		if(device_size==6){
 			//***************************PHONE*********************************	

@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.teleal.cling.android.AndroidUpnpService;
 import org.teleal.cling.controlpoint.ActionCallback;
 import org.teleal.cling.controlpoint.SubscriptionCallback;
@@ -29,6 +31,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import android.content.Context;
 import android.util.Log;
+
+import com.FAM.SETTING.PlayMode_IButton_Listner;
 import com.FAM.SETTING.Play_IButton_Listner;
 import com.FI.SETTING.FI_Queqe_ListView_BaseAdapter_Queqe_Listner;
 import com.FI.SETTING.MusicInfo_Listner;
@@ -57,6 +61,7 @@ public class DeviceDisplayList {
 	private FS_SPEAKER_ExpandableListAdapter_Listner FSELAListner;
 	private FM_Music_ListView_BaseAdapter_Listner FMLBAListner;
 	private Play_IButton_Listner PIListner;
+	private PlayMode_IButton_Listner PMIListner;
 	private MusicInfo_Listner MIListner;
 	private FI_Queqe_ListView_BaseAdapter_Queqe_Listner queqe_listner;
 	private SubscriptionCallback Device_StateCallBack;
@@ -193,6 +198,14 @@ public class DeviceDisplayList {
 							 mlog.info(TAG, "lastChangeDO MR_State= "+MR_State);
 							 mlog.info(TAG, "============End=============");					 
 						 }	
+						 //CurrentPlayMode
+						 String MR_PlayMode = lastChangeDO.getCurrentPlayMode();
+						 if(MR_PlayMode!=null&&!MR_PlayMode.equals("")&&PMIListner!=null){
+							 PMIListner.SetPlayMode_IButton_State(MR_PlayMode);
+							 mlog.info(TAG, "==========EVEN STAR==========");
+							 mlog.info(TAG, "lastChangeDO MR_PlayMode= "+MR_PlayMode);
+							 mlog.info(TAG, "============End=============");	
+						 }						 
 						 String Item_MetaData = lastChangeDO.getAVTransportURIMetaData();					 
 	//					 String CurrentTrackEmbeddedMetaData = lastChangeDO.getCurrentTrackEmbeddedMetaData();	
 						 ItemDO itemDO =null;
@@ -272,7 +285,8 @@ public class DeviceDisplayList {
 		    LastChangeHandler dataHandler = new LastChangeHandler();   
 		    xr.setContentHandler(dataHandler);   
 		    
-		    if(true){		    	
+		    if(true){	
+//		    	xml = StringEscapeUtils.unescapeHtml4(xml);
 		    	xr.parse(new InputSource(new StringReader(xml))); 
 			    data = dataHandler.getData();  
 		    } 
@@ -301,8 +315,10 @@ public class DeviceDisplayList {
 		    xr.setContentHandler(dataHandler);   
 		    
 		    if(true){
+		    	
+		    	xml = StringEscapeUtils.unescapeHtml4(xml);
 		    	xml = xml.replace(" dlna:profileID=\"JPEG_TN\"", "");
-		    	xml = xml.replace("pv:", ""); 
+		    	xml = xml.replace("pv:", ""); 		    	
 		    	xr.parse(new InputSource(new StringReader(xml))); 
 			    data = dataHandler.getData();  
 		    } 
@@ -328,7 +344,8 @@ public class DeviceDisplayList {
 		    TrackHanlder dataHandler = new TrackHanlder();   
 		    xr.setContentHandler(dataHandler);   
 		    
-		    if(true){		    	
+		    if(true){		
+//		    	xml = StringEscapeUtils.unescapeHtml4(xml);
 		    	xr.parse(new InputSource(new StringReader(xml))); 
 			    data = dataHandler.getData();  
 		    } 
@@ -382,6 +399,9 @@ public class DeviceDisplayList {
 	}
 	public void setPlay_IButton_Listner(Play_IButton_Listner PIListner){
 		this.PIListner = PIListner;
+	}
+	public void setPlayMode_IButton_Listner(PlayMode_IButton_Listner PMIListner){
+		this.PMIListner = PMIListner;
 	}
 	public void setMusicInfo_Listner(MusicInfo_Listner MIListner){
 		this.MIListner = MIListner;

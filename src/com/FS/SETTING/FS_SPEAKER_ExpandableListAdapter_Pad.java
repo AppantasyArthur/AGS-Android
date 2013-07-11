@@ -310,12 +310,13 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 		//AddChildItem ImageView
 		viewHandler.AddChildItem_ImageButton.getLayoutParams().width = Tool.getHeight(33);
 		Tool.fitsViewHeight(32, viewHandler.AddChildItem_ImageButton);
-		Tool.fitsViewRightMargin(20, viewHandler.AddChildItem_ImageButton);
+		Tool.fitsViewRightMargin(5, viewHandler.AddChildItem_ImageButton);
 		Tool.fitsViewTopMargin(15, viewHandler.AddChildItem_ImageButton);
 		new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/add_btn_n.png", viewHandler.AddChildItem_ImageButton, 2);
 		//Indicator TextView
-		viewHandler.Indicator_ImageView.getLayoutParams().width = Tool.getHeight(15);
-		Tool.fitsViewHeight(14, viewHandler.Indicator_ImageView);
+		viewHandler.Indicator_ImageView.getLayoutParams().width = Tool.getHeight(33);
+		Tool.fitsViewHeight(32, viewHandler.Indicator_ImageView);
+		Tool.fitsViewTopMargin(15, viewHandler.Indicator_ImageView);
 		Tool.fitsViewRightMargin(5, viewHandler.Indicator_ImageView);
 		//RunState TextView
 		Tool.fitsViewHeight(23, viewHandler.RunState_TextView);
