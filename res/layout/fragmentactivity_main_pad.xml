@@ -182,7 +182,7 @@
 		        android:layout_centerInParent="true"
 		        android:progressDrawable="@drawable/seekbar_style"		        
 		        android:thumbOffset="0dp"		        
-		        android:background="#000000"		       
+		        android:background="#00000000"		       
 		        />
 		    <TextView 
 		        android:id="@+id/FAM_RLayout_LLayout_RLayout_Current_TextView"

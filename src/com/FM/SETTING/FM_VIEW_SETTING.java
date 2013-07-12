@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.alpha.upnpui.R;
@@ -36,6 +37,21 @@ public class FM_VIEW_SETTING {
 			case R.id.pFM_RLayout_TITLE2_RLayout:
 				pFM_RLayout_TITLE2_RLayout(view);
 				break;
+			case R.id.pFM_RLayout_TITLE3_RLayout:
+				pFM_RLayout_TITLE3_RLayout(view);
+				break;
+			case R.id.pFM_RLayout_Body_LLayout:
+				pFM_RLayout_Body_LLayout(view);
+				break;
+			case R.id.pFM_RLayout_RLayout_TITLE4_RLayout:
+				pFM_RLayout_RLayout_TITLE4_RLayout(view);
+				break;
+			case R.id.pFM_RLayout_RLayout_RLayout_Music_ListView:
+				pFM_RLayout_RLayout_RLayout_Music_ListView(view);
+				break;
+			case R.id.pFM_RLayout_Bottom_RLayout:
+				pFM_RLayout_Bottom_RLayout(view);
+				break;	
 			}
 		}else{
 			switch(view.getId()){
@@ -55,8 +71,7 @@ public class FM_VIEW_SETTING {
 		}
 	}
 
-
-//***************************PHONE*********************************
+	//***************************PHONE*********************************
 	private void pFM_RLayout(View view) {		
 		new ThreadReadBitMapInAssets(context, "phone/speaker/bg.PNG", view, 3);
 	}
@@ -77,6 +92,83 @@ public class FM_VIEW_SETTING {
 		Tool.fitsViewWidth(59, view.findViewById(R.id.pFM_RLayout_RLayout_NowPlaying_Button));
 		Tool.fitsViewTextSize(10, view.findViewById(R.id.pFM_RLayout_RLayout_NowPlaying_Button));
 		new ThreadReadStateListInAssets(context, "phone/speaker/bottom_button_f.png","phone/speaker/bottom_button_single.png", view.findViewById(R.id.pFM_RLayout_RLayout_NowPlaying_Button), 4);
+	}
+	private void pFM_RLayout_TITLE3_RLayout(View view) {
+		Tool.fitsViewHeight(36, view);
+		new ThreadReadBitMapInAssets(context, "phone/playlist/search_bar.png", view, 3);
+		
+		//MusicBack IButton
+		Tool.fitsViewWidth(51, view.findViewById(R.id.pFM_RLayout_RLayout_MusicBack_Button));
+		Tool.fitsViewHeight(23, view.findViewById(R.id.pFM_RLayout_RLayout_MusicBack_Button));
+		Tool.fitsViewLeftMargin(8, view.findViewById(R.id.pFM_RLayout_RLayout_MusicBack_Button));
+		new ThreadReadBitMapInAssets(context, "phone/playlist/back.png", view.findViewById(R.id.pFM_RLayout_RLayout_MusicBack_Button), 3);
+		
+		//SearchMusic RLayout		
+		Tool.fitsViewWidth(159, view.findViewById(R.id.pFM_RLayout_RLayout_SearchMusic_RLayout));
+		Tool.fitsViewHeight(23, view.findViewById(R.id.pFM_RLayout_RLayout_SearchMusic_RLayout));
+		Tool.fitsViewRightMargin(5, view.findViewById(R.id.pFM_RLayout_RLayout_SearchMusic_RLayout));
+		new ThreadReadBitMapInAssets(context, "phone/playlist/search_s.png", view.findViewById(R.id.pFM_RLayout_RLayout_SearchMusic_RLayout), 3);
+		//SearchMusic IButton
+		view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SearchMusic_IButton).getLayoutParams().height = Tool.getWidth(17);
+		Tool.fitsViewWidth(17, view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SearchMusic_IButton));	
+		Tool.fitsViewLeftMargin(5, view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SearchMusic_IButton));	
+		new ThreadReadBitMapInAssets(context, "phone/playlist/search_icon.png", view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SearchMusic_IButton), 2);
+		//SearchMusic EText
+		Tool.fitsViewTextSize(10, view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SearchMusic_EText));
+		Tool.fitsViewLeftMargin(5, view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SearchMusic_EText));			
+	}
+	private void pFM_RLayout_Body_LLayout(View view){		
+		((LinearLayout.LayoutParams)view.getLayoutParams()).topMargin = Tool.getHeight(2);
+	}
+	private void pFM_RLayout_RLayout_TITLE4_RLayout(View view) {
+		Tool.fitsViewHeight(36, view);		
+		new ThreadReadBitMapInAssets(context, "phone/playlist/search_bar.png", view, 3);
+		//SerchConditionBG_ImageView
+		Tool.fitsViewHeight(26, view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchConditionBG_ImageView));
+		Tool.fitsViewWidth(312, view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchConditionBG_ImageView));
+		Tool.fitsViewTopMargin(5, view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchConditionBG_ImageView));
+		Tool.fitsViewLeftMargin(4, view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchConditionBG_ImageView));
+		view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchConditionBG_ImageView).setTag(0);
+		new ThreadReadBitMapInAssets(context, "phone/playlist/playlist", view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchConditionBG_ImageView), 1);
+		//SerchCondition1_Button
+		Tool.fitsViewHeight(26, view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchCondition1_Button));
+		Tool.fitsViewWidth(78, view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchCondition1_Button));
+		Tool.fitsViewTopMargin(5, view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchCondition1_Button));
+		Tool.fitsViewLeftMargin(4, view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchCondition1_Button));
+		Tool.fitsViewTextSize(12, view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchCondition1_Button));
+		//SerchCondition2_Button
+		Tool.fitsViewHeight(26, view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchCondition2_Button));
+		Tool.fitsViewWidth(78, view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchCondition2_Button));
+		Tool.fitsViewTopMargin(5, view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchCondition2_Button));
+		Tool.fitsViewLeftMargin(0, view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchCondition2_Button));
+		Tool.fitsViewTextSize(12, view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchCondition2_Button));
+		//SerchCondition3_Button
+		Tool.fitsViewHeight(26, view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchCondition3_Button));
+		Tool.fitsViewWidth(78, view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchCondition3_Button));
+		Tool.fitsViewTopMargin(5, view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchCondition3_Button));
+		Tool.fitsViewLeftMargin(0, view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchCondition3_Button));
+		Tool.fitsViewTextSize(12, view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchCondition3_Button));
+		//SerchCondition4_Button
+		Tool.fitsViewHeight(26, view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchCondition4_Button));
+		Tool.fitsViewWidth(78, view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchCondition4_Button));
+		Tool.fitsViewTopMargin(5, view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchCondition4_Button));
+		Tool.fitsViewLeftMargin(0, view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchCondition4_Button));
+		Tool.fitsViewTextSize(12, view.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchCondition4_Button));
+	}
+	private void pFM_RLayout_RLayout_RLayout_Music_ListView(View view) {		
+		//Music ListView
+		ListView listView = (ListView)view;
+		FM_Music_ListView_BaseAdapter_Phone baseAdapter = new FM_Music_ListView_BaseAdapter_Phone(context);
+		listView.setAdapter(baseAdapter);
+	}
+	private void pFM_RLayout_Bottom_RLayout(View view) {
+		Tool.fitsViewHeight(30, view);			
+		new ThreadReadBitMapInAssets(context, "phone/grouprooms/setting_bar.png", view, 3);		
+		//Setting_IButton
+		Tool.fitsViewWidth(24, view.findViewById(R.id.pFM_RLayout_RLayout_Setting_IButton));
+		view.findViewById(R.id.pFM_RLayout_RLayout_Setting_IButton).getLayoutParams().height = Tool.getWidth(30);
+		Tool.fitsViewLeftMargin(7, view.findViewById(R.id.pFM_RLayout_RLayout_Setting_IButton));		
+		new ThreadReadBitMapInAssets(context, "phone/grouprooms/setting.png", view.findViewById(R.id.pFM_RLayout_RLayout_Setting_IButton), 2);
 	}
 //***************************PHONE*********************************
 //***************************PAD*********************************	
@@ -153,7 +245,7 @@ public class FM_VIEW_SETTING {
 		Tool.fitsViewWidth(344, view);
 		//Music ListView
 		ListView listView = (ListView)view;
-		FM_Music_ListView_BaseAdapter baseAdapter = new FM_Music_ListView_BaseAdapter(context);
+		FM_Music_ListView_BaseAdapter_PAD baseAdapter = new FM_Music_ListView_BaseAdapter_PAD(context);
 		listView.setAdapter(baseAdapter);
 	}
 //***************************PAD*********************************

@@ -130,9 +130,9 @@ public class Tool {
 		 view.getLayoutParams().width = resultSize;		
 	 }
 	 public static void fitsViewTopMargin (int orignalSize,View view){
-		 RelativeLayout.LayoutParams LayoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
+		 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
 		 int resultSize = (int)((float)orignalSize * roomSize.getHeightRoomSize());
-		 LayoutParams.topMargin =  resultSize;
+		 layoutParams.topMargin =  resultSize;
 	 }
 	 public static void fitsViewBottomMargin (int orignalSize,View view){
 		 RelativeLayout.LayoutParams LayoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();

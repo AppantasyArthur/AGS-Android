@@ -359,7 +359,10 @@ public class FM_PopupWindow extends PopupWindow {
 											}
 											@Override
 											public void success(ActionInvocation arg0) {									
-												mlog.info(TAG, "AddTrackToQueueActionCallBack success");
+												mlog.info(TAG, "AddTrackToQueueActionCallBack success");												
+												for(ActionArgumentValue aav :arg0.getOutput()){
+													mlog.info(TAG, "aav ="+aav.toString());
+												}
 											}											
 										};
 										upnpServer.getControlPoint().execute(AddTrackToQueueActionCallBack);	

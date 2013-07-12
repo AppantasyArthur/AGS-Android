@@ -67,9 +67,24 @@ public class Fragment_Music extends Fragment {
 	private void Phone_findView() {
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFM_RLayout));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFM_RLayout_TITLE2_RLayout));
+		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFM_RLayout_TITLE3_RLayout));
+		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_TITLE4_RLayout));
+		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_RLayout_Music_ListView));
+		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFM_RLayout_Bottom_RLayout));
 	}
 	private void Phone_findViewListner(){
-		
+		VIEW_LISTNER.Speaker_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_Speaker_Button));
+		VIEW_LISTNER.NowPlaying_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_NowPlaying_Button));
+		VIEW_LISTNER.SET_Music_ListView_Listner((FM_ListView)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_RLayout_Music_ListView));
+		VIEW_LISTNER.SET_MusicBack_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_MusicBack_Button),(FM_ListView)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_RLayout_Music_ListView));
+		VIEW_LISTNER.SET_SerchCondition1_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchCondition1_Button),
+														(ImageView)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchConditionBG_ImageView));
+		VIEW_LISTNER.SET_SerchCondition2_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchCondition2_Button),
+														(ImageView)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchConditionBG_ImageView));
+		VIEW_LISTNER.SET_SerchCondition3_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchCondition3_Button),
+														(ImageView)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchConditionBG_ImageView));
+		VIEW_LISTNER.SET_SerchCondition4_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchCondition4_Button),
+														(ImageView)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchConditionBG_ImageView));
 	}
 
 	private void PAD_findView() {
