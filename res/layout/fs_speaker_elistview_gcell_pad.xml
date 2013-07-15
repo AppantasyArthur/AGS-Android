@@ -57,10 +57,12 @@
     		android:background="#00000000"  
     		android:textColor="#ffffff"   		
     		android:singleLine="true"
-    		android:ellipsize="marquee"
-    		android:marqueeRepeatLimit="marquee_forever"
-    		android:scrollHorizontally="true"
-    		 	
+    		
             />
+        <!-- 
+    		android:ellipsize="marquee"
+    		android:marqueeRepeatLimit="marquee_forever"    		 
+    		android:scrollHorizontally="true"	
+    		-->
     </RelativeLayout>
 </RelativeLayout>

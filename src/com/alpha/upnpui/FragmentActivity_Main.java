@@ -1,8 +1,5 @@
 package com.alpha.upnpui;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.teleal.cling.android.AndroidUpnpService;
 import org.teleal.cling.android.AndroidUpnpServiceImpl;
 import com.FAM.SETTING.FAM_VIEW_LISTNER;
@@ -295,5 +292,8 @@ public class FragmentActivity_Main extends FragmentActivity {
 			((ViewFlipper)ViewContent_ViewFlipper).setDisplayedChild(2);
 			break;
 		}
+	}
+	public Fragment_Speaker GETFragment_Speaker(){
+		return (Fragment_Speaker)this.fragment_Speaker;
 	}
 }

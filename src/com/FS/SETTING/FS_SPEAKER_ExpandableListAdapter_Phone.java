@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.teleal.cling.model.meta.Device;
 import com.alpha.UPNP.DeviceDisplay;
+import com.alpha.fragments.Fragment_Speaker;
 import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.R;
 import com.appantasy.androidapptemplate.event.lastchange.GroupVO;
@@ -380,8 +381,9 @@ public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAd
 			//©I¥sPopupwindow
 			viewHandler.AddChildItem_ImageButton.setOnClickListener(new View.OnClickListener() {
 				@Override
-				public void onClick(View v) {			
-					if(popupWindow!=null&&!popupWindow.isShowing()){
+				public void onClick(View v) {	
+					Fragment_Speaker fragment_Speaker = ((FragmentActivity_Main)context).GETFragment_Speaker();
+					if(fragment_Speaker!=null&&!fragment_Speaker.CheckTITLE2_1_RLayoutIsShown()){
 						List<GroupVO> groupVOList = new ArrayList<GroupVO>();
 						for(int i =0;i<GroupList.size();i++){
 							if(i==ClickListener.this.viewHandler.position){
@@ -397,10 +399,10 @@ public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAd
 							}
 						}
 						Log.i(TAG, "groupVOList size = "+groupVOList.size());
-						View rootView = v.getRootView();
-						popupWindow.SetOptionButtons(groupVOList);
-						popupWindow.SetAddDeviceDisplay(GroupList.get(ClickListener.this.viewHandler.position));
-						popupWindow.ShowPopupWindow(rootView, Gravity.CENTER, 0, 0 );						
+						
+						fragment_Speaker.SetOptionButtons(groupVOList);
+						fragment_Speaker.SetAddDeviceDisplay(GroupList.get(ClickListener.this.viewHandler.position));
+						fragment_Speaker.ShowViewContent_ViewFlipperDisplay(0, R.animator.translate_bottom_in, R.animator.translate_top_out);
 					}
 				}
 			});

@@ -85,7 +85,7 @@
 		    android:layout_height="wrap_content"
 		    android:layout_centerHorizontal="true"
 		    android:layout_alignParentTop="true"
-		    android:background="#ff0000"		    
+		    android:background="#000000"		    
             >
             <LinearLayout
                 android:id="@+id/FS_PopupWindow_Content_RLayout_RLayout_ScrollView_ChooseScroll_LLayout"

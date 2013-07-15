@@ -1,13 +1,31 @@
 
 package com.alpha.fragments;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.teleal.cling.android.AndroidUpnpService;
+import org.teleal.cling.controlpoint.ActionCallback;
+import org.teleal.cling.model.action.ActionArgumentValue;
+import org.teleal.cling.model.action.ActionInvocation;
+import org.teleal.cling.model.message.UpnpResponse;
+import org.teleal.cling.model.meta.Action;
+import org.teleal.cling.model.meta.ActionArgument;
+import org.teleal.cling.model.meta.Device;
+import org.teleal.cling.model.meta.Service;
+import org.teleal.cling.model.types.UDAServiceId;
+
 import com.FS.SETTING.FS_SPEAKER_ExpandableListView;
 import com.FS.SETTING.FS_VIEW_LISTNER;
 import com.FS.SETTING.FS_VIEW_SETTING;
+import com.FS.SETTING.OptionButton;
+import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.R;
-import com.tkb.tool.DeviceInformation;
+import com.appantasy.androidapptemplate.event.lastchange.GroupVO;
 import com.tkb.tool.MLog;
+import com.tkb.tool.ThreadReadBitMapInAssets;
+
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -20,7 +38,9 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ViewFlipper;
 
 public class Fragment_Speaker extends Fragment {
 	//VIEWS
@@ -72,16 +92,22 @@ public class Fragment_Speaker extends Fragment {
 	private void Phone_findView() {
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout));		
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_TITLE2_RLayout));
+		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_TITLE2_1_RLayout));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_TITLE3_RLayout));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_TITLE4_RLayout));
 		FS_SPEAKER_EListView = (FS_SPEAKER_ExpandableListView)Fragment_MainView.findViewById(R.id.pFS_RLayout_SPEAKER_EListView);
-		this.VIEW_SETTING.VIEWSET(FS_SPEAKER_EListView);
+		this.VIEW_SETTING.VIEWSET(FS_SPEAKER_EListView);		
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_Bottom_RLayout));
+		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_Bottom2_RLayout));
 		mlog.info(TAG, "findView OK");
 	}
 	private void Phone_findViewListner() {
 		this.VIEW_LISTNER.NowPlaying_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Nowplaying_Button));
 		this.VIEW_LISTNER.Music_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Music_Button));
+		this.VIEW_LISTNER.Close_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Close_Button),
+												this);
+		this.VIEW_LISTNER.Done_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Done_Button),
+				this);
 		this.VIEW_LISTNER.Previous_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Previous_IButton));
 		this.VIEW_LISTNER.Next_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Next_IButton));
 		this.VIEW_LISTNER.Play_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Play_IButton));
@@ -90,6 +116,10 @@ public class Fragment_Speaker extends Fragment {
 		this.VIEW_LISTNER.ShowTITLE4_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_ShowTITLE4_IButton),
 														(RelativeLayout)Fragment_MainView.findViewById(R.id.pFS_RLayout_TITLE4_RLayout));
 		this.VIEW_LISTNER.SET_SPEAKER_EListView_Listner(FS_SPEAKER_EListView);
+		this.VIEW_LISTNER.Setting_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Setting_IButton));
+		this.VIEW_LISTNER.Setting_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Setting2_IButton));
+		this.VIEW_LISTNER.UNSELECT_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_UNSELECT_Button),
+													this);
 	}
 	
 	private void PAD_findView() {
@@ -157,4 +187,129 @@ public class Fragment_Speaker extends Fragment {
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 	}
+	private List<OptionButton> OptionButtonsList;
+	private DeviceDisplay addDeviceDisplay;
+	public boolean CheckTITLE2_1_RLayoutIsShown(){
+		View TITLE2_1_RLayout = Fragment_MainView.findViewById(R.id.pFS_RLayout_TITLE2_1_RLayout);
+		if(TITLE2_1_RLayout.isShown()){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	public void SetOptionButtons(List<GroupVO> groupVOList){
+		LinearLayout ChooseScroll_LLayout = (LinearLayout)Fragment_MainView.findViewById(R.id.pFS_RLayout_ViewFlipper_ScrollView_ChooseScroll_LLayout);
+		ChooseScroll_LLayout.removeAllViews();
+		if(OptionButtonsList!=null){
+			OptionButtonsList.clear();
+		}else{
+			OptionButtonsList = new ArrayList<OptionButton>();
+		}
+		
+		for(int i =0 ;i<groupVOList.size();i++){
+			OptionButton optionButton = new OptionButton(context,i, groupVOList.get(i));//new OptionButton(i,groupVOList.get(i));
+			ChooseScroll_LLayout.addView(optionButton.cellView);
+			this.OptionButtonsList.add(optionButton);
+		}
+	}
+	public void SetAddDeviceDisplay(DeviceDisplay addDeviceDisplay){
+		this.addDeviceDisplay = addDeviceDisplay;
+	}
+	public void ShowViewContent_ViewFlipperDisplay(int Page,int InAnimation,int OutAnimation){
+		View ViewContent_ViewFlipper = Fragment_MainView.findViewById(R.id.pFS_RLayout_ViewContent_ViewFlipper);
+		if(ViewContent_ViewFlipper==null){
+			return;
+		}
+		if(InAnimation!=0){
+			((ViewFlipper)ViewContent_ViewFlipper).setInAnimation(context, InAnimation);
+		}else{
+			((ViewFlipper)ViewContent_ViewFlipper).setInAnimation(null);
+		}
+		if(InAnimation!=0){
+			((ViewFlipper)ViewContent_ViewFlipper).setOutAnimation(context, OutAnimation);
+		}else{
+			((ViewFlipper)ViewContent_ViewFlipper).setOutAnimation(null);
+		}
+		
+		View TITLE2_1_RLayout = Fragment_MainView.findViewById(R.id.pFS_RLayout_TITLE2_1_RLayout);
+		View Bottom2_RLayout = Fragment_MainView.findViewById(R.id.pFS_RLayout_Bottom2_RLayout);
+		switch(Page){
+		case 0:				
+			//顯示AddView
+			TITLE2_1_RLayout.setVisibility(View.VISIBLE);
+			Bottom2_RLayout.setVisibility(View.VISIBLE);
+			((ViewFlipper)ViewContent_ViewFlipper).setDisplayedChild(1);
+			
+			break;
+		case 1:
+			//顯示Speaker 加入Group
+			for(int i=0;i<OptionButtonsList.size();i++){
+				if(OptionButtonsList.get(i).isSelected){
+					SetRelationWithMaster(OptionButtonsList.get(i).groupVO.getUdn(),true);
+				}else{
+					SetRelationWithMaster(OptionButtonsList.get(i).groupVO.getUdn(),false);
+				}					
+			}
+			
+			TITLE2_1_RLayout.setVisibility(View.GONE);
+			Bottom2_RLayout.setVisibility(View.GONE);
+			((ViewFlipper)ViewContent_ViewFlipper).setDisplayedChild(0);
+			break;
+		case 2:
+			//顯示Speaker 取消Group			
+			TITLE2_1_RLayout.setVisibility(View.GONE);
+			Bottom2_RLayout.setVisibility(View.GONE);
+			((ViewFlipper)ViewContent_ViewFlipper).setDisplayedChild(0);
+			break;
+		}
+	}
+	public void SetALLOptionButtonsUnselect(){
+		if(OptionButtonsList!=null){
+			for(OptionButton optionButton:OptionButtonsList){
+				optionButton.isSelected = false;
+				new ThreadReadBitMapInAssets(context, "phone/grouprooms/unselect_icon.png", optionButton.Radio_ImageButton, 2);
+			}
+		}
+	}
+	private void SetRelationWithMaster(String SUDN,boolean isAdd){
+		//取得upnpServer
+		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+		Device mMMDevice = addDeviceDisplay.getMMDevice();
+		String MUDN = mMMDevice.getIdentity().getUdn().toString();
+		Device MMDevice = ((FragmentActivity_Main)context).GETDeviceDisplayList().GetMMDevice(SUDN);
+		if(MMDevice==null){
+			return;
+		}
+		Service GroupService = MMDevice.findService(new UDAServiceId("Group"));
+		if(GroupService!=null){
+			Action SetRelationWithMasterAction = GroupService.getAction("SetRelationWithMaster");
+			if(SetRelationWithMasterAction!=null){				
+				ActionArgumentValue[] values = new ActionArgumentValue[2];
+				ActionArgument DeviceUDN = SetRelationWithMasterAction.getInputArgument("DeviceUDN");
+				ActionArgument RelationAction = SetRelationWithMasterAction.getInputArgument("RelationAction");
+				if(DeviceUDN!=null&&RelationAction!=null){
+					values[0] =new ActionArgumentValue(DeviceUDN, MUDN);
+					if(isAdd){
+						values[1] =new ActionArgumentValue(RelationAction, "Add");
+					}else{
+						values[1] =new ActionArgumentValue(RelationAction, "Remove");
+					}
+					mlog.info(TAG, "DeviceUDN  = "+values[0].toString());
+					mlog.info(TAG, "RelationAction = "+values[1].toString());
+					ActionInvocation ai = new ActionInvocation(SetRelationWithMasterAction,values);
+					ActionCallback SetRelationWithMasterActionCallBack = new ActionCallback(ai){
+						@Override
+						public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
+							mlog.info(TAG, "SetRelationWithMasterActionCallBack failure = "+arg2);
+						}
+						@Override
+						public void success(ActionInvocation arg0) {									
+							mlog.info(TAG, "SetRelationWithMasterActionCallBack success");
+						}											
+					};
+					upnpServer.getControlPoint().execute(SetRelationWithMasterActionCallBack);	
+				}
+			}			
+		}		
+	}	
 }

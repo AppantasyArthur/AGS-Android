@@ -20,6 +20,7 @@ import android.view.Display;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ViewFlipper;
 
 
 public class FragmentActivity_Setting extends FragmentActivity {
@@ -51,6 +52,16 @@ public class FragmentActivity_Setting extends FragmentActivity {
 		//6、手機 7、平板
 	    if(this.device_size==6){
 	    	//PHONE介面
+	    	this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+	    	setContentView(R.layout.fragmentactivity_setting_phone);
+	    	Tool.roomSize = new RoomSize(this.display,this.deviceImformation);
+	    	//取得最底層的VIEW
+	    	this.MainView = this.getWindow().getDecorView().findViewById(R.id.pFAS_RLayout);
+	    	//設定Phone介面
+	    	Phone_findVIEW();
+	    	//加入Fragment_SMenu
+	    	set_Phone_First_Fragment();
+	    	
 	    }else{	 
 	    	//PAD介面
 	    	this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -60,14 +71,12 @@ public class FragmentActivity_Setting extends FragmentActivity {
 	    	this.MainView = this.getWindow().getDecorView().findViewById(R.id.FAS_RLayout);
 	    	//設定PAD介面
 	    	PAD_findVIEW();
-	    	//加入Fragment_Speaker
+	    	//加入Fragment_SMenu
 	    	set_PAD_First_Fragment();
 	    	//設定LISTNER
 	    }
 	}
 	
-	
-
 	private void CreateProcess(){
 		//設定NO TITLE 、 全螢幕
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -85,6 +94,14 @@ public class FragmentActivity_Setting extends FragmentActivity {
         this.VIEW_LISTNER = new FAS_VIEW_LISTNER(this.context,this.device_size);
         
 	}
+	private void Phone_findVIEW() {
+
+	}
+	private void set_Phone_First_Fragment() {		
+		fragment_SMenu = new Fragment_SMenu();		
+		Tool.FragmentActivity_MainAddFragment(fragmentManager.beginTransaction(), fragment_SMenu, "Fragment_SMenu", R.id.pFAS_RLayout_ViewFlipper_Left_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+	}
+	
 	private void PAD_findVIEW() {
 		//設定PAD介面
 		this.VIEW_SETTING.VIEWSET(MainView.findViewById(R.id.FAS_RLayout_Left_RLayout));
@@ -136,5 +153,32 @@ public class FragmentActivity_Setting extends FragmentActivity {
 	}
 	public int getDevice_Size(){
 		return device_size;
+	}
+	public void ShowViewContent_ViewFlipperDisplay(int Page,int InAnimation,int OutAnimation){
+		View ViewContent_ViewFlipper = MainView.findViewById(R.id.pFAS_RLayout_ViewContent_ViewFlipper);
+		if(ViewContent_ViewFlipper==null){
+			return;
+		}
+		if(InAnimation!=0){
+			((ViewFlipper)ViewContent_ViewFlipper).setInAnimation(context, InAnimation);
+		}else{
+			((ViewFlipper)ViewContent_ViewFlipper).setInAnimation(null);
+		}
+		if(InAnimation!=0){
+			((ViewFlipper)ViewContent_ViewFlipper).setOutAnimation(context, OutAnimation);
+		}else{
+			((ViewFlipper)ViewContent_ViewFlipper).setOutAnimation(null);
+		}
+		
+		switch(Page){
+		case 0:
+			//Fragment_Information
+			((ViewFlipper)ViewContent_ViewFlipper).setDisplayedChild(0);
+			break;
+		case 1:
+			//Fragment_Speaker
+			((ViewFlipper)ViewContent_ViewFlipper).setDisplayedChild(1);
+			break;
+		}
 	}
 }

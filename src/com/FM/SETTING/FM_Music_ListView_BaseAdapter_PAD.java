@@ -29,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -91,7 +92,20 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 				}	
 				FM_Music_ListView_BaseAdapter_PAD.this.notifyDataSetChanged();
 				break;
+			case 13:
+				View view = (View)msg.obj;				
+				if(view!=null){					
+					view.setVisibility(View.VISIBLE);
+				}
+				break;
+			case 14:
+				View view1 = (View)msg.obj;
+				if(view1!=null){
+					view1.setVisibility(View.GONE);
+				}
+				break;
 			}
+			
 		}
 	};
 	public FM_Music_ListView_BaseAdapter_PAD(Context context){
@@ -217,7 +231,7 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 		Tool.fitsViewRightMargin(10, viewHandler.cell_RLayout_Image_ImageView);
 		new ThreadReadStateListInAssets(context, "pad/Playlist/playlist_arrow_f.png", "pad/Playlist/playlist_arrow_n.png", viewHandler.cell_RLayout_Image_ImageView, 1);
 	}
-	public void ShowFile(String ParentID,List<Container> ContainerList,List<Item> Itemlist){
+	public void ShowFile(Button Music_Button,String ParentID,List<Container> ContainerList,List<Item> Itemlist){
 		if(ContainerList!=null){
 			for(int i =0;i<ContainerList.size();i++){
 				Container container = ContainerList.get(i);
@@ -239,6 +253,7 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 			}
 		}		
 		handler.obtainMessage(11,new FileContent(ParentID,ContainerList,Itemlist)).sendToTarget();
+		handler.obtainMessage(13, Music_Button).sendToTarget();
 	}
 	private class FileContent{
 		private String ParentID;
@@ -250,7 +265,7 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 			this.Itemlist = Itemlist;
 		}
 	}
-	public void ShowPrivousFile(){
+	public void ShowPrivousFile(final Button MusicBack_Button){
 		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
 		if(ParentID.size()>1){
 			SortCriterion[] sortCriterion = new SortCriterion[]{new SortCriterion("+cd:title")};
@@ -260,7 +275,7 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 					FM_Music_ListView_BaseAdapter_PAD.this.ParentID.remove(FM_Music_ListView_BaseAdapter_PAD.this.ParentID.size()-1);
 					List<Container> listC = arg1.getContainers();
 					List<Item> listI = arg1.getItems();
-					FM_Music_ListView_BaseAdapter_PAD.this.ShowFile(null, listC,listI);
+					FM_Music_ListView_BaseAdapter_PAD.this.ShowFile(MusicBack_Button,null, listC,listI);
 					for(int i =0;i<listC.size();i++){
 						Container container = listC.get(i);
 						mlog.info(TAG, "PID="+container.getParentID());
@@ -290,6 +305,7 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 		}else if(ParentID.size()==1){			
 			this.ParentID.clear();
 			handler.obtainMessage(10).sendToTarget();
+			handler.obtainMessage(14, MusicBack_Button).sendToTarget();
 		}
 	}
 	public void setChooseDevice(Device chooseDevice){

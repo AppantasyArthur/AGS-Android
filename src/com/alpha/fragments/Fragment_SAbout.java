@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 
 public class Fragment_SAbout extends Fragment {
 	//VIEWS
@@ -48,19 +49,35 @@ public class Fragment_SAbout extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
-		Fragment_MainView = (ViewGroup)inflater.inflate(R.layout.fragment_sabout_pad, null);
-		Fragment_MainView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-		findView();
-		findViewListner();
+		if(device_size==6){
+			Fragment_MainView = (ViewGroup)inflater.inflate(R.layout.fragment_sabout_phone, null);
+			Fragment_MainView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+			Phone_findView();
+			Phone_findViewListner();
+		}else{
+			Fragment_MainView = (ViewGroup)inflater.inflate(R.layout.fragment_sabout_pad, null);
+			Fragment_MainView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+			PAD_findView();
+			PAD_findViewListner();
+		}		
 		return Fragment_MainView;
 	}
 
-	private void findView() {
+	private void Phone_findView() {		
+		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFSA_RLayout));
+		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFSA_RLayout_TITLE_RLayout));
+		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFSA_RLayout_BODY_RLayout));
+		mlog.info(TAG, "findView OK");
+	}
+	private void Phone_findViewListner() {		
+		this.VIEW_LISTNER.Back_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFSA_RLayout_RLayout_Back_Button));
+	}
+	private void PAD_findView() {
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FSA_RLayout_TITLE_RLayout));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FSA_RLayout_BODY_RLayout));
 		mlog.info(TAG, "findView OK");
 	}	
-	private void findViewListner() {		
+	private void PAD_findViewListner() {		
 		
 	}
 	

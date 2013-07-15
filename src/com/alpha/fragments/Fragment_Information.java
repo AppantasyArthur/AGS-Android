@@ -121,6 +121,8 @@ public class Fragment_Information extends Fragment {
 												(Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Clear_Button),
 												(Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Save_Button),
 												this);
+		this.VIEW_LISTNER.Setting_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Setting_IButton));
+		this.VIEW_LISTNER.Setting_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Setting2_IButton));
 	}
 	private void PAD_findView() {		
 		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FI_RLayout_UP_RLayout));

@@ -117,7 +117,7 @@ public class FS_PopupWindow extends PopupWindow {
 		}
 		
 		for(int i =0 ;i<groupVOList.size();i++){
-			OptionButton optionButton = new OptionButton(i,groupVOList.get(i));
+			OptionButton optionButton = new OptionButton(context,i,groupVOList.get(i));
 			ChooseScroll_LLayout.addView(optionButton.cellView);
 			this.OptionButtonsList.add(optionButton);
 		}
@@ -207,73 +207,5 @@ public class FS_PopupWindow extends PopupWindow {
 				}
 			}			
 		}		
-	}
-	private class OptionButton{
-		public View cellView;
-		public RelativeLayout ChooseScroll_RLayout;
-		public ImageButton Radio_ImageButton;
-		public TextView Name_TextView;
-		private boolean isSelected;
-		private int position;
-		public GroupVO groupVO;
-		public OptionButton(int position,GroupVO groupVO){
-			this.position = position;
-			this.groupVO = groupVO;
-			cellView = LayoutInflater.from(context).inflate(R.layout.fs_popupwindow_choosescroll_cell, null);
-			cellView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,Tool.getHeight(40)));
-			findView(cellView);
-			basicSetView();
-			ClickListener();
-		}
-		private void findView(View cellView) {
-			this.ChooseScroll_RLayout = (RelativeLayout)cellView.findViewById(R.id.FS_PopupWindow_ChooseScroll_RLayout);
-			this.Radio_ImageButton = (ImageButton)cellView.findViewById(R.id.FS_PopupWindow_ChooseScroll_RLayout_Radio_ImageButton);
-			this.Name_TextView = (TextView)cellView.findViewById(R.id.FS_PopupWindow_ChooseScroll_RLayout_Name_TextView);
-		}
-		private void basicSetView() {
-			//Radio ImageButton
-			Tool.fitsViewHeight(36, this.Radio_ImageButton);
-			this.Radio_ImageButton.getLayoutParams().width = Tool.getHeight(36);
-			if(groupVO.isSlave()){
-				//¤w¿ï¨ú
-				isSelected = true;
-			}else{
-				//¥¼¿ï¨ú	
-				isSelected = false;
-			}			
-			if(isSelected){
-				//¤w¿ï¨ú
-				new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/group_n.png", this.Radio_ImageButton, 2);
-				ChooseScroll_RLayout.setBackgroundColor(Color.parseColor("#0000ff"));
-			}else{
-				//¥¼¿ï¨ú
-				new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/group_n.png", this.Radio_ImageButton, 2);
-				ChooseScroll_RLayout.setBackgroundColor(Color.parseColor("#00ff00"));
-			}
-			//Name TextView
-			Tool.fitsViewTextSize(6, this.Name_TextView);
-			this.Name_TextView.setText(groupVO.getName());
-		}
-		private void ClickListener(){
-			this.Radio_ImageButton.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {				
-					if(isSelected){
-						//§ï¦¨¥¼¿ï
-						isSelected = false;
-						new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/group_n.png", v, 2);
-						ChooseScroll_RLayout.setBackgroundColor(Color.parseColor("#00ff00"));
-						mlog.info(TAG, "isSelected = "+isSelected);
-					}else{
-						//§ï¦¨¤w¿ï
-						isSelected = true;
-						new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/group_n.png", v, 2);
-						ChooseScroll_RLayout.setBackgroundColor(Color.parseColor("#0000ff"));
-						mlog.info(TAG, "isSelected = "+isSelected);
-					}
-				}
-			});
-		}
-	}
-	
+	}	
 }

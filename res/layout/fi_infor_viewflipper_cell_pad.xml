@@ -15,7 +15,7 @@
    		android:gravity="center_vertical"
    		android:padding="0dp"
    		android:textColor="#ffffff"
-   		android:text="When you Where Young"   		
+   		android:text="NA"   		
         />
      <TextView 
         android:id="@+id/FI_INFOR_ViewFlipper_Cell_RLayout_MusicCount_TextView"
@@ -26,7 +26,7 @@
    		android:gravity="center_vertical"
    		android:padding="0dp"
    		android:textColor="#ffffff"
-   		android:text="9999 / 9999"   		
+   		android:text="NA/NA"   		
         />
      <TextView 
         android:id="@+id/FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView"
@@ -37,7 +37,7 @@
    		android:gravity="center_vertical"
    		android:padding="0dp"
    		android:textColor="#ffffff"
-   		android:text="Artist : Adel"   		
+   		android:text="Artist : NA"   		
         />
      
      <TextView 
@@ -49,7 +49,7 @@
    		android:gravity="center_vertical"
    		android:padding="0dp"
    		android:textColor="#ffffff"
-   		android:text="Album : Adele 21"   		
+   		android:text="Album : NA"   		
         />
      <TextView 
         android:id="@+id/FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView"
@@ -60,7 +60,7 @@
    		android:gravity="center_vertical"
    		android:padding="0dp"
    		android:textColor="#ffffff"
-   		android:text="Genre : Pop"   		
+   		android:text="Genre : NA"   		
         />
      <TextView 
         android:id="@+id/FI_INFOR_ViewFlipper_Cell_RLayout_MusicNext_TextView"
@@ -71,7 +71,7 @@
    		android:gravity="center_vertical"
    		android:padding="0dp"
    		android:textColor="#ffffff"
-   		android:text="Next : Melt My Heart To Stone"   		
+   		android:text="Next : NA"   		
         />
      <RelativeLayout 
          android:id="@+id/FI_INFOR_ViewFlipper_Cell_RLayout_Image_RLayout"

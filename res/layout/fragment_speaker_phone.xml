@@ -48,6 +48,50 @@
             />    
     </RelativeLayout>
     <RelativeLayout 
+        android:id="@+id/pFS_RLayout_TITLE2_1_RLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:visibility="gone"
+        android:background="#00000000"
+        >   
+        <Button 
+            android:id="@+id/pFS_RLayout_RLayout_Close_Button"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerVertical="true"
+	        android:layout_alignParentLeft="true"	        
+	        android:background="#00000000"
+	        android:gravity="center"
+	        android:textColor="#ffffff"	        
+	        android:padding="0dp"
+	        android:text="Close"
+            />    
+        <TextView
+            android:id="@+id/pFS_RLayout_RLayout_Center2_TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:textStyle="bold"
+            android:padding="0dp"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:text="Group Rooms"      
+            />
+        <Button 
+            android:id="@+id/pFS_RLayout_RLayout_Done_Button"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerVertical="true"
+	        android:layout_alignParentRight="true"
+	        android:background="#00000000"
+	        android:gravity="center"
+	        android:textColor="#ffffff"	        
+	        android:padding="0dp"
+	        android:text="Done"
+            />    
+    </RelativeLayout>
+    <RelativeLayout 
 		android:id="@+id/pFS_RLayout_TITLE3_RLayout"
 		android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
@@ -109,17 +153,37 @@
 		    android:scaleType="fitXY"
 		    android:background="#00000000"
 		    />
-	</RelativeLayout>	 
-    <com.FS.SETTING.FS_SPEAKER_ExpandableListView
-        android:id="@+id/pFS_RLayout_SPEAKER_EListView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"       
-        android:layout_below="@+id/pFS_RLayout_TITLE3_RLayout"
-        android:layout_above="@+id/pFS_RLayout_Bottom_RLayout"    
-        android:background="#00000000"
-        android:divider="#00000000"    
-        >        
-    </com.FS.SETTING.FS_SPEAKER_ExpandableListView>  
+	</RelativeLayout>
+	<ViewFlipper 
+	    android:id="@+id/pFS_RLayout_ViewContent_ViewFlipper"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"       
+	    android:layout_below="@+id/pFS_RLayout_TITLE3_RLayout"
+	    android:layout_above="@+id/pFS_RLayout_Bottom_RLayout"
+	    android:background="#00000000"  
+	    > 
+	    <com.FS.SETTING.FS_SPEAKER_ExpandableListView
+	        android:id="@+id/pFS_RLayout_SPEAKER_EListView"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"	           
+	        android:background="#00000000"
+	        android:divider="#00000000"    
+	        >        
+	    </com.FS.SETTING.FS_SPEAKER_ExpandableListView> 
+	    <ScrollView
+            android:id="@+id/pFS_RLayout_ViewFlipper_ChooseScroll_ScrollView"
+            android:layout_width="match_parent"
+		    android:layout_height="match_parent"		    
+		    android:background="#00000000"		    
+            >
+            <LinearLayout
+                android:id="@+id/pFS_RLayout_ViewFlipper_ScrollView_ChooseScroll_LLayout"
+	            android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:orientation="vertical"
+			    ></LinearLayout>
+        </ScrollView>
+    </ViewFlipper>	  
     <RelativeLayout 
 	    android:id="@+id/pFS_RLayout_TITLE4_RLayout"
 		android:layout_width="match_parent"
@@ -205,5 +269,34 @@
 		    android:text="Pasue ALL"
 		    android:textStyle="bold"
        	    />
-    </RelativeLayout>  
+    </RelativeLayout> 
+    <RelativeLayout 
+        android:id="@+id/pFS_RLayout_Bottom2_RLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        >
+       	<ImageButton 
+       	    android:id="@+id/pFS_RLayout_RLayout_Setting2_IButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_centerVertical="true"
+	        android:background="#00000000"
+	        android:scaleType="fitXY"
+       	    />
+       	<Button 
+       	    android:id="@+id/pFS_RLayout_RLayout_UNSELECT_Button"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"	        
+	        android:layout_centerInParent="true"
+	        android:background="#00000000"
+	        android:scaleType="fitXY"
+	        android:padding="0dp"
+		    android:textColor="#ffffff"
+		    android:text="Unselect"
+		    android:textStyle="bold"
+       	    />
+    </RelativeLayout>   
 </RelativeLayout>

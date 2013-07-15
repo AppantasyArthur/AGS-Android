@@ -16,10 +16,12 @@ import org.teleal.cling.support.model.container.Container;
 import org.teleal.cling.support.model.item.Item;
 import com.FM.SETTING.FM_Music_ListView_BaseAdapter_PAD.ViewHandler;
 import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.FragmentActivity_Setting;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
 import android.content.Context;
+import android.content.Intent;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
@@ -29,6 +31,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -59,7 +62,7 @@ public class FM_VIEW_LISTNER {
 		});
 	}
 	
-	public void SET_Music_ListView_Listner(FM_ListView Music_ListView){
+	public void SET_Music_ListView_Listner(FM_ListView Music_ListView, final Button MusicBack_Button){
 		if(device_size==6){
 			//***************************PHONE*********************************	
 			Music_ListView.setOnItemClickListener(new OnItemClickListener(){
@@ -88,8 +91,7 @@ public class FM_VIEW_LISTNER {
 								//取得 Item List
 								List<Item> listI = arg1.getItems();
 								//更新FM_Music_ListView_BaseAdapter
-								((FM_Music_ListView_BaseAdapter_Phone)adapterView.getAdapter()).ShowFile("0", listC,listI);
-								
+								((FM_Music_ListView_BaseAdapter_Phone)adapterView.getAdapter()).ShowFile(MusicBack_Button,"0", listC,listI);
 							}
 							@Override
 							public void updateStatus(Status arg0) {}
@@ -120,7 +122,7 @@ public class FM_VIEW_LISTNER {
 								List<Item> listI = arg1.getItems();
 								mlog.info(TAG, "C Size = "+listC.size()+"&& I Size = "+ listI.size());								
 								//更新FM_Music_ListView_BaseAdapter
-								((FM_Music_ListView_BaseAdapter_Phone)adapterView.getAdapter()).ShowFile(ParentID, listC,listI);
+								((FM_Music_ListView_BaseAdapter_Phone)adapterView.getAdapter()).ShowFile(MusicBack_Button,ParentID, listC,listI);								
 							}
 							@Override
 							public void updateStatus(Status arg0) {	}
@@ -179,8 +181,7 @@ public class FM_VIEW_LISTNER {
 								//取得 Item List
 								List<Item> listI = arg1.getItems();
 								//更新FM_Music_ListView_BaseAdapter
-								((FM_Music_ListView_BaseAdapter_PAD)adapterView.getAdapter()).ShowFile("0", listC,listI);
-								
+								((FM_Music_ListView_BaseAdapter_PAD)adapterView.getAdapter()).ShowFile(MusicBack_Button,"0", listC,listI);
 							}
 							@Override
 							public void updateStatus(Status arg0) {}
@@ -211,7 +212,7 @@ public class FM_VIEW_LISTNER {
 								List<Item> listI = arg1.getItems();
 								mlog.info(TAG, "C Size = "+listC.size()+"&& I Size = "+ listI.size());								
 								//更新FM_Music_ListView_BaseAdapter
-								((FM_Music_ListView_BaseAdapter_PAD)adapterView.getAdapter()).ShowFile(ParentID, listC,listI);
+								((FM_Music_ListView_BaseAdapter_PAD)adapterView.getAdapter()).ShowFile(MusicBack_Button,ParentID, listC,listI);
 							}
 							@Override
 							public void updateStatus(Status arg0) {	}
@@ -490,7 +491,7 @@ public class FM_VIEW_LISTNER {
 			MusicBack.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					((FM_Music_ListView_BaseAdapter_Phone)Music_ListView.getAdapter()).ShowPrivousFile();
+					((FM_Music_ListView_BaseAdapter_Phone)Music_ListView.getAdapter()).ShowPrivousFile((Button)v);
 				}
 			});
 			//***************************PHONE*********************************	
@@ -498,11 +499,21 @@ public class FM_VIEW_LISTNER {
 			//***************************PAD*********************************
 			MusicBack.setOnClickListener(new View.OnClickListener() {
 				@Override
-				public void onClick(View v) {
-					((FM_Music_ListView_BaseAdapter_PAD)Music_ListView.getAdapter()).ShowPrivousFile();
+				public void onClick(final View v) {
+					((FM_Music_ListView_BaseAdapter_PAD)Music_ListView.getAdapter()).ShowPrivousFile((Button)v);
 				}
 			});
 			//***************************PAD*********************************	
 		}
+	}
+	public void Setting_IButton_LISTNER(ImageButton Setting_IButton) {
+		Setting_IButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intnet = new Intent();
+				intnet.setClass(context, FragmentActivity_Setting.class);
+				context.startActivity(intnet);
+			}
+		});		
 	}
 }

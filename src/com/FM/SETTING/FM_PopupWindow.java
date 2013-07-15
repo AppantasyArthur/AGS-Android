@@ -24,8 +24,11 @@ import org.teleal.cling.support.model.item.Item;
 
 import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.FragmentActivity_Setting;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
+import com.tkb.tool.ThreadReadBitMapInAssets;
+import com.tkb.tool.ThreadReadStateListInAssets;
 import com.tkb.tool.Tool;
 
 import android.content.Context;
@@ -50,12 +53,18 @@ public class FM_PopupWindow extends PopupWindow {
 	//XMPP
 	private Item item;
 	private Device MS_Device;
+	private int device_size = 0;
 	public FM_PopupWindow(Context context){
 		super(context);
 		this.mlog.LogSwitch = true;
 		this.context = context;
+		this.device_size = ((FragmentActivity_Main)context).getDevice_Size();
+		if(device_size==6){
+			Phone_CreateContentView();
+		}else{
+			PAD_CreateContentView();
+		}
 		
-		CreateContentView();
 		ContentViewListner();
 		//設定內容
 		this.setContentView(contentView);
@@ -70,7 +79,34 @@ public class FM_PopupWindow extends PopupWindow {
 		
 		
 	}
-	private void CreateContentView() {
+	private void Phone_CreateContentView() {
+		this.contentView = LayoutInflater.from(context).inflate(R.layout.fm_popupwindow_context, null,true);		
+		//Content RLayout
+		Tool.fitsViewHeight(250, this.contentView.findViewById(R.id.FM_PopupWindow_Content_RLayout));
+		Tool.fitsViewWidth(251, this.contentView.findViewById(R.id.FM_PopupWindow_Content_RLayout));
+		new ThreadReadBitMapInAssets(context, "phone/pop/pop_bg.png", this.contentView.findViewById(R.id.FM_PopupWindow_Content_RLayout), 3);
+		//TITLE TextView
+		Tool.fitsViewHeight(27, this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_TITLE_TextView));
+		Tool.fitsViewTextSize(10, this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_TITLE_TextView));
+		Tool.fitsViewTopMargin(7, this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_TITLE_TextView));
+		//OPTION ScrollView
+		Tool.fitsViewHeight(157, this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_OPTION_ScrollView));
+		Tool.fitsViewWidth(209, this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_OPTION_ScrollView));
+		Tool.fitsViewTopMargin(34, this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_OPTION_ScrollView));
+		//OPTION_LLayout
+		LinearLayout OPTION_LLayout = (LinearLayout)this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_OPTION_LLayout);
+		OPTION_LLayout.getLayoutParams().height = Tool.getHeight(156);
+		CreateOptionButtons(OPTION_LLayout);
+		new ThreadReadBitMapInAssets(context, "phone/pop/pop_selecet_bg.png", OPTION_LLayout, 3);
+		//CANCEL Button
+		Tool.fitsViewHeight(32, this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_CANCEL_Button));
+		Tool.fitsViewWidth(209, this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_CANCEL_Button));
+		Tool.fitsViewTextSize(10, this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_CANCEL_Button));
+		Tool.fitsViewBottomMargin(25, this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_CANCEL_Button));
+		new ThreadReadBitMapInAssets(context, "phone/pop/cancer_button.png", this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_CANCEL_Button), 3);
+		mlog.info(TAG, "CreateContentView");
+	}
+	private void PAD_CreateContentView() {
 		this.contentView = LayoutInflater.from(context).inflate(R.layout.fm_popupwindow_context, null,true);
 		//Content RLayout
 		Tool.fitsViewHeight(290, this.contentView.findViewById(R.id.FM_PopupWindow_Content_RLayout));
@@ -114,8 +150,17 @@ public class FM_PopupWindow extends PopupWindow {
 	}
 	
 	private void SetOptionButtonView(Button OPTION_Button,String str){
-		Tool.fitsViewHeight(50, OPTION_Button);
-		Tool.fitsViewTextSize(8, OPTION_Button);
+		
+		if(device_size==6){
+			OPTION_Button.setBackgroundColor(Color.parseColor("#00000000"));
+			Tool.fitsViewHeight(39, OPTION_Button);
+			Tool.fitsViewTextSize(10, OPTION_Button);
+			new ThreadReadStateListInAssets(context, "phone/pop/selecet_center_f.png", "phone/playlist/playlist_btn_n.png", OPTION_Button, 4);
+		}else{
+			Tool.fitsViewHeight(50, OPTION_Button);
+			Tool.fitsViewTextSize(8, OPTION_Button);
+		}
+		
 		OPTION_Button.setText(str);
 		OPTION_Button.setPadding(0, 0, 0, 0);
 		OPTION_Button.setGravity(Gravity.CENTER);

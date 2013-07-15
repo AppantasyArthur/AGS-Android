@@ -49,25 +49,33 @@ public class FI_ViewFlipper extends ViewFlipper {
 			switch(msg.what){
 			case 0:
 				TextView MusicName_TextView = (TextView)new_View.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView);
-				if(MusicName_TextView!=null){
+				if(MusicName_TextView.equals("")||MusicName_TextView==null){
+					MusicName_TextView.setText("NA");
+				}else{
 					MusicName_TextView.setText(str);
-				}
+				}			
 				break;
 			case 1:
 				TextView MusicArtist_TextView = (TextView)new_View.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView);
-				if(MusicArtist_TextView!=null){
+				if(MusicArtist_TextView.equals("")||MusicArtist_TextView==null){
+					MusicArtist_TextView.setText("Artist : NA");
+				}else{
 					MusicArtist_TextView.setText("Artist : "+str);
-				}
+				}				
 				break;
 			case 2:
 				TextView MusicAlbum_TextView = (TextView)new_View.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicAlbum_TextView);
-				if(MusicAlbum_TextView!=null){
+				if(MusicAlbum_TextView.equals("")||MusicAlbum_TextView==null){
+					MusicAlbum_TextView.setText("Album : NA");
+				}else{
 					MusicAlbum_TextView.setText("Album : "+str);
-				}
+				}	
 				break;
 			case 3:
 				TextView MusicGenre_TextView = (TextView)new_View.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView);
-				if(MusicGenre_TextView!=null){
+				if(MusicGenre_TextView.equals("")||MusicGenre_TextView==null){
+					MusicGenre_TextView.setText("Genre : NA");
+				}else{
 					MusicGenre_TextView.setText("Genre : "+str);
 				}
 				break;

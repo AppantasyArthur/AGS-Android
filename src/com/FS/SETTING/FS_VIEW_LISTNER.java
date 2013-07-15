@@ -16,13 +16,17 @@ import org.teleal.cling.support.avtransport.callback.Stop;
 import com.FAM.SETTING.PlayMode_IButton_Listner;
 import com.FAM.SETTING.Play_IButton_Listner;
 import com.alpha.UPNP.DeviceDisplay;
+import com.alpha.fragments.Fragment_Speaker;
 import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.FragmentActivity_Setting;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
 import com.tkb.tool.ThreadReadStateListInAssets;
 
+import android.R.raw;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -74,6 +78,23 @@ public class FS_VIEW_LISTNER {
 				((FragmentActivity_Main)context).ShowViewContent_ViewFlipperDisplay(2,R.animator.translate_right_in,R.animator.alpha_out);
 			}
 		});
+	}
+	public void Close_Button_LISTNER(Button Close_Button,final Fragment_Speaker fragment_Speaker) {
+		Close_Button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {				
+				fragment_Speaker.ShowViewContent_ViewFlipperDisplay(2, R.animator.translate_top_in, R.animator.translate_bottom_out);
+			}
+		});
+	}
+	public void Done_Button_LISTNER(Button Done_Button, final Fragment_Speaker fragment_Speaker) {
+		Done_Button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {				
+				fragment_Speaker.ShowViewContent_ViewFlipperDisplay(1, R.animator.translate_top_in, R.animator.translate_bottom_out);
+			}
+		});
+		
 	}
 	public void Previous_IButton_LISTNER(ImageButton Previous_IButton){
 		Previous_IButton.setOnClickListener(new View.OnClickListener() {
@@ -465,4 +486,24 @@ public class FS_VIEW_LISTNER {
 			//***************************PAD*********************************	
 		}		
 	}
+	public void Setting_IButton_LISTNER(ImageButton Setting_IButton) {
+		Setting_IButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intnet = new Intent();
+				intnet.setClass(context, FragmentActivity_Setting.class);
+				context.startActivity(intnet);
+			}
+		});		
+	}
+	public void UNSELECT_Button_LISTNER(Button UNSELECT_Button, final Fragment_Speaker fragment_Speaker) {
+		UNSELECT_Button.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				fragment_Speaker.SetALLOptionButtonsUnselect();				
+			}
+		});		
+	}
+	
+	
 }

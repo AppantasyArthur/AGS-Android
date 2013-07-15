@@ -32,7 +32,10 @@ public class FS_VIEW_SETTING {
 				break;			
 			case R.id.pFS_RLayout_TITLE2_RLayout:
 				pFS_RLayout_TITLE2_RLayout(view);
-				break;			
+				break;
+			case R.id.pFS_RLayout_TITLE2_1_RLayout:
+				pFS_RLayout_TITLE2_1_RLayout(view);
+				break;	
 			case R.id.pFS_RLayout_TITLE3_RLayout:
 				pFS_RLayout_TITLE3_RLayout(view);
 				break;			
@@ -41,10 +44,13 @@ public class FS_VIEW_SETTING {
 				break;
 			case R.id.pFS_RLayout_SPEAKER_EListView:
 				pFS_RLayout_SPEAKER_EListView(view);
-				break;
+				break;			
 			case R.id.pFS_RLayout_Bottom_RLayout:
 				pFS_RLayout_Bottom_RLayout(view);
-				break;				
+				break;
+			case R.id.pFS_RLayout_Bottom2_RLayout:
+				pFS_RLayout_Bottom2_RLayout(view);
+				break;	
 			}
 		}else{
 			switch(view.getId()){
@@ -64,7 +70,9 @@ public class FS_VIEW_SETTING {
 		}
 	}	
 	
+	
 	//***************************PHONE*********************************	
+	
 	
 	private void pFS_RLayout(View view) {
 		new ThreadReadBitMapInAssets(context, "phone/speaker/bg.PNG", view, 3);
@@ -86,7 +94,26 @@ public class FS_VIEW_SETTING {
 		Tool.fitsViewWidth(59, view.findViewById(R.id.pFS_RLayout_RLayout_Music_Button));
 		Tool.fitsViewTextSize(10, view.findViewById(R.id.pFS_RLayout_RLayout_Music_Button));
 		new ThreadReadStateListInAssets(context, "phone/speaker/bottom_button_f.png","phone/speaker/bottom_button_single.png", view.findViewById(R.id.pFS_RLayout_RLayout_Music_Button), 4);
-	}	
+	}
+	
+	private void pFS_RLayout_TITLE2_1_RLayout(View view) {
+		Tool.fitsViewHeight(36, view);
+		new ThreadReadBitMapInAssets(context, "phone/grouprooms/top_talie.PNG", view, 3);
+		//Close_Button
+		Tool.fitsViewLeftMargin(7, view.findViewById(R.id.pFS_RLayout_RLayout_Close_Button));
+		Tool.fitsViewHeight(26, view.findViewById(R.id.pFS_RLayout_RLayout_Close_Button));
+		Tool.fitsViewWidth(59, view.findViewById(R.id.pFS_RLayout_RLayout_Close_Button));
+		Tool.fitsViewTextSize(10, view.findViewById(R.id.pFS_RLayout_RLayout_Close_Button));
+		new ThreadReadStateListInAssets(context, "phone/speaker/bottom_button_f.png","phone/speaker/bottom_button_single.png", view.findViewById(R.id.pFS_RLayout_RLayout_Close_Button), 4);
+		//Center_TextView
+		Tool.fitsViewTextSize(18, view.findViewById(R.id.pFS_RLayout_RLayout_Center2_TextView));
+		//Done_Button
+		Tool.fitsViewRightMargin(7, view.findViewById(R.id.pFS_RLayout_RLayout_Done_Button));
+		Tool.fitsViewHeight(26, view.findViewById(R.id.pFS_RLayout_RLayout_Done_Button));
+		Tool.fitsViewWidth(59, view.findViewById(R.id.pFS_RLayout_RLayout_Done_Button));
+		Tool.fitsViewTextSize(10, view.findViewById(R.id.pFS_RLayout_RLayout_Done_Button));
+		new ThreadReadStateListInAssets(context, "phone/grouprooms/group_done_f.png","phone/grouprooms/group_done.png", view.findViewById(R.id.pFS_RLayout_RLayout_Done_Button), 4);
+	}
 	
 	private void pFS_RLayout_TITLE3_RLayout(View view) {
 		Tool.fitsViewHeight(43, view);
@@ -168,7 +195,7 @@ public class FS_VIEW_SETTING {
 		((FS_SPEAKER_ExpandableListView)view).setAdapter(EBaseAdapter);
 		((FS_SPEAKER_ExpandableListView)view).setItemsCanFocus(true);
 		((FS_SPEAKER_ExpandableListView)view).setGroupIndicator(null);
-	}
+	}	
 	private void pFS_RLayout_Bottom_RLayout(View view) {
 		Tool.fitsViewHeight(30, view);			
 		new ThreadReadBitMapInAssets(context, "phone/grouprooms/setting_bar.png", view, 3);		
@@ -182,6 +209,20 @@ public class FS_VIEW_SETTING {
 		view.findViewById(R.id.pFS_RLayout_RLayout_PASUEALL_Button).getLayoutParams().height = Tool.getWidth(27);		
 		Tool.fitsViewTextSize(10, view.findViewById(R.id.pFS_RLayout_RLayout_PASUEALL_Button));			
 		new ThreadReadStateListInAssets(context, "phone/speaker/bottom_button_f.png","phone/speaker/bottom_button_single.png", view.findViewById(R.id.pFS_RLayout_RLayout_PASUEALL_Button), 4);
+	}
+	private void pFS_RLayout_Bottom2_RLayout(View view) {
+		Tool.fitsViewHeight(30, view);			
+		new ThreadReadBitMapInAssets(context, "phone/grouprooms/setting_bar.png", view, 3);		
+		//Setting_IButton
+		Tool.fitsViewWidth(24, view.findViewById(R.id.pFS_RLayout_RLayout_Setting2_IButton));
+		view.findViewById(R.id.pFS_RLayout_RLayout_Setting2_IButton).getLayoutParams().height = Tool.getWidth(30);
+		Tool.fitsViewLeftMargin(7, view.findViewById(R.id.pFS_RLayout_RLayout_Setting2_IButton));		
+		new ThreadReadBitMapInAssets(context, "phone/grouprooms/setting.png", view.findViewById(R.id.pFS_RLayout_RLayout_Setting2_IButton), 2);
+		//UNSELECT_Button
+		Tool.fitsViewWidth(66, view.findViewById(R.id.pFS_RLayout_RLayout_UNSELECT_Button));
+		view.findViewById(R.id.pFS_RLayout_RLayout_UNSELECT_Button).getLayoutParams().height = Tool.getWidth(27);		
+		Tool.fitsViewTextSize(10, view.findViewById(R.id.pFS_RLayout_RLayout_UNSELECT_Button));			
+		new ThreadReadStateListInAssets(context, "phone/speaker/bottom_button_f.png","phone/speaker/bottom_button_single.png", view.findViewById(R.id.pFS_RLayout_RLayout_UNSELECT_Button), 4);
 	}
 //***************************PHONE*********************************
 //***************************PAD*********************************	

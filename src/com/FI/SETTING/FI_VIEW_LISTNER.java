@@ -15,6 +15,7 @@ import org.teleal.cling.support.avtransport.callback.Play;
 import org.teleal.cling.support.avtransport.callback.Stop;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -36,6 +37,7 @@ import com.FAM.SETTING.Play_IButton_Listner;
 import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.fragments.Fragment_Information;
 import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.FragmentActivity_Setting;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
@@ -584,5 +586,15 @@ public class FI_VIEW_LISTNER {
 			
 			//***************************PAD*********************************
 		}
-	}	
+	}
+	public void Setting_IButton_LISTNER(ImageButton Setting_IButton) {
+		Setting_IButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intnet = new Intent();
+				intnet.setClass(context, FragmentActivity_Setting.class);
+				context.startActivity(intnet);
+			}
+		});		
+	}
 }
