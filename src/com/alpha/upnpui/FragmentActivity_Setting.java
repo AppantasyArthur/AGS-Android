@@ -104,6 +104,9 @@ public class FragmentActivity_Setting extends FragmentActivity {
 	
 	private void PAD_findVIEW() {
 		//³]©wPAD¤¶­±
+		this.VIEW_SETTING.VIEWSET(MainView.findViewById(R.id.FAS_RLayout_Right_ImageView));
+		this.VIEW_SETTING.VIEWSET(MainView.findViewById(R.id.FAS_RLayout_Left_ImageView));
+		this.VIEW_SETTING.VIEWSET(MainView.findViewById(R.id.FAS_RLayout_TitleBG_ImageView));
 		this.VIEW_SETTING.VIEWSET(MainView.findViewById(R.id.FAS_RLayout_Left_RLayout));
 		this.VIEW_SETTING.VIEWSET(MainView.findViewById(R.id.FAS_RLayout_Right_RLayout));
 	}

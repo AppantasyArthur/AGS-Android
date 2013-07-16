@@ -68,10 +68,10 @@ public class FSW_VIEW_SETTING {
 //***************************PHONE*********************************
 //***************************PAD*********************************
 	private void PAD_FSW_RLayout_TITLE_RLayout(View view) {
-		Tool.fitsViewHeight(50, view);
+		Tool.fitsViewHeight(55, view);
 		
 		//Title TextView
-		Tool.fitsViewHeight(33, view.findViewById(R.id.FSW_RLayout_RLayout_Title_TextView));
+		Tool.fitsViewHeight(50, view.findViewById(R.id.FSW_RLayout_RLayout_Title_TextView));
 		Tool.fitsViewTextSize(8, view.findViewById(R.id.FSW_RLayout_RLayout_Title_TextView));
 	}
 	private void PAD_FSW_RLayout_BODY_RLayout(View view) {

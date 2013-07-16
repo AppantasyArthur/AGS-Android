@@ -3,14 +3,14 @@
     android:id="@+id/FSF_RLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ff0000"
+    android:background="#00000000"
     >
 	<RelativeLayout 
 	    android:id="@+id/FSF_RLayout_TITLE_RLayout"
     	android:layout_width="match_parent"
    		android:layout_height="wrap_content"
    		android:layout_alignParentTop="true"
-   		android:background="#474747"
+   		android:background="#00000000"
 	    >  
 	    <TextView 
             android:id="@+id/FSF_RLayout_RLayout_Title_TextView"
@@ -29,7 +29,7 @@
     	android:layout_width="match_parent"
    		android:layout_height="match_parent"
    		android:layout_below="@+id/FSF_RLayout_TITLE_RLayout"
-   		android:background="#373737"
+   		android:background="#00000000"
 	    > 
 	    <TextView 
 	    	android:id="@+id/FSF_RLayout_RLayout_CVision_TextView"
@@ -48,7 +48,7 @@
 	   		android:layout_height="wrap_content"
 	   		android:layout_alignParentTop="true"
 	   		android:layout_alignParentLeft="true"
-	   		android:background="#575757"
+	   		android:background="#00000000"
 	        >
 	       	<TextView 
 	       	    android:id="@+id/FSF_RLayout_RLayout_RLayout_LNVision_TextView"
@@ -76,11 +76,12 @@
 		   	android:layout_width="wrap_content"
 		  	android:layout_height="wrap_content"
 		  	android:layout_alignParentTop="true"
-		   	android:layout_alignParentLeft="true"
+		   	android:layout_centerHorizontal="true"
+		   	android:padding="0dp"
 		   	android:gravity="center"
 		   	android:textColor="#ffffff"
 		   	android:textStyle="bold"
-		   	android:text="Update ALL"
+		   	android:text="Update ALL"		   	
 	        />
 	</RelativeLayout>
 </RelativeLayout>

@@ -3,15 +3,23 @@
     android:id="@+id/FSA_RLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ff0000"
+    android:background="#00000000"
     >
 	<RelativeLayout 
 	    android:id="@+id/FSA_RLayout_TITLE_RLayout"
     	android:layout_width="match_parent"
    		android:layout_height="wrap_content"
    		android:layout_alignParentTop="true"
-   		android:background="#474747"
-	    >  
+   		android:background="#00000000"
+	    > 
+	    <ImageView 
+	        android:id="@+id/FSA_RLayout_RLayout_TITLEBG_ImageView"
+	    	android:layout_width="match_parent"
+	   		android:layout_height="match_parent"
+	   		android:layout_alignParentRight="true"
+	   		android:scaleType="fitXY"
+	   		android:background="#00000000"
+	        /> 
 	    <TextView 
             android:id="@+id/FSA_RLayout_RLayout_Title_TextView"
         	android:layout_width="match_parent"
@@ -29,7 +37,7 @@
     	android:layout_width="match_parent"
    		android:layout_height="match_parent"
    		android:layout_below="@+id/FSA_RLayout_TITLE_RLayout"
-   		android:background="#373737"
+   		android:background="#00000000"
 	    >  
 	    <RelativeLayout 
 	        android:id="@+id/FSA_RLayout_RLayout_About_RLayout"
@@ -37,7 +45,7 @@
 	   		android:layout_height="wrap_content"
 	   		android:layout_alignParentTop="true"
 	   		android:layout_alignParentLeft="true"
-	   		android:background="#575757"
+	   		android:background="#00000000"
 	        >
 	       	<TextView 
 	       	    android:id="@+id/FSA_RLayout_RLayout_RLayout_LAbout_TextView"

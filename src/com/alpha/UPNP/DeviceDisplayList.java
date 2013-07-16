@@ -454,6 +454,7 @@ public class DeviceDisplayList {
 						public void success(ActionInvocation arg0) {
 							ActionArgument DisplayInfo = arg0.getAction().getOutputArgument("DisplayInfo");
 							ActionArgumentValue actionArgumentValue = arg0.getOutput(DisplayInfo);
+							mlog.info(TAG, "actionArgumentValue = "+actionArgumentValue); 
 							GroupVO groupVO = _parseGroup(actionArgumentValue.toString());
 							mlog.info(TAG, "GetDisplayInfoActionCallBack  = "+actionArgumentValue.toString());
 							mlog.info(TAG, "GetDisplayInfoActionCallBack  = "+groupVO.getName());

@@ -82,24 +82,24 @@ public class FSA_VIEW_SETTING {
 //***************************PHONE*********************************
 //***************************PAD*********************************
 	private void PAD_FSA_RLayout_TITLE_RLayout(View view) {
-		Tool.fitsViewHeight(50, view);
-		
+		Tool.fitsViewHeight(55, view);		
 		//Title TextView
-		Tool.fitsViewHeight(33, view.findViewById(R.id.FSA_RLayout_RLayout_Title_TextView));
+		Tool.fitsViewHeight(50, view.findViewById(R.id.FSA_RLayout_RLayout_Title_TextView));
 		Tool.fitsViewTextSize(8, view.findViewById(R.id.FSA_RLayout_RLayout_Title_TextView));
 	}
 	private void PAD_FSA_RLayout_BODY_RLayout(View view) {
 		//About_RLayout
 		Tool.fitsViewHeight(62, view.findViewById(R.id.FSA_RLayout_RLayout_About_RLayout));
-		Tool.fitsViewWidth(665, view.findViewById(R.id.FSA_RLayout_RLayout_About_RLayout));
+		Tool.fitsViewWidth(667, view.findViewById(R.id.FSA_RLayout_RLayout_About_RLayout));
 		Tool.fitsViewTopMargin(37, view.findViewById(R.id.FSA_RLayout_RLayout_About_RLayout));
 		Tool.fitsViewLeftMargin(44, view.findViewById(R.id.FSA_RLayout_RLayout_About_RLayout));
+		new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_box.png", view.findViewById(R.id.FSA_RLayout_RLayout_About_RLayout), 3);
 		//LAbout TextView		
-		Tool.fitsViewWidth(400, view.findViewById(R.id.FSA_RLayout_RLayout_RLayout_LAbout_TextView));
+		Tool.fitsViewWidth(324, view.findViewById(R.id.FSA_RLayout_RLayout_RLayout_LAbout_TextView));
 		Tool.fitsViewTextSize(10, view.findViewById(R.id.FSA_RLayout_RLayout_RLayout_LAbout_TextView));
 		Tool.fitsViewLeftMargin(10, view.findViewById(R.id.FSA_RLayout_RLayout_RLayout_LAbout_TextView));
 		//RAbout TextView		
-		Tool.fitsViewWidth(400, view.findViewById(R.id.FSA_RLayout_RLayout_RLayout_RAbout_TextView));
+		Tool.fitsViewWidth(324, view.findViewById(R.id.FSA_RLayout_RLayout_RLayout_RAbout_TextView));
 		Tool.fitsViewTextSize(8, view.findViewById(R.id.FSA_RLayout_RLayout_RLayout_RAbout_TextView));
 		Tool.fitsViewRightMargin(10, view.findViewById(R.id.FSA_RLayout_RLayout_RLayout_RAbout_TextView));
 	}

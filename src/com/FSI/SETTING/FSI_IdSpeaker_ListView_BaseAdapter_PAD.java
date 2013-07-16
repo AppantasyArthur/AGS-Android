@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
+import com.tkb.tool.ThreadReadBitMapInAssets;
+import com.tkb.tool.ThreadReadStateListInAssets;
 import com.tkb.tool.Tool;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -53,25 +55,30 @@ public class FSI_IdSpeaker_ListView_BaseAdapter_PAD extends BaseAdapter {
 		ViewHandler viewHandler =null;
 		if(convertView==null){
 			convertView = LayoutInflater.from(context).inflate(R.layout.fsi_idspeaker_listview_cell_pad, null);
-			convertView.setLayoutParams(new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT,Tool.getHeight(50)));
+			convertView.setLayoutParams(new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
 			viewHandler = new ViewHandler(convertView);
 			basicSetChildView(viewHandler);	
 			convertView.setTag(viewHandler);
 		}else{
 			viewHandler = (ViewHandler)convertView.getTag();
 		}
+		viewHandler.SET_Position(position);
 		if(position==0&&!(position==(this.getCount()-1))){
 			//第一個
-			
+			Tool.fitsViewHeight(70, viewHandler.CCell_RLayout);
+			new ThreadReadBitMapInAssets(context, "pad/Settings/identify_01_box.png", viewHandler.CCell_RLayout, 3);
 		}else if(position==0&&(position==(this.getCount()-1))){
 			//只有一個
-			
+			Tool.fitsViewHeight(62, viewHandler.CCell_RLayout);
+			new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_box.png", viewHandler.CCell_RLayout, 3);
 		}else if((position==(this.getCount()-1))){
 			//最後一個
-			
+			Tool.fitsViewHeight(73, viewHandler.CCell_RLayout);
+			new ThreadReadBitMapInAssets(context, "pad/Settings/identify_03_box.png", viewHandler.CCell_RLayout, 3);
 		}else{
 			//其他
-			
+			Tool.fitsViewHeight(71, viewHandler.CCell_RLayout);
+			new ThreadReadBitMapInAssets(context, "pad/Settings/identify_02_box.png", viewHandler.CCell_RLayout, 3);
 		}
 		viewHandler.Name_TextView.setText("render id = "+dataList.get(position));
 		return convertView;
@@ -97,9 +104,10 @@ public class FSI_IdSpeaker_ListView_BaseAdapter_PAD extends BaseAdapter {
 		Tool.fitsViewLeftMargin(5, viewHandler.Name_TextView);
 		Tool.fitsViewTextSize(8, viewHandler.Name_TextView);
 		//Sound ImageView
-		Tool.fitsViewHeight(21, viewHandler.Sound_ImageView);
-		viewHandler.Sound_ImageView.getLayoutParams().width = Tool.getHeight(30);
+		Tool.fitsViewHeight(22, viewHandler.Sound_ImageView);
+		viewHandler.Sound_ImageView.getLayoutParams().width = Tool.getHeight(28);
 		Tool.fitsViewRightMargin(10, viewHandler.Sound_ImageView);
+		new ThreadReadStateListInAssets(context, "pad/Settings/Settings_speaker_f.png", "pad/Settings/Settings_speaker_n.png", viewHandler.Sound_ImageView, 1);
 	}
 
 }

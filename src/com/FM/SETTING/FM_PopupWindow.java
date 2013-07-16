@@ -41,6 +41,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.Switch;
 
 public class FM_PopupWindow extends PopupWindow {
 	
@@ -109,23 +110,28 @@ public class FM_PopupWindow extends PopupWindow {
 	private void PAD_CreateContentView() {
 		this.contentView = LayoutInflater.from(context).inflate(R.layout.fm_popupwindow_context, null,true);
 		//Content RLayout
-		Tool.fitsViewHeight(290, this.contentView.findViewById(R.id.FM_PopupWindow_Content_RLayout));
-		Tool.fitsViewWidth(295, this.contentView.findViewById(R.id.FM_PopupWindow_Content_RLayout));
+		Tool.fitsViewHeight(294, this.contentView.findViewById(R.id.FM_PopupWindow_Content_RLayout));
+		Tool.fitsViewWidth(297, this.contentView.findViewById(R.id.FM_PopupWindow_Content_RLayout));
+		new ThreadReadBitMapInAssets(context, "pad/Playlist/pls_pop_bg.png", this.contentView.findViewById(R.id.FM_PopupWindow_Content_RLayout), 3);
 		//TITLE TextView
-		Tool.fitsViewHeight(50, this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_TITLE_TextView));
+		Tool.fitsViewHeight(28, this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_TITLE_TextView));
 		Tool.fitsViewTextSize(8, this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_TITLE_TextView));
+		Tool.fitsViewTopMargin(10, this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_TITLE_TextView));
 		//OPTION ScrollView
-		Tool.fitsViewHeight(200, this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_OPTION_ScrollView));
+		Tool.fitsViewHeight(181, this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_OPTION_ScrollView));
+		Tool.fitsViewWidth(248, this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_OPTION_ScrollView));
 		Tool.fitsViewTopMargin(50, this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_OPTION_ScrollView));
+		new ThreadReadBitMapInAssets(context, "pad/Playlist/pls_pop_list_bg.png", this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_OPTION_ScrollView), 3);
 		//OPTION_LLayout
 		LinearLayout OPTION_LLayout = (LinearLayout)this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_OPTION_LLayout);
+		OPTION_LLayout.getLayoutParams().height = Tool.getHeight(180);		
 		CreateOptionButtons(OPTION_LLayout);
 		//CANCEL Button
 		Tool.fitsViewHeight(40, this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_CANCEL_Button));
 		Tool.fitsViewWidth(210, this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_CANCEL_Button));
 		Tool.fitsViewTextSize(6, this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_CANCEL_Button));
 		Tool.fitsViewBottomMargin(5, this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_CANCEL_Button));
-		
+		new ThreadReadStateListInAssets(context, "pad/Playlist/pls_cancel_bt_f.png", "pad/Playlist/pls_cancel_bt_n.png",  this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_CANCEL_Button), 4);
 		mlog.info(TAG, "CreateContentView");
 	}
 	private void CreateOptionButtons(LinearLayout OPTION_LLayout){		
@@ -138,10 +144,10 @@ public class FM_PopupWindow extends PopupWindow {
 		OPTION_LLayout.addView(OPTION_Button_3);
 		OPTION_LLayout.addView(OPTION_Button_4);
 		//設定 OPTION_Button 介面
-		SetOptionButtonView(OPTION_Button_1,"Play Now");
-		SetOptionButtonView(OPTION_Button_2,"Play Next");
-		SetOptionButtonView(OPTION_Button_3,"Replay Queqe");
-		SetOptionButtonView(OPTION_Button_4,"Add To Queqe");
+		SetOptionButtonView(OPTION_Button_1,"Play Now",0);
+		SetOptionButtonView(OPTION_Button_2,"Play Next",1);
+		SetOptionButtonView(OPTION_Button_3,"Replay Queqe",1);
+		SetOptionButtonView(OPTION_Button_4,"Add To Queqe",2);
 		//設定LISTNER
 		SetOPTION_Button_1_LISTNER(OPTION_Button_1);
 		SetOPTION_Button_2_LISTNER(OPTION_Button_2);
@@ -149,7 +155,7 @@ public class FM_PopupWindow extends PopupWindow {
 		SetOPTION_Button_4_LISTNER(OPTION_Button_4);
 	}
 	
-	private void SetOptionButtonView(Button OPTION_Button,String str){
+	private void SetOptionButtonView(Button OPTION_Button,String str,int number){
 		
 		if(device_size==6){
 			OPTION_Button.setBackgroundColor(Color.parseColor("#00000000"));
@@ -157,7 +163,20 @@ public class FM_PopupWindow extends PopupWindow {
 			Tool.fitsViewTextSize(10, OPTION_Button);
 			new ThreadReadStateListInAssets(context, "phone/pop/selecet_center_f.png", "phone/playlist/playlist_btn_n.png", OPTION_Button, 4);
 		}else{
-			Tool.fitsViewHeight(50, OPTION_Button);
+			switch(number){
+			case 0:
+				Tool.fitsViewHeight(45, OPTION_Button);	
+				new ThreadReadStateListInAssets(context, "pad/Playlist/pls_pop_bt_01.png", "phone/playlist/playlist_btn_n.png", OPTION_Button, 4);
+				break;
+			case 1:
+				Tool.fitsViewHeight(43, OPTION_Button);		
+				new ThreadReadStateListInAssets(context, "pad/Playlist/pls_pop_bt_02.png", "phone/playlist/playlist_btn_n.png", OPTION_Button, 4);
+				break;
+			case 2:
+				Tool.fitsViewHeight(46, OPTION_Button);		
+				new ThreadReadStateListInAssets(context, "pad/Playlist/pls_pop_bt_03.png", "phone/playlist/playlist_btn_n.png", OPTION_Button, 4);
+				break;
+			}	
 			Tool.fitsViewTextSize(8, OPTION_Button);
 		}
 		

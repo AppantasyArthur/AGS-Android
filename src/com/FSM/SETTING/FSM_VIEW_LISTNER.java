@@ -57,7 +57,7 @@ public class FSM_VIEW_LISTNER {
 			About_Button.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Tool.FragmentActivity_MainReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SAbout(), "Fragment_SAbout", R.id.FAS_RLayout_Right_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+					Tool.FragmentActivity_MainReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SAbout(), "Fragment_SAbout", R.id.FAS_RLayout_Right_RLayout, R.animator.alpha_in, 0);
 				}
 			});
 		}
@@ -75,7 +75,7 @@ public class FSM_VIEW_LISTNER {
 			Firmrware_Button.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Tool.FragmentActivity_MainReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SFirmrware(), "Fragment_SFirmrware", R.id.FAS_RLayout_Right_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+					Tool.FragmentActivity_MainReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SFirmrware(), "Fragment_SFirmrware", R.id.FAS_RLayout_Right_RLayout, R.animator.alpha_in, 0);
 				}
 			});
 		}
@@ -93,7 +93,7 @@ public class FSM_VIEW_LISTNER {
 			Wireless_Button.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Tool.FragmentActivity_MainReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SWireless(), "Fragment_SWireless", R.id.FAS_RLayout_Right_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+					Tool.FragmentActivity_MainReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SWireless(), "Fragment_SWireless", R.id.FAS_RLayout_Right_RLayout, R.animator.alpha_in, 0);
 				}
 			});
 		}
@@ -111,7 +111,7 @@ public class FSM_VIEW_LISTNER {
 			Idenrify_Button.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Tool.FragmentActivity_MainReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SIdenrify(), "Fragment_SIdenrify", R.id.FAS_RLayout_Right_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+					Tool.FragmentActivity_MainReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SIdenrify(), "Fragment_SIdenrify", R.id.FAS_RLayout_Right_RLayout, R.animator.alpha_in, 0);
 				}
 			});
 		}

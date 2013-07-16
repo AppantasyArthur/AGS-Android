@@ -74,14 +74,15 @@ public class FSI_VIEW_SETTING {
 //***************************PHONE*********************************
 //***************************PAD*********************************
 	private void PAD_FSA_RLayout_TITLE_RLayout(View view) {
-		Tool.fitsViewHeight(50, view);
+		Tool.fitsViewHeight(55, view);
 		
 		//Title TextView
-		Tool.fitsViewHeight(33, view.findViewById(R.id.FSI_RLayout_RLayout_Title_TextView));
+		Tool.fitsViewHeight(50, view.findViewById(R.id.FSI_RLayout_RLayout_Title_TextView));
 		Tool.fitsViewTextSize(8, view.findViewById(R.id.FSI_RLayout_RLayout_Title_TextView));
 	}
 	private void PAD_FSA_RLayout_BODY_RLayout(View view) {
-		Tool.fitsViewWidth(662, view.findViewById(R.id.FSI_RLayout_RLayout_IdSpeaker_ListView));
+		Tool.fitsViewWidth(666, view.findViewById(R.id.FSI_RLayout_RLayout_IdSpeaker_ListView));
+		Tool.fitsViewHeight(550, view.findViewById(R.id.FSI_RLayout_RLayout_IdSpeaker_ListView));
 		Tool.fitsViewTopMargin(62, view.findViewById(R.id.FSI_RLayout_RLayout_IdSpeaker_ListView));
 		Tool.fitsViewLeftMargin(44, view.findViewById(R.id.FSI_RLayout_RLayout_IdSpeaker_ListView));
 		FSI_IdSpeaker_ListView_BaseAdapter_PAD baseAdapter = new FSI_IdSpeaker_ListView_BaseAdapter_PAD(context);

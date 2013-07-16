@@ -57,35 +57,42 @@
 			    android:text="Save"
                 />
         </RelativeLayout>
-        <TextView 
-            android:id="@+id/FAM_Save_PopupWindow_Content_RLayout_RLayout_Choose_TextView"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_below="@+id/FAM_Save_PopupWindow_Content_RLayout_TITLE_RLayout"
-		    android:layout_centerHorizontal="true"
-		    android:gravity="center_vertical"
-		    android:padding="0dp"
-		    android:textColor="#ffffff"
-		    android:text="To Save This Queqe as a Alpha's Playlist, type a name."		    
-            />
-        <TextView 
-            android:id="@+id/FAM_Save_PopupWindow_Content_RLayout_RLayout_ChooseName_TextView"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_below="@+id/FAM_Save_PopupWindow_Content_RLayout_RLayout_Choose_TextView"
-		    android:layout_centerHorizontal="true"
-		    android:gravity="center_vertical"
-		    android:padding="0dp"
-		    android:textColor="#0cb2dc"
-		    android:text="New PlayList Name"	
-            />
-      	<EditText 
-      	    android:id="@+id/FAM_Save_PopupWindow_Content_RLayout_RLayout_InputName_EditText"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_below="@+id/FAM_Save_PopupWindow_Content_RLayout_RLayout_ChooseName_TextView"
-		    android:layout_centerHorizontal="true"
-      	    />
+        <RelativeLayout 
+            android:id="@+id/FAM_Save_PopupWindow_Content_RLayout_Body_RLayout"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/FAM_Save_PopupWindow_Content_RLayout_TITLE_RLayout"
+	        android:layout_centerHorizontal="true"
+            >
+	        <TextView 
+	            android:id="@+id/FAM_Save_PopupWindow_Content_RLayout_RLayout_Choose_TextView"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"			    
+			    android:layout_centerHorizontal="true"
+			    android:gravity="center_vertical"
+			    android:padding="0dp"
+			    android:textColor="#ffffff"
+			    android:text="To Save This Queqe as a Alpha's Playlist, type a name."		    
+	            />
+	        <TextView 
+	            android:id="@+id/FAM_Save_PopupWindow_Content_RLayout_RLayout_ChooseName_TextView"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@+id/FAM_Save_PopupWindow_Content_RLayout_RLayout_Choose_TextView"
+			    android:layout_centerHorizontal="true"
+			    android:gravity="center_vertical"
+			    android:padding="0dp"
+			    android:textColor="#0cb2dc"
+			    android:text="New PlayList Name"	
+	            />
+	      	<EditText 
+	      	    android:id="@+id/FAM_Save_PopupWindow_Content_RLayout_RLayout_InputName_EditText"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@+id/FAM_Save_PopupWindow_Content_RLayout_RLayout_ChooseName_TextView"
+			    android:layout_centerHorizontal="true"
+	      	    />
+      	 </RelativeLayout>
     </RelativeLayout>
     
 </RelativeLayout>

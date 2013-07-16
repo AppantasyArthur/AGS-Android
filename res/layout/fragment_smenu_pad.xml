@@ -3,14 +3,14 @@
     android:id="@+id/FSM_RLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ff0000" >
+    android:background="#00000000" >
 
     <RelativeLayout 
         android:id="@+id/FSM_RLayout_TITLE_RLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:background="#575757"
+        android:background="#00000000"
         >    
         <Button
             android:id="@+id/FSM_RLayout_RLayout_Done_Button"
@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/FSM_RLayout_TITLE_RLayout"
-        android:background="#000000"
+        android:background="#00000000"
         >
         <Button
             android:id="@+id/FSM_RLayout_RLayout_About_Button"

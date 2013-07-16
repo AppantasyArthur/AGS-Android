@@ -78,9 +78,10 @@ public class OptionButton{
 		this.Name_TextView.setText(groupVO.getName());
 	}
 	private void PAD_basicSetView() {
+		Tool.fitsViewHeight(50, cellView);
 		//Radio ImageButton
-		Tool.fitsViewHeight(36, this.Radio_ImageButton);
-		this.Radio_ImageButton.getLayoutParams().width = Tool.getHeight(36);
+		Tool.fitsViewHeight(30, this.Radio_ImageButton);
+		this.Radio_ImageButton.getLayoutParams().width = Tool.getHeight(29);
 		if(groupVO.isSlave()){
 			//¤w¿ï¨ú
 			isSelected = true;
@@ -90,12 +91,13 @@ public class OptionButton{
 		}			
 		if(isSelected){
 			//¤w¿ï¨ú
-			new ThreadReadBitMapInAssets(context, "phone/grouprooms/select_icon.PNG", this.Radio_ImageButton, 2);
+			new ThreadReadBitMapInAssets(context, "pad/pop/btn_f.png", this.Radio_ImageButton, 2);
 		}else{
 			//¥¼¿ï¨ú
-			new ThreadReadBitMapInAssets(context, "phone/grouprooms/unselect_icon.png", this.Radio_ImageButton, 2);
+			new ThreadReadBitMapInAssets(context, "pad/pop/btn_n.png", this.Radio_ImageButton, 2);
 		}
 		//Name TextView
+		Tool.fitsViewLeftMargin(8, this.Name_TextView);
 		Tool.fitsViewTextSize(6, this.Name_TextView);
 		this.Name_TextView.setText(groupVO.getName());
 	}
@@ -112,7 +114,7 @@ public class OptionButton{
 					}else{
 						//PAD §ï¦¨¥¼¿ï
 						isSelected = false;
-						new ThreadReadBitMapInAssets(context, "phone/grouprooms/unselect_icon.png", v, 2);
+						new ThreadReadBitMapInAssets(context, "pad/pop/btn_n.png", v, 2);
 						mlog.info(TAG, "isSelected = "+isSelected);
 					}					
 				}else{
@@ -124,7 +126,7 @@ public class OptionButton{
 					}else{
 						//PAD §ï¦¨¤w¿ï
 						isSelected = true;
-						new ThreadReadBitMapInAssets(context, "phone/grouprooms/select_icon.PNG", v, 2);
+						new ThreadReadBitMapInAssets(context, "pad/pop/btn_f.png", v, 2);
 						mlog.info(TAG, "isSelected = "+isSelected);
 					}					
 				}

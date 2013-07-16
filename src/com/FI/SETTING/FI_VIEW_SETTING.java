@@ -148,14 +148,14 @@ public class FI_VIEW_SETTING {
 		new ThreadReadBitMapInAssets(context, "phone/play_volume/volume_bar.png", view, 3);
 		//Cycle IButton
 		Tool.fitsViewWidth(39, view.findViewById(R.id.pFI_RLayout_RLayout_Cycle_IButton));
-		view.findViewById(R.id.pFI_RLayout_RLayout_Cycle_IButton).getLayoutParams().height = Tool.getWidth(30);
+		Tool.fitsViewHeight(26, view.findViewById(R.id.pFI_RLayout_RLayout_Cycle_IButton));
 		Tool.fitsViewLeftMargin(7, view.findViewById(R.id.pFI_RLayout_RLayout_Cycle_IButton));
 		Tool.fitsViewTopMargin(4, view.findViewById(R.id.pFI_RLayout_RLayout_Cycle_IButton));
 		view.findViewById(R.id.pFI_RLayout_RLayout_Cycle_IButton).setTag(0);
 		new ThreadReadBitMapInAssets(context, "phone/play_volume/repeat off_f.png", view.findViewById(R.id.pFI_RLayout_RLayout_Cycle_IButton), 2);
 		//Random IButton
 		Tool.fitsViewWidth(39, view.findViewById(R.id.pFI_RLayout_RLayout_Random_IButton));
-		view.findViewById(R.id.pFI_RLayout_RLayout_Random_IButton).getLayoutParams().height = Tool.getWidth(30);
+		Tool.fitsViewHeight(26, view.findViewById(R.id.pFI_RLayout_RLayout_Random_IButton));
 		Tool.fitsViewLeftMargin(2, view.findViewById(R.id.pFI_RLayout_RLayout_Random_IButton));
 		Tool.fitsViewTopMargin(4, view.findViewById(R.id.pFI_RLayout_RLayout_Random_IButton));
 		view.findViewById(R.id.pFI_RLayout_RLayout_Random_IButton).setTag(0);

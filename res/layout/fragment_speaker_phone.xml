@@ -165,7 +165,8 @@
 	    <com.FS.SETTING.FS_SPEAKER_ExpandableListView
 	        android:id="@+id/pFS_RLayout_SPEAKER_EListView"
 	        android:layout_width="match_parent"
-	        android:layout_height="match_parent"	           
+	        android:layout_height="match_parent"
+	        android:listSelector="@android:color/transparent"	           
 	        android:background="#00000000"
 	        android:divider="#00000000"    
 	        >        

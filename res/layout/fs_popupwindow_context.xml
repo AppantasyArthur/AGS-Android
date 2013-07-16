@@ -57,43 +57,50 @@
 			    android:text="Done"
                 />
         </RelativeLayout>
-        <TextView 
-            android:id="@+id/FS_PopupWindow_Content_RLayout_RLayout_Choose_TextView"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_below="@+id/FS_PopupWindow_Content_RLayout_TITLE_RLayout"
-		    android:layout_centerHorizontal="true"
-		    android:gravity="center_vertical"
-		    android:padding="0dp"
-		    android:textColor="#ffffff"
-		    android:text="Choose Speakers To Play:"		    
-            />
-        <TextView 
-            android:id="@+id/FS_PopupWindow_Content_RLayout_RLayout_ChooseName_TextView"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_below="@+id/FS_PopupWindow_Content_RLayout_RLayout_Choose_TextView"
-		    android:layout_centerHorizontal="true"
-		    android:gravity="center_vertical"
-		    android:padding="0dp"
-		    android:textColor="#0cb2dc"
-		    android:text="When You Were Young"	
-            />
-        <ScrollView
-            android:id="@+id/FS_PopupWindow_Content_RLayout_RLayout_ChooseScroll_ScrollView"
+        <RelativeLayout 
+           	android:id="@+id/FS_PopupWindow_Content_RLayout_RLayout_Body_RLayout"
             android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_centerHorizontal="true"
-		    android:layout_alignParentTop="true"
-		    android:background="#000000"		    
+			android:layout_height="wrap_content"
+			android:layout_centerHorizontal="true"
+			android:layout_below="@+id/FS_PopupWindow_Content_RLayout_TITLE_RLayout"
             >
-            <LinearLayout
-                android:id="@+id/FS_PopupWindow_Content_RLayout_RLayout_ScrollView_ChooseScroll_LLayout"
-	            android:layout_width="match_parent"
+	        <TextView 
+	            android:id="@+id/FS_PopupWindow_Content_RLayout_RLayout_Choose_TextView"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"			    
+			    android:layout_centerHorizontal="true"
+			    android:gravity="center_vertical"
+			    android:padding="0dp"
+			    android:textColor="#ffffff"
+			    android:text="Choose Speakers To Play:"		    
+	            />
+	        <TextView 
+	            android:id="@+id/FS_PopupWindow_Content_RLayout_RLayout_ChooseName_TextView"
+			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:orientation="vertical"
-			    ></LinearLayout>
-        </ScrollView>
+			    android:layout_below="@+id/FS_PopupWindow_Content_RLayout_RLayout_Choose_TextView"
+			    android:layout_centerHorizontal="true"
+			    android:gravity="center_vertical"
+			    android:padding="0dp"
+			    android:textColor="#0cb2dc"
+			    android:text="When You Were Young"	
+	            />
+	        <ScrollView
+	            android:id="@+id/FS_PopupWindow_Content_RLayout_RLayout_ChooseScroll_ScrollView"
+	            android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_centerHorizontal="true"
+			    android:layout_alignParentTop="true"
+			    android:background="#00000000"		    
+	            >
+	            <LinearLayout
+	                android:id="@+id/FS_PopupWindow_Content_RLayout_RLayout_ScrollView_ChooseScroll_LLayout"
+		            android:layout_width="match_parent"
+				    android:layout_height="wrap_content"
+				    android:orientation="vertical"
+				    ></LinearLayout>
+	        </ScrollView>
+        </RelativeLayout>
         <Button 
             android:id="@+id/FS_PopupWindow_Content_RLayout_RLayout_SelectALL_Button"
 		    android:layout_width="wrap_content"
