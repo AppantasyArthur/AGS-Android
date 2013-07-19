@@ -2,9 +2,7 @@ package com.FS.SETTING;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.teleal.cling.model.meta.Device;
-
 import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.R;
@@ -30,6 +28,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -38,9 +37,7 @@ import android.widget.TextView;
 public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdapter {
 	
 	private Context context;
-	private FS_SPEAKER_ExpandableListView EListView;
-	private int GView_SELECTED = -1;
-	private int CView_SELECTED = -1;
+	private ExpandableListView EListView;
 	private Bitmap arrow_f;
 	private Bitmap arrow_n;
 	private ImageSpan play_Span;
@@ -58,40 +55,35 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 	
 	private Handler handler = new Handler(){
 		public void handleMessage (Message msg) {
-			switch(msg.what){
+			switch(msg.what){			
 			case 0:
-				if(GroupList!=null){
-					if(GroupList.indexOf((DeviceDisplay)msg.obj)==-1){
-						GroupList.add((DeviceDisplay)msg.obj);
-					}					
-					FS_SPEAKER_ExpandableListAdapter_Pad.this.notifyDataSetChanged();
-				}
+				FS_SPEAKER_ExpandableListAdapter_Pad.this.GroupList.clear();
+				FS_SPEAKER_ExpandableListAdapter_Pad.this.GroupList = GetGroupList();
+				FS_SPEAKER_ExpandableListAdapter_Pad.this.notifyDataSetChanged();
 				break;
 			case 1:
-				if(GroupList!=null){
-					GroupList.remove((DeviceDisplay)msg.obj);
-					FS_SPEAKER_ExpandableListAdapter_Pad.this.notifyDataSetChanged();
-				}
-				break;
-			case 2:
-				
-				break;
-			case 3:
 				
 				break;
 			}
 		}
 	};
 	
-	public FS_SPEAKER_ExpandableListAdapter_Pad(Context context,FS_SPEAKER_ExpandableListView EListView){
+	public FS_SPEAKER_ExpandableListAdapter_Pad(Context context,ExpandableListView EListView){
 		this.mlog.LogSwitch = true;
 		this.context = context;
 		this.EListView = EListView;
-		this.GroupList = new ArrayList<DeviceDisplay>();		
+		this.GroupList = GetGroupList();	
 		this.popupWindow = new FS_PopupWindow(this.context);
 		LoadBitmap();
 		SetList();
 		SetListner();
+	}
+	private List<DeviceDisplay> GetGroupList(){
+		List<DeviceDisplay> list = new ArrayList<DeviceDisplay>();
+		for(DeviceDisplay deviceDisplay:((FragmentActivity_Main)context).GETDeviceDisplayList().getGroupList()){
+			list.add(deviceDisplay);
+		}
+		return list;		
 	}
 	private void SetList(){
 		//分類MRList
@@ -103,15 +95,9 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 	private void SetListner(){
 		FSELAListner = new FS_SPEAKER_ExpandableListAdapter_Listner(){
 			@Override
-			public void AddMediaRenderer(DeviceDisplay deviceDisplay) {
-				handler.obtainMessage(0, deviceDisplay).sendToTarget();
-				mlog.info(TAG, "AddMediaRenderer");
-			}
-
-			@Override
-			public void RemoveMediaRenderer(DeviceDisplay deviceDisplay) {
-				handler.obtainMessage(1, deviceDisplay).sendToTarget();
-				mlog.info(TAG, "AddMediaRenderer");
+			public void SetPositionChange() {
+				handler.obtainMessage(0).sendToTarget();
+				mlog.info(TAG, "SetPositionChange");
 			}
 		};
 		((FragmentActivity_Main)context).GETDeviceDisplayList().setSpeakerListner(FSELAListner);
@@ -261,7 +247,19 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 		}
 		
 		//設定selected
-		if(((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer()!=null&&((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer().equals(GroupList.get(groupPosition))){
+		DeviceDisplay chooDeviceDisplay = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+//		Group groups = GroupList.get(groupPosition).getGroupVO().getGroup();
+//		Log.i(TAG, "group size = "+groups.getMembers().size());		
+//		for(int j=0;j<groups.getMembers().size();j++){
+//			if(chooDeviceDisplay!=null){
+//				Log.i(TAG, "UDN 1 = "+groups.getMembers().get(j).getUdn());	
+//				Log.i(TAG, "UDN 2 = "+chooDeviceDisplay.getDevice().getIdentity().getUdn().toString());			
+//				Log.i(TAG, "true");			
+//			}
+//			
+//		}
+		
+		if(((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer()!=null&&chooDeviceDisplay.equals(GroupList.get(groupPosition))){
 			if(ChildrenCount>0){
 				new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/group_f.png", viewHandler.GCell_RLayout, 3);
 			}else{
@@ -426,18 +424,13 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 		RunState_TextView.setText(spannalbeStringBuilder);
 	}
 	public void SET_GView_SELECTED(int position){
-		if((this.GView_SELECTED!=position)){
-			this.GView_SELECTED = position;
+		if(((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer()!=this.GroupList.get(position)){
 			((FragmentActivity_Main)context).GETDeviceDisplayList().setChooseMediaRenderer(this.GroupList.get(position));
-			this.notifyDataSetChanged();
 		}
 	}
 	public void SET_CVIEW_SELECTED(int Gposition, int Cposition){
-		if((this.GView_SELECTED!=Gposition)||(this.CView_SELECTED!=Cposition)){
-			this.GView_SELECTED = Gposition;
-			this.CView_SELECTED = Cposition;
+		if(((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer()!=this.GroupList.get(Gposition)){
 			((FragmentActivity_Main)context).GETDeviceDisplayList().setChooseMediaRenderer(this.GroupList.get(Gposition));
-			this.notifyDataSetChanged();
 		}		
 	}
 }

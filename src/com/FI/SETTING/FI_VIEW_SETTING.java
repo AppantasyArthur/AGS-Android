@@ -6,9 +6,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.SeekBar;
-
-import com.FS.SETTING.FS_SPEAKER_ExpandableListAdapter_Phone;
-import com.FS.SETTING.FS_SPEAKER_ExpandableListView;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;

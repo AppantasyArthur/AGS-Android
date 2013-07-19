@@ -3,7 +3,6 @@ package com.alpha.fragments;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.teleal.cling.android.AndroidUpnpService;
 import org.teleal.cling.controlpoint.ActionCallback;
 import org.teleal.cling.model.action.ActionArgumentValue;
@@ -14,8 +13,6 @@ import org.teleal.cling.model.meta.ActionArgument;
 import org.teleal.cling.model.meta.Device;
 import org.teleal.cling.model.meta.Service;
 import org.teleal.cling.model.types.UDAServiceId;
-
-import com.FS.SETTING.FS_SPEAKER_ExpandableListView;
 import com.FS.SETTING.FS_VIEW_LISTNER;
 import com.FS.SETTING.FS_VIEW_SETTING;
 import com.FS.SETTING.OptionButton;
@@ -25,7 +22,6 @@ import com.alpha.upnpui.R;
 import com.appantasy.androidapptemplate.event.lastchange.GroupVO;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
-
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -37,6 +33,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -45,7 +42,7 @@ import android.widget.ViewFlipper;
 public class Fragment_Speaker extends Fragment {
 	//VIEWS
 	private View Fragment_MainView;	
-	private FS_SPEAKER_ExpandableListView FS_SPEAKER_EListView;
+	private ExpandableListView FS_SPEAKER_EListView;
 	
 	//Fragment Manager
 	private FragmentManager fragmentManager = null;
@@ -95,7 +92,7 @@ public class Fragment_Speaker extends Fragment {
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_TITLE2_1_RLayout));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_TITLE3_RLayout));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_TITLE4_RLayout));
-		FS_SPEAKER_EListView = (FS_SPEAKER_ExpandableListView)Fragment_MainView.findViewById(R.id.pFS_RLayout_SPEAKER_EListView);
+		FS_SPEAKER_EListView = (ExpandableListView)Fragment_MainView.findViewById(R.id.pFS_RLayout_SPEAKER_EListView);
 		this.VIEW_SETTING.VIEWSET(FS_SPEAKER_EListView);		
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_Bottom_RLayout));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_Bottom2_RLayout));
@@ -118,7 +115,7 @@ public class Fragment_Speaker extends Fragment {
 		this.VIEW_LISTNER.SET_SPEAKER_EListView_Listner(FS_SPEAKER_EListView);
 		this.VIEW_LISTNER.Setting_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Setting_IButton));
 		this.VIEW_LISTNER.Setting_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Setting2_IButton));
-		this.VIEW_LISTNER.UNSELECT_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_UNSELECT_Button),
+		this.VIEW_LISTNER.SELECT_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_SELECT_Button),
 													this);
 	}
 	
@@ -126,7 +123,7 @@ public class Fragment_Speaker extends Fragment {
 		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FS_RLayout));
 		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FS_RLayout_TITLE_RLayout));
 //		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FS_RLayout_TITLE2_RLayout));
-		FS_SPEAKER_EListView = (FS_SPEAKER_ExpandableListView)Fragment_MainView.findViewById(R.id.FS_RLayout_SPEAKER_EListView);
+		FS_SPEAKER_EListView = (ExpandableListView)Fragment_MainView.findViewById(R.id.FS_RLayout_SPEAKER_EListView);
 		VIEW_SETTING.VIEWSET(FS_SPEAKER_EListView);
 		mlog.info(TAG, "findView OK");
 	}	
@@ -173,7 +170,7 @@ public class Fragment_Speaker extends Fragment {
 	
 	@Override
 	public void onDestroy() {
-		super.onDestroy();
+		super.onDestroy();		
 		Log.v(TAG, "onDestroy");
 	}
 	
@@ -263,11 +260,11 @@ public class Fragment_Speaker extends Fragment {
 			break;
 		}
 	}
-	public void SetALLOptionButtonsUnselect(){
+	public void SetALLOptionButtonsSelect(){
 		if(OptionButtonsList!=null){
 			for(OptionButton optionButton:OptionButtonsList){
-				optionButton.isSelected = false;
-				new ThreadReadBitMapInAssets(context, "phone/grouprooms/unselect_icon.png", optionButton.Radio_ImageButton, 2);
+				optionButton.isSelected = true;
+				new ThreadReadBitMapInAssets(context, "phone/grouprooms/select_icon.PNG", optionButton.Radio_ImageButton, 2);
 			}
 		}
 	}

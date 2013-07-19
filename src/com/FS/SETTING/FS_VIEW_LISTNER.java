@@ -67,7 +67,7 @@ public class FS_VIEW_LISTNER {
 		NowPlaying_Button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				((FragmentActivity_Main)context).ShowViewContent_ViewFlipperDisplay(0,R.animator.translate_right_in,R.animator.alpha_out);
+				((FragmentActivity_Main)context).ShowViewContent_ViewFlipperDisplay(1,R.animator.translate_right_in,R.animator.alpha_out);
 			}
 		});
 	}
@@ -411,7 +411,7 @@ public class FS_VIEW_LISTNER {
 			}
 		}
 	}
-	public void SET_SPEAKER_EListView_Listner(final FS_SPEAKER_ExpandableListView fS_SPEAKER_EListView) {
+	public void SET_SPEAKER_EListView_Listner(final ExpandableListView fS_SPEAKER_EListView) {
 		if(device_size==6){
 			//***************************PHONE*********************************	
 			fS_SPEAKER_EListView.setOnGroupClickListener(new OnGroupClickListener(){
@@ -496,11 +496,11 @@ public class FS_VIEW_LISTNER {
 			}
 		});		
 	}
-	public void UNSELECT_Button_LISTNER(Button UNSELECT_Button, final Fragment_Speaker fragment_Speaker) {
-		UNSELECT_Button.setOnClickListener(new View.OnClickListener(){
+	public void SELECT_Button_LISTNER(Button SELECT_Button, final Fragment_Speaker fragment_Speaker) {
+		SELECT_Button.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				fragment_Speaker.SetALLOptionButtonsUnselect();				
+				fragment_Speaker.SetALLOptionButtonsSelect();				
 			}
 		});		
 	}

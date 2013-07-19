@@ -12,6 +12,7 @@ import com.tkb.tool.Tool;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
@@ -21,7 +22,7 @@ public class FI_PointLiLayout extends LinearLayout {
 	private MLog mlog = new MLog();
 	private static final String TAG = "BaseWord_PointLiLayout";
 	private List<ImageView> PointList;
-	private int Current = 0;
+	private int Current = -1;
 	private int device_size = 0;
 	public FI_PointLiLayout(Context context) {
 		super(context);			
@@ -37,7 +38,12 @@ public class FI_PointLiLayout extends LinearLayout {
 	}
 	
 	public void setPointCount(int Count){	
-		PointList = new ArrayList<ImageView>();
+		if(PointList!=null){
+			PointList.clear();
+		}else{
+			PointList = new ArrayList<ImageView>();
+		}
+		this.removeAllViews();
 		//Create PagePoint
 		for(int i =0;i<Count;i++){
 			ImageView Point = new ImageView(context);			
@@ -53,19 +59,24 @@ public class FI_PointLiLayout extends LinearLayout {
 			Point.setBackgroundColor(Color.parseColor("#00000000"));
 			Point.setScaleType(ScaleType.FIT_XY);
 			if(i == Current){
-				new ThreadReadBitMapInAssets(context, "pad/Nowplaying/spot_n.png", Point, 1);
+				new ThreadReadBitMapInAssets(context, "pad/Nowplaying/spot_f.png", Point, 1);
 			}else{
-				new ThreadReadBitMapInAssets(context, "pad/Nowplaying/spot_f.png", Point, 1);				
+				new ThreadReadBitMapInAssets(context, "pad/Nowplaying/spot_n.png", Point, 1);				
 			}
 			
 			PointList.add(Point);
 		}	
 	}
-	public void setPointCurrent(int CurrentPoint){
-		ImageView PointCurrent = PointList.get(Current);
-		new ThreadReadBitMapInAssets(context, "pad/Nowplaying/spot_f.png", PointCurrent, 1);
+	public void setPointCurrent(int CurrentPoint){		
+		if(Current>=0&&Current<PointList.size()){
+			ImageView PointCurrent = PointList.get(Current);
+			new ThreadReadBitMapInAssets(context, "pad/Nowplaying/spot_n.png", PointCurrent, 1);
+		}	
 		Current = CurrentPoint;
-		ImageView Point = PointList.get(CurrentPoint);
-		new ThreadReadBitMapInAssets(context, "pad/Nowplaying/spot_n.png", Point, 1);
+		if(CurrentPoint>=0){			
+			ImageView Point = PointList.get(CurrentPoint);
+			new ThreadReadBitMapInAssets(context, "pad/Nowplaying/spot_f.png", Point, 1);
+		}
+		
 	}
 }

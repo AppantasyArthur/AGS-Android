@@ -29,6 +29,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -37,9 +38,7 @@ import android.widget.TextView;
 public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAdapter {
 	
 	private Context context;
-	private FS_SPEAKER_ExpandableListView EListView;
-	private int GView_SELECTED = -1;
-	private int CView_SELECTED = -1;
+	private ExpandableListView EListView;
 	private Bitmap arrow_f;
 	private Bitmap arrow_n;
 	private ImageSpan play_Span;
@@ -56,40 +55,34 @@ public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAd
 	
 	private Handler handler = new Handler(){
 		public void handleMessage (Message msg) {
-			switch(msg.what){
+			switch(msg.what){			
 			case 0:
-				if(GroupList!=null){
-					if(GroupList.indexOf((DeviceDisplay)msg.obj)==-1){
-						GroupList.add((DeviceDisplay)msg.obj);
-					}					
-					FS_SPEAKER_ExpandableListAdapter_Phone.this.notifyDataSetChanged();
-				}
+				FS_SPEAKER_ExpandableListAdapter_Phone.this.GroupList.clear();
+				FS_SPEAKER_ExpandableListAdapter_Phone.this.GroupList = GetGroupList();
+				FS_SPEAKER_ExpandableListAdapter_Phone.this.notifyDataSetChanged();
 				break;
-			case 1:
-				if(GroupList!=null){
-					GroupList.remove((DeviceDisplay)msg.obj);
-					FS_SPEAKER_ExpandableListAdapter_Phone.this.notifyDataSetChanged();
-				}
-				break;
-			case 2:
-				
-				break;
-			case 3:
-				
+			case 1:				
 				break;
 			}
 		}
 	};
 	
-	public FS_SPEAKER_ExpandableListAdapter_Phone(Context context,FS_SPEAKER_ExpandableListView EListView){
+	public FS_SPEAKER_ExpandableListAdapter_Phone(Context context,ExpandableListView EListView){
 		this.mlog.LogSwitch = true;
 		this.context = context;
 		this.EListView = EListView;
-		this.GroupList = new ArrayList<DeviceDisplay>();		
+		this.GroupList = GetGroupList();
 		this.popupWindow = new FS_PopupWindow(this.context);
 		LoadBitmap();
 		SetList();
 		SetListner();
+	}
+	private List<DeviceDisplay> GetGroupList(){
+		List<DeviceDisplay> list = new ArrayList<DeviceDisplay>();
+		for(DeviceDisplay deviceDisplay:((FragmentActivity_Main)context).GETDeviceDisplayList().getGroupList()){
+			list.add(deviceDisplay);
+		}
+		return list;		
 	}
 	private void SetList(){
 		//¤ÀÃþMRList
@@ -101,15 +94,9 @@ public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAd
 	private void SetListner(){
 		FSELAListner = new FS_SPEAKER_ExpandableListAdapter_Listner(){
 			@Override
-			public void AddMediaRenderer(DeviceDisplay deviceDisplay) {
-				handler.obtainMessage(0, deviceDisplay).sendToTarget();
-				mlog.info(TAG, "AddMediaRenderer");
-			}
-
-			@Override
-			public void RemoveMediaRenderer(DeviceDisplay deviceDisplay) {
-				handler.obtainMessage(1, deviceDisplay).sendToTarget();
-				mlog.info(TAG, "AddMediaRenderer");
+			public void SetPositionChange() {
+				handler.obtainMessage(0).sendToTarget();
+				mlog.info(TAG, "SetPositionChange");
 			}
 		};
 		((FragmentActivity_Main)context).GETDeviceDisplayList().setSpeakerListner(FSELAListner);
@@ -427,18 +414,13 @@ public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAd
 		RunState_TextView.setText(spannalbeStringBuilder);
 	}
 	public void SET_GView_SELECTED(int position){
-		if((this.GView_SELECTED!=position)){
-			this.GView_SELECTED = position;
+		if(((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer()!=this.GroupList.get(position)){
 			((FragmentActivity_Main)context).GETDeviceDisplayList().setChooseMediaRenderer(this.GroupList.get(position));
-			this.notifyDataSetChanged();
-		}
+		}		
 	}
 	public void SET_CVIEW_SELECTED(int Gposition, int Cposition){
-		if((this.GView_SELECTED!=Gposition)||(this.CView_SELECTED!=Cposition)){
-			this.GView_SELECTED = Gposition;
-			this.CView_SELECTED = Cposition;
+		if(((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer()!=this.GroupList.get(Gposition)){
 			((FragmentActivity_Main)context).GETDeviceDisplayList().setChooseMediaRenderer(this.GroupList.get(Gposition));
-			this.notifyDataSetChanged();
 		}		
 	}
 }

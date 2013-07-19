@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.widget.ExpandableListView;
 import android.widget.SeekBar;
 
 import com.alpha.upnpui.R;
@@ -191,10 +192,10 @@ public class FS_VIEW_SETTING {
 	}
 
 	private void pFS_RLayout_SPEAKER_EListView(View view) {
-		FS_SPEAKER_ExpandableListAdapter_Phone EBaseAdapter = new FS_SPEAKER_ExpandableListAdapter_Phone(context,(FS_SPEAKER_ExpandableListView)view);
-		((FS_SPEAKER_ExpandableListView)view).setAdapter(EBaseAdapter);
-		((FS_SPEAKER_ExpandableListView)view).setItemsCanFocus(true);
-		((FS_SPEAKER_ExpandableListView)view).setGroupIndicator(null);
+		FS_SPEAKER_ExpandableListAdapter_Phone EBaseAdapter = new FS_SPEAKER_ExpandableListAdapter_Phone(context,(ExpandableListView)view);
+		((ExpandableListView)view).setAdapter(EBaseAdapter);
+		((ExpandableListView)view).setItemsCanFocus(true);
+		((ExpandableListView)view).setGroupIndicator(null);
 	}	
 	private void pFS_RLayout_Bottom_RLayout(View view) {
 		Tool.fitsViewHeight(30, view);			
@@ -219,10 +220,10 @@ public class FS_VIEW_SETTING {
 		Tool.fitsViewLeftMargin(7, view.findViewById(R.id.pFS_RLayout_RLayout_Setting2_IButton));		
 		new ThreadReadBitMapInAssets(context, "phone/grouprooms/setting.png", view.findViewById(R.id.pFS_RLayout_RLayout_Setting2_IButton), 2);
 		//UNSELECT_Button
-		Tool.fitsViewWidth(66, view.findViewById(R.id.pFS_RLayout_RLayout_UNSELECT_Button));
-		view.findViewById(R.id.pFS_RLayout_RLayout_UNSELECT_Button).getLayoutParams().height = Tool.getWidth(27);		
-		Tool.fitsViewTextSize(10, view.findViewById(R.id.pFS_RLayout_RLayout_UNSELECT_Button));			
-		new ThreadReadStateListInAssets(context, "phone/speaker/bottom_button_f.png","phone/speaker/bottom_button_single.png", view.findViewById(R.id.pFS_RLayout_RLayout_UNSELECT_Button), 4);
+		Tool.fitsViewWidth(66, view.findViewById(R.id.pFS_RLayout_RLayout_SELECT_Button));
+		view.findViewById(R.id.pFS_RLayout_RLayout_SELECT_Button).getLayoutParams().height = Tool.getWidth(27);		
+		Tool.fitsViewTextSize(10, view.findViewById(R.id.pFS_RLayout_RLayout_SELECT_Button));			
+		new ThreadReadStateListInAssets(context, "phone/speaker/bottom_button_f.png","phone/speaker/bottom_button_single.png", view.findViewById(R.id.pFS_RLayout_RLayout_SELECT_Button), 4);
 	}
 //***************************PHONE*********************************
 //***************************PAD*********************************	
@@ -244,10 +245,10 @@ public class FS_VIEW_SETTING {
 //	}
 	private void PAD_FS_RLayout_SPEAKER_EListView(View view) {		
 		Tool.fitsViewWidth(270, view);	
-		FS_SPEAKER_ExpandableListAdapter_Pad EBaseAdapter = new FS_SPEAKER_ExpandableListAdapter_Pad(context,(FS_SPEAKER_ExpandableListView)view);
-		((FS_SPEAKER_ExpandableListView)view).setAdapter(EBaseAdapter);
-		((FS_SPEAKER_ExpandableListView)view).setItemsCanFocus(true);
-		((FS_SPEAKER_ExpandableListView)view).setGroupIndicator(null);
+		FS_SPEAKER_ExpandableListAdapter_Pad EBaseAdapter = new FS_SPEAKER_ExpandableListAdapter_Pad(context,(ExpandableListView)view);
+		((ExpandableListView)view).setAdapter(EBaseAdapter);
+		((ExpandableListView)view).setItemsCanFocus(true);
+		((ExpandableListView)view).setGroupIndicator(null);
 	}
 //***************************PAD*********************************
 	

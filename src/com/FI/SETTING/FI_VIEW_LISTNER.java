@@ -227,7 +227,7 @@ public class FI_VIEW_LISTNER {
 		Speaker_Button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				((FragmentActivity_Main)context).ShowViewContent_ViewFlipperDisplay(1,R.animator.alpha_in,R.animator.translate_right_out);
+				((FragmentActivity_Main)context).ShowViewContent_ViewFlipperDisplay(0,R.animator.alpha_in,R.animator.translate_right_out);
 			}
 		});
 	}

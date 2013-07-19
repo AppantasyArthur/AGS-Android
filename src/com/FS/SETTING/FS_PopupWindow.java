@@ -132,6 +132,14 @@ public class FS_PopupWindow extends PopupWindow {
 			this.OptionButtonsList.add(optionButton);
 		}
 	}
+	public void SetALLOptionButtonsSelect(){
+		if(OptionButtonsList!=null){
+			for(OptionButton optionButton:OptionButtonsList){
+				optionButton.isSelected = true;
+				new ThreadReadBitMapInAssets(context, "pad/pop/btn_f.png", optionButton.Radio_ImageButton, 2);
+			}
+		}
+	}
 	private void ContentViewListner(){
 		//setDismiss 
 		//Outside Click Dismiss 
@@ -167,16 +175,11 @@ public class FS_PopupWindow extends PopupWindow {
 		this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_SelectALL_Button).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(FS_PopupWindow.this.OptionButtonsList!=null&&FS_PopupWindow.this.OptionButtonsList.size()>0){
-					//全改為以選取
-					for (OptionButton optionButton:FS_PopupWindow.this.OptionButtonsList){
-						//設定已選取				
-						new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/group_n.png", optionButton.Radio_ImageButton, 2);
-					}
-				}
+				FS_PopupWindow.this.SetALLOptionButtonsSelect();
 			}
 		});
 	}
+	
 	private void SetRelationWithMaster(String SUDN,boolean isAdd){
 		//取得upnpServer
 		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();

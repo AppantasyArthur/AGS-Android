@@ -49,7 +49,7 @@ public class FM_VIEW_LISTNER {
 		Speaker_Button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				((FragmentActivity_Main)context).ShowViewContent_ViewFlipperDisplay(1,R.animator.alpha_in,R.animator.translate_right_out);
+				((FragmentActivity_Main)context).ShowViewContent_ViewFlipperDisplay(0,R.animator.alpha_in,R.animator.translate_right_out);
 			}
 		});
 	}
@@ -57,7 +57,7 @@ public class FM_VIEW_LISTNER {
 		NowPlaying_Button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				((FragmentActivity_Main)context).ShowViewContent_ViewFlipperDisplay(0,R.animator.translate_right_in,R.animator.alpha_out);
+				((FragmentActivity_Main)context).ShowViewContent_ViewFlipperDisplay(1,R.animator.translate_right_in,R.animator.alpha_out);
 			}
 		});
 	}

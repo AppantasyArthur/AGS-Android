@@ -175,7 +175,8 @@ public class Fragment_Information extends Fragment {
 	
 	@Override
 	public void onDestroy() {
-		super.onDestroy();
+		super.onDestroy();	
+		
 		Log.v(TAG, "onDestroy");
 	}
 	

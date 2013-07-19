@@ -1,5 +1,10 @@
 package com.FI.SETTING;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.FS.SETTING.FS_SPEAKER_ExpandableListAdapter_Pad;
+import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
@@ -26,9 +31,9 @@ public class FI_ViewFlipper extends ViewFlipper {
 	private View old_View;
 	private FI_PointLiLayout Point_LLayout;
 	
-	private int CurrentPage = 0;
-	private int CountPage = 3;
+	private int CurrentPage = -1;	
 	
+	private List<DeviceDisplay> GroupList;	
 	//手勢
 	private GestureDetector ViewGestureDetector;
 	
@@ -45,38 +50,60 @@ public class FI_ViewFlipper extends ViewFlipper {
 			if(new_View==null){
 				return;
 			}
-			String str = (String)msg.obj;
+			String str = "";
 			switch(msg.what){
 			case 0:
+				str = (String)msg.obj;
 				TextView MusicName_TextView = (TextView)new_View.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView);
-				if(MusicName_TextView.equals("")||MusicName_TextView==null){
+				if(str.equals("")||MusicName_TextView==null){
 					MusicName_TextView.setText("NA");
 				}else{
 					MusicName_TextView.setText(str);
 				}			
 				break;
 			case 1:
+				str = (String)msg.obj;
 				TextView MusicArtist_TextView = (TextView)new_View.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView);
-				if(MusicArtist_TextView.equals("")||MusicArtist_TextView==null){
+				if(str.equals("")||MusicArtist_TextView==null){
 					MusicArtist_TextView.setText("Artist : NA");
 				}else{
 					MusicArtist_TextView.setText("Artist : "+str);
 				}				
 				break;
 			case 2:
+				str = (String)msg.obj;
 				TextView MusicAlbum_TextView = (TextView)new_View.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicAlbum_TextView);
-				if(MusicAlbum_TextView.equals("")||MusicAlbum_TextView==null){
+				if(str.equals("")||MusicAlbum_TextView==null){
 					MusicAlbum_TextView.setText("Album : NA");
 				}else{
 					MusicAlbum_TextView.setText("Album : "+str);
 				}	
 				break;
 			case 3:
+				str = (String)msg.obj;
 				TextView MusicGenre_TextView = (TextView)new_View.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView);
-				if(MusicGenre_TextView.equals("")||MusicGenre_TextView==null){
+				if(str.equals("")||MusicGenre_TextView==null){
 					MusicGenre_TextView.setText("Genre : NA");
 				}else{
 					MusicGenre_TextView.setText("Genre : "+str);
+				}
+				break;
+			case 4:	
+				FI_ViewFlipper.this.GroupList.clear();
+				FI_ViewFlipper.this.GroupList = GetGroupList();				
+				FI_ViewFlipper.this.setFI_PointLiLayoutCount(GroupList.size());
+				break;
+			case 5:
+//				if(GroupList!=null){
+//					GroupList.remove((DeviceDisplay)msg.obj);	
+//					FI_ViewFlipper.this.setFI_PointLiLayoutCount(GroupList.size());
+//				}
+				break;
+			case 6:
+				if(context!=null&&FI_ViewFlipper.this.Point_LLayout!=null){				
+					FI_ViewFlipper.this.CurrentPage = GroupList.indexOf(((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer());
+					FI_ViewFlipper.this.Point_LLayout.setPointCurrent(CurrentPage);
+					
 				}
 				break;
 			}
@@ -94,19 +121,29 @@ public class FI_ViewFlipper extends ViewFlipper {
 		CreateProcess();
 		ADD_NEW_VIEW(0);
 	}
-	
+		
 	public void setFI_PointLiLayout(FI_PointLiLayout Point_LLayout){
 		this.Point_LLayout = Point_LLayout;
+		this.setFI_PointLiLayoutCount(GroupList.size());
+	}
+	public void setFI_PointLiLayoutCount(int count){
 		if(this.Point_LLayout!=null){
-			Point_LLayout.setPointCount(CountPage);
+			Point_LLayout.setPointCount(count);
 		}
 	}
-	
 	private void CreateProcess(){
 		this.mlog.LogSwitch = true;
+		this.GroupList = GetGroupList();
 		ViewGestureDetector = new GestureDetector(context,new MyGestureListener());
 		device_size = ((FragmentActivity_Main)context).getDevice_Size();
 		CreateMusicInfor_Listner();
+	}
+	private List<DeviceDisplay> GetGroupList(){
+		List<DeviceDisplay> list = new ArrayList<DeviceDisplay>();
+		for(DeviceDisplay deviceDisplay:((FragmentActivity_Main)context).GETDeviceDisplayList().getGroupList()){
+			list.add(deviceDisplay);
+		}
+		return list;		
 	}
 	private void CreateMusicInfor_Listner(){
 		MusicInfo_Listner musicInfo = new MusicInfo_Listner(){
@@ -131,7 +168,17 @@ public class FI_ViewFlipper extends ViewFlipper {
 				if(Genre!=null&&Genre!=""){
 					handler.obtainMessage(3, Genre).sendToTarget();
 				}
-			}			
+			}
+			@Override
+			public void MediaRendererCountChange() {
+				handler.obtainMessage(4).sendToTarget();			
+				
+			}		
+			@Override
+			public void SetPositionChange() {
+				handler.obtainMessage(6).sendToTarget();			
+			}
+				
 		};
 		((FragmentActivity_Main)context).GETDeviceDisplayList().setMusicInfo_Listner(musicInfo);
 	}
@@ -174,7 +221,7 @@ public class FI_ViewFlipper extends ViewFlipper {
 	public void loadNext(){
 		//在入下一頁
 		//檢查
-		if((CurrentPage+1)>=CountPage){			
+		if((CurrentPage+1)>=GroupList.size()){			
     		return;
     	}
 		ADD_NEW_VIEW(1);//載入		
@@ -188,19 +235,21 @@ public class FI_ViewFlipper extends ViewFlipper {
 	public void SetCount(int Count){
 		if(Point_LLayout!=null){
 			Point_LLayout.setPointCount(Count);
-		}
-		this.CountPage = Count;
+		}		
 	}
 	private void ADD_NEW_VIEW(int NB){		
 		
 		//加入上一頁或下一頁
 		CurrentPage = CurrentPage+NB;
-		
+		if(CurrentPage>=0){
+			((FragmentActivity_Main)context).GETDeviceDisplayList().setChooseMediaRenderer(GroupList.get(CurrentPage));
+		}		
 		mlog.info(TAG, "CurrentPage = "+CurrentPage);
-		mlog.info(TAG, "CountPage = "+CountPage);
+		mlog.info(TAG, "CountPage = "+GroupList.size());
 		
 		if(this.Point_LLayout!=null){
 			Point_LLayout.setPointCurrent(CurrentPage);
+			
 		}
 		
 		old_View = new_View;		

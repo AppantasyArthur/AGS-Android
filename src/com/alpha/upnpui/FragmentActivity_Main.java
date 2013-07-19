@@ -23,6 +23,7 @@ import android.content.res.Configuration;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -36,6 +37,7 @@ import android.widget.RelativeLayout;
 import android.widget.ViewFlipper;
 
 public class FragmentActivity_Main extends FragmentActivity {
+	
 	
 	//VIEWS
 	private View MainView;
@@ -134,11 +136,11 @@ public class FragmentActivity_Main extends FragmentActivity {
 		
 		
 	}
-	private void set_Phone_First_Fragment() {		
-		fragment_Infor = new Fragment_Information();
-		Tool.FragmentActivity_MainAddFragment(fragmentManager.beginTransaction(), fragment_Infor, "Fragment_Infor", R.id.pFAM_RLayout_ViewFlipper_Information_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+	private void set_Phone_First_Fragment() {	
 		fragment_Speaker = new Fragment_Speaker();		
 		Tool.FragmentActivity_MainAddFragment(fragmentManager.beginTransaction(), fragment_Speaker, "Fragment_Speaker", R.id.pFAM_RLayout_ViewFlipper_Speaker_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+		fragment_Infor = new Fragment_Information();
+		Tool.FragmentActivity_MainAddFragment(fragmentManager.beginTransaction(), fragment_Infor, "Fragment_Infor", R.id.pFAM_RLayout_ViewFlipper_Information_RLayout, R.animator.alpha_in, R.animator.alpha_out);
 		fragment_Music = new Fragment_Music();
 		Tool.FragmentActivity_MainAddFragment(fragmentManager.beginTransaction(), fragment_Music, "Fragment_Music", R.id.pFAM_RLayout_ViewFlipper_Music_RLayout, R.animator.alpha_in, R.animator.alpha_out);
 	}
@@ -231,12 +233,11 @@ public class FragmentActivity_Main extends FragmentActivity {
 	
 	@Override
 	protected void onDestroy() {
-		super.onDestroy();
+		super.onDestroy();			
 		FragmentActivity_Main.this.GETDeviceDisplayList().Stop_Device_StateCallBack();
-		FragmentActivity_Main.this.unbindService(upnpServiceConnection);
+		FragmentActivity_Main.this.unbindService(upnpServiceConnection);	
 		Log.v(TAG,"onDestroy");		
 	}
-	
 	
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {		
@@ -280,11 +281,11 @@ public class FragmentActivity_Main extends FragmentActivity {
 		
 		switch(Page){
 		case 0:
-			//Fragment_Information
+			//Fragment_Speaker			
 			((ViewFlipper)ViewContent_ViewFlipper).setDisplayedChild(0);
 			break;
 		case 1:
-			//Fragment_Speaker
+			//Fragment_Information
 			((ViewFlipper)ViewContent_ViewFlipper).setDisplayedChild(1);
 			break;
 		case 2:

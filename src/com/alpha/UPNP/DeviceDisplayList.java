@@ -57,6 +57,7 @@ public class DeviceDisplayList {
 	private DeviceDisplay ChooseMediaRenderer;
 	private List<DeviceDisplay> DDList;
 	private List<DeviceDisplay> MRList;//MediaRenderer List;
+	private GroupList groupList;//MediaRenderer List FS&FI顯示使用;
 	private List<DeviceDisplay> MSList;//MediaServer List;
 	private FS_SPEAKER_ExpandableListAdapter_Listner FSELAListner;
 	private FM_Music_ListView_BaseAdapter_Listner FMLBAListner;
@@ -75,6 +76,7 @@ public class DeviceDisplayList {
 		DDList = new ArrayList<DeviceDisplay>();
 		MRList = new ArrayList<DeviceDisplay>();
 		MSList = new ArrayList<DeviceDisplay>();
+		groupList = new GroupList();
 	}
 	public void addDeviceDisplay(DeviceDisplay dd) {
 		DeviceType deviceType = dd.getDevice().getType();
@@ -85,23 +87,40 @@ public class DeviceDisplayList {
 		if(deviceType.getType().toString().equals("MediaRenderer")){
 			//MediaRenderer List
 			MRList.add(dd);
-			if(FSELAListner!=null){
-				DeviceType deviceType_f = new DeviceType("schemas-upnp-org", "DeviceManager");
-				Device[] devices = dd.getDevice().findDevices(deviceType_f);
-				if(devices!=null&&devices.length>0){
-					//有Group
-					Device MMDevice = devices[0];
-					mlog.info(TAG, "Namespace = "+MMDevice.getType().getNamespace());
-					mlog.info(TAG, "Type = "+MMDevice.getType().getType());
-					mlog.info(TAG, "Version = "+MMDevice.getType().getVersion());					
-					dd.setMMDevice(MMDevice);					
-					GroupEventHandler groupEventHandler = new GroupEventHandler(dd);
-					groupEventHandler.checkMasterORSingle();					
-				}else{
-					//沒有Group
-					FSELAListner.AddMediaRenderer(dd);	
-				}				
-			}
+			
+			//檢查是否有Group
+			DeviceType deviceType_f = new DeviceType("schemas-upnp-org", "DeviceManager");
+			Device[] devices = dd.getDevice().findDevices(deviceType_f);
+			
+			if(devices!=null&&devices.length>0){
+				//有Group
+				Device MMDevice = devices[0];
+				mlog.info(TAG, "Namespace = "+MMDevice.getType().getNamespace());
+				mlog.info(TAG, "Type = "+MMDevice.getType().getType());
+				mlog.info(TAG, "Version = "+MMDevice.getType().getVersion());
+				dd.setMMDevice(MMDevice);	
+				//註冊Group Listner
+				GroupEventHandler groupEventHandler = new GroupEventHandler(dd);
+				//險查Device目前狀態
+				groupEventHandler.checkMasterORSingle();	
+				
+			}else{
+				//沒有Group	
+				//加入GroupList 是否加入成功
+				if(groupList.AddDeviceDisplay(dd)){
+					//通知FS 刷新
+					if(FSELAListner!=null){
+						FSELAListner.SetPositionChange();
+					}		
+					//通知MI更新
+					if(MIListner!=null){
+						MIListner.MediaRendererCountChange();
+					}
+				}
+				
+			}		
+						
+			
 		}else if(deviceType.getType().toString().equals("MediaServer")){
 			//MediaServer List
 			MSList.add(dd);
@@ -117,11 +136,21 @@ public class DeviceDisplayList {
 	public void removeDeviceDisplay(DeviceDisplay dd) {
 		DeviceType deviceType = dd.getDevice().getType();
 		if(deviceType.getType().toString().equals("MediaRenderer")){
-			if(FSELAListner!=null){
-				FSELAListner.RemoveMediaRenderer(dd);
+			if(groupList.RemoveDeviceDisplay(dd)){
+				//通知FS 刷新
+				if(FSELAListner!=null){
+					FSELAListner.SetPositionChange();
+				}	
+				//通知MI 刷新
+				if(MIListner!=null){
+					MIListner.MediaRendererCountChange();
+				}
 			}
-			mlog.info(TAG, "removeDeviceDisplay = MR");
+			if(dd.equals(ChooseMediaRenderer)){
+				DeviceDisplayList.this.setChooseMediaRenderer(null);
+			}			
 			MRList.remove(dd);
+			mlog.info(TAG, "removeDeviceDisplay = MR");
 		}else if(deviceType.getType().toString().equals("MediaServer")){
 			if(FMLBAListner!=null){
 				FMLBAListner.RemoveMediaServer(dd);
@@ -138,6 +167,29 @@ public class DeviceDisplayList {
 			return;			
 		}
 		this.ChooseMediaRenderer = mediaRenderer;
+		
+		//設定QueqeCallBack
+		//Queqe 歸零
+		if(queqe_listner!=null){
+			queqe_listner.ClearQueqeList();
+		}		
+		if(MIListner!=null){
+			MIListner.ClearMusicInfo_State();
+			MIListner.SetPositionChange();
+		}
+		
+		//移除舊的Device_StateCallBack
+		if(Device_StateCallBack!=null){
+			Device_StateCallBack.end();
+		}
+		//通知 FS 刷新
+		if(FSELAListner!=null){
+			FSELAListner.SetPositionChange();
+		}
+		if(mediaRenderer==null){
+			return;
+		}
+		
 		//取得upnpServer
 		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
 		Service StateService = null;	
@@ -151,13 +203,6 @@ public class DeviceDisplayList {
 		}else{
 			return;
 		}	
-		//移除舊的Device_StateCallBack
-		if(Device_StateCallBack!=null){
-			Device_StateCallBack.end();
-		}
-		if(MIListner!=null){
-			MIListner.ClearMusicInfo_State();
-		}
 		//設定StateCallBack
 		Device_StateCallBack = new SubscriptionCallback(StateService){
 			@Override
@@ -260,8 +305,6 @@ public class DeviceDisplayList {
 						 mlog.info(TAG, "trackList size = "+trackList.size());	
 						 queqe_listner.AddQueqeList(trackList);
 					 }
-					 
-					 
 				 }
 			}
 
@@ -277,12 +320,6 @@ public class DeviceDisplayList {
 			}
 		};		
 		upnpServer.getControlPoint().execute(Device_StateCallBack);
-		
-		//設定QueqeCallBack
-		//Queqe 歸零
-		if(queqe_listner!=null){
-			queqe_listner.ClearQueqeList();
-		}
 	}
 	private LastChangeDO _parseLastChangeEvent(String xml) {   
 		LastChangeDO data = null;   
@@ -384,6 +421,9 @@ public class DeviceDisplayList {
 	public List<DeviceDisplay> getMediaServerList(){
 		return MSList;
 	}
+	public List<DeviceDisplay> getGroupList(){
+		return this.groupList.GetGroupList();
+	}
 	public Device GetMMDevice(String MMDeviceUDN){
 		for(DeviceDisplay deviceDisplay :MRList){
 			Device MMDevice = deviceDisplay.getMMDevice();
@@ -438,6 +478,7 @@ public class DeviceDisplayList {
 			this.upnpServer = ((FragmentActivity_Main)context).GETUPnPService();			
 			RegistGroupEvent();
 		}
+		//建查Device目前狀態 
 		public void checkMasterORSingle(){
 			Device MMDevice = this.deviceDisplay.getMMDevice();			
 			Service GroupService = MMDevice.findService(new UDAServiceId("Group"));
@@ -448,10 +489,10 @@ public class DeviceDisplayList {
 					ActionCallback GetDisplayInfoActionCallBack = new ActionCallback(ai){
 						@Override
 						public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
-							mlog.info(TAG, "GetDisplayInfoActionCallBack failure = "+arg2);
+							//檢查連線失敗不加入陣列
 						}
 						@Override
-						public void success(ActionInvocation arg0) {
+						public void success(ActionInvocation arg0) {							
 							ActionArgument DisplayInfo = arg0.getAction().getOutputArgument("DisplayInfo");
 							ActionArgumentValue actionArgumentValue = arg0.getOutput(DisplayInfo);
 							mlog.info(TAG, "actionArgumentValue = "+actionArgumentValue); 
@@ -460,17 +501,27 @@ public class DeviceDisplayList {
 							mlog.info(TAG, "GetDisplayInfoActionCallBack  = "+groupVO.getName());
 							mlog.info(TAG, "GetDisplayInfoActionCallBack success");
 							deviceDisplay.setGroupVO(groupVO);
-							if(FSELAListner!=null){
-								if(!groupVO.isSlave()){
-									FSELAListner.AddMediaRenderer(deviceDisplay);		
-								}								
-							}
+							if(!groupVO.isSlave()){
+								//不是Slave 加入陣列
+								//加入GroupList 是否加入成功
+								if(groupList.AddDeviceDisplay(deviceDisplay)){								
+									//通知FS 刷新
+									if(FSELAListner!=null){									
+										FSELAListner.SetPositionChange();								
+									}
+									//通知MI 刷新
+									if(MIListner!=null){
+										MIListner.MediaRendererCountChange();
+									}
+								}
+							}							
 						}											
 					};
 					upnpServer.getControlPoint().execute(GetDisplayInfoActionCallBack);	
 				}
 			}
 		}
+		//註冊Device Group狀態EVENT
 		public void RegistGroupEvent(){
 			Device MMDevice = this.deviceDisplay.getMMDevice();			
 			Service GroupService = MMDevice.findService(new UDAServiceId("Group"));
@@ -493,20 +544,41 @@ public class DeviceDisplayList {
 							mlog.info(TAG, "even = "+value.getKey()+"  value = "+value.getValue().toString());
 						}
 						if(status!=null){
-							GroupVO groupVO = _parseGroup(status.toString());
+							GroupVO groupVO = _parseGroup(status.toString());							
 							if(groupVO.isSlave()){
-								if(FSELAListner!=null){
-									FSELAListner.RemoveMediaRenderer(GroupEventHandler.this.deviceDisplay);
+								//even 通知  isSlave
+								//移除Slave
+								groupList.RemoveDeviceDisplay(GroupEventHandler.this.deviceDisplay);
+								//檢查是否為當前選擇
+								if(GroupEventHandler.this.deviceDisplay.equals(ChooseMediaRenderer)){
+									DeviceDisplayList.this.setChooseMediaRenderer(null);
+								}	
+								//通知 FS 刷新
+								if(FSELAListner!=null){														
+									FSELAListner.SetPositionChange();
+								}
+								//通知 MI 刷新
+								if(MIListner!=null){
+									MIListner.MediaRendererCountChange();
 								}
 							}else{
-								if(FSELAListner!=null){
-									GroupEventHandler.this.deviceDisplay.setGroupVO(groupVO);
-									FSELAListner.AddMediaRenderer(GroupEventHandler.this.deviceDisplay);
-								}
+								//even 通知 not isSlave
+								//更新GroupEventHandler狀態
+								GroupEventHandler.this.deviceDisplay.setGroupVO(groupVO);
+								
+								//加入GroupList 是否加入成功
+								if(groupList.AddDeviceDisplay(GroupEventHandler.this.deviceDisplay)){
+									//通知 FS 刷新
+									if(FSELAListner!=null){					
+										FSELAListner.SetPositionChange();	
+									}
+									//通知 MI 刷新
+									if(MIListner!=null){
+										MIListner.MediaRendererCountChange();
+									}
+								}							
 							}
-						}
-						
-						
+						}					
 					}
 	
 					@Override
