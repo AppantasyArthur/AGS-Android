@@ -187,99 +187,13 @@ public class DeviceDisplayList {
 		}
 		
 		EventHandler eventHandler = mediaRenderer.getEventHandler();
+		Log.i(TAG, "mediaRenderer = "+mediaRenderer.hashCode());
 		if (eventHandler!=null){
 			//資料設定
 			eventHandler.UpdataALL();
 		}
 	}
-	private LastChangeDO _parseLastChangeEvent(String xml) {   
-		LastChangeDO data = null;   
-
-		  // sax stuff   
-		  try {   
-
-		    SAXParserFactory spf = SAXParserFactory.newInstance();   
-		    SAXParser sp = spf.newSAXParser();   
-		    XMLReader xr = sp.getXMLReader();   
-
-		    LastChangeHandler dataHandler = new LastChangeHandler();   
-		    xr.setContentHandler(dataHandler);   
-		    
-		    if(true){	
-//		    	xml = StringEscapeUtils.unescapeHtml4(xml);
-		    	xr.parse(new InputSource(new StringReader(xml))); 
-			    data = dataHandler.getData();  
-		    } 
-		  } catch(ParserConfigurationException pce) {   
-		    Log.e("SAX XML", "sax parse error", pce);   
-		  } catch(SAXException se) {   
-		    Log.e("SAX XML", "sax error", se);   
-		  } catch(IOException ioe) {   
-		    Log.e("SAX XML", "sax parse io error", ioe);   
-		  } catch(Exception e) {
-			  e.printStackTrace();
-		  }  
-		  return data;   
-	}
-	private ItemDO _parseItem(String xml) {   
-		ItemDO data = null;   
-
-		  // sax stuff   
-		  try { 
-			  
-			SAXParserFactory spf = SAXParserFactory.newInstance();   
-		    SAXParser sp = spf.newSAXParser();   
-		    XMLReader xr = sp.getXMLReader();  
-
-		    ItemHandler dataHandler = new ItemHandler();   
-		    xr.setContentHandler(dataHandler);   
-		    
-		    if(true){
-		    	
-		    	xml = StringEscapeUtils.unescapeHtml4(xml);
-		    	xml = xml.replace(" dlna:profileID=\"JPEG_TN\"", "");
-		    	xml = xml.replace("pv:", ""); 		    	
-		    	xr.parse(new InputSource(new StringReader(xml))); 
-			    data = dataHandler.getData();  
-		    } 
-		  } catch(ParserConfigurationException pce) {   
-		    Log.e("SAX XML", "sax parse error", pce);   
-		  } catch(SAXException se) {   
-		    Log.e("SAX XML", "sax error", se);   
-		  } catch(IOException ioe) {   
-		    Log.e("SAX XML", "sax parse io error", ioe);   
-		  } catch(Exception e) {
-			  e.printStackTrace();
-		  }  
-		  return data;   
-	}
-	private List<TrackDO> _parseTrack(String xml){
-		List<TrackDO> data = null;  
-		  // sax stuff   
-		  try { 			  
-			SAXParserFactory spf = SAXParserFactory.newInstance();   
-		    SAXParser sp = spf.newSAXParser();   
-		    XMLReader xr = sp.getXMLReader();  
-
-		    TrackHanlder dataHandler = new TrackHanlder();   
-		    xr.setContentHandler(dataHandler);   
-		    
-		    if(true){		
-//		    	xml = StringEscapeUtils.unescapeHtml4(xml);
-		    	xr.parse(new InputSource(new StringReader(xml))); 
-			    data = dataHandler.getData();  
-		    } 
-		  } catch(ParserConfigurationException pce) {   
-		    Log.e("SAX XML", "sax parse error", pce);   
-		  } catch(SAXException se) {   
-		    Log.e("SAX XML", "sax error", se);   
-		  } catch(IOException ioe) {   
-		    Log.e("SAX XML", "sax parse io error", ioe);   
-		  } catch(Exception e) {
-			  e.printStackTrace();
-		  }  
-		  return data;   
-	}
+	
 	public DeviceDisplay getChooseMediaRenderer(){
 		return this.ChooseMediaRenderer;
 	}
@@ -640,6 +554,94 @@ public class DeviceDisplayList {
 		    xr.setContentHandler(dataHandler);   
 		    
 		    if(true){		    	
+		    	xr.parse(new InputSource(new StringReader(xml))); 
+			    data = dataHandler.getData();  
+		    } 
+		  } catch(ParserConfigurationException pce) {   
+		    Log.e("SAX XML", "sax parse error", pce);   
+		  } catch(SAXException se) {   
+		    Log.e("SAX XML", "sax error", se);   
+		  } catch(IOException ioe) {   
+		    Log.e("SAX XML", "sax parse io error", ioe);   
+		  } catch(Exception e) {
+			  e.printStackTrace();
+		  }  
+		  return data;   
+	}
+	private LastChangeDO _parseLastChangeEvent(String xml) {   
+		LastChangeDO data = null;   
+
+		  // sax stuff   
+		  try {   
+
+		    SAXParserFactory spf = SAXParserFactory.newInstance();   
+		    SAXParser sp = spf.newSAXParser();   
+		    XMLReader xr = sp.getXMLReader();   
+
+		    LastChangeHandler dataHandler = new LastChangeHandler();   
+		    xr.setContentHandler(dataHandler);   
+		    
+		    if(true){	
+//		    	xml = StringEscapeUtils.unescapeHtml4(xml);
+		    	xr.parse(new InputSource(new StringReader(xml))); 
+			    data = dataHandler.getData();  
+		    } 
+		  } catch(ParserConfigurationException pce) {   
+		    Log.e("SAX XML", "sax parse error", pce);   
+		  } catch(SAXException se) {   
+		    Log.e("SAX XML", "sax error", se);   
+		  } catch(IOException ioe) {   
+		    Log.e("SAX XML", "sax parse io error", ioe);   
+		  } catch(Exception e) {
+			  e.printStackTrace();
+		  }  
+		  return data;   
+	}
+	private ItemDO _parseItem(String xml) {   
+		ItemDO data = null;   
+
+		  // sax stuff   
+		  try { 
+			  
+			SAXParserFactory spf = SAXParserFactory.newInstance();   
+		    SAXParser sp = spf.newSAXParser();   
+		    XMLReader xr = sp.getXMLReader();  
+
+		    ItemHandler dataHandler = new ItemHandler();   
+		    xr.setContentHandler(dataHandler);   
+		    
+		    if(true){
+		    	
+		    	xml = StringEscapeUtils.unescapeHtml4(xml);
+		    	xml = xml.replace(" dlna:profileID=\"JPEG_TN\"", "");
+		    	xml = xml.replace("pv:", ""); 		    	
+		    	xr.parse(new InputSource(new StringReader(xml))); 
+			    data = dataHandler.getData();  
+		    } 
+		  } catch(ParserConfigurationException pce) {   
+		    Log.e("SAX XML", "sax parse error", pce);   
+		  } catch(SAXException se) {   
+		    Log.e("SAX XML", "sax error", se);   
+		  } catch(IOException ioe) {   
+		    Log.e("SAX XML", "sax parse io error", ioe);   
+		  } catch(Exception e) {
+			  e.printStackTrace();
+		  }  
+		  return data;   
+	}
+	private List<TrackDO> _parseTrack(String xml){
+		List<TrackDO> data = null;  
+		  // sax stuff   
+		  try { 			  
+			SAXParserFactory spf = SAXParserFactory.newInstance();   
+		    SAXParser sp = spf.newSAXParser();   
+		    XMLReader xr = sp.getXMLReader();  
+
+		    TrackHanlder dataHandler = new TrackHanlder();   
+		    xr.setContentHandler(dataHandler);   
+		    
+		    if(true){		
+//		    	xml = StringEscapeUtils.unescapeHtml4(xml);
 		    	xr.parse(new InputSource(new StringReader(xml))); 
 			    data = dataHandler.getData();  
 		    } 

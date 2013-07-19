@@ -1,27 +1,32 @@
 package com.FI.SETTING;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.FS.SETTING.FS_SPEAKER_ExpandableListAdapter_Pad;
 import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
 import com.tkb.tool.Tool;
-
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -55,7 +60,7 @@ public class FI_ViewFlipper extends ViewFlipper {
 			case 0:
 				str = (String)msg.obj;
 				TextView MusicName_TextView = (TextView)new_View.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView);
-				if(str.equals("")||MusicName_TextView==null){
+				if(str.equals("")||str==null){
 					MusicName_TextView.setText("NA");
 				}else{
 					MusicName_TextView.setText(str);
@@ -64,7 +69,7 @@ public class FI_ViewFlipper extends ViewFlipper {
 			case 1:
 				str = (String)msg.obj;
 				TextView MusicArtist_TextView = (TextView)new_View.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView);
-				if(str.equals("")||MusicArtist_TextView==null){
+				if(str.equals("")||str==null){
 					MusicArtist_TextView.setText("Artist : NA");
 				}else{
 					MusicArtist_TextView.setText("Artist : "+str);
@@ -73,7 +78,7 @@ public class FI_ViewFlipper extends ViewFlipper {
 			case 2:
 				str = (String)msg.obj;
 				TextView MusicAlbum_TextView = (TextView)new_View.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicAlbum_TextView);
-				if(str.equals("")||MusicAlbum_TextView==null){
+				if(str.equals("")||str==null){
 					MusicAlbum_TextView.setText("Album : NA");
 				}else{
 					MusicAlbum_TextView.setText("Album : "+str);
@@ -82,33 +87,57 @@ public class FI_ViewFlipper extends ViewFlipper {
 			case 3:
 				str = (String)msg.obj;
 				TextView MusicGenre_TextView = (TextView)new_View.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView);
-				if(str.equals("")||MusicGenre_TextView==null){
+				if(str.equals("")||str==null){
 					MusicGenre_TextView.setText("Genre : NA");
 				}else{
 					MusicGenre_TextView.setText("Genre : "+str);
 				}
 				break;
-			case 4:	
+			case 4:
+				
+				str = (String)msg.obj;
+				Log.i(TAG, "bbbbbbbbb = 4"+str);
+				ImageView Image_ImageView = (ImageView)new_View.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_RLayout_Image_ImageView);
+				if(str.equals("")||str==null){
+					Image_ImageView.setImageBitmap(Tool.readBitMapInAssets(context, "pad/Nowplaying/NoCover.png"));
+				}else{
+					Image_ImageView.setImageBitmap(DownLoadUrlBitmap(str));
+				}
+				break;
+			case 5:					
 				FI_ViewFlipper.this.GroupList.clear();
 				FI_ViewFlipper.this.GroupList = GetGroupList();				
 				FI_ViewFlipper.this.setFI_PointLiLayoutCount(GroupList.size());
-				break;
-			case 5:
-//				if(GroupList!=null){
-//					GroupList.remove((DeviceDisplay)msg.obj);	
-//					FI_ViewFlipper.this.setFI_PointLiLayoutCount(GroupList.size());
-//				}
 				break;
 			case 6:
 				if(context!=null&&FI_ViewFlipper.this.Point_LLayout!=null){				
 					FI_ViewFlipper.this.CurrentPage = GroupList.indexOf(((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer());
 					FI_ViewFlipper.this.Point_LLayout.setPointCurrent(CurrentPage);
-					
 				}
 				break;
 			}
 		}
 	};
+	public Bitmap DownLoadUrlBitmap(String Url){
+		URL imageURL = null;
+		Bitmap bitmap = null;
+		try {
+			imageURL = new URL(Url);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		try {
+			HttpURLConnection connection = (HttpURLConnection)imageURL.openConnection();
+			connection.setReadTimeout(4000);
+			connection.connect();
+			InputStream is = connection.getInputStream();
+			bitmap = BitmapFactory.decodeStream(is,null,Tool.opt()); 
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return bitmap;
+	}
 	public FI_ViewFlipper(Context context) {
 		super(context);	
 		this.context = context;
@@ -147,12 +176,14 @@ public class FI_ViewFlipper extends ViewFlipper {
 	}
 	private void CreateMusicInfor_Listner(){
 		MusicInfo_Listner musicInfo = new MusicInfo_Listner(){
+			
 			@Override
 			public void ClearMusicInfo_State() {
 				handler.obtainMessage(0, "").sendToTarget();
 				handler.obtainMessage(1, "").sendToTarget();
 				handler.obtainMessage(2, "").sendToTarget();
-				handler.obtainMessage(3, "").sendToTarget();				
+				handler.obtainMessage(3, "").sendToTarget();	
+				handler.obtainMessage(4, "").sendToTarget();	
 			}
 			@Override
 			public void SetMusicInfo_State(String Title, String Artist,String Album, String Genre,String AlbumURI) {
@@ -168,10 +199,13 @@ public class FI_ViewFlipper extends ViewFlipper {
 				if(Genre!=null&&Genre!=""){
 					handler.obtainMessage(3, Genre).sendToTarget();
 				}
+				if(AlbumURI!=null&&AlbumURI!=""){
+					handler.obtainMessage(4, AlbumURI).sendToTarget();
+				}
 			}
 			@Override
 			public void MediaRendererCountChange() {
-				handler.obtainMessage(4).sendToTarget();			
+				handler.obtainMessage(5).sendToTarget();			
 				
 			}		
 			@Override
@@ -241,9 +275,7 @@ public class FI_ViewFlipper extends ViewFlipper {
 		
 		//加入上一頁或下一頁
 		CurrentPage = CurrentPage+NB;
-		if(CurrentPage>=0){
-			((FragmentActivity_Main)context).GETDeviceDisplayList().setChooseMediaRenderer(GroupList.get(CurrentPage));
-		}		
+			
 		mlog.info(TAG, "CurrentPage = "+CurrentPage);
 		mlog.info(TAG, "CountPage = "+GroupList.size());
 		
@@ -251,16 +283,18 @@ public class FI_ViewFlipper extends ViewFlipper {
 			Point_LLayout.setPointCurrent(CurrentPage);
 			
 		}
-		
 		old_View = new_View;		
 		new_View = LayoutInflater.from(context).inflate(R.layout.fi_infor_viewflipper_cell_pad, null);
 		new_View.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+
 		if(device_size==6){
 			Phone_SetView(new_View);
 		}else{
 			PAD_SetView(new_View);
 		}
-		
+		if(CurrentPage>=0){
+			((FragmentActivity_Main)context).GETDeviceDisplayList().setChooseMediaRenderer(GroupList.get(CurrentPage));
+		}	
 		this.addView(new_View);
 	}
 	//設定介面
