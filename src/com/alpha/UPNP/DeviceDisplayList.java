@@ -67,7 +67,6 @@ public class DeviceDisplayList {
 	private PlayMode_IButton_Listner Info_PMIListner;
 	private MusicInfo_Listner MIListner;
 	private FI_Queqe_ListView_BaseAdapter_Queqe_Listner queqe_listner;
-	private SubscriptionCallback Device_StateCallBack;
 	
 	public DeviceDisplayList(Context context){
 		this.context = context;
@@ -92,6 +91,8 @@ public class DeviceDisplayList {
 			DeviceType deviceType_f = new DeviceType("schemas-upnp-org", "DeviceManager");
 			Device[] devices = dd.getDevice().findDevices(deviceType_f);
 			
+			EventHandler eventHandler = new EventHandler(dd);
+			
 			if(devices!=null&&devices.length>0){
 				//有Group
 				Device MMDevice = devices[0];
@@ -99,11 +100,10 @@ public class DeviceDisplayList {
 				mlog.info(TAG, "Type = "+MMDevice.getType().getType());
 				mlog.info(TAG, "Version = "+MMDevice.getType().getVersion());
 				dd.setMMDevice(MMDevice);	
-				//註冊Group Listner
-				GroupEventHandler groupEventHandler = new GroupEventHandler(dd);
+				//註冊Group Listner	
+				eventHandler.RegistGroupEvent();
 				//險查Device目前狀態
-				groupEventHandler.checkMasterORSingle();	
-				
+				eventHandler.checkMasterORSingle();	
 			}else{
 				//沒有Group	
 				//加入GroupList 是否加入成功
@@ -117,9 +117,9 @@ public class DeviceDisplayList {
 						MIListner.MediaRendererCountChange();
 					}
 				}
-				
 			}		
-						
+			eventHandler.RegistInfoEvent();	
+			dd.setEventHandler(eventHandler);
 			
 		}else if(deviceType.getType().toString().equals("MediaServer")){
 			//MediaServer List
@@ -178,10 +178,6 @@ public class DeviceDisplayList {
 			MIListner.SetPositionChange();
 		}
 		
-		//移除舊的Device_StateCallBack
-		if(Device_StateCallBack!=null){
-			Device_StateCallBack.end();
-		}
 		//通知 FS 刷新
 		if(FSELAListner!=null){
 			FSELAListner.SetPositionChange();
@@ -190,136 +186,11 @@ public class DeviceDisplayList {
 			return;
 		}
 		
-		//取得upnpServer
-		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
-		Service StateService = null;	
-		//檢查 MR_Device
-		if(this.ChooseMediaRenderer.getDevice()!=null){
-			//取得device 的 "AVTransport" service
-			StateService = this.ChooseMediaRenderer.getDevice().findService( new UDAServiceId("AVTransport"));
-			for(int i=0;i<this.ChooseMediaRenderer.getDevice().findServices().length;i++){
-				mlog.info(TAG,"status ="+this.ChooseMediaRenderer.getDevice().findServices()[i].toString());
-			}
-		}else{
-			return;
-		}	
-		//設定StateCallBack
-		Device_StateCallBack = new SubscriptionCallback(StateService){
-			@Override
-			protected void ended(GENASubscription arg0, CancelReason arg1, UpnpResponse arg2) {
-				
-				mlog.info(TAG,"status ="+arg2);
-			}
-
-			@Override
-			protected void established(GENASubscription arg0) {
-				mlog.info(TAG,"status = established");
-				Map<String, StateVariableValue> values = arg0.getCurrentValues();
-				StateVariableValue status = values.get("LastChange");
-				 
-				for(Map.Entry<String, StateVariableValue>value:values.entrySet()){
-					mlog.info(TAG, "even = "+value.getKey()+"  value = "+value.getValue().toString());
-				}
-			}
-
-			@Override
-			protected void eventReceived(GENASubscription arg0) {				
-				 Map<String, StateVariableValue> values = arg0.getCurrentValues();
-//				 for(Map.Entry<String, StateVariableValue> value:values.entrySet()){
-//					 mlog.info(TAG, "==========EVEN STAR==========");
-//					 mlog.info(TAG, "key= "+value.getKey().toString());
-//					 mlog.info(TAG, "==========EVEN END==========");
-//				 }
-				 StateVariableValue status = values.get("LastChange");
-				 if(status!=null){				 
-					 mlog.info(TAG, "==========EVEN STAR==========");
-					 mlog.info(TAG, "LastChange valeu= "+status.toString());
-					 mlog.info(TAG, "==========EVEN END==========");				 
-					 LastChangeDO lastChangeDO = _parseLastChangeEvent(status.toString());
-					 if(lastChangeDO!=null){					 
-						 //Play狀態
-						 String MR_State = lastChangeDO.getTransportState();				
-						 if(MR_State!=null&&!MR_State.equals("")&&PIListner!=null){
-							//Phone Speaker Play_IButton_Listner&& PAD MAIN Play_IButton_Listner
-							 PIListner.SetPlay_IButton_State(MR_State);
-							 mlog.info(TAG, "==========EVEN STAR==========");
-							 mlog.info(TAG, "lastChangeDO MR_State= "+MR_State);
-							 mlog.info(TAG, "============End=============");
-							 //Phone Info Play_IButton_Listner
-							 if(Info_PIListner!=null){
-								 Info_PIListner.SetPlay_IButton_State(MR_State);
-							 }							
-						 }	
-						 //CurrentPlayMode
-						 String MR_PlayMode = lastChangeDO.getCurrentPlayMode();
-						 if(MR_PlayMode!=null&&!MR_PlayMode.equals("")&&PMIListner!=null){
-							//Phone Speaker PlayMode_IButton_Listner&& PAD MAIN PlayMode_IButton_Listner
-							 PMIListner.SetPlayMode_IButton_State(MR_PlayMode);
-							 mlog.info(TAG, "==========EVEN STAR==========");
-							 mlog.info(TAG, "lastChangeDO MR_PlayMode= "+MR_PlayMode);
-							 mlog.info(TAG, "============End=============");
-							//Phone Info PlayMode_IButton_Listner
-							 if(Info_PMIListner!=null){
-								 Info_PMIListner.SetPlayMode_IButton_State(MR_PlayMode);
-							 }
-						 }						 
-						 String Item_MetaData = lastChangeDO.getAVTransportURIMetaData();					 
-	//					 String CurrentTrackEmbeddedMetaData = lastChangeDO.getCurrentTrackEmbeddedMetaData();	
-						 ItemDO itemDO =null;
-						 if(Item_MetaData!=null&&!Item_MetaData.equals("")){
-							 mlog.info(TAG, "============Start=============");					 
-							 mlog.info(TAG, "Item_MetaData = "+Item_MetaData);
-							 itemDO =  _parseItem(Item_MetaData);
-							 mlog.info(TAG, "============End=============");
-						 }
-						 //info
-						 if(itemDO!=null){
-							 MIListner.SetMusicInfo_State(itemDO.getTitle(), itemDO.getArtist(), itemDO.getAlbum(), itemDO.getGenre(),itemDO.getAlbumURI());
-							 mlog.info(TAG, "============Start=============");
-						 	 mlog.info(TAG, "Title = "+itemDO.getTitle());							
-							 mlog.info(TAG, "Artist = "+itemDO.getArtist());
-							 mlog.info(TAG, "Album = "+itemDO.getAlbum());
-							 mlog.info(TAG, "Genre = "+itemDO.getGenre());	
-							 mlog.info(TAG, "AlbumURI = "+itemDO.getAlbumURI());										
-							 mlog.info(TAG, "============End=============");
-						 }				 
-	
-						 mlog.info(TAG, "==========EVEN STAR==========");
-						 mlog.info(TAG, "lastChangeDO MR_State= "+MR_State);
-						 mlog.info(TAG, "lastChangeDO valeu= "+lastChangeDO.getCurrentTrackEmbeddedMetaData());
-						 mlog.info(TAG, "lastChangeDO valeu= "+lastChangeDO.getRelativeTimePosition());
-						 mlog.info(TAG, "lastChangeDO valeu= "+lastChangeDO.getCurrentTrackDuration());
-						 mlog.info(TAG, "==========EVEN END==========");
-					 }
-				 }
-				 //Queue
-				 StateVariableValue q_Status = values.get("TracksInQueue");
-				 if(q_Status!=null){
-					 mlog.info(TAG, "==========EVEN STAR==========");
-					 mlog.info(TAG, "Queue valeu= "+q_Status.toString());
-					 mlog.info(TAG, "==========EVEN END==========");	
-					 
-					 List<TrackDO> trackList = _parseTrack(q_Status.toString());
-					 
-					 if(queqe_listner!=null){
-						 mlog.info(TAG, "trackList size = "+trackList.size());	
-						 queqe_listner.AddQueqeList(trackList);
-					 }
-				 }
-			}
-
-			@Override
-			protected void eventsMissed(GENASubscription arg0, int arg1) {				
-				mlog.info(TAG,"status = eventsMissed");
-			}
-
-			@Override
-			protected void failed(GENASubscription arg0, UpnpResponse arg1,	Exception arg2, String arg3) {
-				// TODO Auto-generated method stub
-				mlog.info(TAG,"status failed="+arg3);
-			}
-		};		
-		upnpServer.getControlPoint().execute(Device_StateCallBack);
+		EventHandler eventHandler = mediaRenderer.getEventHandler();
+		if (eventHandler!=null){
+			//資料設定
+			eventHandler.UpdataALL();
+		}
 	}
 	private LastChangeDO _parseLastChangeEvent(String xml) {   
 		LastChangeDO data = null;   
@@ -438,11 +309,6 @@ public class DeviceDisplayList {
 		}
 		return null;
 	}
-	public void Stop_Device_StateCallBack(){
-		if(this.Device_StateCallBack!=null){
-			this.Device_StateCallBack.end();
-		}		
-	}
 	public void setSpeakerListner(FS_SPEAKER_ExpandableListAdapter_Listner FSELAListner){
 		this.FSELAListner = FSELAListner;
 	}
@@ -468,15 +334,17 @@ public class DeviceDisplayList {
 	public void setQueqe_Listner(FI_Queqe_ListView_BaseAdapter_Queqe_Listner queqe_listner) {
 		this.queqe_listner = queqe_listner;
 	}
-	private class GroupEventHandler{
+	public class EventHandler{
 		private DeviceDisplay deviceDisplay;
+		private SubscriptionCallback Device_DisplayGrouCallBack;
 		private SubscriptionCallback Device_DisplayInfoCallBack;
 		private AndroidUpnpService upnpServer;
-		public GroupEventHandler(DeviceDisplay deviceDisplay){
+		
+		
+		public EventHandler(DeviceDisplay deviceDisplay){
 			this.deviceDisplay = deviceDisplay;
 			//取得upnpServer
 			this.upnpServer = ((FragmentActivity_Main)context).GETUPnPService();			
-			RegistGroupEvent();
 		}
 		//建查Device目前狀態 
 		public void checkMasterORSingle(){
@@ -523,23 +391,24 @@ public class DeviceDisplayList {
 		}
 		//註冊Device Group狀態EVENT
 		public void RegistGroupEvent(){
+			if(Device_DisplayGrouCallBack!=null){
+				Device_DisplayGrouCallBack.end();
+			}			
 			Device MMDevice = this.deviceDisplay.getMMDevice();			
 			Service GroupService = MMDevice.findService(new UDAServiceId("Group"));
 			if(GroupService!=null){
-				Device_DisplayInfoCallBack = new SubscriptionCallback(GroupService){
+				Device_DisplayGrouCallBack = new SubscriptionCallback(GroupService){
 					@Override
 					protected void ended(GENASubscription arg0, CancelReason arg1, UpnpResponse arg2) {
 					}
-	
 					@Override
 					protected void established(GENASubscription arg0) {
 					}
-	
 					@Override
 					protected void eventReceived(GENASubscription arg0) {	
 						Map<String, StateVariableValue> values = arg0.getCurrentValues();
 						StateVariableValue status = values.get("DisplayInfo");
-						mlog.info(TAG,"aaaaaFriendlyName = "+GroupEventHandler.this.deviceDisplay.getDevice().getDetails().getFriendlyName());
+						mlog.info(TAG,"aaaaaFriendlyName = "+EventHandler.this.deviceDisplay.getDevice().getDetails().getFriendlyName());
 						for(Map.Entry<String, StateVariableValue>value:values.entrySet()){
 							mlog.info(TAG, "even = "+value.getKey()+"  value = "+value.getValue().toString());
 						}
@@ -548,9 +417,9 @@ public class DeviceDisplayList {
 							if(groupVO.isSlave()){
 								//even 通知  isSlave
 								//移除Slave
-								groupList.RemoveDeviceDisplay(GroupEventHandler.this.deviceDisplay);
+								groupList.RemoveDeviceDisplay(EventHandler.this.deviceDisplay);
 								//檢查是否為當前選擇
-								if(GroupEventHandler.this.deviceDisplay.equals(ChooseMediaRenderer)){
+								if(EventHandler.this.deviceDisplay.equals(ChooseMediaRenderer)){
 									DeviceDisplayList.this.setChooseMediaRenderer(null);
 								}	
 								//通知 FS 刷新
@@ -564,10 +433,10 @@ public class DeviceDisplayList {
 							}else{
 								//even 通知 not isSlave
 								//更新GroupEventHandler狀態
-								GroupEventHandler.this.deviceDisplay.setGroupVO(groupVO);
+								EventHandler.this.deviceDisplay.setGroupVO(groupVO);
 								
 								//加入GroupList 是否加入成功
-								if(groupList.AddDeviceDisplay(GroupEventHandler.this.deviceDisplay)){
+								if(groupList.AddDeviceDisplay(EventHandler.this.deviceDisplay)){
 									//通知 FS 刷新
 									if(FSELAListner!=null){					
 										FSELAListner.SetPositionChange();	
@@ -589,8 +458,173 @@ public class DeviceDisplayList {
 					protected void failed(GENASubscription arg0, UpnpResponse arg1,	Exception arg2, String arg3) {
 					}
 				};
+				upnpServer.getControlPoint().execute(Device_DisplayGrouCallBack);
+			}
+		}
+		
+		private LastChangeDO lastChangeDO;
+		private String MR_State;
+		private String MR_PlayMode;
+		private String Item_MetaData;
+		
+		private List<TrackDO> trackList;
+		 //Play狀態
+		private void UpdataPlayMode(){
+			if(MR_State!=null&&!MR_State.equals("")&&PIListner!=null){
+				//Phone Speaker Play_IButton_Listner&& PAD MAIN Play_IButton_Listner
+				 PIListner.SetPlay_IButton_State(MR_State);
+				 mlog.info(TAG, "==========EVEN STAR==========");
+				 mlog.info(TAG, "lastChangeDO MR_State= "+MR_State);
+				 mlog.info(TAG, "============End=============");
+				 //Phone Info Play_IButton_Listner
+				 if(Info_PIListner!=null){
+					 Info_PIListner.SetPlay_IButton_State(MR_State);
+				 }							
+			 } 				 			 
+		}
+		 //CurrentPlayMode
+		private void UpdataCurrentPlayMode(){
+			if(MR_PlayMode!=null&&!MR_PlayMode.equals("")&&PMIListner!=null){
+				//Phone Speaker PlayMode_IButton_Listner&& PAD MAIN PlayMode_IButton_Listner
+				 PMIListner.SetPlayMode_IButton_State(MR_PlayMode);
+				 mlog.info(TAG, "==========EVEN STAR==========");
+				 mlog.info(TAG, "lastChangeDO MR_PlayMode= "+MR_PlayMode);
+				 mlog.info(TAG, "============End=============");
+				//Phone Info PlayMode_IButton_Listner
+				 if(Info_PMIListner!=null){
+					 Info_PMIListner.SetPlayMode_IButton_State(MR_PlayMode);
+				 }
+			 }				 		
+		}
+		//MI_Info
+		private void UpdataItem_MetaData(){			
+			ItemDO itemDO =null;
+			if(Item_MetaData!=null&&!Item_MetaData.equals("")){
+				mlog.info(TAG, "============Start=============");					 
+				mlog.info(TAG, "Item_MetaData = "+Item_MetaData);
+				itemDO =  _parseItem(Item_MetaData);
+				mlog.info(TAG, "============End=============");
+			}
+			//info
+			if(itemDO!=null){
+				MIListner.SetMusicInfo_State(itemDO.getTitle(), itemDO.getArtist(), itemDO.getAlbum(), itemDO.getGenre(),itemDO.getAlbumURI());
+				mlog.info(TAG, "============Start=============");
+			 	mlog.info(TAG, "Title = "+itemDO.getTitle());							
+				mlog.info(TAG, "Artist = "+itemDO.getArtist());
+				mlog.info(TAG, "Album = "+itemDO.getAlbum());
+				mlog.info(TAG, "Genre = "+itemDO.getGenre());	
+				mlog.info(TAG, "AlbumURI = "+itemDO.getAlbumURI());										
+				mlog.info(TAG, "============End=============");
+			}			 		 
+		}
+		
+		
+		//QueueList
+		private void UpdataQueueList(){
+			if(trackList!=null&&queqe_listner!=null){
+				 mlog.info(TAG, "trackList size = "+trackList.size());	
+				 queqe_listner.AddQueqeList(trackList);
+			}
+		}
+		public void UpdataALL(){
+			UpdataPlayMode();
+			UpdataCurrentPlayMode();
+			UpdataItem_MetaData();
+			UpdataQueueList(); 
+		}
+		public void RegistInfoEvent(){
+			if(Device_DisplayInfoCallBack!=null){
+				Device_DisplayInfoCallBack.end();
+			}			
+			Device device = this.deviceDisplay.getDevice();
+			//取得 AVTransportService
+			Service AVTransportService = device.findService(new UDAServiceId("AVTransport"));
+			for(int i=0;i<device.findServices().length;i++){
+				mlog.info(TAG,"status ="+device.findServices()[i].toString());				
+			}
+			
+			if(AVTransportService!=null){
+				//設定StateCallBack
+				Device_DisplayInfoCallBack = new SubscriptionCallback(AVTransportService){
+					@Override
+					protected void ended(GENASubscription arg0, CancelReason arg1, UpnpResponse arg2) {
+						mlog.info(TAG,"status end ="+arg2);
+					}
+					@Override
+					protected void established(GENASubscription arg0) {
+						mlog.info(TAG,"status = established");
+						Map<String, StateVariableValue> values = arg0.getCurrentValues();
+						StateVariableValue status = values.get("LastChange");
+						 
+						for(Map.Entry<String, StateVariableValue>value:values.entrySet()){
+							mlog.info(TAG, "even = "+value.getKey()+"  value = "+value.getValue().toString());
+						}
+					}
+					@Override
+					protected void eventReceived(GENASubscription arg0) {				
+						 Map<String, StateVariableValue> values = arg0.getCurrentValues();
+//						 for(Map.Entry<String, StateVariableValue> value:values.entrySet()){
+//							 mlog.info(TAG, "==========EVEN STAR==========");
+//							 mlog.info(TAG, "key= "+value.getKey().toString());
+//							 mlog.info(TAG, "==========EVEN END==========");
+//						 }
+						 StateVariableValue status = values.get("LastChange");
+						 
+						 if(status!=null){				 
+							 mlog.info(TAG, "==========EVEN STAR==========");
+							 mlog.info(TAG, "LastChange valeu= "+status.toString());
+							 mlog.info(TAG, "==========EVEN END==========");
+							 //儲存資料
+							 LastChangeDO lastChangeDO = _parseLastChangeEvent(status.toString());
+							 
+							 if(lastChangeDO.getTransportState()!=null){
+								 MR_State = lastChangeDO.getTransportState();
+								 if(EventHandler.this.deviceDisplay.equals(ChooseMediaRenderer)){
+									 UpdataPlayMode();
+								 }
+							 }
+							 if(lastChangeDO.getCurrentPlayMode()!=null){								 
+								 MR_PlayMode = lastChangeDO.getCurrentPlayMode();
+								 if(EventHandler.this.deviceDisplay.equals(ChooseMediaRenderer)){
+									 UpdataCurrentPlayMode();
+								 }
+							 }
+							 
+							 if(lastChangeDO.getAVTransportURIMetaData()!=null){
+								 Item_MetaData = lastChangeDO.getAVTransportURIMetaData();
+								 if(EventHandler.this.deviceDisplay.equals(ChooseMediaRenderer)){
+									 UpdataItem_MetaData();
+								 }
+							 }							 
+						 }
+						 //Queue
+						 StateVariableValue q_Status = values.get("TracksInQueue");
+						 if(q_Status!=null){
+							 mlog.info(TAG, "==========EVEN STAR==========");
+							 mlog.info(TAG, "Queue valeu= "+q_Status.toString());
+							 mlog.info(TAG, "==========EVEN END==========");
+							 
+							 trackList = _parseTrack(q_Status.toString());
+							 if(EventHandler.this.deviceDisplay.equals(ChooseMediaRenderer)){
+								 UpdataQueueList(); 
+							 }							
+						 }				
+					}
+
+					@Override
+					protected void eventsMissed(GENASubscription arg0, int arg1) {				
+						mlog.info(TAG,"status = eventsMissed");
+					}
+
+					@Override
+					protected void failed(GENASubscription arg0, UpnpResponse arg1,	Exception arg2, String arg3) {
+						// TODO Auto-generated method stub
+						mlog.info(TAG,"status failed="+arg3);
+					}
+				};		
 				upnpServer.getControlPoint().execute(Device_DisplayInfoCallBack);
 			}
+			
 		}
 	}
 	private GroupVO _parseGroup(String xml){

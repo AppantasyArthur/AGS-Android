@@ -2,6 +2,7 @@ package com.alpha.UPNP;
 
 import org.teleal.cling.model.meta.Device;
 
+import com.alpha.UPNP.DeviceDisplayList.EventHandler;
 import com.appantasy.androidapptemplate.event.lastchange.GroupVO;
 
 public class DeviceDisplay {
@@ -9,6 +10,9 @@ public class DeviceDisplay {
 	private Device device;
 	private Device MMDevice;
 	private GroupVO groupVO;
+	
+	private EventHandler eventHandler;
+	
     public DeviceDisplay(Device device) {
         this.device = device;
         this.groupVO = new GroupVO();
@@ -30,6 +34,13 @@ public class DeviceDisplay {
 	public void setGroupVO(GroupVO groupVO) {
 		this.groupVO = groupVO;
 	}
+	public EventHandler getEventHandler() {
+		return eventHandler;
+	}
+
+	public void setEventHandler(EventHandler eventHandler) {
+		this.eventHandler = eventHandler;
+	}
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -48,4 +59,6 @@ public class DeviceDisplay {
         // Display a little star while the device is being loaded
         return device.isFullyHydrated() ? device.getDisplayString() : device.getDisplayString() + " *";
     }
+
+	
 }

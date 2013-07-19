@@ -90,7 +90,8 @@
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
 			    android:layout_below="@+id/FAM_Save_PopupWindow_Content_RLayout_RLayout_ChooseName_TextView"
-			    android:layout_centerHorizontal="true"
+			    android:layout_centerHorizontal="true"			    
+			    android:background="#00000000"
 	      	    />
       	 </RelativeLayout>
     </RelativeLayout>

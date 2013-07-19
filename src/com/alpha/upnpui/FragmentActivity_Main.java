@@ -234,7 +234,6 @@ public class FragmentActivity_Main extends FragmentActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();			
-		FragmentActivity_Main.this.GETDeviceDisplayList().Stop_Device_StateCallBack();
 		FragmentActivity_Main.this.unbindService(upnpServiceConnection);	
 		Log.v(TAG,"onDestroy");		
 	}

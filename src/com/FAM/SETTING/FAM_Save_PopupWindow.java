@@ -1,5 +1,6 @@
 package com.FAM.SETTING;
 
+import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
@@ -19,7 +20,8 @@ public class FAM_Save_PopupWindow extends PopupWindow {
 	
 	private View contentView;
 	
-	private Context context;
+	private Context context;	
+	private int device_size = 0;
 	private MLog mlog = new MLog();
 	private static final String TAG = "FAM_Save_PopupWindow";
 	
@@ -27,8 +29,12 @@ public class FAM_Save_PopupWindow extends PopupWindow {
 		super(context);
 		this.mlog.LogSwitch = true;
 		this.context = context;
-		
-		CreateContentView();
+		this.device_size = ((FragmentActivity_Main)context).getDevice_Size();
+		if(device_size==6){
+			Phone_CreateContentView();
+		}else{
+			PAD_CreateContentView();
+		}		
 		ContentViewListner();
 		//設定內容
 		this.setContentView(contentView);
@@ -42,7 +48,51 @@ public class FAM_Save_PopupWindow extends PopupWindow {
 		this.setOutsideTouchable(true);
 		
 	}
-	private void CreateContentView() {
+	private void Phone_CreateContentView() {
+		this.contentView = LayoutInflater.from(context).inflate(R.layout.fam_save_popupwindow_context, null,true);
+		//Content RLayout
+		Tool.fitsViewHeight(237, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout));
+		Tool.fitsViewWidth(311, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout));
+		new ThreadReadBitMapInAssets(context, "phone/pop/save_pop_bg.png", this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout), 3);
+		//TITLE RLayout
+		Tool.fitsViewHeight(32, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_TITLE_RLayout));
+		//Close Button
+		Tool.fitsViewHeight(16, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_Close_Button));
+		Tool.fitsViewWidth(32, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_Close_Button));
+		Tool.fitsViewTopMargin(9, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_Close_Button));
+		Tool.fitsViewLeftMargin(16, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_Close_Button));
+		Tool.fitsViewTextSize(8, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_Close_Button));
+		new ThreadReadStateListInAssets(context, "phone/pop/save_close_botton.png", "phone/pop/save_close_botton.png", this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_Close_Button), 4);
+		//Title TextView
+		Tool.fitsViewTextSize(12, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_Title_TextView));
+		//Save Button
+		Tool.fitsViewHeight(16, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_Save_Button));
+		Tool.fitsViewWidth(32, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_Save_Button));
+		Tool.fitsViewTopMargin(9, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_Save_Button));
+		Tool.fitsViewRightMargin(16, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_Save_Button));
+		Tool.fitsViewTextSize(8, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_Save_Button));
+		new ThreadReadStateListInAssets(context, "phone/pop/save_done_botton_f.png", "phone/pop/save_done_botton_n.png", this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_Save_Button), 4);
+		//Body_RLayout
+		Tool.fitsViewHeight(177, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_Body_RLayout));
+		Tool.fitsViewWidth(270, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_Body_RLayout));
+		new ThreadReadBitMapInAssets(context, "phone/pop/save_pop_bg_01.png", this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_Body_RLayout), 3);
+		//Choose TextView
+		Tool.fitsViewHeight(31, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_Choose_TextView));
+		Tool.fitsViewWidth(238, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_Choose_TextView));
+		Tool.fitsViewTextSize(8, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_Choose_TextView));
+		//ChooseNmae TextView
+		Tool.fitsViewHeight(21, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_ChooseName_TextView));
+		Tool.fitsViewWidth(238, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_ChooseName_TextView));
+		Tool.fitsViewTextSize(10, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_ChooseName_TextView));
+		//InputName EditText
+		Tool.fitsViewHeight(26, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_InputName_EditText));
+		Tool.fitsViewWidth(242, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_InputName_EditText));
+		Tool.fitsViewTextSize(8, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_InputName_EditText));
+		Tool.fitsViewTopMargin(5, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_InputName_EditText));
+		new ThreadReadBitMapInAssets(context, "phone/pop/save_name_bar.png", this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_InputName_EditText), 3);
+		mlog.info(TAG, "CreateContentView");
+	}
+	private void PAD_CreateContentView() {
 		this.contentView = LayoutInflater.from(context).inflate(R.layout.fam_save_popupwindow_context, null,true);
 		//Content RLayout
 		Tool.fitsViewHeight(393, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout));
