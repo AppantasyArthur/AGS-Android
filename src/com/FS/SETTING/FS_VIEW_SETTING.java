@@ -248,7 +248,7 @@ public class FS_VIEW_SETTING {
 		FS_SPEAKER_ExpandableListAdapter_Pad EBaseAdapter = new FS_SPEAKER_ExpandableListAdapter_Pad(context,(ExpandableListView)view);
 		((ExpandableListView)view).setAdapter(EBaseAdapter);
 		((ExpandableListView)view).setItemsCanFocus(true);
-		((ExpandableListView)view).setGroupIndicator(null);
+		((ExpandableListView)view).setGroupIndicator(null);		
 	}
 //***************************PAD*********************************
 	

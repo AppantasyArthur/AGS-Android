@@ -199,7 +199,7 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 
 	@Override
 	public long getGroupId(int groupPosition) {
-		// TODO Auto-generated method stub
+
 		return 0;
 	}
 	
@@ -280,7 +280,12 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 		}	
 		
 		//設定跑馬燈內容
-		setRunState_TextView_Content(0,"123456789987613000000000000000000000000000000000000000000000000000054321",viewHandler.RunState_TextView);
+		String titleString = GroupList.get(groupPosition).getEventHandler().GetMetaDataTitle();
+		if(titleString==null||titleString.equals("")){
+			titleString = "NA";
+		}
+		setRunState_TextView_Content(0,titleString,viewHandler.RunState_TextView);
+		
 		viewHandler.RunState_TextView.setSelected(true);
 		viewHandler.Name_TextView.setText(GroupList.get(groupPosition).getDevice().getDetails().getFriendlyName());
 		return convertView;
@@ -291,7 +296,6 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
 
 	@Override
 	public boolean isChildSelectable(int groupPosition, int childPosition) {		

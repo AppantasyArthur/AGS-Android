@@ -376,10 +376,11 @@ public class DeviceDisplayList {
 			}
 		}
 		
-		private LastChangeDO lastChangeDO;
+		
 		private String MR_State;
 		private String MR_PlayMode;
 		private String Item_MetaData;
+		private String metaData_Title;
 		
 		private List<TrackDO> trackList;
 		 //Playª¬ºA
@@ -421,6 +422,7 @@ public class DeviceDisplayList {
 			}
 			//info
 			if(itemDO!=null){
+				metaData_Title = itemDO.getTitle();
 				MIListner.SetMusicInfo_State(itemDO.getTitle(), itemDO.getArtist(), itemDO.getAlbum(), itemDO.getGenre(),itemDO.getAlbumURI());
 				mlog.info(TAG, "============Start=============");
 			 	mlog.info(TAG, "Title = "+itemDO.getTitle());							
@@ -445,6 +447,17 @@ public class DeviceDisplayList {
 			UpdataCurrentPlayMode();
 			UpdataItem_MetaData();
 			UpdataQueueList(); 
+		}
+		
+		public String GetCurrentPlayMode(){
+			return MR_State;
+		}
+		public String GetMetaDataTitle(){			
+			if(metaData_Title!=null){		
+				return metaData_Title;
+			}else{
+				return "";
+			}
 		}
 		public void RegistInfoEvent(){
 			if(Device_DisplayInfoCallBack!=null){

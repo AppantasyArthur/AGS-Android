@@ -1,21 +1,15 @@
 package com.FI.SETTING;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.R;
+import com.tkb.tool.DownLoadUrlBitmap;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
 import com.tkb.tool.Tool;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -101,7 +95,7 @@ public class FI_ViewFlipper extends ViewFlipper {
 				if(str.equals("")||str==null){
 					Image_ImageView.setImageBitmap(Tool.readBitMapInAssets(context, "pad/Nowplaying/NoCover.png"));
 				}else{
-					Image_ImageView.setImageBitmap(DownLoadUrlBitmap(str));
+					new DownLoadUrlBitmap(Image_ImageView,str);					
 				}
 				break;
 			case 5:					
@@ -118,26 +112,6 @@ public class FI_ViewFlipper extends ViewFlipper {
 			}
 		}
 	};
-	public Bitmap DownLoadUrlBitmap(String Url){
-		URL imageURL = null;
-		Bitmap bitmap = null;
-		try {
-			imageURL = new URL(Url);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-		try {
-			HttpURLConnection connection = (HttpURLConnection)imageURL.openConnection();
-			connection.setReadTimeout(4000);
-			connection.connect();
-			InputStream is = connection.getInputStream();
-			bitmap = BitmapFactory.decodeStream(is,null,Tool.opt()); 
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return bitmap;
-	}
 	public FI_ViewFlipper(Context context) {
 		super(context);	
 		this.context = context;
@@ -249,8 +223,9 @@ public class FI_ViewFlipper extends ViewFlipper {
 		//設定動畫
 		this.setInAnimation(AnimationUtils.loadAnimation(context, R.animator.translate_left_in));
 		this.setOutAnimation(AnimationUtils.loadAnimation(context,R.animator.translate_right_out));
-		this.showPrevious();//顯示
+		this.showPrevious();//顯示		
 		this.removeView(old_View);//移除
+		SetChooseMediaRenderer();
 	}
 	public void loadNext(){
 		//在入下一頁
@@ -262,10 +237,26 @@ public class FI_ViewFlipper extends ViewFlipper {
 		//設定動畫
 		this.setInAnimation(AnimationUtils.loadAnimation(context, R.animator.translate_right_in));
 		this.setOutAnimation(AnimationUtils.loadAnimation(context,R.animator.translate_left_out));
-		this.showPrevious();//顯示
+		this.showPrevious();//顯示		
 		this.removeView(old_View);//移除
+		SetChooseMediaRenderer();
 	}
-	
+	public void SetChooseMediaRenderer(){
+		new Thread(new Runnable(){
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(350);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(CurrentPage>=0){
+					((FragmentActivity_Main)context).GETDeviceDisplayList().setChooseMediaRenderer(GroupList.get(CurrentPage));
+				}	
+			}			
+		}).start();
+	}
 	public void SetCount(int Count){
 		if(Point_LLayout!=null){
 			Point_LLayout.setPointCount(Count);
@@ -291,10 +282,7 @@ public class FI_ViewFlipper extends ViewFlipper {
 			Phone_SetView(new_View);
 		}else{
 			PAD_SetView(new_View);
-		}
-		if(CurrentPage>=0){
-			((FragmentActivity_Main)context).GETDeviceDisplayList().setChooseMediaRenderer(GroupList.get(CurrentPage));
-		}	
+		}		
 		this.addView(new_View);
 	}
 	//設定介面
