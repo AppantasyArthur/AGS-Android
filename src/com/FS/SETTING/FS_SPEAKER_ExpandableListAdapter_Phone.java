@@ -2,7 +2,6 @@ package com.FS.SETTING;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.teleal.cling.model.meta.Device;
 import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.fragments.Fragment_Speaker;
 import com.alpha.upnpui.FragmentActivity_Main;
@@ -21,7 +20,6 @@ import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -45,7 +43,7 @@ public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAd
 	private ImageSpan stop_Span;
 	private ImageSpan pause_Span;
 	
-	private FS_PopupWindow popupWindow;
+//	private FS_PopupWindow popupWindow;
 	
 	private FS_SPEAKER_ExpandableListAdapter_Listner FSELAListner;
 	
@@ -70,7 +68,7 @@ public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAd
 		this.context = context;
 		this.EListView = EListView;
 		this.GroupList = GetGroupList();
-		this.popupWindow = new FS_PopupWindow(this.context);
+//		this.popupWindow = new FS_PopupWindow(this.context);
 		LoadBitmap();
 		SetList();
 		SetListner();

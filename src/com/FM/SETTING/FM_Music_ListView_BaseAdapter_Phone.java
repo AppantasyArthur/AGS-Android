@@ -264,6 +264,11 @@ public class FM_Music_ListView_BaseAdapter_Phone extends BaseAdapter {
 			this.Itemlist = Itemlist;
 		}
 	}
+	public void ShowPrivousDevice(Button MusicBack_Button){
+		this.ParentID.clear();
+		handler.obtainMessage(10).sendToTarget();
+		handler.obtainMessage(14, MusicBack_Button).sendToTarget();
+	}
 	public void ShowPrivousFile(final Button MusicBack_Button){
 		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
 		if(ParentID.size()>1){

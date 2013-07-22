@@ -259,37 +259,7 @@ public class FM_VIEW_LISTNER {
 			//***************************PAD*********************************	
 		}		
 	}
-//	private void PlayMusic(){
-//		//取得upnpServer
-//		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
-//		//取得MR Device
-//		DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
-//		//取得instanceId
-//		UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
-//		//取得service
-//		Service StopService = null;	
-//		//檢查 MR_Device
-//		if(MR_Device!=null){
-//			//取得device 的 "AVTransport" service
-//			StopService = MR_Device.getDevice().findService( new UDAServiceId("AVTransport"));
-//		}else{
-//			return;
-//		}
-//		//檢查StopService
-//		if(StopService!=null){
-//			Play ActionCallback = new Play(instanceId,StopService){
-//				@Override
-//			    public void success(ActionInvocation invocation) {
-//					mlog.info(TAG, "Play success");
-//				}
-//				@Override
-//				public void failure(ActionInvocation arg0,UpnpResponse arg1, String arg2) {
-//					mlog.info(TAG, "Play failure");							
-//				}
-//			};
-//			upnpServer.getControlPoint().execute(ActionCallback);
-//		}
-//	}
+
 	public void SET_SearchMusic_RLayout_Listner(final RelativeLayout SearchMusic_RLayout,final RelativeLayout TITLE2_RLayout,final RelativeLayout TITLE3_RLayout){
 		if(device_size==6){
 			//***************************PHONE*********************************	
@@ -494,6 +464,13 @@ public class FM_VIEW_LISTNER {
 					((FM_Music_ListView_BaseAdapter_Phone)Music_ListView.getAdapter()).ShowPrivousFile((Button)v);
 				}
 			});
+			MusicBack.setOnLongClickListener(new View.OnLongClickListener() {				
+				@Override
+				public boolean onLongClick(View v) {
+					((FM_Music_ListView_BaseAdapter_Phone)Music_ListView.getAdapter()).ShowPrivousDevice((Button)v);
+					return true;
+				}
+			});
 			//***************************PHONE*********************************	
 		}else{
 			//***************************PAD*********************************
@@ -501,6 +478,13 @@ public class FM_VIEW_LISTNER {
 				@Override
 				public void onClick(final View v) {
 					((FM_Music_ListView_BaseAdapter_PAD)Music_ListView.getAdapter()).ShowPrivousFile((Button)v);
+				}
+			});
+			MusicBack.setOnLongClickListener(new View.OnLongClickListener() {				
+				@Override
+				public boolean onLongClick(View v) {
+					((FM_Music_ListView_BaseAdapter_PAD)Music_ListView.getAdapter()).ShowPrivousDevice((Button)v);
+					return true;
 				}
 			});
 			//***************************PAD*********************************	
