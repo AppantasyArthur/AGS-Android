@@ -2,7 +2,7 @@ package com.tkb.tool;
 
 public class MLog {
 	public boolean LogSwitch = false;
-	private boolean allLogShow = false;
+	private boolean allLogShow = true;
 	
 	public MLog(){
 		

@@ -12,7 +12,6 @@ import org.teleal.cling.model.types.UDAServiceId;
 import org.teleal.cling.model.types.UnsignedIntegerFourBytes;
 import org.teleal.cling.support.avtransport.callback.Play;
 import org.teleal.cling.support.avtransport.callback.Stop;
-
 import com.FAM.SETTING.PlayMode_IButton_Listner;
 import com.FAM.SETTING.Play_IButton_Listner;
 import com.alpha.UPNP.DeviceDisplay;
@@ -23,8 +22,6 @@ import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
 import com.tkb.tool.ThreadReadStateListInAssets;
-
-import android.R.raw;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -33,6 +30,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
@@ -447,12 +445,49 @@ public class FS_VIEW_LISTNER {
 					return true;
 				}				
 			});
+			RunState_TextView_Listner2 runState_TextView_Listner2 = new RunState_TextView_Listner2(){
+				@Override
+				public void SetRunState_TextView_State(String playMode,	String MetaData_Title, DeviceDisplay deviceDisplay) {
+					final FS_SPEAKER_ExpandableListAdapter_Phone adapter = (FS_SPEAKER_ExpandableListAdapter_Phone)fS_SPEAKER_EListView.getExpandableListAdapter();	
+					//取得deviceDisplay在GroupList中的position
+					int groupPosition = adapter.getGroupPosition(deviceDisplay);					
+					if(groupPosition>=0){	
+						//取得deviceDisplay在畫面上Cell的位置
+						int position = fS_SPEAKER_EListView.getFlatListPosition(fS_SPEAKER_EListView.getPackedPositionForGroup(groupPosition));
+						mlog.info(TAG, "groupPosition = "+groupPosition);
+						mlog.info(TAG, "position = "+position);
+						//取得CellView
+						View groupView = fS_SPEAKER_EListView.getChildAt(position);						
+						if(groupView==null){
+							return;
+						}
+						//取得RunState TextView
+						TextView RunState_TextView = (TextView)groupView.findViewById(R.id.FS_SPEAKER_EListView_GCell_RLayout_RunState_TextView);
+						
+						if(RunState_TextView!=null){	
+							
+							final RunStateHandler runStateHandler = new RunStateHandler(playMode, MetaData_Title, RunState_TextView);
+							//主線 刷新畫面						
+							fS_SPEAKER_EListView.post(new Runnable(){
+								@Override
+								public void run() {
+									adapter.setRunState(runStateHandler);
+									
+								}								
+							});
+						}
+					}
+				}
+			};
+			((FragmentActivity_Main)context).GETDeviceDisplayList().setRunState_TextView_Listner2(runState_TextView_Listner2);
 			//***************************PHONE*********************************	
 		}else{
 			//***************************PAD*********************************
+			
 			fS_SPEAKER_EListView.setOnGroupClickListener(new OnGroupClickListener(){
 				@Override
 				public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+					Log.i("dddddd", "View = "+v);
 					//設定GSELECTED					
 					((FS_SPEAKER_ExpandableListAdapter_Pad)parent.getExpandableListAdapter()).SET_GView_SELECTED(groupPosition);
 					return true;
@@ -483,6 +518,41 @@ public class FS_VIEW_LISTNER {
 					return true;
 				}				
 			});
+			RunState_TextView_Listner2 runState_TextView_Listner2 = new RunState_TextView_Listner2(){
+				@Override
+				public void SetRunState_TextView_State(String playMode,	String MetaData_Title, DeviceDisplay deviceDisplay) {
+					final FS_SPEAKER_ExpandableListAdapter_Pad adapter = (FS_SPEAKER_ExpandableListAdapter_Pad)fS_SPEAKER_EListView.getExpandableListAdapter();	
+					//取得deviceDisplay在GroupList中的position
+					int groupPosition = adapter.getGroupPosition(deviceDisplay);					
+					if(groupPosition>=0){	
+						//取得deviceDisplay在畫面上Cell的位置
+						int position = fS_SPEAKER_EListView.getFlatListPosition(fS_SPEAKER_EListView.getPackedPositionForGroup(groupPosition));
+						mlog.info(TAG, "groupPosition = "+groupPosition);
+						mlog.info(TAG, "position = "+position);
+						//取得CellView
+						View groupView = fS_SPEAKER_EListView.getChildAt(position);						
+						if(groupView==null){
+							return;
+						}
+						//取得RunState TextView
+						TextView RunState_TextView = (TextView)groupView.findViewById(R.id.FS_SPEAKER_EListView_GCell_RLayout_RunState_TextView);
+						
+						if(RunState_TextView!=null){	
+							
+							final RunStateHandler runStateHandler = new RunStateHandler(playMode, MetaData_Title, RunState_TextView);
+							//主線 刷新畫面						
+							fS_SPEAKER_EListView.post(new Runnable(){
+								@Override
+								public void run() {
+									adapter.setRunState(runStateHandler);
+									
+								}								
+							});
+						}
+					}
+				}
+			};
+			((FragmentActivity_Main)context).GETDeviceDisplayList().setRunState_TextView_Listner2(runState_TextView_Listner2);
 			//***************************PAD*********************************	
 		}		
 	}

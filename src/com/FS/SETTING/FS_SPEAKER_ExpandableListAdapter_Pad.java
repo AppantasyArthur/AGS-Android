@@ -2,7 +2,6 @@ package com.FS.SETTING;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.teleal.cling.model.meta.Device;
 import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.R;
@@ -53,17 +52,14 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 	private static String TAG = "FS_SPEAKER_ExpandableListAdapter";
 	private MLog mlog = new MLog();
 	
-	private Handler handler = new Handler(){
+	public Handler handler = new Handler(){
 		public void handleMessage (Message msg) {
 			switch(msg.what){			
 			case 0:
 				FS_SPEAKER_ExpandableListAdapter_Pad.this.GroupList.clear();
 				FS_SPEAKER_ExpandableListAdapter_Pad.this.GroupList = GetGroupList();
 				FS_SPEAKER_ExpandableListAdapter_Pad.this.notifyDataSetChanged();
-				break;
-			case 1:
-				
-				break;
+				break;			
 			}
 		}
 	};
@@ -191,6 +187,9 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 		return null;
 	}
 	
+	public int getGroupPosition(DeviceDisplay deviceDisplay){		
+		return GroupList.indexOf(deviceDisplay);		
+	}
 	@Override
 	public int getGroupCount() {
 		// TODO Auto-generated method stub
@@ -224,14 +223,18 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 		//group or single
 		if(ChildrenCount>0){
 			//Group
-			convertView.getLayoutParams().height = Tool.getHeight(118);
+			if(convertView.getLayoutParams().height!=118){
+				convertView.getLayoutParams().height = Tool.getHeight(118);
+			}			
 			Tool.fitsViewHeight(95, viewHandler.GCell_RLayout);
 			if(viewHandler.Indicator_ImageView.getVisibility()!=View.VISIBLE){
 				viewHandler.Indicator_ImageView.setVisibility(View.VISIBLE);
 			}
 		}else{
 			//Single
-			convertView.getLayoutParams().height = Tool.getHeight(97);
+			if(convertView.getLayoutParams().height!=97){
+				convertView.getLayoutParams().height = Tool.getHeight(97);
+			}				
 			Tool.fitsViewHeight(74, viewHandler.GCell_RLayout);
 			if(viewHandler.Indicator_ImageView.getVisibility()!=View.GONE){
 				viewHandler.Indicator_ImageView.setVisibility(View.GONE);
@@ -248,16 +251,6 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 		
 		//設定selected
 		DeviceDisplay chooDeviceDisplay = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
-//		Group groups = GroupList.get(groupPosition).getGroupVO().getGroup();
-//		Log.i(TAG, "group size = "+groups.getMembers().size());		
-//		for(int j=0;j<groups.getMembers().size();j++){
-//			if(chooDeviceDisplay!=null){
-//				Log.i(TAG, "UDN 1 = "+groups.getMembers().get(j).getUdn());	
-//				Log.i(TAG, "UDN 2 = "+chooDeviceDisplay.getDevice().getIdentity().getUdn().toString());			
-//				Log.i(TAG, "true");			
-//			}
-//			
-//		}
 		
 		if(((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer()!=null&&chooDeviceDisplay.equals(GroupList.get(groupPosition))){
 			if(ChildrenCount>0){
@@ -280,13 +273,13 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 		}	
 		
 		//設定跑馬燈內容
+		String playModeString = GroupList.get(groupPosition).getEventHandler().GetTransportState();
 		String titleString = GroupList.get(groupPosition).getEventHandler().GetMetaDataTitle();
-		if(titleString==null||titleString.equals("")){
-			titleString = "NA";
-		}
-		setRunState_TextView_Content(0,titleString,viewHandler.RunState_TextView);
 		
-		viewHandler.RunState_TextView.setSelected(true);
+		RunStateHandler runStateHandler = new RunStateHandler(playModeString, titleString, viewHandler.RunState_TextView);
+		setRunState(runStateHandler);
+		
+		viewHandler.RunState_TextView.setSelected(true);		
 		viewHandler.Name_TextView.setText(GroupList.get(groupPosition).getDevice().getDetails().getFriendlyName());
 		return convertView;
 	}
@@ -332,6 +325,7 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 		private ImageButton AddChildItem_ImageButton;
 		private ImageView Indicator_ImageView;	
 		private TextView RunState_TextView;
+		private RunState_TextView_Listner runState_TextView_Listner;
 		public GViewHandler(View view){
 			this.GCell_RLayout = (RelativeLayout)view.findViewById(R.id.FS_SPEAKER_EListView_GCell_RLayout);
 			this.Name_TextView = (TextView)view.findViewById(R.id.FS_SPEAKER_EListView_GCell_RLayout_Name_TextView);
@@ -398,8 +392,7 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 									groupVOList.add(groupVO);
 								}							
 							}
-						}
-						Log.i(TAG, "groupVOList size = "+groupVOList.size());
+						}					
 						View rootView = v.getRootView();
 						popupWindow.SetOptionButtons(groupVOList);
 						popupWindow.SetAddDeviceDisplay(GroupList.get(ClickListener.this.viewHandler.position));
@@ -409,24 +402,28 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 			});
 		}
 	}
-	private void setRunState_TextView_Content(int State,String TextContent,TextView RunState_TextView){
+	
+	public void setRunState(RunStateHandler runStateHandler){
+		
 		SpannableStringBuilder spannalbeStringBuilder = new SpannableStringBuilder();
-		TextContent = "  "+TextContent;
-		SpannableString spannableString  = new SpannableString(TextContent);
-		switch(State){
+		
+		SpannableString spannableString  = new SpannableString(runStateHandler.MetaData_Title);
+		switch(runStateHandler.mode){
 		case 0:
 			spannableString.setSpan(play_Span, 0, 1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 			break;
 		case 1:
-			spannableString.setSpan(play_Span, 0, 1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+			spannableString.setSpan(stop_Span, 0, 1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 			break;
 		case 2:
-			spannableString.setSpan(play_Span, 0, 1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+			spannableString.setSpan(pause_Span, 0, 1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 			break;
 		}
 		spannalbeStringBuilder.append(spannableString);
-		RunState_TextView.setText(spannalbeStringBuilder);
+		runStateHandler.textView.setText(spannalbeStringBuilder);
+		runStateHandler.textView.getParent().childDrawableStateChanged(runStateHandler.textView);
 	}
+	
 	public void SET_GView_SELECTED(int position){
 		if(((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer()!=this.GroupList.get(position)){
 			((FragmentActivity_Main)context).GETDeviceDisplayList().setChooseMediaRenderer(this.GroupList.get(position));

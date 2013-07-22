@@ -38,6 +38,8 @@ import com.FI.SETTING.FI_Queqe_ListView_BaseAdapter_Queqe_Listner;
 import com.FI.SETTING.MusicInfo_Listner;
 import com.FM.SETTING.FM_Music_ListView_BaseAdapter_Listner;
 import com.FS.SETTING.FS_SPEAKER_ExpandableListAdapter_Listner;
+import com.FS.SETTING.RunState_TextView_Listner;
+import com.FS.SETTING.RunState_TextView_Listner2;
 import com.alpha.upnpui.FragmentActivity_Main;
 import com.appantasy.androidapptemplate.event.lastchange.GroupHandler;
 import com.appantasy.androidapptemplate.event.lastchange.GroupVO;
@@ -60,6 +62,7 @@ public class DeviceDisplayList {
 	private GroupList groupList;//MediaRenderer List FS&FI顯示使用;
 	private List<DeviceDisplay> MSList;//MediaServer List;
 	private FS_SPEAKER_ExpandableListAdapter_Listner FSELAListner;
+	private RunState_TextView_Listner2 runState_TextView_Listner2;
 	private FM_Music_ListView_BaseAdapter_Listner FMLBAListner;
 	private Play_IButton_Listner PIListner;
 	private Play_IButton_Listner Info_PIListner;
@@ -92,6 +95,8 @@ public class DeviceDisplayList {
 			Device[] devices = dd.getDevice().findDevices(deviceType_f);
 			
 			EventHandler eventHandler = new EventHandler(dd);
+			eventHandler.RegistInfoEvent();	
+			dd.setEventHandler(eventHandler);
 			
 			if(devices!=null&&devices.length>0){
 				//有Group
@@ -118,8 +123,8 @@ public class DeviceDisplayList {
 					}
 				}
 			}		
-			eventHandler.RegistInfoEvent();	
-			dd.setEventHandler(eventHandler);
+			
+			
 			
 		}else if(deviceType.getType().toString().equals("MediaServer")){
 			//MediaServer List
@@ -186,8 +191,7 @@ public class DeviceDisplayList {
 			return;
 		}
 		
-		EventHandler eventHandler = mediaRenderer.getEventHandler();
-		Log.i(TAG, "mediaRenderer = "+mediaRenderer.hashCode());
+		EventHandler eventHandler = mediaRenderer.getEventHandler();		
 		if (eventHandler!=null){
 			//資料設定
 			eventHandler.UpdataALL();
@@ -226,6 +230,9 @@ public class DeviceDisplayList {
 	public void setSpeakerListner(FS_SPEAKER_ExpandableListAdapter_Listner FSELAListner){
 		this.FSELAListner = FSELAListner;
 	}
+	public void setRunState_TextView_Listner2(RunState_TextView_Listner2 runState_TextView_Listner2){
+		this.runState_TextView_Listner2 = runState_TextView_Listner2;
+	}
 	public void setMusicListner(FM_Music_ListView_BaseAdapter_Listner FMLBAListner){
 		this.FMLBAListner = FMLBAListner;
 	}
@@ -252,14 +259,13 @@ public class DeviceDisplayList {
 		private DeviceDisplay deviceDisplay;
 		private SubscriptionCallback Device_DisplayGrouCallBack;
 		private SubscriptionCallback Device_DisplayInfoCallBack;
-		private AndroidUpnpService upnpServer;
-		
+		private AndroidUpnpService upnpServer;	
 		
 		public EventHandler(DeviceDisplay deviceDisplay){
 			this.deviceDisplay = deviceDisplay;
 			//取得upnpServer
 			this.upnpServer = ((FragmentActivity_Main)context).GETUPnPService();			
-		}
+		}		
 		//建查Device目前狀態 
 		public void checkMasterORSingle(){
 			Device MMDevice = this.deviceDisplay.getMMDevice();			
@@ -378,9 +384,9 @@ public class DeviceDisplayList {
 		
 		
 		private String MR_State;
-		private String MR_PlayMode;
-		private String Item_MetaData;
+		private String MR_PlayMode;		
 		private String metaData_Title;
+		private ItemDO item_DO;
 		
 		private List<TrackDO> trackList;
 		 //Play狀態
@@ -413,23 +419,15 @@ public class DeviceDisplayList {
 		}
 		//MI_Info
 		private void UpdataItem_MetaData(){			
-			ItemDO itemDO =null;
-			if(Item_MetaData!=null&&!Item_MetaData.equals("")){
-				mlog.info(TAG, "============Start=============");					 
-				mlog.info(TAG, "Item_MetaData = "+Item_MetaData);
-				itemDO =  _parseItem(Item_MetaData);
-				mlog.info(TAG, "============End=============");
-			}
 			//info
-			if(itemDO!=null){
-				metaData_Title = itemDO.getTitle();
-				MIListner.SetMusicInfo_State(itemDO.getTitle(), itemDO.getArtist(), itemDO.getAlbum(), itemDO.getGenre(),itemDO.getAlbumURI());
+			if(item_DO!=null){				
+				MIListner.SetMusicInfo_State(item_DO.getTitle(), item_DO.getArtist(), item_DO.getAlbum(), item_DO.getGenre(),item_DO.getAlbumURI());
 				mlog.info(TAG, "============Start=============");
-			 	mlog.info(TAG, "Title = "+itemDO.getTitle());							
-				mlog.info(TAG, "Artist = "+itemDO.getArtist());
-				mlog.info(TAG, "Album = "+itemDO.getAlbum());
-				mlog.info(TAG, "Genre = "+itemDO.getGenre());	
-				mlog.info(TAG, "AlbumURI = "+itemDO.getAlbumURI());										
+			 	mlog.info(TAG, "Title = "+item_DO.getTitle());							
+				mlog.info(TAG, "Artist = "+item_DO.getArtist());
+				mlog.info(TAG, "Album = "+item_DO.getAlbum());
+				mlog.info(TAG, "Genre = "+item_DO.getGenre());	
+				mlog.info(TAG, "AlbumURI = "+item_DO.getAlbumURI());										
 				mlog.info(TAG, "============End=============");
 			}			 		 
 		}
@@ -442,6 +440,11 @@ public class DeviceDisplayList {
 				 queqe_listner.AddQueqeList(trackList);
 			}
 		}
+		private void UpdateRunState_TextView(){			
+			if(runState_TextView_Listner2!=null){
+				runState_TextView_Listner2.SetRunState_TextView_State(MR_State, metaData_Title,EventHandler.this.deviceDisplay);
+			}
+		}
 		public void UpdataALL(){
 			UpdataPlayMode();
 			UpdataCurrentPlayMode();
@@ -449,7 +452,7 @@ public class DeviceDisplayList {
 			UpdataQueueList(); 
 		}
 		
-		public String GetCurrentPlayMode(){
+		public String GetTransportState(){
 			return MR_State;
 		}
 		public String GetMetaDataTitle(){			
@@ -459,7 +462,7 @@ public class DeviceDisplayList {
 				return "";
 			}
 		}
-		public void RegistInfoEvent(){
+		public void RegistInfoEvent(){		
 			if(Device_DisplayInfoCallBack!=null){
 				Device_DisplayInfoCallBack.end();
 			}			
@@ -490,11 +493,11 @@ public class DeviceDisplayList {
 					@Override
 					protected void eventReceived(GENASubscription arg0) {				
 						 Map<String, StateVariableValue> values = arg0.getCurrentValues();
-//						 for(Map.Entry<String, StateVariableValue> value:values.entrySet()){
-//							 mlog.info(TAG, "==========EVEN STAR==========");
-//							 mlog.info(TAG, "key= "+value.getKey().toString());
-//							 mlog.info(TAG, "==========EVEN END==========");
-//						 }
+						 for(Map.Entry<String, StateVariableValue> value:values.entrySet()){
+							 mlog.info(TAG, "==========EVEN STAR==========");
+							 mlog.info(TAG, "key= "+value.getKey().toString());
+							 mlog.info(TAG, "==========EVEN END==========");
+						 }
 						 StateVariableValue status = values.get("LastChange");
 						 
 						 if(status!=null){				 
@@ -517,11 +520,28 @@ public class DeviceDisplayList {
 								 }
 							 }
 							 
-							 if(lastChangeDO.getAVTransportURIMetaData()!=null){
-								 Item_MetaData = lastChangeDO.getAVTransportURIMetaData();
+							 if(lastChangeDO.getAVTransportURIMetaData()!=null){								 
+								 String Item_MetaData = lastChangeDO.getAVTransportURIMetaData();
+								 if(Item_MetaData!=null&&!Item_MetaData.equals("")){
+										mlog.info(TAG, "============Start=============");					 
+										mlog.info(TAG, "Item_MetaData = "+Item_MetaData);
+										item_DO =  _parseItem(Item_MetaData);
+										metaData_Title = item_DO.getTitle();
+										mlog.info(TAG, "============End=============");
+										mlog.info(TAG, "============Start=============");	
+										mlog.info(TAG, "==item_MetaData=="+item_DO.getTitle());
+										mlog.info(TAG, "==item_MetaData=="+item_DO.getGenre());	
+										mlog.info(TAG, "==item_MetaData=="+item_DO.getAlbum());	
+										mlog.info(TAG, "==item_MetaData=="+item_DO.getAlbumURI());	
+										mlog.info(TAG, "============End=============");
+									}								 
 								 if(EventHandler.this.deviceDisplay.equals(ChooseMediaRenderer)){
 									 UpdataItem_MetaData();
 								 }
+							 }	
+							 
+							 if(lastChangeDO.getTransportState()!=null||lastChangeDO.getAVTransportURIMetaData()!=null){
+								 UpdateRunState_TextView();
 							 }							 
 						 }
 						 //Queue
@@ -625,9 +645,9 @@ public class DeviceDisplayList {
 		    
 		    if(true){
 		    	
-		    	xml = StringEscapeUtils.unescapeHtml4(xml);
 		    	xml = xml.replace(" dlna:profileID=\"JPEG_TN\"", "");
-		    	xml = xml.replace("pv:", ""); 		    	
+		    	xml = xml.replace("pv:", ""); 	
+//		    	xml = StringEscapeUtils.unescapeHtml4(xml);
 		    	xr.parse(new InputSource(new StringReader(xml))); 
 			    data = dataHandler.getData();  
 		    } 

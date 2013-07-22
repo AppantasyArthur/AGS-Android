@@ -57,7 +57,7 @@
     		android:background="#00000000"  
     		android:textColor="#ffffff"   		
     		android:singleLine="true"
-    		android:visibility="invisible"
+    		android:visibility="visible"
             />
         <!-- 
     		android:ellipsize="marquee"

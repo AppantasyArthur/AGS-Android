@@ -60,9 +60,7 @@ public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAd
 				FS_SPEAKER_ExpandableListAdapter_Phone.this.GroupList.clear();
 				FS_SPEAKER_ExpandableListAdapter_Phone.this.GroupList = GetGroupList();
 				FS_SPEAKER_ExpandableListAdapter_Phone.this.notifyDataSetChanged();
-				break;
-			case 1:				
-				break;
+				break;			
 			}
 		}
 	};
@@ -189,6 +187,9 @@ public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAd
 		// TODO Auto-generated method stub
 		return null;
 	}
+	public int getGroupPosition(DeviceDisplay deviceDisplay){		
+		return GroupList.indexOf(deviceDisplay);		
+	}
 	
 	@Override
 	public int getGroupCount() {
@@ -272,7 +273,12 @@ public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAd
 		}	
 		
 		//設定跑馬燈內容
-		setRunState_TextView_Content(0,"123456789987613000000000000000000000000000000000000000000000000000054321",viewHandler.RunState_TextView);
+		String playModeString = GroupList.get(groupPosition).getEventHandler().GetTransportState();
+		String titleString = GroupList.get(groupPosition).getEventHandler().GetMetaDataTitle();
+		
+		RunStateHandler runStateHandler = new RunStateHandler(playModeString, titleString, viewHandler.RunState_TextView);
+		setRunState(runStateHandler);
+
 		viewHandler.RunState_TextView.setSelected(true);
 		viewHandler.Name_TextView.setText(GroupList.get(groupPosition).getDevice().getDetails().getFriendlyName());
 		return convertView;
@@ -395,23 +401,26 @@ public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAd
 			});
 		}
 	}
-	private void setRunState_TextView_Content(int State,String TextContent,TextView RunState_TextView){
+	
+	public void setRunState(RunStateHandler runStateHandler){
+		
 		SpannableStringBuilder spannalbeStringBuilder = new SpannableStringBuilder();
-		TextContent = "  "+TextContent;
-		SpannableString spannableString  = new SpannableString(TextContent);
-		switch(State){
+		
+		SpannableString spannableString  = new SpannableString(runStateHandler.MetaData_Title);
+		switch(runStateHandler.mode){
 		case 0:
 			spannableString.setSpan(play_Span, 0, 1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 			break;
 		case 1:
-			spannableString.setSpan(play_Span, 0, 1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+			spannableString.setSpan(stop_Span, 0, 1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 			break;
 		case 2:
-			spannableString.setSpan(play_Span, 0, 1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+			spannableString.setSpan(pause_Span, 0, 1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 			break;
 		}
 		spannalbeStringBuilder.append(spannableString);
-		RunState_TextView.setText(spannalbeStringBuilder);
+		runStateHandler.textView.setText(spannalbeStringBuilder);
+		runStateHandler.textView.getParent().childDrawableStateChanged(runStateHandler.textView);
 	}
 	public void SET_GView_SELECTED(int position){
 		if(((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer()!=this.GroupList.get(position)){
