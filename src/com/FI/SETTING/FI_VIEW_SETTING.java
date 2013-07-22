@@ -114,7 +114,7 @@ public class FI_VIEW_SETTING {
 		view.findViewById(R.id.pFI_RLayout_RLayout_Sound_SeekBar).getLayoutParams().height = Tool.getWidth(23);	
 		Tool.fitsViewLeftMargin(4, view.findViewById(R.id.pFI_RLayout_RLayout_Sound_SeekBar));		
 		view.findViewById(R.id.pFI_RLayout_RLayout_Sound_SeekBar).setPadding(Tool.getWidth(6), Tool.getWidth(6), Tool.getWidth(6), Tool.getWidth(6));
-		Bitmap myThumbO = Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "phone/play_volume/base_icon.png"), Tool.getWidth(12), Tool.getWidth(14), false);
+		Bitmap myThumbO = Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "phone/play_volume/base_icon.png"), Tool.getWidth(14), Tool.getWidth(16), false);
 		Drawable myThumb = new BitmapDrawable(context.getResources(),myThumbO);
 		((SeekBar)view.findViewById(R.id.pFI_RLayout_RLayout_Sound_SeekBar)).setThumb(myThumb);
 		

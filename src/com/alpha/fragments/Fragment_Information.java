@@ -97,6 +97,7 @@ public class Fragment_Information extends Fragment {
 	private void Phone_findViewListner() {
 		this.VIEW_LISTNER.Speaker_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Speaker_Button));
 		this.VIEW_LISTNER.Music_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Music_Button));
+		this.VIEW_LISTNER.Sound_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Sound_IButton));
 		this.VIEW_LISTNER.Previous_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Previous_IButton));
 		this.VIEW_LISTNER.Next_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Next_IButton));
 		this.VIEW_LISTNER.Play_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Play_IButton));

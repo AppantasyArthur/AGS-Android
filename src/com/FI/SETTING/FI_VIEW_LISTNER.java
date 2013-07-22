@@ -31,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ViewFlipper;
 
+import com.FAM.SETTING.FAM_PopupWindow;
 import com.FAM.SETTING.FAM_Save_PopupWindow;
 import com.FAM.SETTING.PlayMode_IButton_Listner;
 import com.FAM.SETTING.Play_IButton_Listner;
@@ -236,6 +237,15 @@ public class FI_VIEW_LISTNER {
 			@Override
 			public void onClick(View v) {
 				((FragmentActivity_Main)context).ShowViewContent_ViewFlipperDisplay(2,R.animator.translate_right_in,R.animator.alpha_out);
+			}
+		});
+	}
+	public void Sound_IButton_LISTNER(ImageButton Sound_IButton){
+		Sound_IButton.setOnClickListener(new View.OnClickListener() {
+			private FAM_PopupWindow fam_PopupWindow = new FAM_PopupWindow(context);
+			@Override
+			public void onClick(View view) {
+				fam_PopupWindow.showAsDropDown(view);
 			}
 		});
 	}

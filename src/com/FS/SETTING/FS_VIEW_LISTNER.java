@@ -12,6 +12,8 @@ import org.teleal.cling.model.types.UDAServiceId;
 import org.teleal.cling.model.types.UnsignedIntegerFourBytes;
 import org.teleal.cling.support.avtransport.callback.Play;
 import org.teleal.cling.support.avtransport.callback.Stop;
+
+import com.FAM.SETTING.FAM_PopupWindow;
 import com.FAM.SETTING.PlayMode_IButton_Listner;
 import com.FAM.SETTING.Play_IButton_Listner;
 import com.alpha.UPNP.DeviceDisplay;
@@ -93,6 +95,15 @@ public class FS_VIEW_LISTNER {
 			}
 		});
 		
+	}
+	public void Sound_IButton_LISTNER(ImageButton Sound_IButton){
+		Sound_IButton.setOnClickListener(new View.OnClickListener() {
+			private FAM_PopupWindow fam_PopupWindow = new FAM_PopupWindow(context);
+			@Override
+			public void onClick(View view) {
+				fam_PopupWindow.showAsDropDown(view);
+			}
+		});
 	}
 	public void Previous_IButton_LISTNER(ImageButton Previous_IButton){
 		Previous_IButton.setOnClickListener(new View.OnClickListener() {

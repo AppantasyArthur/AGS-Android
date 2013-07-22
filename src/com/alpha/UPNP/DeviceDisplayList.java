@@ -227,6 +227,20 @@ public class DeviceDisplayList {
 		}
 		return null;
 	}
+	public DeviceDisplay GetDeviceDisplayByUDN(String MMDeviceUDN){
+		for(DeviceDisplay deviceDisplay :MRList){
+			Device device = deviceDisplay.getMMDevice();
+			mlog.info(TAG, "MMDeviceUDN = "+MMDeviceUDN);
+			if(device!=null){
+				mlog.info(TAG, "MMDeviceUDN2 = "+device.getIdentity().getUdn());
+			}
+			
+			if(device!=null&&device.getIdentity().getUdn().toString().equals(MMDeviceUDN)){
+				return deviceDisplay;
+			}
+		}
+		return null;
+	}
 	public void setSpeakerListner(FS_SPEAKER_ExpandableListAdapter_Listner FSELAListner){
 		this.FSELAListner = FSELAListner;
 	}
