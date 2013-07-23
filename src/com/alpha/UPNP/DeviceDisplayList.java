@@ -2,6 +2,9 @@ package com.alpha.UPNP;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.sql.Date;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +37,12 @@ import org.teleal.cling.support.model.PositionInfo;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
+
+import android.R.integer;
 import android.content.Context;
+import android.provider.ContactsContract.Data;
+import android.text.TextUtils.SimpleStringSplitter;
+import android.text.format.Time;
 import android.util.Log;
 
 import com.FAM.SETTING.Music_SeekBar_Listner;
@@ -185,10 +193,14 @@ public class DeviceDisplayList {
 		
 		//timeSeekBarTimer 歸零
 		if(timeSeekBarTimer!=null){
-			timeSeekBarTimer.cancel();
-			
+			timeSeekBarTimer.cancel();			
 			//畫面歸零
-			
+			if(music_SeekBar_Listner!=null){
+				music_SeekBar_Listner.SetSeek(0l, 0l, "00:00:00", "00:00:00");
+			}
+			if(Info_Music_SeekBar_Listner!=null){
+				Info_Music_SeekBar_Listner.SetSeek(0l, 0l, "00:00:00", "00:00:00");
+			}
 		}
 		
 		//設定QueqeCallBack
@@ -237,9 +249,24 @@ public class DeviceDisplayList {
 								return;
 							}
 							Long secondTotal = arg1.getTrackDurationSeconds();
-							Long secondRun = arg1.getTrackElapsedSeconds();							
-							String stringTotal = arg1.getTrackDuration();
-							String stringRun = arg1.getAbsTime();
+							Long secondRun = arg1.getTrackElapsedSeconds();	
+							
+							
+							String stringTotal = null;
+							String stringRun = null;
+							
+							if(arg1.getTrackDuration().split(":").length>1){
+								stringTotal = arg1.getTrackDuration();
+							}else{
+								stringTotal = "00:00:00";
+							}
+							
+							long hh = secondRun/60/60;
+							long mm = secondRun/60-hh*60;
+							long ss = secondRun%60;							
+						
+							stringRun = String.format("%02d",hh)+":"+ String.format("%02d",mm)+":"+ String.format("%02d",ss);
+							
 							if(music_SeekBar_Listner!=null){
 								music_SeekBar_Listner.SetSeek(secondTotal, secondRun, stringTotal, stringRun);
 							}

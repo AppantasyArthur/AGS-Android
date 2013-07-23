@@ -172,7 +172,7 @@ public class FS_VIEW_SETTING {
 		view.findViewById(R.id.pFS_RLayout_RLayout_Random_IButton).setTag(0);
 		new ThreadReadBitMapInAssets(context, "phone/play_volume/shuffle off_f.PNG", view.findViewById(R.id.pFS_RLayout_RLayout_Random_IButton), 2);
 		//Current_TextView
-		Tool.fitsViewWidth(35, view.findViewById(R.id.pFS_RLayout_RLayout_Current_TextView));
+		Tool.fitsViewWidth(40, view.findViewById(R.id.pFS_RLayout_RLayout_Current_TextView));
 		view.findViewById(R.id.pFS_RLayout_RLayout_Current_TextView).getLayoutParams().height = Tool.getWidth(20);
 		Tool.fitsViewLeftMargin(90, view.findViewById(R.id.pFS_RLayout_RLayout_Current_TextView));
 		Tool.fitsViewTextSize(10, view.findViewById(R.id.pFS_RLayout_RLayout_Current_TextView));
@@ -185,7 +185,7 @@ public class FS_VIEW_SETTING {
 		Drawable myThumb = new BitmapDrawable(context.getResources(),myThumbO);
 		((SeekBar)view.findViewById(R.id.pFS_RLayout_RLayout_Music_SeekBar)).setThumb(myThumb);
 		//Total_TextView
-		Tool.fitsViewWidth(35, view.findViewById(R.id.pFS_RLayout_RLayout_Total_TextView));
+		Tool.fitsViewWidth(40, view.findViewById(R.id.pFS_RLayout_RLayout_Total_TextView));
 		view.findViewById(R.id.pFS_RLayout_RLayout_Total_TextView).getLayoutParams().height = Tool.getWidth(20);
 		Tool.fitsViewRightMargin(6, view.findViewById(R.id.pFS_RLayout_RLayout_Total_TextView));
 		Tool.fitsViewTextSize(10, view.findViewById(R.id.pFS_RLayout_RLayout_Total_TextView));
