@@ -26,6 +26,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 public class Fragment_Information extends Fragment {
@@ -101,6 +103,9 @@ public class Fragment_Information extends Fragment {
 		this.VIEW_LISTNER.Previous_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Previous_IButton));
 		this.VIEW_LISTNER.Next_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Next_IButton));
 		this.VIEW_LISTNER.Play_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Play_IButton));
+		this.VIEW_LISTNER.SetTimeSeekLISTNER((TextView)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Current_TextView),
+												(SeekBar)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Music_SeekBar),
+												(TextView)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Total_TextView));
 		this.VIEW_LISTNER.CycleRandom_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Cycle_IButton),
 														(ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Random_IButton));
 		this.VIEW_LISTNER.SET_QUEUE_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Queue_Button),

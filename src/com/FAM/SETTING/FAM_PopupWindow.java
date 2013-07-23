@@ -203,7 +203,7 @@ public class FAM_PopupWindow extends PopupWindow {
 			if(device!=null){
 				Service RenderingControlService = device.findService(new UDAServiceId("RenderingControl"));
 				if(RenderingControlService!=null){
-					Device_SoundCallBack = new SubscriptionCallback(RenderingControlService,600){
+					Device_SoundCallBack = new SubscriptionCallback(RenderingControlService){
 						@Override
 						protected void ended(GENASubscription arg0,	CancelReason arg1, UpnpResponse arg2) {
 						}

@@ -119,7 +119,7 @@ public class FAM_VIEW_SETTING {
 		//Total TextView
 		Tool.fitsViewLeftMargin(145, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Total_TextView));		
 		Tool.fitsViewHeight(22, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Total_TextView));
-		view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Total_TextView).getLayoutParams().width = Tool.getHeight(51);
+		view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Total_TextView).getLayoutParams().width = Tool.getHeight(60);
 		Tool.fitsViewTextSize(6, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Total_TextView));
 		
 		//Music SeekBar
@@ -133,7 +133,7 @@ public class FAM_VIEW_SETTING {
 		//Total TextView
 		Tool.fitsViewLeftMargin(843, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Current_TextView));	
 		Tool.fitsViewHeight(22, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Current_TextView));
-		view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Current_TextView).getLayoutParams().width = Tool.getHeight(51);
+		view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Current_TextView).getLayoutParams().width = Tool.getHeight(60);
 		Tool.fitsViewTextSize(6, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Current_TextView));		
 	}
 	private void PAD_FAM_RLayout_LEFT_RLayout(View view) {

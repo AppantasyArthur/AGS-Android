@@ -22,6 +22,8 @@ import com.alpha.upnpui.R;
 import com.appantasy.androidapptemplate.event.lastchange.GroupVO;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
+
+import android.R.raw;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -37,6 +39,8 @@ import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 public class Fragment_Speaker extends Fragment {
@@ -109,6 +113,9 @@ public class Fragment_Speaker extends Fragment {
 		this.VIEW_LISTNER.Previous_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Previous_IButton));
 		this.VIEW_LISTNER.Next_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Next_IButton));
 		this.VIEW_LISTNER.Play_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Play_IButton));
+		this.VIEW_LISTNER.SetTimeSeekLISTNER((TextView)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Current_TextView),
+												(SeekBar)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Music_SeekBar),
+												(TextView)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Total_TextView));
 		this.VIEW_LISTNER.CycleRandom_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Cycle_IButton),
 														(ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Random_IButton));
 		this.VIEW_LISTNER.ShowTITLE4_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_ShowTITLE4_IButton),

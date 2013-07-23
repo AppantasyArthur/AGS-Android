@@ -34,6 +34,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 public class FragmentActivity_Main extends FragmentActivity {
@@ -158,6 +160,10 @@ public class FragmentActivity_Main extends FragmentActivity {
 		//ShowCloseMediaC2 IButton LISTNER
 		this.VIEW_LISTNER.ShowCloseMediaC2_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_ShowCloseMediaC2_IButton),
 															(RelativeLayout)MainView.findViewById(R.id.FAM_RLayout_LLayout_MediaC2_RLayout));
+		//TimeSeekLISTNER
+		this.VIEW_LISTNER.SetTimeSeekLISTNER((TextView)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Current_TextView),
+											(SeekBar)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Music_SeekBar),
+											(TextView)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Total_TextView));
 		//Sound IButton LISTNER
 		this.VIEW_LISTNER.Sound_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Sound_IButton));
 		//Edit Button BISTNER
@@ -234,7 +240,8 @@ public class FragmentActivity_Main extends FragmentActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();			
-		FragmentActivity_Main.this.unbindService(upnpServiceConnection);	
+		FragmentActivity_Main.this.unbindService(upnpServiceConnection);		
+		FragmentActivity_Main.this.deviceDisplayList.cancelTimeSeekBarTimer();//Ãö³¬Timer
 		Log.v(TAG,"onDestroy");		
 	}
 	

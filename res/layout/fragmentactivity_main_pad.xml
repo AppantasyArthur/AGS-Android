@@ -165,15 +165,16 @@
 		        android:background="#00000000"
 		        />		     
 		    <TextView 
-		        android:id="@+id/FAM_RLayout_LLayout_RLayout_Total_TextView"
+		        android:id="@+id/FAM_RLayout_LLayout_RLayout_Current_TextView"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:layout_alignParentLeft="true"
 		        android:layout_centerVertical="true"
+		        android:textColor="#ffffff"
 		        android:padding="0dp"	
 		        android:gravity="center"
 		        android:background="#00000000"			        
-		        android:text="00:00"        
+		        android:text="00:00:00"        
 		        />
 		    <SeekBar 
 		        android:id="@+id/FAM_RLayout_LLayout_RLayout_Music_SeekBar"
@@ -185,15 +186,16 @@
 		        android:background="#00000000"		       
 		        />
 		    <TextView 
-		        android:id="@+id/FAM_RLayout_LLayout_RLayout_Current_TextView"
+		        android:id="@+id/FAM_RLayout_LLayout_RLayout_Total_TextView"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:layout_alignParentLeft="true"
 		        android:layout_centerVertical="true"
+		        android:textColor="#ffffff"
 		        android:padding="0dp"
 		        android:gravity="center"	
 		        android:background="#00000000"		         
-		        android:text="-00:00"      	
+		        android:text="00:00:00"      	
 		        />
 		</RelativeLayout>
 		<RelativeLayout 

@@ -26,6 +26,8 @@ import com.tkb.tool.ThreadReadStateListInAssets;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -34,6 +36,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 public class FAM_VIEW_LISTNER {
 	private Context context;
@@ -604,5 +608,40 @@ public class FAM_VIEW_LISTNER {
 			};
 			upnpServer.getControlPoint().execute(ActionCallback);
 		}		
+	}
+	public void SetTimeSeekLISTNER(final TextView Current_TextView,final SeekBar Music_SeekBar,final TextView Total_TextView){
+		final Handler seekHandler = new Handler(){
+			public void handleMessage (Message msg) {
+				switch(msg.what){
+				case 0:
+					Current_TextView.setText((String)msg.obj);
+					break;
+				case 1:
+					Total_TextView.setText((String)msg.obj);
+					break;
+				}
+			}
+		};
+		Music_SeekBar_Listner music_SeekBar_Listner = new Music_SeekBar_Listner(){
+			@Override
+			public void SetSeek(Long secondTotal, Long secondRun, String stringTotal, String stringRun) {
+				if(Music_SeekBar.getMax()!=secondTotal.intValue()){
+					Music_SeekBar.setMax(secondTotal.intValue());
+				}
+				if(Music_SeekBar.getProgress()!=secondRun.intValue()){
+					Music_SeekBar.setProgress(secondRun.intValue());
+				}
+				if(!stringRun.equals(Current_TextView.getText().toString())){
+					seekHandler.obtainMessage(0, stringRun).sendToTarget();
+				}
+				
+				if(stringTotal!=null&&!stringTotal.equals(Total_TextView.getText().toString())){
+					seekHandler.obtainMessage(1, stringTotal).sendToTarget();
+				}
+				
+				
+			}
+		};
+		((FragmentActivity_Main)context).GETDeviceDisplayList().setMusic_SeekBar_Listner(music_SeekBar_Listner);
 	}
 }
