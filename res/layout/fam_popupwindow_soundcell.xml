@@ -3,7 +3,7 @@
     android:id="@+id/FAM_PopupWindow_SoundCell_RLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#7f000000"
+    android:background="#00000000"
     android:clickable="false"
     >
   	<ImageView 
@@ -12,7 +12,7 @@
     	android:layout_height="wrap_content"
     	android:layout_centerVertical="true"
     	android:layout_alignParentLeft="true"
-    	android:background="#ffffff"
+    	android:background="#00000000"
   	    />
   	<SeekBar 
   	    android:id="@+id/FAM_PopupWindow_SoundCell_RLayout_SOUND_SeekBar"

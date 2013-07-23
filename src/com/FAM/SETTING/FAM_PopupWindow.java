@@ -1,8 +1,14 @@
 package com.FAM.SETTING;
 
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 import org.teleal.cling.android.AndroidUpnpService;
 import org.teleal.cling.controlpoint.ActionCallback;
@@ -18,15 +24,24 @@ import org.teleal.cling.model.meta.Device;
 import org.teleal.cling.model.meta.Service;
 import org.teleal.cling.model.state.StateVariableValue;
 import org.teleal.cling.model.types.UDAServiceId;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 
 import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.R;
+import com.appantasy.androidapptemplate.event.lastchange.GroupHandler;
+import com.appantasy.androidapptemplate.event.lastchange.GroupVO;
 import com.appantasy.androidapptemplate.event.lastchange.GroupVO.Group;
+import com.appantasy.androidapptemplate.event.lastchange.SoundLastChangeDO;
+import com.appantasy.androidapptemplate.event.lastchange.SoundLastChangeHandler;
 import com.tkb.tool.MLog;
+import com.tkb.tool.ThreadReadBitMapInAssets;
 import com.tkb.tool.Tool;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -141,7 +156,7 @@ public class FAM_PopupWindow extends PopupWindow {
 		//Sound ImageView
 		Tool.fitsViewWidth(23,viewHandler.sound_IView);
 		viewHandler.sound_IView.getLayoutParams().height = Tool.getWidth(23);
-		Tool.fitsViewLeftMargin(7, viewHandler.sound_IView);
+		Tool.fitsViewLeftMargin(7, viewHandler.sound_IView);		
 		//Sound SeekBar
 		Tool.fitsViewWidth(90, viewHandler.sound_SeekBar);
 		viewHandler.sound_SeekBar.getLayoutParams().height = Tool.getWidth(23);		
@@ -188,7 +203,7 @@ public class FAM_PopupWindow extends PopupWindow {
 			if(device!=null){
 				Service RenderingControlService = device.findService(new UDAServiceId("RenderingControl"));
 				if(RenderingControlService!=null){
-					Device_SoundCallBack = new SubscriptionCallback(RenderingControlService){
+					Device_SoundCallBack = new SubscriptionCallback(RenderingControlService,600){
 						@Override
 						protected void ended(GENASubscription arg0,	CancelReason arg1, UpnpResponse arg2) {
 						}
@@ -202,9 +217,13 @@ public class FAM_PopupWindow extends PopupWindow {
 							Map<String, StateVariableValue> values = arg0.getCurrentValues();
 							StateVariableValue status = values.get("LastChange");
 							
-							Log.i(TAG, "values size = "+status.toString());
-							
-//							SoundHandler.this.viewHandler.sound_SeekBar.setProgress(progress);
+							mlog.info(TAG, "values size = "+status.toString());
+							SoundLastChangeDO soundLastChangeDO = _parseVolume(status.toString());
+							mlog.info(TAG, "values size = "+soundLastChangeDO.getVolume());
+							mlog.info(TAG, "values size = "+soundLastChangeDO.getMute());
+							if(soundLastChangeDO.getVolume()!=null){
+								SoundHandler.this.viewHandler.sound_SeekBar.setProgress(soundLastChangeDO.getVolume());
+							}							
 						}
 
 						@Override
@@ -221,13 +240,41 @@ public class FAM_PopupWindow extends PopupWindow {
 				}
 			}		
 		}
+		private SoundLastChangeDO _parseVolume(String xml){
+			SoundLastChangeDO data = null;   
+
+			  // sax stuff   
+			  try { 			  
+				SAXParserFactory spf = SAXParserFactory.newInstance();   
+			    SAXParser sp = spf.newSAXParser();   
+			    XMLReader xr = sp.getXMLReader();  
+
+			    SoundLastChangeHandler dataHandler = new SoundLastChangeHandler();   
+			    xr.setContentHandler(dataHandler);   
+			    
+			    if(true){		    	
+			    	xr.parse(new InputSource(new StringReader(xml))); 
+				    data = dataHandler.getData();  
+			    } 
+			  } catch(ParserConfigurationException pce) {   
+			    Log.e("SAX XML", "sax parse error", pce);   
+			  } catch(SAXException se) {   
+			    Log.e("SAX XML", "sax error", se);   
+			  } catch(IOException ioe) {   
+			    Log.e("SAX XML", "sax parse io error", ioe);   
+			  } catch(Exception e) {
+				  e.printStackTrace();
+			  }  
+			  return data;   
+		}
 		private void SetSeekBarLISTNER() {
 			viewHandler.sound_SeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
 				int position = 0;
 				
 				@Override
-				public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {}
-
+				public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+					setSound_Image(progress);
+				}					
 				@Override
 				public void onStartTrackingTouch(SeekBar seekBar) {				
 					this.position = seekBar.getProgress();
@@ -242,7 +289,29 @@ public class FAM_PopupWindow extends PopupWindow {
 					SetSoundPosition(SoundHandler.this.deviceDisplay.getDevice(),stopPosition);
 				}
 			});
-			
+		}
+		private void setSound_Image(int Vol){
+			if(device_size==6){
+				if(Vol ==0){
+					new ThreadReadBitMapInAssets(context, "phone/play_volume/volume_no.png",viewHandler.sound_IView, 1);
+				}else if(Vol>=1&&Vol<=50){
+					new ThreadReadBitMapInAssets(context, "phone/play_volume/volume_02.png",viewHandler.sound_IView, 1);
+				}else if(Vol>=51&&Vol<=99){
+					new ThreadReadBitMapInAssets(context, "phone/play_volume/volume_01.png",viewHandler.sound_IView, 1);
+				}else{
+					new ThreadReadBitMapInAssets(context, "phone/play_volume/volume.png",viewHandler.sound_IView, 1);
+				}
+			}else{
+				if(Vol ==0){
+					new ThreadReadBitMapInAssets(context, "pad/PlayBack/volumn_mute.png",viewHandler.sound_IView, 1);
+				}else if(Vol>=1&&Vol<=50){
+					new ThreadReadBitMapInAssets(context, "pad/PlayBack/volumn_01.png",viewHandler.sound_IView, 1);
+				}else if(Vol>=51&&Vol<=99){
+					new ThreadReadBitMapInAssets(context, "pad/PlayBack/volumn_02.png",viewHandler.sound_IView, 1);
+				}else{
+					new ThreadReadBitMapInAssets(context, "pad/PlayBack/volumn_03.png",viewHandler.sound_IView, 1);
+				}
+			}			
 		}
 	}
 	private void SetSoundPosition(Device device,int position){

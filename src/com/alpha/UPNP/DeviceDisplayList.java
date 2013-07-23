@@ -342,7 +342,7 @@ public class DeviceDisplayList {
 					protected void eventReceived(GENASubscription arg0) {	
 						Map<String, StateVariableValue> values = arg0.getCurrentValues();
 						StateVariableValue status = values.get("DisplayInfo");
-						mlog.info(TAG,"aaaaaFriendlyName = "+EventHandler.this.deviceDisplay.getDevice().getDetails().getFriendlyName());
+						mlog.info(TAG,"FriendlyName = "+EventHandler.this.deviceDisplay.getDevice().getDetails().getFriendlyName());
 						for(Map.Entry<String, StateVariableValue>value:values.entrySet()){
 							mlog.info(TAG, "even = "+value.getKey()+"  value = "+value.getValue().toString());
 						}
@@ -386,8 +386,7 @@ public class DeviceDisplayList {
 	
 					@Override
 					protected void eventsMissed(GENASubscription arg0, int arg1) {					
-					}
-	
+					}	
 					@Override
 					protected void failed(GENASubscription arg0, UpnpResponse arg1,	Exception arg2, String arg3) {
 					}
@@ -398,7 +397,7 @@ public class DeviceDisplayList {
 		
 		
 		private String MR_State;
-		private String MR_PlayMode;		
+		private String MR_PlayMode;	
 		private String metaData_Title;
 		private ItemDO item_DO;
 		
@@ -444,9 +443,7 @@ public class DeviceDisplayList {
 				mlog.info(TAG, "AlbumURI = "+item_DO.getAlbumURI());										
 				mlog.info(TAG, "============End=============");
 			}			 		 
-		}
-		
-		
+		}	
 		//QueueList
 		private void UpdataQueueList(){
 			if(trackList!=null&&queqe_listner!=null){
@@ -532,8 +529,7 @@ public class DeviceDisplayList {
 								 if(EventHandler.this.deviceDisplay.equals(ChooseMediaRenderer)){
 									 UpdataCurrentPlayMode();
 								 }
-							 }
-							 
+							 }						 
 							 if(lastChangeDO.getAVTransportURIMetaData()!=null){								 
 								 String Item_MetaData = lastChangeDO.getAVTransportURIMetaData();
 								 if(Item_MetaData!=null&&!Item_MetaData.equals("")){
@@ -552,8 +548,7 @@ public class DeviceDisplayList {
 								 if(EventHandler.this.deviceDisplay.equals(ChooseMediaRenderer)){
 									 UpdataItem_MetaData();
 								 }
-							 }	
-							 
+							 }								 
 							 if(lastChangeDO.getTransportState()!=null||lastChangeDO.getAVTransportURIMetaData()!=null){
 								 UpdateRunState_TextView();
 							 }							 
@@ -570,16 +565,13 @@ public class DeviceDisplayList {
 								 UpdataQueueList(); 
 							 }							
 						 }				
-					}
-
+					}					
 					@Override
 					protected void eventsMissed(GENASubscription arg0, int arg1) {				
 						mlog.info(TAG,"status = eventsMissed");
 					}
-
 					@Override
 					protected void failed(GENASubscription arg0, UpnpResponse arg1,	Exception arg2, String arg3) {
-						// TODO Auto-generated method stub
 						mlog.info(TAG,"status failed="+arg3);
 					}
 				};		
