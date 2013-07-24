@@ -81,6 +81,10 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:visibility="gone"
+            android:padding="0dp"
+            android:textColor="#ffffff"
+            android:gravity="center"
+            android:text="Back"
             />
     </RelativeLayout>
    	<RelativeLayout 

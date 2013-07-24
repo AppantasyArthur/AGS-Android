@@ -240,6 +240,7 @@ public class FragmentActivity_Main extends FragmentActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();			
+		FragmentActivity_Main.this.deviceDisplayList.CancelAllListner();//清除所有Listner
 		FragmentActivity_Main.this.unbindService(upnpServiceConnection);		
 		FragmentActivity_Main.this.deviceDisplayList.cancelTimeSeekBarTimer();//關閉Timer
 		Log.v(TAG,"onDestroy");		

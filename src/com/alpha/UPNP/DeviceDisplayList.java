@@ -2,20 +2,14 @@ package com.alpha.UPNP;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.sql.Date;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.teleal.cling.android.AndroidUpnpService;
 import org.teleal.cling.controlpoint.ActionCallback;
 import org.teleal.cling.controlpoint.SubscriptionCallback;
@@ -37,14 +31,8 @@ import org.teleal.cling.support.model.PositionInfo;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
-
-import android.R.integer;
 import android.content.Context;
-import android.provider.ContactsContract.Data;
-import android.text.TextUtils.SimpleStringSplitter;
-import android.text.format.Time;
 import android.util.Log;
-
 import com.FAM.SETTING.Music_SeekBar_Listner;
 import com.FAM.SETTING.PlayMode_IButton_Listner;
 import com.FAM.SETTING.Play_IButton_Listner;
@@ -52,7 +40,6 @@ import com.FI.SETTING.FI_Queqe_ListView_BaseAdapter_Queqe_Listner;
 import com.FI.SETTING.MusicInfo_Listner;
 import com.FM.SETTING.FM_Music_ListView_BaseAdapter_Listner;
 import com.FS.SETTING.FS_SPEAKER_ExpandableListAdapter_Listner;
-import com.FS.SETTING.RunState_TextView_Listner;
 import com.FS.SETTING.RunState_TextView_Listner2;
 import com.alpha.upnpui.FragmentActivity_Main;
 import com.appantasy.androidapptemplate.event.lastchange.GroupHandler;
@@ -71,23 +58,26 @@ public class DeviceDisplayList {
 	private MLog mlog = new MLog();
 	
 	private DeviceDisplay ChooseMediaRenderer;
+	//SeekBar Timer
 	private Timer timeSeekBarTimer;
 	
 	private List<DeviceDisplay> DDList;
-	private List<DeviceDisplay> MRList;//MediaRenderer List;
-	private GroupList groupList;//MediaRenderer List FS&FI顯示使用;
-	private List<DeviceDisplay> MSList;//MediaServer List;
-	private FS_SPEAKER_ExpandableListAdapter_Listner FSELAListner;
-	private RunState_TextView_Listner2 runState_TextView_Listner2;
-	private Music_SeekBar_Listner music_SeekBar_Listner;
-	private Music_SeekBar_Listner Info_Music_SeekBar_Listner;
-	private FM_Music_ListView_BaseAdapter_Listner FMLBAListner;
-	private Play_IButton_Listner PIListner;
-	private Play_IButton_Listner Info_PIListner;
-	private PlayMode_IButton_Listner PMIListner;
-	private PlayMode_IButton_Listner Info_PMIListner;
-	private MusicInfo_Listner MIListner;
-	private FI_Queqe_ListView_BaseAdapter_Queqe_Listner queqe_listner;
+	private List<DeviceDisplay> MRList;//全部  MediaRenderer List
+	private GroupList groupList;//有Group Service 的  MediaRenderer List
+	private List<DeviceDisplay> MSList;//MediaServer List
+	//Listners
+	private FS_SPEAKER_ExpandableListAdapter_Listner FSELAListner;//Speaker
+	private RunState_TextView_Listner2 runState_TextView_Listner2;//Speaker 跑馬燈
+	private Music_SeekBar_Listner music_SeekBar_Listner;//TiemSeek
+	private Music_SeekBar_Listner Info_Music_SeekBar_Listner;//TiemSeek 	
+	private FM_Music_ListView_BaseAdapter_Listner FMLBAListner;//Music
+	private Play_IButton_Listner PIListner;//播放器 按鈕
+	private Play_IButton_Listner Info_PIListner;//播放器 按鈕
+	private PlayMode_IButton_Listner PMIListner;//PlayMode按鈕
+	private PlayMode_IButton_Listner Info_PMIListner;//PlayMode按鈕
+	private MusicInfo_Listner MIListner;//Info
+	private FI_Queqe_ListView_BaseAdapter_Queqe_Listner queqe_listner;//Queue
+	
 	
 	public DeviceDisplayList(Context context){
 		this.context = context;
@@ -104,6 +94,7 @@ public class DeviceDisplayList {
 			mlog.info(TAG, "addDeviceDisplay = return");
 			return;
 		}
+		//==================Device 分類====================
 		if(deviceType.getType().toString().equals("MediaRenderer")){
 			//MediaRenderer List
 			MRList.add(dd);
@@ -141,9 +132,6 @@ public class DeviceDisplayList {
 					}
 				}
 			}		
-			
-			
-			
 		}else if(deviceType.getType().toString().equals("MediaServer")){
 			//MediaServer List
 			MSList.add(dd);
@@ -153,8 +141,8 @@ public class DeviceDisplayList {
 		}else{
 			DDList.add(dd);
 		}
-		DeviceDetails DeviceDetails = dd.getDevice().getDetails();
-		mlog.info(TAG, "addDeviceDisplay = "+DeviceDetails.getFriendlyName());
+		//==================Device 分類====================
+		mlog.info(TAG, "addDeviceDisplay = "+dd.getDevice().getDetails().getFriendlyName());
 	}
 	public void removeDeviceDisplay(DeviceDisplay dd) {
 		DeviceType deviceType = dd.getDevice().getType();
@@ -185,6 +173,7 @@ public class DeviceDisplayList {
 			mlog.info(TAG, "removeDeviceDisplay = DD");
 		}
 	}
+	//設定所選取的 Renderer
 	public void setChooseMediaRenderer(DeviceDisplay mediaRenderer){
 		if(this.ChooseMediaRenderer==mediaRenderer){
 			return;			
@@ -226,7 +215,7 @@ public class DeviceDisplayList {
 			//資料設定
 			eventHandler.UpdataALL();
 		}
-		//設定 timeSeekBarTimer
+		//==============設定 timeSeekBarTimer===========================
 		timeSeekBarTimer = new Timer();
 		TimerTask timerTask = new TimerTask(){
 			private long systemTime;
@@ -289,28 +278,36 @@ public class DeviceDisplayList {
 			}			
 		};
 		timeSeekBarTimer.schedule(timerTask, 1000, 1000);//開始執行
+		//==============timeSeekBarTimer===========================
 	}
+	
 	public void cancelTimeSeekBarTimer(){
 		if(timeSeekBarTimer!=null){
 			timeSeekBarTimer.cancel();
 		}
 	}
-	
+	//=====================Device 取得=============================
+	//取得選取Device
 	public DeviceDisplay getChooseMediaRenderer(){
 		return this.ChooseMediaRenderer;
 	}
+	//取得 非MediaRenderer、MediaServer 的所有 Device 清單
 	public List<DeviceDisplay> getDeviceDisplayList(){
 		return DDList;
 	}
+	//取得 所有MediaRenderer Device 清單
 	public List<DeviceDisplay> getMediaRendererList(){
 		return MRList;
 	}
-	public List<DeviceDisplay> getMediaServerList(){
-		return MSList;
-	}
+	//取得 有Group的MediaRenderer Device 清單
 	public List<DeviceDisplay> getGroupList(){
 		return this.groupList.GetGroupList();
 	}
+	//取得 所有MediaServer Device 清單
+	public List<DeviceDisplay> getMediaServerList(){
+		return MSList;
+	}
+	//以DeviceManager 的UDN 找尋 Renderer
 	public Device GetMMDevice(String MMDeviceUDN){
 		for(DeviceDisplay deviceDisplay :MRList){
 			Device MMDevice = deviceDisplay.getMMDevice();
@@ -325,6 +322,7 @@ public class DeviceDisplayList {
 		}
 		return null;
 	}
+	//以DeviceManager 的UDN 找尋 Renderer
 	public DeviceDisplay GetDeviceDisplayByUDN(String MMDeviceUDN){
 		for(DeviceDisplay deviceDisplay :MRList){
 			Device device = deviceDisplay.getMMDevice();
@@ -339,6 +337,8 @@ public class DeviceDisplayList {
 		}
 		return null;
 	}
+	//=====================Device=============================
+	//===========Listner 設定================
 	public void setSpeakerListner(FS_SPEAKER_ExpandableListAdapter_Listner FSELAListner){
 		this.FSELAListner = FSELAListner;
 	}
@@ -373,7 +373,23 @@ public class DeviceDisplayList {
 	public void setQueqe_Listner(FI_Queqe_ListView_BaseAdapter_Queqe_Listner queqe_listner) {
 		this.queqe_listner = queqe_listner;
 	}
+	public void CancelAllListner(){
+		FSELAListner = null;
+		runState_TextView_Listner2 = null;
+		music_SeekBar_Listner = null;
+		Info_Music_SeekBar_Listner = null;
+		FMLBAListner = null;
+		PIListner = null;
+		Info_PIListner = null;
+		PMIListner = null;
+		Info_PMIListner = null;
+		MIListner = null;
+		queqe_listner = null;
+	}
+	//===========Listner================
 	
+	
+	// Event Handler 
 	public class EventHandler{
 		private DeviceDisplay deviceDisplay;
 		private SubscriptionCallback Device_DisplayGrouCallBack;
@@ -385,7 +401,7 @@ public class DeviceDisplayList {
 			//取得upnpServer
 			this.upnpServer = ((FragmentActivity_Main)context).GETUPnPService();			
 		}		
-		//建查Device目前狀態 
+		//檢查Group GetDisplayInfo Event
 		public void checkMasterORSingle(){
 			Device MMDevice = this.deviceDisplay.getMMDevice();			
 			Service GroupService = MMDevice.findService(new UDAServiceId("Group"));
@@ -500,7 +516,7 @@ public class DeviceDisplayList {
 			}
 		}
 		
-		
+		//===============Event 刷新 View ==================
 		private String MR_State;
 		private String MR_PlayMode;	
 		private String metaData_Title;
@@ -578,6 +594,9 @@ public class DeviceDisplayList {
 				return "";
 			}
 		}
+		//===============Event 刷新 View ==================
+		
+		//註冊 AVTransport Event
 		public void RegistInfoEvent(){		
 			if(Device_DisplayInfoCallBack!=null){
 				Device_DisplayInfoCallBack.end();

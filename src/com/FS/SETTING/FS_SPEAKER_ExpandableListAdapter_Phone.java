@@ -369,7 +369,7 @@ public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAd
 					return false;
 				}
 			});
-			//©I¥sPopupwindow
+			//©I¥s AddList
 			viewHandler.AddChildItem_ImageButton.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {	

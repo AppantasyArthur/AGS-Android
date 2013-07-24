@@ -1,5 +1,6 @@
 package com.alpha.fragments;
 
+import com.FAM.SETTING.FAM_ViewFlipper;
 import com.FI.SETTING.FI_ListView;
 import com.FI.SETTING.FI_PointLiLayout;
 import com.FI.SETTING.FI_Queqe_ListView_BaseAdapter_PAD;
@@ -31,9 +32,12 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 public class Fragment_Information extends Fragment {
+	
 	//VIEWS
 	private View Fragment_MainView;	
+	//Queuev清單
 	private FI_ListView fi_Queue_ListView;
+	//InfoViewFlipper
 	private FI_ViewFlipper fi_Info_ViewFlipper;
 	
 	//Fragment Manager
@@ -56,23 +60,26 @@ public class Fragment_Information extends Fragment {
 		this.mlog.LogSwitch = true;		
 		device_size = ((FragmentActivity_Main)context).getDevice_Size();
 		fragmentManager = ((FragmentActivity_Main)context).getSupportFragmentManager();
-		//取得View_SETTING
+		//介面設定取得
         this.VIEW_SETTING = new FI_VIEW_SETTING(this.context,this.device_size);
+        //動作設定取得
         this.VIEW_LISTNER = new FI_VIEW_LISTNER(this.context,this.device_size);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
 		if(device_size==6){
+			//手機
 			Fragment_MainView = (ViewGroup)inflater.inflate(R.layout.fragment_information_phone, null);
 			Fragment_MainView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-			Phone_findView();
-			Phone_findViewListner();
+			Phone_findView();//介面設定
+			Phone_findViewListner();//動作設定
 		}else{
+			//平板
 			Fragment_MainView = (ViewGroup)inflater.inflate(R.layout.fragment_information_pad, null);
 			Fragment_MainView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-			PAD_findView();
-			PAD_findViewListner();
+			PAD_findView();//介面設定
+			PAD_findViewListner();//動作設定
 		}		
 		return Fragment_MainView;
 	}
@@ -84,12 +91,12 @@ public class Fragment_Information extends Fragment {
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_TITLE2_1_RLayout));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_TITLE3_RLayout));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_TITLE4_RLayout));
-		//==========UP================
+		//==========UP Info================
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_UP_RLayout));
 		fi_Info_ViewFlipper = (FI_ViewFlipper)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_INFOR_ViewFlipper);
 		fi_Info_ViewFlipper.setFI_PointLiLayout((FI_PointLiLayout)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Point_LLayout));
 		//==========UP================
-		//==========down================
+		//==========down Queue================
 		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_DOWN_RLayout));
 		fi_Queue_ListView = (FI_ListView)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_QUEUE_ListView);
 		//==========down================
@@ -97,45 +104,63 @@ public class Fragment_Information extends Fragment {
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFI_RLayout_Bottom2_RLayout));
 	}
 	private void Phone_findViewListner() {
+		//切換Speaker 按鈕
 		this.VIEW_LISTNER.Speaker_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Speaker_Button));
+		//切換Music 按鈕
 		this.VIEW_LISTNER.Music_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Music_Button));
+		//聲音按鈕
 		this.VIEW_LISTNER.Sound_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Sound_IButton));
+		//播放器按鈕
 		this.VIEW_LISTNER.Previous_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Previous_IButton));
 		this.VIEW_LISTNER.Next_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Next_IButton));
 		this.VIEW_LISTNER.Play_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Play_IButton));
+		//TimeSeek
 		this.VIEW_LISTNER.SetTimeSeekLISTNER((TextView)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Current_TextView),
 												(SeekBar)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Music_SeekBar),
 												(TextView)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Total_TextView));
+		//PlayMode按鈕
 		this.VIEW_LISTNER.CycleRandom_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Cycle_IButton),
 														(ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Random_IButton));
+		//顯示Queue按鈕
 		this.VIEW_LISTNER.SET_QUEUE_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Queue_Button),
 													(RelativeLayout)Fragment_MainView.findViewById(R.id.pFI_RLayout_TITLE2_1_RLayout),
 													(RelativeLayout)Fragment_MainView.findViewById(R.id.pFI_RLayout_Bottom2_RLayout),
 													(ViewFlipper)Fragment_MainView.findViewById(R.id.pFI_RLayout_ViewContent_ViewFlipper));
+		//關閉Queue按鈕
 		this.VIEW_LISTNER.SET_Close_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Close_Button),
 													(RelativeLayout)Fragment_MainView.findViewById(R.id.pFI_RLayout_TITLE2_1_RLayout),
 													(RelativeLayout)Fragment_MainView.findViewById(R.id.pFI_RLayout_Bottom2_RLayout),
 													(ViewFlipper)Fragment_MainView.findViewById(R.id.pFI_RLayout_ViewContent_ViewFlipper));
+		//PlayMode、TimeSeek 控制bar 開關
 		this.VIEW_LISTNER.ShowTITLE4_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_ShowTITLE4_IButton),
 														(RelativeLayout)Fragment_MainView.findViewById(R.id.pFI_RLayout_TITLE4_RLayout));
+		//Queue
 		this.VIEW_LISTNER.SET_QUEUE_ListView_Listner(fi_Queue_ListView);	
+		//清除按鈕
 		this.VIEW_LISTNER.Clear_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Clear_Button),
 												(ImageView)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_ButtonsBG_ImageView));
+		//儲存按鈕
 		this.VIEW_LISTNER.Save_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Save_Button),
 												(ImageView)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_ButtonsBG_ImageView));
+		//完成按鈕
 		this.VIEW_LISTNER.Done_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Done_Button),
 												(Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Clear_Button),
 												(Button)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Save_Button),
 												this);
+		//設定按鈕
 		this.VIEW_LISTNER.Setting_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Setting_IButton));
 		this.VIEW_LISTNER.Setting_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Setting2_IButton));
 	}
 	private void PAD_findView() {		
 		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FI_RLayout_UP_RLayout));
+		//==========UP Info================
 		fi_Info_ViewFlipper = (FI_ViewFlipper)Fragment_MainView.findViewById(R.id.FI_RLayout_RLayout_INFOR_ViewFlipper);
 		fi_Info_ViewFlipper.setFI_PointLiLayout((FI_PointLiLayout)Fragment_MainView.findViewById(R.id.FI_RLayout_RLayout_Point_LLayout));
+		//==========UP================
+		//==========down Queue================
 		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FI_RLayout_DOWN_RLayout));
 		fi_Queue_ListView = (FI_ListView)Fragment_MainView.findViewById(R.id.FI_RLayout_RLayout_QUEUE_ListView);
+		//==========down================
 		mlog.info(TAG, "findView OK");
 	}	
 	private void PAD_findViewListner() {
@@ -174,8 +199,8 @@ public class Fragment_Information extends Fragment {
 	}
 	
 	@Override
-	public void onDestroyView() {
-		super.onDestroyView();
+	public void onDestroyView() {		
+		super.onDestroyView();		
 		Log.v(TAG, "onDestroyView");
 	}
 	
@@ -189,13 +214,22 @@ public class Fragment_Information extends Fragment {
 	@Override
 	public void onDetach() {
 		super.onDetach();
+		////////解決 Google SDK ViewFlipper API 問題////////////////
+		View ViewContent_ViewFlipper = this.Fragment_MainView.findViewById(R.id.pFI_RLayout_ViewContent_ViewFlipper);
+		if(ViewContent_ViewFlipper!=null){
+			((FAM_ViewFlipper)ViewContent_ViewFlipper).onDetachedFromWindow_P();
+		}
+		if(fi_Info_ViewFlipper!=null){
+			fi_Info_ViewFlipper.onDetachedFromWindow_P();
+		}
+		//////////////////////////////////////////////////////////
 		Log.v(TAG, "onDetach");
 	}
-
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 	}
+	//PAD 判斷拖移
 	public void GET_TRANSFROM_FROM_FM(MotionEvent FM_Event){	
 		
 		if(fi_Queue_ListView!=null&&fi_Info_ViewFlipper!=null){	
@@ -224,6 +258,7 @@ public class Fragment_Information extends Fragment {
 			}
 		}		
 	}
+	//編輯模式
 	public boolean SET_FI_ListView_Edite(boolean isEdit){
 		if(!isEdit){
 			if(device_size==6){

@@ -101,6 +101,7 @@ public class FM_VIEW_SETTING {
 		Tool.fitsViewWidth(51, view.findViewById(R.id.pFM_RLayout_RLayout_MusicBack_Button));
 		Tool.fitsViewHeight(23, view.findViewById(R.id.pFM_RLayout_RLayout_MusicBack_Button));
 		Tool.fitsViewLeftMargin(8, view.findViewById(R.id.pFM_RLayout_RLayout_MusicBack_Button));
+		Tool.fitsViewTextSize(12, view.findViewById(R.id.pFM_RLayout_RLayout_MusicBack_Button));
 		new ThreadReadBitMapInAssets(context, "phone/playlist/back.png", view.findViewById(R.id.pFM_RLayout_RLayout_MusicBack_Button), 3);
 		
 		//SearchMusic RLayout		
@@ -203,6 +204,7 @@ public class FM_VIEW_SETTING {
 		Tool.fitsViewWidth(55, view.findViewById(R.id.FM_RLayout_RLayout_MusicBack_Button));
 		Tool.fitsViewHeight(32, view.findViewById(R.id.FM_RLayout_RLayout_MusicBack_Button));
 		Tool.fitsViewLeftMargin(30, view.findViewById(R.id.FM_RLayout_RLayout_MusicBack_Button));
+		Tool.fitsViewTextSize(6, view.findViewById(R.id.FM_RLayout_RLayout_MusicBack_Button));
 		new ThreadReadBitMapInAssets(context, "pad/Playlist/playlist_back_btn.png", view.findViewById(R.id.FM_RLayout_RLayout_MusicBack_Button), 3);
 	}
 	private void PAD_FM_RLayout_TITLE3_RLayout(View view) {

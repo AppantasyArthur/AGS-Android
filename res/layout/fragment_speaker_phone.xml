@@ -154,7 +154,7 @@
 		    android:background="#00000000"
 		    />
 	</RelativeLayout>
-	<ViewFlipper 
+	<com.FAM.SETTING.FAM_ViewFlipper 
 	    android:id="@+id/pFS_RLayout_ViewContent_ViewFlipper"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"       
@@ -196,7 +196,7 @@
 				    ></LinearLayout>	    	
         	</ScrollView> 
         </RelativeLayout>           
-    </ViewFlipper>	  
+    </com.FAM.SETTING.FAM_ViewFlipper>	  
     <RelativeLayout 
 	    android:id="@+id/pFS_RLayout_TITLE4_RLayout"
 		android:layout_width="match_parent"

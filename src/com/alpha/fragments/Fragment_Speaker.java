@@ -13,6 +13,8 @@ import org.teleal.cling.model.meta.ActionArgument;
 import org.teleal.cling.model.meta.Device;
 import org.teleal.cling.model.meta.Service;
 import org.teleal.cling.model.types.UDAServiceId;
+
+import com.FAM.SETTING.FAM_ViewFlipper;
 import com.FS.SETTING.FS_VIEW_LISTNER;
 import com.FS.SETTING.FS_VIEW_SETTING;
 import com.FS.SETTING.OptionButton;
@@ -70,23 +72,26 @@ public class Fragment_Speaker extends Fragment {
 		device_size = ((FragmentActivity_Main)context).getDevice_Size();
 		fragmentManager = ((FragmentActivity_Main)context).getSupportFragmentManager();
 		
-		//取得View_SETTING
+		//介面設定取得
         this.VIEW_SETTING = new FS_VIEW_SETTING(this.context,this.device_size);
+      //動作設定取得
         this.VIEW_LISTNER = new FS_VIEW_LISTNER(this.context,this.device_size);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
 		if(device_size==6){
+			//手機
 			Fragment_MainView = (ViewGroup)inflater.inflate(R.layout.fragment_speaker_phone, null);
 			Fragment_MainView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-			Phone_findView();
-			Phone_findViewListner();
-		}else{		
+			Phone_findView();//介面設定
+			Phone_findViewListner();//動作設定
+		}else{	
+			//平板
 			Fragment_MainView = (ViewGroup)inflater.inflate(R.layout.fragment_speaker_pad, null);
 			Fragment_MainView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-			PAD_findView();
-			PAD_findViewListner();
+			PAD_findView();//介面設定
+			PAD_findViewListner();//動作設定
 		}
 		return Fragment_MainView;
 	}
@@ -96,33 +101,47 @@ public class Fragment_Speaker extends Fragment {
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_TITLE2_1_RLayout));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_TITLE3_RLayout));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_TITLE4_RLayout));
+		//===========Speaker List===========
 		FS_SPEAKER_EListView = (ExpandableListView)Fragment_MainView.findViewById(R.id.pFS_RLayout_SPEAKER_EListView);
-		this.VIEW_SETTING.VIEWSET(FS_SPEAKER_EListView);		
+		this.VIEW_SETTING.VIEWSET(FS_SPEAKER_EListView);	
+		//===========Speaker===========		
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_Bottom_RLayout));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_Bottom2_RLayout));
 		mlog.info(TAG, "findView OK");
 	}
 	private void Phone_findViewListner() {
+		//切換NowPlaying 按鈕
 		this.VIEW_LISTNER.NowPlaying_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Nowplaying_Button));
+		//切換Music 按鈕
 		this.VIEW_LISTNER.Music_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Music_Button));
+		//Close
 		this.VIEW_LISTNER.Close_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Close_Button),
 												this);
+		//Done
 		this.VIEW_LISTNER.Done_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Done_Button),
 				this);
+		//聲音按鈕
 		this.VIEW_LISTNER.Sound_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Sound_IButton));
+		//播放器按鈕
 		this.VIEW_LISTNER.Previous_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Previous_IButton));
 		this.VIEW_LISTNER.Next_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Next_IButton));
 		this.VIEW_LISTNER.Play_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Play_IButton));
 		this.VIEW_LISTNER.SetTimeSeekLISTNER((TextView)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Current_TextView),
 												(SeekBar)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Music_SeekBar),
 												(TextView)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Total_TextView));
+		//PlayMode按鈕
 		this.VIEW_LISTNER.CycleRandom_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Cycle_IButton),
 														(ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Random_IButton));
+		//PlayMode、TimeSeek 控制bar 開關
 		this.VIEW_LISTNER.ShowTITLE4_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_ShowTITLE4_IButton),
 														(RelativeLayout)Fragment_MainView.findViewById(R.id.pFS_RLayout_TITLE4_RLayout));
+		//===========Speaker List===========
 		this.VIEW_LISTNER.SET_SPEAKER_EListView_Listner(FS_SPEAKER_EListView);
+		//===========Speaker===========
+		//設定按鈕
 		this.VIEW_LISTNER.Setting_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Setting_IButton));
 		this.VIEW_LISTNER.Setting_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Setting2_IButton));
+		//Select 按鈕
 		this.VIEW_LISTNER.SELECT_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_SELECT_Button),
 													this);
 	}
@@ -131,12 +150,17 @@ public class Fragment_Speaker extends Fragment {
 		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FS_RLayout));
 		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FS_RLayout_TITLE_RLayout));
 //		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FS_RLayout_TITLE2_RLayout));
+		//===========Speaker List===========
 		FS_SPEAKER_EListView = (ExpandableListView)Fragment_MainView.findViewById(R.id.FS_RLayout_SPEAKER_EListView);
 		VIEW_SETTING.VIEWSET(FS_SPEAKER_EListView);
+		//===========Speaker===========
+		
 		mlog.info(TAG, "findView OK");
 	}	
 	private void PAD_findViewListner() {
+		//===========Speaker List===========
 		VIEW_LISTNER.SET_SPEAKER_EListView_Listner(FS_SPEAKER_EListView);
+		//===========Speaker===========
 	}
 	
 	@Override
@@ -172,7 +196,7 @@ public class Fragment_Speaker extends Fragment {
 	
 	@Override
 	public void onDestroyView() {
-		super.onDestroyView();
+		super.onDestroyView();		
 		Log.v(TAG, "onDestroyView");
 	}
 	
@@ -185,6 +209,12 @@ public class Fragment_Speaker extends Fragment {
 	@Override
 	public void onDetach() {
 		super.onDetach();
+		////////解決 Google SDK ViewFlipper API 問題////////////////
+		View ViewContent_ViewFlipper = this.Fragment_MainView.findViewById(R.id.pFS_RLayout_ViewContent_ViewFlipper);
+		if(ViewContent_ViewFlipper!=null){
+			((FAM_ViewFlipper)ViewContent_ViewFlipper).onDetachedFromWindow_P();
+		}		
+		//////////////////////////////////////////////////////////
 		Log.v(TAG, "onDetach");
 	}
 
@@ -194,6 +224,7 @@ public class Fragment_Speaker extends Fragment {
 	}
 	private List<OptionButton> OptionButtonsList;
 	private DeviceDisplay addDeviceDisplay;
+	//Phone Close Done Bar 顯示
 	public boolean CheckTITLE2_1_RLayoutIsShown(){
 		View TITLE2_1_RLayout = Fragment_MainView.findViewById(R.id.pFS_RLayout_TITLE2_1_RLayout);
 		if(TITLE2_1_RLayout.isShown()){
@@ -202,6 +233,7 @@ public class Fragment_Speaker extends Fragment {
 			return false;
 		}
 	}
+	//Phone Create AddList Item
 	public void SetOptionButtons(List<GroupVO> groupVOList){
 		LinearLayout ChooseScroll_LLayout = (LinearLayout)Fragment_MainView.findViewById(R.id.pFS_RLayout_ViewFlipper_ScrollView_ChooseScroll_LLayout);
 		ChooseScroll_LLayout.removeAllViews();
@@ -217,9 +249,11 @@ public class Fragment_Speaker extends Fragment {
 			this.OptionButtonsList.add(optionButton);
 		}
 	}
+	//Phone 設定 要Add 的Renderer
 	public void SetAddDeviceDisplay(DeviceDisplay addDeviceDisplay){
 		this.addDeviceDisplay = addDeviceDisplay;
 	}
+	//Phone RendererList AddList 切換
 	public void ShowViewContent_ViewFlipperDisplay(int Page,int InAnimation,int OutAnimation){
 		View ViewContent_ViewFlipper = Fragment_MainView.findViewById(R.id.pFS_RLayout_ViewContent_ViewFlipper);
 		if(ViewContent_ViewFlipper==null){
@@ -254,8 +288,7 @@ public class Fragment_Speaker extends Fragment {
 				}else{
 					SetRelationWithMaster(OptionButtonsList.get(i).groupVO.getUdn(),false);
 				}					
-			}
-			
+			}			
 			TITLE2_1_RLayout.setVisibility(View.GONE);
 			Bottom2_RLayout.setVisibility(View.GONE);
 			((ViewFlipper)ViewContent_ViewFlipper).setDisplayedChild(0);
@@ -268,6 +301,7 @@ public class Fragment_Speaker extends Fragment {
 			break;
 		}
 	}
+	//Phone Renderer 全選
 	public void SetALLOptionButtonsSelect(){
 		if(OptionButtonsList!=null){
 			for(OptionButton optionButton:OptionButtonsList){
@@ -275,7 +309,8 @@ public class Fragment_Speaker extends Fragment {
 				new ThreadReadBitMapInAssets(context, "phone/grouprooms/select_icon.PNG", optionButton.Radio_ImageButton, 2);
 			}
 		}
-	}
+	}	
+	//Phone Master Slave 設定
 	private void SetRelationWithMaster(String SUDN,boolean isAdd){
 		//取得upnpServer
 		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();

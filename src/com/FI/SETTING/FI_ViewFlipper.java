@@ -124,6 +124,18 @@ public class FI_ViewFlipper extends ViewFlipper {
 		CreateProcess();
 		ADD_NEW_VIEW(0);
 	}
+	@Override
+	protected void onDetachedFromWindow() {
+		try{			
+			super.onDetachedFromWindow();			
+		}catch (IllegalArgumentException e) {
+			Log.e(TAG, ""+e.getMessage());        
+        }
+		
+	}
+	public void onDetachedFromWindow_P(){
+		this.onDetachedFromWindow();
+	}
 		
 	public void setFI_PointLiLayout(FI_PointLiLayout Point_LLayout){
 		this.Point_LLayout = Point_LLayout;
@@ -285,6 +297,7 @@ public class FI_ViewFlipper extends ViewFlipper {
 		}		
 		this.addView(new_View);
 	}
+	
 	//³]©w¤¶­±
 	private void Phone_SetView(View view) {
 		//Cell RLayout
