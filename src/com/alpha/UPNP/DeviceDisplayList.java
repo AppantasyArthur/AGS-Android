@@ -418,10 +418,11 @@ public class DeviceDisplayList {
 						public void success(ActionInvocation arg0) {							
 							ActionArgument DisplayInfo = arg0.getAction().getOutputArgument("DisplayInfo");
 							ActionArgumentValue actionArgumentValue = arg0.getOutput(DisplayInfo);
-							mlog.info(TAG, "actionArgumentValue = "+actionArgumentValue); 
-							GroupVO groupVO = _parseGroup(actionArgumentValue.toString());
+							GroupVO groupVO = _parseGroup(actionArgumentValue.toString());							
 							mlog.info(TAG, "GetDisplayInfoActionCallBack  = "+actionArgumentValue.toString());
-							mlog.info(TAG, "GetDisplayInfoActionCallBack  = "+groupVO.getName());
+							mlog.info(TAG, "Device Name  = "+groupVO.getName());
+							mlog.info(TAG, "Device UDN  = "+deviceDisplay.getDevice().getIdentity().getUdn());
+							mlog.info(TAG, "DeviceManager UDN  = "+groupVO.getUdn());							
 							mlog.info(TAG, "GetDisplayInfoActionCallBack success");
 							deviceDisplay.setGroupVO(groupVO);
 							if(!groupVO.isSlave()){

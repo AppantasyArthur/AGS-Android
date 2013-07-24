@@ -22,7 +22,7 @@ public class ThreadReadBitMapInAssets {
 	private View view;
 	private int type;
 	private static HashMap<String,SoftReference<Bitmap>> map = new HashMap<String,SoftReference<Bitmap>>();
-	private static final ExecutorService executorService = Executors.newFixedThreadPool(1);
+	private static final ExecutorService executorService = Executors.newFixedThreadPool(2);
 	private static Handler mHandler = new Handler() {  
         public void handleMessage (Message msg) {
         	HandlerView hview = (HandlerView)msg.obj;
@@ -52,11 +52,19 @@ public class ThreadReadBitMapInAssets {
 		CreateThread();
 	}
 	private void CreateThread(){
+		
 		executorService.submit(new Runnable(){
 			@Override
 			public void run() {
+				
 				Bitmap bitmap = null;
 				if(map.get(resName)==null||map.get(resName).get()==null){
+					int randon = (int)(Math.random()*50);
+					try {
+						Thread.sleep(randon);
+					} catch (InterruptedException e) {						
+						e.printStackTrace();
+					}
 					bitmap = Tool.readBitMapInAssets(context, resName);					
 					SoftReference<Bitmap> softReference = new SoftReference<Bitmap>(bitmap);
 					map.put(resName, softReference);					
