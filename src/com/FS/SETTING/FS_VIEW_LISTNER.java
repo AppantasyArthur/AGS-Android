@@ -17,6 +17,7 @@ import com.FAM.SETTING.FAM_PopupWindow;
 import com.FAM.SETTING.Music_SeekBar_Listner;
 import com.FAM.SETTING.PlayMode_IButton_Listner;
 import com.FAM.SETTING.Play_IButton_Listner;
+import com.FAM.SETTING.Sound_SeekBar_Listner;
 import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.fragments.Fragment_Speaker;
 import com.alpha.upnpui.FragmentActivity_Main;
@@ -34,6 +35,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -41,6 +43,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 
 
 public class FS_VIEW_LISTNER {
@@ -233,7 +236,7 @@ public class FS_VIEW_LISTNER {
 						@Override
 						public void run() {
 							Play_IButton.setTag(0);
-							new ThreadReadStateListInAssets(context, "pad/PlayBack/play_f.png","pad/PlayBack/play_n.png", Play_IButton, 2);	
+							new ThreadReadStateListInAssets(context, "phone/play_volume/play_f.png","phone/play_volume/play_n.png", Play_IButton, 2);	
 						}
 					});
 					
@@ -242,7 +245,7 @@ public class FS_VIEW_LISTNER {
 						@Override
 						public void run() {
 							Play_IButton.setTag(1);
-							new ThreadReadStateListInAssets(context, "pad/PlayBack/stop_f.png","pad/PlayBack/stop_n.png", Play_IButton, 2);	
+							new ThreadReadStateListInAssets(context, "phone/play_volume/stop_f.png","phone/play_volume/stop_n.png", Play_IButton, 2);	
 						}
 					});
 				}
@@ -348,6 +351,59 @@ public class FS_VIEW_LISTNER {
 			}
 		};
 		((FragmentActivity_Main)context).GETDeviceDisplayList().setMusic_SeekBar_Listner(music_SeekBar_Listner);
+	}
+	public void Sound_SeekBarLISTNER(final SeekBar Sound_SeekBar,final ImageView Sound_ImageButton){
+		Sound_SeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
+			int position = 0;
+			
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				setSound_Image(progress,Sound_ImageButton);
+			}					
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {				
+				this.position = seekBar.getProgress();
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				int stopPosition = seekBar.getProgress();	
+				seekBar.setProgress(position);
+				this.position = 0;
+				
+				SetSoundPosition(stopPosition);
+			}
+		});
+		Sound_SeekBar_Listner sound_SeekBar_Listner = new Sound_SeekBar_Listner(){
+			@Override
+			public void SetSeek(int volume) {
+				mlog.error("SetSeek", "SetSeek = "+volume);
+				Sound_SeekBar.setProgress(volume);				
+			}
+		};
+		((FragmentActivity_Main)context).GETDeviceDisplayList().setSound_SeekBar_Listner(sound_SeekBar_Listner);
+	}
+	
+	private void setSound_Image(int Vol,ImageView Sound_ImageButton){
+		if(Vol ==0){
+			new ThreadReadBitMapInAssets(context, "phone/play_volume/volume_no.png",Sound_ImageButton, 1);
+		}else if(Vol>=1&&Vol<=50){
+			new ThreadReadBitMapInAssets(context, "phone/play_volume/volume_02.png",Sound_ImageButton, 1);
+		}else if(Vol>=51&&Vol<=99){
+			new ThreadReadBitMapInAssets(context, "phone/play_volume/volume_01.png",Sound_ImageButton, 1);
+		}else{
+			new ThreadReadBitMapInAssets(context, "phone/play_volume/volume.png",Sound_ImageButton, 1);
+		}
+	}
+	
+	private void SetSoundPosition(int position){
+		//Group Sound Action
+//		DeviceDisplay deviceDisplay = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+//		
+//		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+//		if(deviceDisplay!=null){
+//			
+//		}	
 	}
 	
 	

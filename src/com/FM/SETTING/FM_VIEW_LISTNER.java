@@ -15,6 +15,7 @@ import org.teleal.cling.support.model.SortCriterion;
 import org.teleal.cling.support.model.container.Container;
 import org.teleal.cling.support.model.item.Item;
 import com.FM.SETTING.FM_Music_ListView_BaseAdapter_PAD.ViewHandler;
+import com.appantasy.androidapptemplate.event.lastchange.TrackDO;
 import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.FragmentActivity_Setting;
 import com.alpha.upnpui.R;
@@ -38,7 +39,7 @@ import android.widget.RelativeLayout;
 public class FM_VIEW_LISTNER {
 	private Context context;
 	private MLog mlog = new MLog();
-	private static final String TAG = "FM_VIEW_SETTING";
+	private static final String TAG = "FM_VIEW_LISTNER";
 	private int device_size = 0;
 	public FM_VIEW_LISTNER(Context context, int device_size) {
 		this.context = context;
@@ -61,28 +62,36 @@ public class FM_VIEW_LISTNER {
 			}
 		});
 	}
-	
+	private FM_PopupWindow fm_PopupWindow;
 	public void SET_Music_ListView_Listner(FM_ListView Music_ListView, final Button MusicBack_Button){
+		fm_PopupWindow = new FM_PopupWindow(context);
 		if(device_size==6){
 			//***************************PHONE*********************************	
-			Music_ListView.setOnItemClickListener(new OnItemClickListener(){
-				private FM_PopupWindow fm_PopupWindow = new FM_PopupWindow(context);
+			Music_ListView.setOnItemClickListener(new OnItemClickListener(){				
 				@Override
 				public void onItemClick(final AdapterView<?> adapterView, final View view, int arg2, long arg3) {
 					AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
-					int kind = ((com.FM.SETTING.FM_Music_ListView_BaseAdapter_Phone.ViewHandler)view.getTag()).kindOfItme;					
+					
+					com.FM.SETTING.FM_Music_ListView_BaseAdapter_Phone.ViewHandler viewHandler = (com.FM.SETTING.FM_Music_ListView_BaseAdapter_Phone.ViewHandler)view.getTag();
+					
+					int kind = viewHandler.kindOfItme;					
 					SortCriterion[] sortCriterion = new SortCriterion[]{new SortCriterion("+dc:title")};
 					BrowseFlag browseFlag = BrowseFlag.DIRECT_CHILDREN;					
-					if(kind == 0){
+					
+					if(kind== 0 ){			
+//						//Category
+						((FM_Music_ListView_BaseAdapter_Phone)adapterView.getAdapter()).ShowLevelOne(MusicBack_Button,(Integer)viewHandler.object);
+					}else if(kind == 1){
+						//Device
 						//取得Device
 						Device device = (Device)((com.FM.SETTING.FM_Music_ListView_BaseAdapter_Phone.ViewHandler)view.getTag()).object;
 						//設定選取Device
-						((FM_Music_ListView_BaseAdapter_Phone)adapterView.getAdapter()).setChooseDevice((Device)((com.FM.SETTING.FM_Music_ListView_BaseAdapter_Phone.ViewHandler)view.getTag()).object);
-						mlog.info(TAG, "device = "+device.getDetails().getFriendlyName());					
+						((FM_Music_ListView_BaseAdapter_Phone)adapterView.getAdapter()).setChooseDevice(device);
+						mlog.info(TAG, "device = "+device.getDetails().getFriendlyName());
 						Service service = device.findService(new UDAServiceType("ContentDirectory"));
 						Browse browse = new Browse(service, "0", browseFlag, "*", 0, 0l, sortCriterion){
 							@Override
-							public void received(ActionInvocation arg0,	DIDLContent arg1) {	
+							public void received(ActionInvocation arg0,	DIDLContent arg1) {
 								for(int i =0;i<arg0.getOutput().length;i++){
 									mlog.info(TAG, "OT = "+arg0.getOutputMap().toString());	
 								}	
@@ -95,15 +104,15 @@ public class FM_VIEW_LISTNER {
 							}
 							@Override
 							public void updateStatus(Status arg0) {}
-
 							@Override
-							public void failure(ActionInvocation arg0,	UpnpResponse arg1, String arg2) {
-								mlog.info(TAG, "device failure = "+arg2);
-							}							
-						};									
+							public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {}
+						};	
 						upnpServer.getControlPoint().execute(browse);
-					}else if(kind == 1){		
-						Container container = (Container)((com.FM.SETTING.FM_Music_ListView_BaseAdapter_Phone.ViewHandler)view.getTag()).object;					
+					}else if(kind == 2){
+						//Container 
+						
+						Container container = (Container)viewHandler.object;					
+						
 						final String ParentID = container.getParentID();
 						String ObjectID = container.getId();
 						Device device = ((FM_Music_ListView_BaseAdapter_Phone)adapterView.getAdapter()).getChooseDevice();
@@ -132,47 +141,73 @@ public class FM_VIEW_LISTNER {
 							}							
 						};											
 						upnpServer.getControlPoint().execute(browse);
-					}else if(kind ==2){							
+					}else if(kind == 3){
+						//Item
 						
-						//取得 item
-						Item item = (Item)((com.FM.SETTING.FM_Music_ListView_BaseAdapter_Phone.ViewHandler)view.getTag()).object;
+						Item item = (Item)viewHandler.object;		
 						//取得MS Device
 						Device device = ((FM_Music_ListView_BaseAdapter_Phone)adapterView.getAdapter()).getChooseDevice();		
-//						for(int i = 0;i<MR_Device.getDevice().findServices().length;i++){
-//							Service service = MR_Device.getDevice().findServices()[i];							
-//							mlog.info(TAG, ""+service.toString());	
-//							for(int j=0;j<service.getActions().length;j++){
-//								Action action = service.getActions()[j];
-//								mlog.info(TAG, ""+action.toString());	
-//							}
-//						}
 						View rootView = adapterView.getRootView();
-						fm_PopupWindow.SetItemChooseDevice(item, device);
+						fm_PopupWindow.SetItem(item, device);
+						fm_PopupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0 );
+					}else if(kind == 4){
+						//List
+						String Name = (String)viewHandler.object;
+						mlog.info(TAG,"Name = "+Name);
+						((FM_Music_ListView_BaseAdapter_Phone)adapterView.getAdapter()).ShowLocalFile(MusicBack_Button,Name);
+						
+					}else if(kind ==5){
+						//Track
+						TrackDO trackDO = (TrackDO)viewHandler.object;
+						View rootView = adapterView.getRootView();
+						fm_PopupWindow.SetTrack(trackDO);
 						fm_PopupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0 );
 					}
+				}
+			});
+			Music_ListView.setOnItemLongClickListener(new OnItemLongClickListener(){
+				@Override
+				public boolean onItemLongClick(AdapterView<?> arg0, View arg1,int arg2, long arg3) {
+					com.FM.SETTING.FM_Music_ListView_BaseAdapter_Phone.ViewHandler viewHandler = (com.FM.SETTING.FM_Music_ListView_BaseAdapter_Phone.ViewHandler)arg1.getTag();
+					int kind = viewHandler.kindOfItme;		
+					if(kind==4){
+						String Name = (String)viewHandler.object;
+						List<TrackDO> list = ((FM_Music_ListView_BaseAdapter_Phone)arg0.getAdapter()).GetLocalMusicTrackList(Name);
+						View rootView = arg0.getRootView();
+						fm_PopupWindow.SetTrackList(list);
+						fm_PopupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0 );
+						return true;
+					}else{
+						return false;
+					}
+					
 				}
 			});
 			//***************************PHONE*********************************	
 		}else{
 			//***************************PAD*********************************	
-			Music_ListView.setOnItemClickListener(new OnItemClickListener(){
-				private FM_PopupWindow fm_PopupWindow = new FM_PopupWindow(context);
+			Music_ListView.setOnItemClickListener(new OnItemClickListener(){				
 				@Override
 				public void onItemClick(final AdapterView<?> adapterView, final View view, int arg2, long arg3) {
 					AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+					ViewHandler viewHandler = (ViewHandler)view.getTag();
 					int kind = ((ViewHandler)view.getTag()).kindOfItme;					
 					SortCriterion[] sortCriterion = new SortCriterion[]{new SortCriterion("+dc:title")};
 					BrowseFlag browseFlag = BrowseFlag.DIRECT_CHILDREN;					
-					if(kind == 0){
+					if(kind== 0 ){			
+//						//Category
+						((FM_Music_ListView_BaseAdapter_PAD)adapterView.getAdapter()).ShowLevelOne(MusicBack_Button,(Integer)viewHandler.object);
+					}else if(kind == 1){
+						//Device
 						//取得Device
-						Device device = (Device)((ViewHandler)view.getTag()).object;
+						Device device = (Device)((com.FM.SETTING.FM_Music_ListView_BaseAdapter_PAD.ViewHandler)view.getTag()).object;
 						//設定選取Device
-						((FM_Music_ListView_BaseAdapter_PAD)adapterView.getAdapter()).setChooseDevice((Device)((ViewHandler)view.getTag()).object);
-						mlog.info(TAG, "device = "+device.getDetails().getFriendlyName());					
+						((FM_Music_ListView_BaseAdapter_PAD)adapterView.getAdapter()).setChooseDevice(device);
+						mlog.info(TAG, "device = "+device.getDetails().getFriendlyName());
 						Service service = device.findService(new UDAServiceType("ContentDirectory"));
 						Browse browse = new Browse(service, "0", browseFlag, "*", 0, 0l, sortCriterion){
 							@Override
-							public void received(ActionInvocation arg0,	DIDLContent arg1) {	
+							public void received(ActionInvocation arg0,	DIDLContent arg1) {
 								for(int i =0;i<arg0.getOutput().length;i++){
 									mlog.info(TAG, "OT = "+arg0.getOutputMap().toString());	
 								}	
@@ -185,15 +220,15 @@ public class FM_VIEW_LISTNER {
 							}
 							@Override
 							public void updateStatus(Status arg0) {}
-
 							@Override
-							public void failure(ActionInvocation arg0,	UpnpResponse arg1, String arg2) {
-								mlog.info(TAG, "device failure = "+arg2);
-							}							
-						};									
+							public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {}
+						};	
 						upnpServer.getControlPoint().execute(browse);
-					}else if(kind == 1){		
-						Container container = (Container)((ViewHandler)view.getTag()).object;					
+					}else if(kind == 2){
+						//Container 
+						
+						Container container = (Container)viewHandler.object;					
+						
 						final String ParentID = container.getParentID();
 						String ObjectID = container.getId();
 						Device device = ((FM_Music_ListView_BaseAdapter_PAD)adapterView.getAdapter()).getChooseDevice();
@@ -212,7 +247,7 @@ public class FM_VIEW_LISTNER {
 								List<Item> listI = arg1.getItems();
 								mlog.info(TAG, "C Size = "+listC.size()+"&& I Size = "+ listI.size());								
 								//更新FM_Music_ListView_BaseAdapter
-								((FM_Music_ListView_BaseAdapter_PAD)adapterView.getAdapter()).ShowFile(MusicBack_Button,ParentID, listC,listI);
+								((FM_Music_ListView_BaseAdapter_PAD)adapterView.getAdapter()).ShowFile(MusicBack_Button,ParentID, listC,listI);								
 							}
 							@Override
 							public void updateStatus(Status arg0) {	}
@@ -222,22 +257,26 @@ public class FM_VIEW_LISTNER {
 							}							
 						};											
 						upnpServer.getControlPoint().execute(browse);
-					}else if(kind ==2){							
+					}else if(kind == 3){
+						//Item
 						
-						//取得 item
-						Item item = (Item)((ViewHandler)view.getTag()).object;
+						Item item = (Item)viewHandler.object;		
 						//取得MS Device
 						Device device = ((FM_Music_ListView_BaseAdapter_PAD)adapterView.getAdapter()).getChooseDevice();		
-//						for(int i = 0;i<MR_Device.getDevice().findServices().length;i++){
-//							Service service = MR_Device.getDevice().findServices()[i];							
-//							mlog.info(TAG, ""+service.toString());	
-//							for(int j=0;j<service.getActions().length;j++){
-//								Action action = service.getActions()[j];
-//								mlog.info(TAG, ""+action.toString());	
-//							}
-//						}
 						View rootView = adapterView.getRootView();
-						fm_PopupWindow.SetItemChooseDevice(item, device);
+						fm_PopupWindow.SetItem(item, device);
+						fm_PopupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0 );
+					}else if(kind == 4){
+						//List
+						String Name = (String)viewHandler.object;
+						mlog.info(TAG,"Name = "+Name);
+						((FM_Music_ListView_BaseAdapter_PAD)adapterView.getAdapter()).ShowLocalFile(MusicBack_Button,Name);
+						
+					}else if(kind ==5){
+						//Track
+						TrackDO trackDO = (TrackDO)viewHandler.object;
+						View rootView = adapterView.getRootView();
+						fm_PopupWindow.SetTrack(trackDO);
 						fm_PopupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0 );
 					}
 				}
@@ -245,8 +284,19 @@ public class FM_VIEW_LISTNER {
 			Music_ListView.setOnItemLongClickListener(new OnItemLongClickListener(){
 				@Override
 				public boolean onItemLongClick(AdapterView<?> arg0, View arg1,int arg2, long arg3) {
-					int kind = ((ViewHandler)arg1.getTag()).kindOfItme;		
-					if(kind==2){
+					ViewHandler viewHandler = (ViewHandler)arg1.getTag();
+					int kind = viewHandler.kindOfItme;		
+					if(kind==3){
+						((FM_ListView)arg0).setItemLongClickState(true);
+						return true;
+					}else if(kind==4){					
+						String Name = (String)viewHandler.object;
+						List<TrackDO> list = ((FM_Music_ListView_BaseAdapter_PAD)arg0.getAdapter()).GetLocalMusicTrackList(Name);
+						View rootView = arg0.getRootView();
+						fm_PopupWindow.SetTrackList(list);
+						fm_PopupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0 );
+						return true;					
+					}else if(kind==5){
 						((FM_ListView)arg0).setItemLongClickState(true);
 						return true;
 					}else{
@@ -461,13 +511,13 @@ public class FM_VIEW_LISTNER {
 			MusicBack.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					((FM_Music_ListView_BaseAdapter_Phone)Music_ListView.getAdapter()).ShowPrivousFile((Button)v);
+					((FM_Music_ListView_BaseAdapter_Phone)Music_ListView.getAdapter()).ShowPrivous((Button)v);
 				}
 			});
 			MusicBack.setOnLongClickListener(new View.OnLongClickListener() {				
 				@Override
 				public boolean onLongClick(View v) {
-					((FM_Music_ListView_BaseAdapter_Phone)Music_ListView.getAdapter()).ShowPrivousDevice((Button)v);
+					((FM_Music_ListView_BaseAdapter_Phone)Music_ListView.getAdapter()).ShowTopDevice((Button)v);
 					return true;
 				}
 			});
@@ -477,13 +527,13 @@ public class FM_VIEW_LISTNER {
 			MusicBack.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(final View v) {
-					((FM_Music_ListView_BaseAdapter_PAD)Music_ListView.getAdapter()).ShowPrivousFile((Button)v);
+					((FM_Music_ListView_BaseAdapter_PAD)Music_ListView.getAdapter()).ShowPrivous((Button)v);
 				}
 			});
 			MusicBack.setOnLongClickListener(new View.OnLongClickListener() {				
 				@Override
 				public boolean onLongClick(View v) {
-					((FM_Music_ListView_BaseAdapter_PAD)Music_ListView.getAdapter()).ShowPrivousDevice((Button)v);
+					((FM_Music_ListView_BaseAdapter_PAD)Music_ListView.getAdapter()).ShowTopDevice((Button)v);
 					return true;
 				}
 			});

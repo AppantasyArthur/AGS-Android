@@ -217,11 +217,12 @@ public class FAM_PopupWindow extends PopupWindow {
 							Map<String, StateVariableValue> values = arg0.getCurrentValues();
 							StateVariableValue status = values.get("LastChange");
 							
-							mlog.info(TAG, "values size = "+status.toString());
+							mlog.info(TAG, "RenderingControl size = "+status.toString());
 							SoundLastChangeDO soundLastChangeDO = _parseVolume(status.toString());
-							mlog.info(TAG, "values size = "+soundLastChangeDO.getVolume());
-							mlog.info(TAG, "values size = "+soundLastChangeDO.getMute());
-							if(soundLastChangeDO.getVolume()!=null){
+							
+							if(soundLastChangeDO!=null&&soundLastChangeDO.getVolume()!=null){
+								mlog.info(TAG, "values size = "+soundLastChangeDO.getVolume());
+								mlog.info(TAG, "values size = "+soundLastChangeDO.getMute());
 								SoundHandler.this.viewHandler.sound_SeekBar.setProgress(soundLastChangeDO.getVolume());
 							}							
 						}

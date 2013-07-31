@@ -135,6 +135,8 @@ public class Fragment_Speaker extends Fragment {
 		//PlayMode¡BTimeSeek ±±¨îbar ¶}Ãö
 		this.VIEW_LISTNER.ShowTITLE4_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_ShowTITLE4_IButton),
 														(RelativeLayout)Fragment_MainView.findViewById(R.id.pFS_RLayout_TITLE4_RLayout));
+		this.VIEW_LISTNER.Sound_SeekBarLISTNER((SeekBar)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Sound_SeekBar),
+												(ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Sound_IButton));
 		//===========Speaker List===========
 		this.VIEW_LISTNER.SET_SPEAKER_EListView_Listner(FS_SPEAKER_EListView);
 		//===========Speaker===========

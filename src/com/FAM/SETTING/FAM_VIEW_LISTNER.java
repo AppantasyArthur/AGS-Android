@@ -7,23 +7,20 @@ import org.teleal.cling.model.action.ActionInvocation;
 import org.teleal.cling.model.message.UpnpResponse;
 import org.teleal.cling.model.meta.Action;
 import org.teleal.cling.model.meta.ActionArgument;
+import org.teleal.cling.model.meta.Device;
 import org.teleal.cling.model.meta.Service;
 import org.teleal.cling.model.types.ServiceId;
 import org.teleal.cling.model.types.UDAServiceId;
 import org.teleal.cling.model.types.UnsignedIntegerFourBytes;
-import org.teleal.cling.support.avtransport.callback.Pause;
 import org.teleal.cling.support.avtransport.callback.Play;
 import org.teleal.cling.support.avtransport.callback.Stop;
-
 import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.fragments.Fragment_Information;
 import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.FragmentActivity_Setting;
-import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
 import com.tkb.tool.ThreadReadStateListInAssets;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -38,6 +35,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 
 public class FAM_VIEW_LISTNER {
 	private Context context;
@@ -643,5 +641,58 @@ public class FAM_VIEW_LISTNER {
 			}
 		};
 		((FragmentActivity_Main)context).GETDeviceDisplayList().setMusic_SeekBar_Listner(music_SeekBar_Listner);
+	}
+	public void Sound_SeekBarLISTNER(final SeekBar Sound_SeekBar,final ImageView Sound_ImageButton){
+		Sound_SeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
+			int position = 0;
+			
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				setSound_Image(progress,Sound_ImageButton);
+			}					
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {				
+				this.position = seekBar.getProgress();
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				int stopPosition = seekBar.getProgress();	
+				seekBar.setProgress(position);
+				this.position = 0;
+				
+				SetSoundPosition(stopPosition);
+			}
+		});
+		Sound_SeekBar_Listner sound_SeekBar_Listner = new Sound_SeekBar_Listner(){
+			@Override
+			public void SetSeek(int volume) {
+				mlog.error("SetSeek", "SetSeek = "+volume);
+				Sound_SeekBar.setProgress(volume);				
+			}
+		};
+		((FragmentActivity_Main)context).GETDeviceDisplayList().setSound_SeekBar_Listner(sound_SeekBar_Listner);
+	}
+	
+	private void setSound_Image(int Vol,ImageView Sound_ImageButton){
+		if(Vol ==0){
+			new ThreadReadBitMapInAssets(context, "pad/PlayBack/volumn_mute.png",Sound_ImageButton, 1);
+		}else if(Vol>=1&&Vol<=50){
+			new ThreadReadBitMapInAssets(context, "pad/PlayBack/volumn_01.png",Sound_ImageButton, 1);
+		}else if(Vol>=51&&Vol<=99){
+			new ThreadReadBitMapInAssets(context, "pad/PlayBack/volumn_02.png",Sound_ImageButton, 1);
+		}else{
+			new ThreadReadBitMapInAssets(context, "pad/PlayBack/volumn_03.png",Sound_ImageButton, 1);
+		}		
+	}
+	
+	private void SetSoundPosition(int position){
+		//Group Sound Action
+//		DeviceDisplay deviceDisplay = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+//		
+//		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+//		if(deviceDisplay!=null){
+//			
+//		}	
 	}
 }

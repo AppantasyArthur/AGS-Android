@@ -111,7 +111,7 @@ public class FI_Queqe_ListView_BaseAdapter_PAD extends BaseAdapter {
 
 	@Override
 	public Object getItem(int position) {
-		return null;
+		return dataList.get(position);
 	}
 
 	@Override
@@ -326,6 +326,9 @@ public class FI_Queqe_ListView_BaseAdapter_PAD extends BaseAdapter {
 	public void SET_SELECTED_POSITION(int SelectedPosition){
 		this.SelectedPosition = SelectedPosition;
 		this.notifyDataSetChanged();
+	}
+	public List<TrackDO> GetQueue(){
+		return this.dataList;
 	}
 	
 }

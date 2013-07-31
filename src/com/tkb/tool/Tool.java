@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import com.alpha.upnpui.R;
 import com.alpha.upnpui.R.drawable;
 
+import android.R.integer;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -209,6 +210,18 @@ public class Tool {
 			e.printStackTrace();
 		}
 		
+		return JSONObjectSource;
+	}
+	public static JSONObject GetJSONObjectFromJSONArray(JSONArray JSONArraySource,int index){
+		JSONObject JSONObjectSource=null;
+		if (JSONArraySource==null || JSONArraySource.length()==0){
+			return null;
+		}
+		try {
+			JSONObjectSource = JSONArraySource.getJSONObject(index);
+		} catch (JSONException e) {			
+			e.printStackTrace();
+		}
 		return JSONObjectSource;
 	}
 	public static JSONArray AnalysisJSONArray(JSONObject JSONObjectSource,String name){

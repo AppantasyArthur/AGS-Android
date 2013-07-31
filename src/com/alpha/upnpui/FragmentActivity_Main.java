@@ -166,6 +166,8 @@ public class FragmentActivity_Main extends FragmentActivity {
 											(TextView)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Total_TextView));
 		//Sound IButton LISTNER
 		this.VIEW_LISTNER.Sound_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Sound_IButton));
+		this.VIEW_LISTNER.Sound_SeekBarLISTNER((SeekBar)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Sound_SeekBar),
+												(ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Sound_IButton));
 		//Edit Button BISTNER
 		this.VIEW_LISTNER.Clear_Button_LISTNER((Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Clear_Button),
 											(ImageView)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_ButtonsBG_ImageView));
@@ -242,7 +244,7 @@ public class FragmentActivity_Main extends FragmentActivity {
 		super.onDestroy();			
 		FragmentActivity_Main.this.deviceDisplayList.CancelAllListner();//清除所有Listner
 		FragmentActivity_Main.this.unbindService(upnpServiceConnection);		
-		FragmentActivity_Main.this.deviceDisplayList.cancelTimeSeekBarTimer();//關閉Timer
+//		FragmentActivity_Main.this.deviceDisplayList.cancelTimeSeekBarTimer();//關閉Timer
 		Log.v(TAG,"onDestroy");		
 	}
 	
@@ -303,5 +305,8 @@ public class FragmentActivity_Main extends FragmentActivity {
 	}
 	public Fragment_Speaker GETFragment_Speaker(){
 		return (Fragment_Speaker)this.fragment_Speaker;
+	}
+	public Fragment_Information GETFragment_Infor(){
+		return (Fragment_Information)this.fragment_Infor;
 	}
 }

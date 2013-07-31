@@ -1,5 +1,8 @@
 package com.alpha.fragments;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.FAM.SETTING.FAM_ViewFlipper;
 import com.FI.SETTING.FI_ListView;
 import com.FI.SETTING.FI_PointLiLayout;
@@ -10,6 +13,7 @@ import com.FI.SETTING.FI_VIEW_SETTING;
 import com.FI.SETTING.FI_ViewFlipper;
 import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.R;
+import com.appantasy.androidapptemplate.event.lastchange.TrackDO;
 import com.tkb.tool.MLog;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -134,6 +138,8 @@ public class Fragment_Information extends Fragment {
 		//PlayMode、TimeSeek 控制bar 開關
 		this.VIEW_LISTNER.ShowTITLE4_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_ShowTITLE4_IButton),
 														(RelativeLayout)Fragment_MainView.findViewById(R.id.pFI_RLayout_TITLE4_RLayout));
+		this.VIEW_LISTNER.Sound_SeekBarLISTNER((SeekBar)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Sound_SeekBar),
+												(ImageButton)Fragment_MainView.findViewById(R.id.pFI_RLayout_RLayout_Sound_IButton));
 		//Queue
 		this.VIEW_LISTNER.SET_QUEUE_ListView_Listner(fi_Queue_ListView);	
 		//清除按鈕
@@ -278,6 +284,17 @@ public class Fragment_Information extends Fragment {
 		}else{
 			return ((FI_Queqe_ListView_BaseAdapter_PAD)this.fi_Queue_ListView.getAdapter()).GET_Edite();
 		}
+		
+	}
+	public List<TrackDO> GetQueueItems(){
+		List<TrackDO> QueueItems = new ArrayList<TrackDO>();
+		List<TrackDO> list = fi_Queue_ListView.GetQueue();
+		if(list!=null){
+			for(TrackDO item:list){
+				QueueItems.add(item);
+			}
+		}		
+		return QueueItems;
 		
 	}
 }

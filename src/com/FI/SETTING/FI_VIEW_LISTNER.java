@@ -27,6 +27,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -40,11 +41,13 @@ import com.FAM.SETTING.FAM_Save_PopupWindow;
 import com.FAM.SETTING.Music_SeekBar_Listner;
 import com.FAM.SETTING.PlayMode_IButton_Listner;
 import com.FAM.SETTING.Play_IButton_Listner;
+import com.FAM.SETTING.Sound_SeekBar_Listner;
 import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.fragments.Fragment_Information;
 import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.FragmentActivity_Setting;
 import com.alpha.upnpui.R;
+import com.appantasy.androidapptemplate.event.lastchange.TrackDO;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
 import com.tkb.tool.ThreadReadStateListInAssets;
@@ -377,7 +380,7 @@ public class FI_VIEW_LISTNER {
 						@Override
 						public void run() {
 							Play_IButton.setTag(0);
-							new ThreadReadStateListInAssets(context, "pad/PlayBack/play_f.png","pad/PlayBack/play_n.png", Play_IButton, 2);	
+							new ThreadReadStateListInAssets(context, "phone/play_volume/play_f.png","phone/play_volume/play_n.png", Play_IButton, 2);	
 						}
 					});
 					
@@ -386,7 +389,7 @@ public class FI_VIEW_LISTNER {
 						@Override
 						public void run() {
 							Play_IButton.setTag(1);
-							new ThreadReadStateListInAssets(context, "pad/PlayBack/stop_f.png","pad/PlayBack/stop_n.png", Play_IButton, 2);	
+							new ThreadReadStateListInAssets(context, "phone/play_volume/stop_f.png","phone/play_volume/stop_n.png", Play_IButton, 2);	
 						}
 					});
 				}
@@ -601,9 +604,71 @@ public class FI_VIEW_LISTNER {
 		};
 		((FragmentActivity_Main)context).GETDeviceDisplayList().setInfo_Music_SeekBar_Listner(music_SeekBar_Listner);
 	}
+	public void Sound_SeekBarLISTNER(final SeekBar Sound_SeekBar,final ImageView Sound_ImageButton){
+		Sound_SeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
+			int position = 0;
+			
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				setSound_Image(progress,Sound_ImageButton);
+			}					
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {				
+				this.position = seekBar.getProgress();
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				int stopPosition = seekBar.getProgress();	
+				seekBar.setProgress(position);
+				this.position = 0;
+				
+				SetSoundPosition(stopPosition);
+			}
+		});
+		Sound_SeekBar_Listner info_Sound_SeekBar_Listner = new Sound_SeekBar_Listner(){
+			@Override
+			public void SetSeek(int volume) {
+				mlog.error("SetSeek", "SetSeek = "+volume);
+				Sound_SeekBar.setProgress(volume);				
+			}
+		};
+		((FragmentActivity_Main)context).GETDeviceDisplayList().setInfo_Sound_SeekBar_Listner(info_Sound_SeekBar_Listner);
+	}
+	
+	private void setSound_Image(int Vol,ImageView Sound_ImageButton){
+		if(Vol ==0){
+			new ThreadReadBitMapInAssets(context, "phone/play_volume/volume_no.png",Sound_ImageButton, 1);
+		}else if(Vol>=1&&Vol<=50){
+			new ThreadReadBitMapInAssets(context, "phone/play_volume/volume_02.png",Sound_ImageButton, 1);
+		}else if(Vol>=51&&Vol<=99){
+			new ThreadReadBitMapInAssets(context, "phone/play_volume/volume_01.png",Sound_ImageButton, 1);
+		}else{
+			new ThreadReadBitMapInAssets(context, "phone/play_volume/volume.png",Sound_ImageButton, 1);
+		}
+	}
+	
+	private void SetSoundPosition(int position){
+		//Group Sound Action
+//		DeviceDisplay deviceDisplay = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+//		
+//		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+//		if(deviceDisplay!=null){
+//			
+//		}	
+	}
 	public void SET_QUEUE_ListView_Listner(FI_ListView QUEUE_ListView){
 		if(device_size==6){
 			//***************************PHONE*********************************
+			QUEUE_ListView.setOnItemClickListener(new OnItemClickListener(){
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View arg1,	int arg2, long arg3) {
+					//取得Queue TrackDO 
+					TrackDO trackDO = (TrackDO)arg0.getItemAtPosition(arg2);					
+					//PlayInQueue 
+					PlayInQueue(trackDO.getId());
+				}				
+			});
 			QUEUE_ListView.setOnItemLongClickListener(new OnItemLongClickListener(){
 				@Override
 				public boolean onItemLongClick(AdapterView<?> arg0, View arg1,int arg2, long arg3) {
@@ -620,7 +685,10 @@ public class FI_VIEW_LISTNER {
 			QUEUE_ListView.setOnItemClickListener(new OnItemClickListener(){
 				@Override
 				public void onItemClick(AdapterView<?> arg0, View arg1,	int arg2, long arg3) {
-								
+					//取得Queue TrackDO 
+					TrackDO trackDO = (TrackDO)arg0.getItemAtPosition(arg2);					
+					//PlayInQueue 
+					PlayInQueue(trackDO.getId());			
 				}				
 			});
 			QUEUE_ListView.setOnItemLongClickListener(new OnItemLongClickListener(){
@@ -635,6 +703,64 @@ public class FI_VIEW_LISTNER {
 			});
 			
 			//***************************PAD*********************************
+		}
+	}
+	private void PlayInQueue(String trackIdValue){
+		if(trackIdValue==null||trackIdValue.equals("")){
+			mlog.info(TAG, "trackIdValue = null");
+			return;
+		}
+		//取得upnpServer
+		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+		//取得MR Device
+		DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+		//取得instanceId
+		UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
+		//取得service
+		Service AVTransportService = null;	
+		//檢查 MR_Device
+		if(MR_Device!=null){
+			//取得device 的 "AVTransport" service
+			AVTransportService = MR_Device.getDevice().findService( new UDAServiceId("AVTransport"));
+		}else{
+			return;
+		}
+		mlog.info(TAG, "AVTransportService = "+AVTransportService);
+		//檢查AVTransportService
+		if(AVTransportService!=null){			
+			Action action = AVTransportService.getAction("SetPlayingTrackInQueue");
+			
+			if(action!=null){				
+				ActionArgumentValue[] values = new ActionArgumentValue[2];
+				//GET ActionArgument 
+				
+				ActionArgument InstanceID = action.getInputArgument("InstanceID");
+				ActionArgument TrackID = action.getInputArgument("TrackID");
+				
+				//設定值
+				if(InstanceID!=null&&TrackID!=null){
+					values[0] =new ActionArgumentValue(InstanceID, "0");
+					values[1] =new ActionArgumentValue(TrackID, trackIdValue);
+					
+					
+					ActionInvocation ai = new ActionInvocation(action,values);
+					
+					ActionCallback PlayInQueueCallBack = new ActionCallback(ai){
+						@Override
+						public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
+							mlog.info(TAG, "PlayInQueueCallBack failure = "+arg2);
+						}
+						@Override
+						public void success(ActionInvocation arg0) {									
+							mlog.info(TAG, "PlayInQueueCallBack success");												
+							for(ActionArgumentValue aav :arg0.getOutput()){
+								mlog.info(TAG, "aav ="+aav.toString());
+							}
+						}											
+					};
+					upnpServer.getControlPoint().execute(PlayInQueueCallBack);
+				}		
+			}
 		}
 	}
 	public void Setting_IButton_LISTNER(ImageButton Setting_IButton) {

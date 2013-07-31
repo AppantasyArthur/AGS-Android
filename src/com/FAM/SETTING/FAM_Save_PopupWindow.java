@@ -1,12 +1,20 @@
 package com.FAM.SETTING;
 
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.R;
+import com.appantasy.androidapptemplate.event.lastchange.TrackDO;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
 import com.tkb.tool.ThreadReadStateListInAssets;
 import com.tkb.tool.Tool;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +27,7 @@ import android.widget.PopupWindow;
 public class FAM_Save_PopupWindow extends PopupWindow {
 	
 	private View contentView;
+	private EditText InputName_EditText;
 	
 	private Context context;	
 	private int device_size = 0;
@@ -85,11 +94,12 @@ public class FAM_Save_PopupWindow extends PopupWindow {
 		Tool.fitsViewWidth(238, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_ChooseName_TextView));
 		Tool.fitsViewTextSize(10, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_ChooseName_TextView));
 		//InputName EditText
-		Tool.fitsViewHeight(26, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_InputName_EditText));
-		Tool.fitsViewWidth(242, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_InputName_EditText));
-		Tool.fitsViewTextSize(8, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_InputName_EditText));
-		Tool.fitsViewTopMargin(5, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_InputName_EditText));
-		new ThreadReadBitMapInAssets(context, "phone/pop/save_name_bar.png", this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_InputName_EditText), 3);
+		InputName_EditText = (EditText)this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_InputName_EditText);
+		Tool.fitsViewHeight(26, InputName_EditText);
+		Tool.fitsViewWidth(242, InputName_EditText);
+		Tool.fitsViewTextSize(8, InputName_EditText);
+		Tool.fitsViewTopMargin(5, InputName_EditText);
+		new ThreadReadBitMapInAssets(context, "phone/pop/save_name_bar.png", InputName_EditText, 3);
 		mlog.info(TAG, "CreateContentView");
 	}
 	private void PAD_CreateContentView() {
@@ -129,17 +139,19 @@ public class FAM_Save_PopupWindow extends PopupWindow {
 		Tool.fitsViewWidth(400, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_ChooseName_TextView));
 		Tool.fitsViewTextSize(6, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_ChooseName_TextView));
 		//InputName EditText
-		Tool.fitsViewHeight(40, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_InputName_EditText));
-		Tool.fitsViewWidth(400, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_InputName_EditText));
-		Tool.fitsViewTextSize(8, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_InputName_EditText));
-		Tool.fitsViewTopMargin(10, this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_InputName_EditText));
-		new ThreadReadBitMapInAssets(context, "pad/pop/insert_box.png", this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_InputName_EditText), 3);
+		InputName_EditText = (EditText)this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_InputName_EditText);
+		Tool.fitsViewHeight(40, InputName_EditText);
+		Tool.fitsViewWidth(400, InputName_EditText);
+		Tool.fitsViewTextSize(8, InputName_EditText);
+		Tool.fitsViewTopMargin(10, InputName_EditText);
+		new ThreadReadBitMapInAssets(context, "pad/pop/insert_box.png", InputName_EditText, 3);
 		mlog.info(TAG, "CreateContentView");
 	}
 	public void ShowPopupWindow(View parent,int gravity,int x,int y){		
 		this.showAtLocation(parent, gravity, x, y);		
 		InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
 	    imm.toggleSoftInput(this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_InputName_EditText).getId(), 0);
+	    
 	}
 	private void ContentViewListner(){
 		//setDismiss 
@@ -161,6 +173,51 @@ public class FAM_Save_PopupWindow extends PopupWindow {
 		this.contentView.findViewById(R.id.FAM_Save_PopupWindow_Content_RLayout_RLayout_Save_Button).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				
+				String inputName = InputName_EditText.getText().toString();
+				//取得Queue 轉成 JSONArray
+				List<TrackDO> queueItems = ((FragmentActivity_Main)context).GETFragment_Infor().GetQueueItems();
+				JSONArray queueArray = new JSONArray();
+				for(TrackDO item:queueItems){
+					JSONObject jItme = new JSONObject();
+					try {
+						jItme.put("Track_Id", item.getId());
+						jItme.put("Track_Title", item.getTitle());
+					} catch (JSONException e) {						
+						e.printStackTrace();
+					}
+					if(item.getMetaData()==null){
+						try {
+							jItme.put("Track_MetaData", "");
+						} catch (JSONException e) {							
+							e.printStackTrace();
+						}
+					}else{
+						try {
+							jItme.put("Track_MetaData", item.getMetaData());
+						} catch (JSONException e) {							
+							e.printStackTrace();
+						}
+					}
+					queueArray.put(jItme);
+				}
+				
+				SharedPreferences sharedPreferences = context.getSharedPreferences("LocalMusicList", Context.MODE_PRIVATE);
+				String strLocalMusicListName = sharedPreferences.getString("LocalMusicList", "{}");
+				JSONObject MusicList = null;
+				try {
+					MusicList = new JSONObject(strLocalMusicListName);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				//複寫 或 新增
+				try {
+					MusicList.put(inputName, queueArray);
+				} catch (JSONException e) {						
+					e.printStackTrace();
+				}
+							
+				sharedPreferences.edit().putString("LocalMusicList", MusicList.toString()).commit();
 				FAM_Save_PopupWindow.this.dismiss();				
 			}
 		});	

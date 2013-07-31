@@ -1,7 +1,10 @@
 package com.FI.SETTING;
 
+import java.util.List;
+
 import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.R;
+import com.appantasy.androidapptemplate.event.lastchange.TrackDO;
 import com.tkb.tool.MLog;
 
 import android.content.Context;
@@ -91,6 +94,13 @@ public class FI_ListView extends ListView {
 	public FI_ListView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);	
 		CreateProcess();
+	}
+	public List<TrackDO>GetQueue(){
+		if(device_size==6){
+			return ((FI_Queqe_ListView_BaseAdapter_Phone)this.getAdapter()).GetQueue();
+		}else{
+			return ((FI_Queqe_ListView_BaseAdapter_PAD)this.getAdapter()).GetQueue();
+		}
 	}
 	private void CreateProcess(){
 		this.context = this.getContext();

@@ -1,5 +1,7 @@
 package com.FM.SETTING;
 
+import java.util.List;
+
 import org.teleal.cling.android.AndroidUpnpService;
 import org.teleal.cling.controlpoint.ActionCallback;
 import org.teleal.cling.model.action.ActionArgumentValue;
@@ -26,11 +28,13 @@ import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.FragmentActivity_Setting;
 import com.alpha.upnpui.R;
+import com.appantasy.androidapptemplate.event.lastchange.TrackDO;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
 import com.tkb.tool.ThreadReadStateListInAssets;
 import com.tkb.tool.Tool;
 
+import android.R.integer;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -51,10 +55,16 @@ public class FM_PopupWindow extends PopupWindow {
 	private MLog mlog = new MLog();
 	private static final String TAG = "FM_PopupWindwo";
 	
-	//XMPP
+	//Item
 	private Item item;
 	private Device MS_Device;
+	//TrackDO
+	private TrackDO trackDO;
+	//TrackDoList
+	private List<TrackDO> trackDOList;
+	
 	private int device_size = 0;
+	private int ContentFlag =0;//1 = Item ,2 = TrackDO ,3 = TrackDoList
 	public FM_PopupWindow(Context context){
 		super(context);
 		this.mlog.LogSwitch = true;
@@ -206,86 +216,116 @@ public class FM_PopupWindow extends PopupWindow {
 	private void SetOPTION_Button_1_LISTNER(Button OPTION_Button_1){
 		OPTION_Button_1.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View v) {
-				AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
-				SortCriterion[] sortCriterion = new SortCriterion[]{new SortCriterion("+dc:title")};
-				Browse browse = new Browse(MS_Device.findService(new UDAServiceType("ContentDirectory")), item.getId(), BrowseFlag.METADATA, "*", 0, 1l, sortCriterion){
-					@Override
-					public void received(ActionInvocation arg0, DIDLContent arg1) {
-						if(arg0.getOutput().length<=0||arg1.getItems().size()<=0){
-							return;
-						}
-						//取得upnpServer
-						AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
-						//取得MR Device
-						DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
-						mlog.info(TAG, "MR_Device = "+MR_Device);
-						//取得MetaData								
-						String MetaData = arg0.getOutput()[0].toString();	
-						mlog.info(TAG, "MetaData = "+MetaData);
-						//取得item res
-						Res res = item.getFirstResource();
-						//取得instanceId
-						UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
-						//取得service
-						ServiceId serviceId = new UDAServiceId("AVTransport");
-						Service AVTransportService = null;
-						//檢查Device 跟 res
-						if(MR_Device!=null&&res!=null){
-							//取得device 的 "AVTransport" service
-							AVTransportService = MR_Device.getDevice().findService(serviceId);
-						}else{
-							return;
-						}
-						//res顯示內容
-						try{
-							mlog.info(TAG, "============Start=============");
-							mlog.info(TAG, item.getId());							
-							mlog.info(TAG, item.getTitle());
-							mlog.info(TAG, item.getFirstResource().toString());
-							mlog.info(TAG, "RES = "+item.getFirstResource().getValue());
-							mlog.info(TAG, "RES = "+item.getFirstResource().getDuration());
-							mlog.info(TAG, "RES = "+item.getFirstResource().getProtocolInfo());
-							mlog.info(TAG, "RES = "+item.getFirstResource().getSize());
-							mlog.info(TAG, "RES = "+item.getProperties().size());									
-							for(int i =0;i<item.getProperties().size();i++){
-								mlog.info(TAG, "Propertie = "+item.getProperties().get(i).getValue());	
-							}							
-							mlog.info(TAG, "============End=============");
-						}catch(Exception e){
-							mlog.info(TAG, e.toString());
-						}
-						if(AVTransportService!=null){					
-							SetAVTransportURI setAVTransportURI = new SetAVTransportURI(instanceId,AVTransportService,item.getFirstResource().getValue().toString(), MetaData){
-								@Override
-							    public void success(ActionInvocation invocation) {
-									for(int i =0;i<invocation.getOutput().length;i++){
-										mlog.info(TAG, "OT = "+invocation.getOutputMap().toString());	
-									}	
-									mlog.info(TAG, "setAVTransportURI success");
-									PlayMusic();
-								}
-								@Override
-								public void failure(ActionInvocation arg0,UpnpResponse arg1, String arg2) {
-									mlog.info(TAG, "setAVTransportURI arg2"+arg2);
-									mlog.info(TAG, "setAVTransportURI failure");
-								}
-							};						
-							upnpServer.getControlPoint().execute(setAVTransportURI);
-						}
-					}
-					@Override
-					public void updateStatus(Status arg0) {						
-					}
-					@Override
-					public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
-						mlog.info(TAG, "Container failure = "+arg1);
-					}					
-				};
-				upnpServer.getControlPoint().execute(browse);
+			public void onClick(View v) {				
+				switch(ContentFlag){
+				case 1:
+					ItemPlayNow();
+					break;
+				case 2:
+					TrackPlayNow();
+					break;
+				case 3:
+					TrackListPlayNow();
+					break;
+				}
+				
 				FM_PopupWindow.this.dismiss();	
 			}
 		});
+	}
+	
+	private void ItemPlayNow(){
+		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+		SortCriterion[] sortCriterion = new SortCriterion[]{new SortCriterion("+dc:title")};
+		Browse browse = new Browse(MS_Device.findService(new UDAServiceType("ContentDirectory")), item.getId(), BrowseFlag.METADATA, "*", 0, 1l, sortCriterion){
+			@Override
+			public void received(ActionInvocation arg0, DIDLContent arg1) {
+				if(arg0.getOutput().length<=0||arg1.getItems().size()<=0){
+					return;
+				}
+				//取得upnpServer
+				AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+				//取得MR Device
+				DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+				mlog.info(TAG, "MR_Device = "+MR_Device);
+				//取得MetaData								
+				String MetaData = arg0.getOutput()[0].toString();	
+				mlog.info(TAG, "MetaData = "+MetaData);
+				//取得item res
+				Res res = item.getFirstResource();
+				//取得instanceId
+				UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
+				//取得service
+				ServiceId serviceId = new UDAServiceId("AVTransport");
+				Service AVTransportService = null;
+				//檢查Device 跟 res
+				if(MR_Device!=null&&res!=null){
+					//取得device 的 "AVTransport" service
+					AVTransportService = MR_Device.getDevice().findService(serviceId);
+				}else{
+					return;
+				}
+				//res顯示內容
+				try{
+					mlog.info(TAG, "============Start=============");
+					mlog.info(TAG, item.getId());							
+					mlog.info(TAG, item.getTitle());
+					mlog.info(TAG, item.getFirstResource().toString());
+					mlog.info(TAG, "RES = "+item.getFirstResource().getValue());
+					mlog.info(TAG, "RES = "+item.getFirstResource().getDuration());
+					mlog.info(TAG, "RES = "+item.getFirstResource().getProtocolInfo());
+					mlog.info(TAG, "RES = "+item.getFirstResource().getSize());
+					mlog.info(TAG, "RES = "+item.getProperties().size());									
+					for(int i =0;i<item.getProperties().size();i++){
+						mlog.info(TAG, "Propertie = "+item.getProperties().get(i).getValue());	
+					}							
+					mlog.info(TAG, "============End=============");
+				}catch(Exception e){
+					mlog.info(TAG, e.toString());
+				}
+				if(AVTransportService!=null){					
+					SetAVTransportURI setAVTransportURI = new SetAVTransportURI(instanceId,AVTransportService,item.getFirstResource().getValue().toString(), MetaData){
+						@Override
+					    public void success(ActionInvocation invocation) {
+							for(int i =0;i<invocation.getOutput().length;i++){
+								mlog.info(TAG, "OT = "+invocation.getOutputMap().toString());	
+							}	
+							mlog.info(TAG, "setAVTransportURI success");
+							PlayMusic();
+						}
+						@Override
+						public void failure(ActionInvocation arg0,UpnpResponse arg1, String arg2) {
+							mlog.info(TAG, "setAVTransportURI arg2"+arg2);
+							mlog.info(TAG, "setAVTransportURI failure");
+						}
+					};						
+					upnpServer.getControlPoint().execute(setAVTransportURI);
+				}
+			}
+			@Override
+			public void updateStatus(Status arg0) {						
+			}
+			@Override
+			public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
+				mlog.info(TAG, "Container failure = "+arg1);
+			}					
+		};
+		upnpServer.getControlPoint().execute(browse);
+	}
+	private void TrackPlayNow(){
+		//取得upnpServer
+		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+		//取得MR Device
+		DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+		//this.trackDO 當前的trackDO
+	
+	}
+	private void TrackListPlayNow(){
+		//取得upnpServer
+		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+		//取得MR Device
+		DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+//		this.trackDOList// 當前的trackDOList
 	}
 	private void PlayMusic(){
 		//取得upnpServer
@@ -322,140 +362,218 @@ public class FM_PopupWindow extends PopupWindow {
 		OPTION_Button_2.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				
+				switch(ContentFlag){
+				case 1:
+					ItemPlayNext();
+					break;
+				case 2:
+					TrackPlayNext();
+					break;
+				case 3:
+					TrackListPlayNext();
+					break;
+				}
 				FM_PopupWindow.this.dismiss();	
 			}
 		});
 	}
+	private void ItemPlayNext(){
+		
+	}
+	private void TrackPlayNext(){
+		
+	}
+	private void TrackListPlayNext(){
+		
+	}
+	
 	private void SetOPTION_Button_3_LISTNER(Button OPTION_Button_3){
 		OPTION_Button_3.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				
+				switch(ContentFlag){
+				case 1:
+					ItemReplayQueue();
+					break;
+				case 2:
+					TrackReplayQueue();
+					break;
+				case 3:
+					TrackListReplayQueue();
+					break;
+				}
 				FM_PopupWindow.this.dismiss();	
 			}
 		});
+	}
+	private void ItemReplayQueue(){
+		
+	}
+	private void TrackReplayQueue(){
+		
+	}
+	private void TrackListReplayQueue(){
+		
 	}
 	private void SetOPTION_Button_4_LISTNER(Button OPTION_Button_4){
 		OPTION_Button_4.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
-				SortCriterion[] sortCriterion = new SortCriterion[]{new SortCriterion("+dc:title")};
-				Browse browse = new Browse(MS_Device.findService(new UDAServiceType("ContentDirectory")), item.getId(), BrowseFlag.METADATA, "*", 0, 1l, sortCriterion){
-					@Override
-					public void received(ActionInvocation arg0, DIDLContent arg1) {
-						if(arg0.getOutput().length<=0||arg1.getItems().size()<=0){
-							return;
-						}
-						//取得upnpServer
-						AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
-						//取得MR Device
-						DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
-						mlog.info(TAG, "MR_Device = "+MR_Device);
-						//取得MetaData								
-						String MetaData = arg0.getOutput()[0].toString();	
-						mlog.info(TAG, "MetaData = "+MetaData);
-						//取得item res
-						Res res = item.getFirstResource();
-						//取得instanceId
-						UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
-						//取得service
-						ServiceId serviceId = new UDAServiceId("AVTransport");
-						Service AVTransportService = null;
-						//檢查Device 跟 res
-						if(MR_Device!=null&&res!=null){
-							//取得device 的 "AVTransport" service
-							AVTransportService = MR_Device.getDevice().findService(serviceId);
-						}else{
-							return;
-						}
-						//res顯示內容
-						try{
-							mlog.info(TAG, "============Start=============");
-							mlog.info(TAG, item.getId());							
-							mlog.info(TAG, item.getTitle());
-							mlog.info(TAG, item.getFirstResource().toString());
-							mlog.info(TAG, "RES = "+item.getFirstResource().getValue());
-							mlog.info(TAG, "RES = "+item.getFirstResource().getDuration());
-							mlog.info(TAG, "RES = "+item.getFirstResource().getProtocolInfo());
-							mlog.info(TAG, "RES = "+item.getFirstResource().getSize());
-							mlog.info(TAG, "RES = "+item.getProperties().size());									
-							for(int i =0;i<item.getProperties().size();i++){
-								mlog.info(TAG, "Propertie = "+item.getProperties().get(i).getValue());	
-							}							
-							mlog.info(TAG, "============End=============");
-						}catch(Exception e){
-							mlog.info(TAG, e.toString());
-						}
-						if(AVTransportService!=null){							
-							if(MR_Device.getDevice()!=null){
-								Action[] actions = AVTransportService.getActions();
-								for(int i =0;i<actions.length;i++){
-									mlog.info(TAG, "============action=============" + actions[i].getName());
-									for(ActionArgument aaa :actions[i].getInputArguments()){
-										mlog.info(TAG, "============ActionArgument============="+aaa.getName());
-									}
-								}
-								Action action = AVTransportService.getAction("AddTrackToQueue");
-								if(action!=null){
-									ActionArgumentValue[] values = new ActionArgumentValue[5];
-									//GET ActionArgument 
-									ActionArgument InstanceID = action.getInputArgument("InstanceID");
-									ActionArgument TrackURI = action.getInputArgument("TrackURI");
-									ActionArgument TrackURIMetaData = action.getInputArgument("TrackURIMetaData");
-									ActionArgument TrackNumber = action.getInputArgument("TrackNumber");
-									ActionArgument PlayNow = action.getInputArgument("PlayNow");
-									//設定值
-									if(InstanceID!=null&&TrackURI!=null&&TrackURIMetaData!=null&&TrackNumber!=null&&PlayNow!=null){
-										values[0] =new ActionArgumentValue(InstanceID, "0");
-										values[1] =new ActionArgumentValue(TrackURI, res.getValue());
-										values[2] =new ActionArgumentValue(TrackURIMetaData, MetaData);
-										values[3] =new ActionArgumentValue(TrackNumber, -1);
-										values[4] =new ActionArgumentValue(PlayNow, false);
-										
-										ActionInvocation ai = new ActionInvocation(action,values);
-										
-										ActionCallback AddTrackToQueueActionCallBack = new ActionCallback(ai){
-											@Override
-											public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
-												mlog.info(TAG, "AddTrackToQueueActionCallBack failure = "+arg2);
-											}
-											@Override
-											public void success(ActionInvocation arg0) {									
-												mlog.info(TAG, "AddTrackToQueueActionCallBack success");												
-												for(ActionArgumentValue aav :arg0.getOutput()){
-													mlog.info(TAG, "aav ="+aav.toString());
-												}
-											}											
-										};
-										upnpServer.getControlPoint().execute(AddTrackToQueueActionCallBack);	
-									}
-								}
-							}
-						}
-					}
-					@Override
-					public void updateStatus(Status arg0) {						
-					}
-					@Override
-					public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
-						mlog.info(TAG, "Container failure = "+arg1);
-					}					
-				};
-				upnpServer.getControlPoint().execute(browse);	
+				switch(ContentFlag){
+				case 1:
+					ItemAddToQueue();
+					break;
+				case 2:
+					TrackAddToQueue();
+					break;
+				case 3:
+					TrackListAddToQueue();
+					break;
+				}
+				
+				
 			
 				//關閉FM_PopupWindow
 				FM_PopupWindow.this.dismiss();	
 			}
 		});
 	}
-	public void SetItemChooseDevice(Item item , Device device){
+	private void ItemAddToQueue(){
+		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+		SortCriterion[] sortCriterion = new SortCriterion[]{new SortCriterion("+dc:title")};
+		Browse browse = new Browse(MS_Device.findService(new UDAServiceType("ContentDirectory")), item.getId(), BrowseFlag.METADATA, "*", 0, 1l, sortCriterion){
+			@Override
+			public void received(ActionInvocation arg0, DIDLContent arg1) {
+				if(arg0.getOutput().length<=0||arg1.getItems().size()<=0){
+					return;
+				}
+				//取得upnpServer
+				AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+				//取得MR Device
+				DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+				mlog.info(TAG, "MR_Device = "+MR_Device);
+				//取得MetaData								
+				String MetaData = arg0.getOutput()[0].toString();	
+				mlog.info(TAG, "MetaData = "+MetaData);
+				//取得item res
+				Res res = item.getFirstResource();
+				//取得instanceId
+				UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
+				//取得service
+				ServiceId serviceId = new UDAServiceId("AVTransport");
+				Service AVTransportService = null;
+				//檢查Device 跟 res
+				if(MR_Device!=null&&res!=null){
+					//取得device 的 "AVTransport" service
+					AVTransportService = MR_Device.getDevice().findService(serviceId);
+				}else{
+					return;
+				}
+				//res顯示內容
+				try{
+					mlog.info(TAG, "============Start=============");
+					mlog.info(TAG, item.getId());							
+					mlog.info(TAG, item.getTitle());
+					mlog.info(TAG, item.getFirstResource().toString());
+					mlog.info(TAG, "RES = "+item.getFirstResource().getValue());
+					mlog.info(TAG, "RES = "+item.getFirstResource().getDuration());
+					mlog.info(TAG, "RES = "+item.getFirstResource().getProtocolInfo());
+					mlog.info(TAG, "RES = "+item.getFirstResource().getSize());
+					mlog.info(TAG, "RES = "+item.getProperties().size());									
+					for(int i =0;i<item.getProperties().size();i++){
+						mlog.info(TAG, "Propertie = "+item.getProperties().get(i).getValue());	
+					}							
+					mlog.info(TAG, "============End=============");
+				}catch(Exception e){
+					mlog.info(TAG, e.toString());
+				}
+				if(AVTransportService!=null){							
+					if(MR_Device.getDevice()!=null){
+						Action[] actions = AVTransportService.getActions();
+						for(int i =0;i<actions.length;i++){
+							mlog.info(TAG, "============action=============" + actions[i].getName());
+							for(ActionArgument aaa :actions[i].getInputArguments()){
+								mlog.info(TAG, "============ActionArgument============="+aaa.getName());
+							}
+						}
+						Action action = AVTransportService.getAction("AddTrackToQueue");
+						if(action!=null){
+							ActionArgumentValue[] values = new ActionArgumentValue[5];
+							//GET ActionArgument 
+							ActionArgument InstanceID = action.getInputArgument("InstanceID");
+							ActionArgument TrackURI = action.getInputArgument("TrackURI");
+							ActionArgument TrackURIMetaData = action.getInputArgument("TrackURIMetaData");
+							ActionArgument TrackNumber = action.getInputArgument("TrackNumber");
+							ActionArgument PlayNow = action.getInputArgument("PlayNow");
+							//設定值
+							if(InstanceID!=null&&TrackURI!=null&&TrackURIMetaData!=null&&TrackNumber!=null&&PlayNow!=null){
+								values[0] =new ActionArgumentValue(InstanceID, "0");
+								values[1] =new ActionArgumentValue(TrackURI, res.getValue());
+								values[2] =new ActionArgumentValue(TrackURIMetaData, MetaData);
+								values[3] =new ActionArgumentValue(TrackNumber, -1);
+								values[4] =new ActionArgumentValue(PlayNow, false);
+								
+								ActionInvocation ai = new ActionInvocation(action,values);
+								
+								ActionCallback AddTrackToQueueActionCallBack = new ActionCallback(ai){
+									@Override
+									public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
+										mlog.info(TAG, "AddTrackToQueueActionCallBack failure = "+arg2);
+									}
+									@Override
+									public void success(ActionInvocation arg0) {									
+										mlog.info(TAG, "AddTrackToQueueActionCallBack success");												
+										for(ActionArgumentValue aav :arg0.getOutput()){
+											mlog.info(TAG, "aav ="+aav.toString());
+										}
+									}											
+								};
+								upnpServer.getControlPoint().execute(AddTrackToQueueActionCallBack);	
+							}
+						}
+					}
+				}
+			}
+			@Override
+			public void updateStatus(Status arg0) {						
+			}
+			@Override
+			public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
+				mlog.info(TAG, "Container failure = "+arg1);
+			}					
+		};
+		upnpServer.getControlPoint().execute(browse);	
+	}
+	private void TrackAddToQueue(){
+		
+	}
+	private void TrackListAddToQueue(){
+		
+	}
+	
+	public void SetItem(Item item , Device device){
+		ContentFlag = 1;
 		//歸零
 		this.item = null;
 		this.MS_Device = null;
 		//設定
 		this.item = item;
 		this.MS_Device = device;
+	}
+	public void SetTrack(TrackDO trackDO){
+		ContentFlag = 2;
+		//歸零
+		this.trackDO = null;	
+		//設定
+		this.trackDO = trackDO;
+		
+	}
+	public void SetTrackList(List<TrackDO> trackDOList){
+		ContentFlag = 3;
+		//歸零
+		this.trackDOList = null;	
+		//設定
+		this.trackDOList = trackDOList;
+		
 	}
 }

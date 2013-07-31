@@ -36,6 +36,7 @@ import android.util.Log;
 import com.FAM.SETTING.Music_SeekBar_Listner;
 import com.FAM.SETTING.PlayMode_IButton_Listner;
 import com.FAM.SETTING.Play_IButton_Listner;
+import com.FAM.SETTING.Sound_SeekBar_Listner;
 import com.FI.SETTING.FI_Queqe_ListView_BaseAdapter_Queqe_Listner;
 import com.FI.SETTING.MusicInfo_Listner;
 import com.FM.SETTING.FM_Music_ListView_BaseAdapter_Listner;
@@ -69,7 +70,9 @@ public class DeviceDisplayList {
 	private FS_SPEAKER_ExpandableListAdapter_Listner FSELAListner;//Speaker
 	private RunState_TextView_Listner2 runState_TextView_Listner2;//Speaker 跑馬燈
 	private Music_SeekBar_Listner music_SeekBar_Listner;//TiemSeek
-	private Music_SeekBar_Listner Info_Music_SeekBar_Listner;//TiemSeek 	
+	private Music_SeekBar_Listner Info_Music_SeekBar_Listner;//TiemSeek 
+	private Sound_SeekBar_Listner sound_SeekBar_Listner;//GroupSoundSeek
+	private Sound_SeekBar_Listner Info_Sound_SeekBar_Listner;//GroupSoundSeek
 	private FM_Music_ListView_BaseAdapter_Listner FMLBAListner;//Music
 	private Play_IButton_Listner PIListner;//播放器 按鈕
 	private Play_IButton_Listner Info_PIListner;//播放器 按鈕
@@ -107,10 +110,18 @@ public class DeviceDisplayList {
 			eventHandler.RegistInfoEvent();	
 			dd.setEventHandler(eventHandler);
 			
-			if(devices!=null&&devices.length>0){
+			if(devices!=null&&devices.length>0){				
 				//有Group
 				Device MMDevice = devices[0];
-				mlog.info(TAG, "Namespace = "+MMDevice.getType().getNamespace());
+				mlog.info(TAG, "===================================");
+				mlog.info(TAG, "Name = "+dd.getDevice().getDetails().getFriendlyName());
+				mlog.info(TAG, "Namespace = "+dd.getDevice().getType().getType());
+				mlog.info(TAG, "UDN = "+dd.getDevice().getIdentity().getUdn());
+				
+				mlog.info(TAG, "Name = "+MMDevice.getDetails().getFriendlyName());				
+				mlog.info(TAG, "Namespace = "+MMDevice.getType().getType());
+				mlog.info(TAG, "UDN = "+MMDevice.getIdentity().getUdn());
+				mlog.info(TAG, "===================================");
 				mlog.info(TAG, "Type = "+MMDevice.getType().getType());
 				mlog.info(TAG, "Version = "+MMDevice.getType().getVersion());
 				dd.setMMDevice(MMDevice);	
@@ -191,6 +202,13 @@ public class DeviceDisplayList {
 				Info_Music_SeekBar_Listner.SetSeek(0l, 0l, "00:00:00", "00:00:00");
 			}
 		}
+		//Group SoundSeekBar 歸零
+		if(sound_SeekBar_Listner!=null){
+			sound_SeekBar_Listner.SetSeek(0);
+			if(Info_Sound_SeekBar_Listner!=null){
+				Info_Sound_SeekBar_Listner.SetSeek(0);
+			}
+		}
 		
 		//設定QueqeCallBack
 		//Queqe 歸零
@@ -201,6 +219,7 @@ public class DeviceDisplayList {
 			MIListner.ClearMusicInfo_State();
 			MIListner.SetPositionChange();
 		}
+		
 		
 		//通知 FS 刷新
 		if(FSELAListner!=null){
@@ -216,7 +235,7 @@ public class DeviceDisplayList {
 			eventHandler.UpdataALL();
 		}
 		//==============設定 timeSeekBarTimer===========================
-		timeSeekBarTimer = new Timer();
+		/*timeSeekBarTimer = new Timer();
 		TimerTask timerTask = new TimerTask(){
 			private long systemTime;
 			@Override
@@ -277,15 +296,15 @@ public class DeviceDisplayList {
 				}
 			}			
 		};
-		timeSeekBarTimer.schedule(timerTask, 1000, 1000);//開始執行
+		timeSeekBarTimer.schedule(timerTask, 1000, 1000);//開始執行*/
 		//==============timeSeekBarTimer===========================
 	}
 	
-	public void cancelTimeSeekBarTimer(){
-		if(timeSeekBarTimer!=null){
-			timeSeekBarTimer.cancel();
-		}
-	}
+//	public void cancelTimeSeekBarTimer(){
+//		if(timeSeekBarTimer!=null){
+//			timeSeekBarTimer.cancel();
+//		}
+//	}
 	//=====================Device 取得=============================
 	//取得選取Device
 	public DeviceDisplay getChooseMediaRenderer(){
@@ -315,7 +334,6 @@ public class DeviceDisplayList {
 			if(MMDevice!=null){
 				mlog.info(TAG, "MMDeviceUDN2 = "+MMDevice.getIdentity().getUdn());
 			}
-			
 			if(MMDevice!=null&&MMDevice.getIdentity().getUdn().toString().equals(MMDeviceUDN)){
 				return MMDevice;
 			}
@@ -350,6 +368,12 @@ public class DeviceDisplayList {
 	}
 	public void setInfo_Music_SeekBar_Listner(Music_SeekBar_Listner infoMusic_SeekBar_Listner) {
 		this.Info_Music_SeekBar_Listner = infoMusic_SeekBar_Listner;
+	}
+	public void setSound_SeekBar_Listner(Sound_SeekBar_Listner sound_SeekBar_Listner) {
+		this.sound_SeekBar_Listner = sound_SeekBar_Listner;
+	}
+	public void setInfo_Sound_SeekBar_Listner(Sound_SeekBar_Listner info_Sound_SeekBar_Listner) {
+		this.Info_Sound_SeekBar_Listner = info_Sound_SeekBar_Listner;
 	}
 	public void setMusicListner(FM_Music_ListView_BaseAdapter_Listner FMLBAListner){
 		this.FMLBAListner = FMLBAListner;
@@ -522,7 +546,12 @@ public class DeviceDisplayList {
 		private String MR_PlayMode;	
 		private String metaData_Title;
 		private ItemDO item_DO;
-		
+		//======SeekBar======
+		private Long secondTotal =0l;
+		private Long secondRun =0l;		
+		private String stringTotal = null;
+		private String stringRun = null;
+		//===================
 		private List<TrackDO> trackList;
 		 //Play狀態
 		private void UpdataPlayMode(){
@@ -578,11 +607,36 @@ public class DeviceDisplayList {
 				runState_TextView_Listner2.SetRunState_TextView_State(MR_State, metaData_Title,EventHandler.this.deviceDisplay);
 			}
 		}
+		private void UpdataSeekBar(){
+			
+			if(stringTotal==null||stringTotal.equals("")||stringTotal.split(":").length<=1){
+				stringTotal = "00:00:00";
+			}
+			
+			long hh = secondRun/60/60;
+			long mm = secondRun/60-hh*60;
+			long ss = secondRun%60;							
+		
+			stringRun = String.format("%02d",hh)+":"+ String.format("%02d",mm)+":"+ String.format("%02d",ss);
+			
+			if(music_SeekBar_Listner!=null){
+				music_SeekBar_Listner.SetSeek(secondTotal, secondRun, stringTotal, stringRun);
+			}
+			if(Info_Music_SeekBar_Listner!=null){
+				Info_Music_SeekBar_Listner.SetSeek(secondTotal, secondRun, stringTotal, stringRun);
+			}
+			mlog.info(TAG, "getTrackDurationSeconds = "+secondTotal);//秒數總時間
+			mlog.info(TAG, "getTrackElapsedSeconds = "+secondRun);//秒數播放時間
+			mlog.info(TAG, "getTrackDuration = "+stringTotal);//字串總時間
+			mlog.info(TAG, "getAbsTime = "+stringRun);//字串播放時間	
+		}
+		
 		public void UpdataALL(){
 			UpdataPlayMode();
 			UpdataCurrentPlayMode();
 			UpdataItem_MetaData();
 			UpdataQueueList(); 
+			UpdataSeekBar();
 		}
 		
 		public String GetTransportState(){
@@ -676,7 +730,21 @@ public class DeviceDisplayList {
 							 }								 
 							 if(lastChangeDO.getTransportState()!=null||lastChangeDO.getAVTransportURIMetaData()!=null){
 								 UpdateRunState_TextView();
-							 }							 
+							 }
+							 //SeekBar
+							 if(true){
+								 
+								 //*****請設定 ******
+//								 secondTotal //Long  秒數      非毫秒
+//								 secondRun //Long	秒數    非毫秒
+//								 stringTotal//String 00:00:00
+//								 stringRun//String 00:00:00
+								 //*****************
+								 //判斷是否為選擇的Renderer
+								 if(EventHandler.this.deviceDisplay.equals(ChooseMediaRenderer)){
+									 UpdataSeekBar();//刷新
+								 } 
+							 }
 						 }
 						 //Queue
 						 StateVariableValue q_Status = values.get("TracksInQueue");

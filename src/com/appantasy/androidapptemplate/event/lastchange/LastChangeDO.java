@@ -36,7 +36,7 @@ public class LastChangeDO {
 	private String relativeTimePosition;
 	private String CurrentPlayMode;
 	private String currentTrackURI;
-	private String currentTrackEmbeddedMetaData;
+//	private String currentTrackMetaData;
 	private String AVTransportURIMetaData;
 	
 	
@@ -48,13 +48,13 @@ public class LastChangeDO {
 		this.currentTrackURI = currentTrackURI;
 	}
 
-	public String getCurrentTrackEmbeddedMetaData() {
-		return currentTrackEmbeddedMetaData;
-	}
-
-	public void setCurrentTrackEmbeddedMetaData(String currentTrackEmbeddedMetaData) {
-		this.currentTrackEmbeddedMetaData = currentTrackEmbeddedMetaData;
-	}
+//	public String getCurrentTrackMetaData() {
+//		return currentTrackMetaData;
+//	}
+//
+//	public void setCurrentTrackMetaData(String currentTrackEmbeddedMetaData) {
+//		this.currentTrackMetaData = currentTrackEmbeddedMetaData;
+//	}
 
 	public String getTransportState() {
 		return transportState;
