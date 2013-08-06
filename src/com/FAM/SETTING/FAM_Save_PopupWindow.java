@@ -218,6 +218,8 @@ public class FAM_Save_PopupWindow extends PopupWindow {
 				}
 							
 				sharedPreferences.edit().putString("LocalMusicList", MusicList.toString()).commit();
+				//¨ê·sMusicList
+				((FragmentActivity_Main)context).GETFragment_Music().MusicListViewLocalNameListChange();
 				FAM_Save_PopupWindow.this.dismiss();				
 			}
 		});	

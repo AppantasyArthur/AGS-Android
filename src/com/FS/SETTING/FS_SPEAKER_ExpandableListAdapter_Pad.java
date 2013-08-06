@@ -49,7 +49,7 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 	
 	private List<DeviceDisplay> GroupList;	
 	
-	private static String TAG = "FS_SPEAKER_ExpandableListAdapter";
+	private static String TAG = "FS_SPEAKER_ExpandableListAdapter_Pad";
 	private MLog mlog = new MLog();
 	
 	public Handler handler = new Handler(){

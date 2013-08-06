@@ -513,14 +513,7 @@ public class FM_VIEW_LISTNER {
 				public void onClick(View v) {
 					((FM_Music_ListView_BaseAdapter_Phone)Music_ListView.getAdapter()).ShowPrivous((Button)v);
 				}
-			});
-			MusicBack.setOnLongClickListener(new View.OnLongClickListener() {				
-				@Override
-				public boolean onLongClick(View v) {
-					((FM_Music_ListView_BaseAdapter_Phone)Music_ListView.getAdapter()).ShowTopDevice((Button)v);
-					return true;
-				}
-			});
+			});			
 			//***************************PHONE*********************************	
 		}else{
 			//***************************PAD*********************************
@@ -529,14 +522,30 @@ public class FM_VIEW_LISTNER {
 				public void onClick(final View v) {
 					((FM_Music_ListView_BaseAdapter_PAD)Music_ListView.getAdapter()).ShowPrivous((Button)v);
 				}
-			});
-			MusicBack.setOnLongClickListener(new View.OnLongClickListener() {				
+			});			
+			//***************************PAD*********************************	
+		}
+	}
+	public void SET_MusicTop_Button_Listner(final Button MusicBack, Button MusicTop,final FM_ListView Music_ListView){
+		if(device_size==6){
+			//***************************PHONE*********************************	
+			MusicTop.setOnClickListener(new View.OnClickListener() {
 				@Override
-				public boolean onLongClick(View v) {
-					((FM_Music_ListView_BaseAdapter_PAD)Music_ListView.getAdapter()).ShowTopDevice((Button)v);
-					return true;
+				public void onClick(View v) {
+					((FM_Music_ListView_BaseAdapter_Phone)Music_ListView.getAdapter()).ShowTopDevice(MusicBack);
 				}
 			});
+			
+			//***************************PHONE*********************************	
+		}else{
+			//***************************PAD*********************************
+			MusicTop.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(final View v) {
+					((FM_Music_ListView_BaseAdapter_PAD)Music_ListView.getAdapter()).ShowTopDevice(MusicBack);
+				}
+			});
+			
 			//***************************PAD*********************************	
 		}
 	}

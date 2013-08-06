@@ -309,4 +309,7 @@ public class FragmentActivity_Main extends FragmentActivity {
 	public Fragment_Information GETFragment_Infor(){
 		return (Fragment_Information)this.fragment_Infor;
 	}
+	public Fragment_Music GETFragment_Music(){
+		return (Fragment_Music)this.fragment_Music;
+	}
 }

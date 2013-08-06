@@ -48,7 +48,7 @@ public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAd
 	private FS_SPEAKER_ExpandableListAdapter_Listner FSELAListner;
 	
 	private List<DeviceDisplay> GroupList;
-	private static String TAG = "FS_SPEAKER_ExpandableListAdapter";
+	private static String TAG = "FS_SPEAKER_ExpandableListAdapter_Phone";
 	private MLog mlog = new MLog();
 	
 	private Handler handler = new Handler(){

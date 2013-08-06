@@ -67,7 +67,7 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 			case 0:
 				if(DeviceList!=null){
 					DeviceList.add((DeviceDisplay)msg.obj);
-					if(ParentID.size()==0){
+					if(ParentID.size()==1&&ParentID.get(0).equals("0")){
 						FM_Music_ListView_BaseAdapter_PAD.this.notifyDataSetChanged();
 					}					
 				}
@@ -75,13 +75,17 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 			case 1:
 				if(DeviceList!=null){
 					DeviceList.remove((DeviceDisplay)msg.obj);
-					if(ParentID.size()==0){
+					if(ParentID.size()==1&&ParentID.get(0).equals("0")){
 						FM_Music_ListView_BaseAdapter_PAD.this.notifyDataSetChanged();
 					}	
 				}
 				break;	
-			case 10:
-				
+			case 2:
+				if(ParentID.size()==1&&ParentID.get(0).equals("1")){
+					FM_Music_ListView_BaseAdapter_PAD.this.notifyDataSetChanged();
+				}
+				break;
+			case 10:				
 				FM_Music_ListView_BaseAdapter_PAD.this.notifyDataSetChanged();
 				break;
 			case 11:
@@ -144,6 +148,7 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 				DeviceList.add(MSList.get(i));
 			}			
 		}
+		GetLocalNameList();
 	}
 	private void SetListner(){
 		FMLBAListner = new FM_Music_ListView_BaseAdapter_Listner(){
@@ -158,8 +163,19 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 				handler.obtainMessage(1, deviceDisplay).sendToTarget();
 				mlog.info(TAG, "RemoveMediaServer");
 			}
+
+			@Override
+			public void LocalNameListChange() {
+				GetLocalNameList();
+				handler.obtainMessage(2).sendToTarget();
+				mlog.info(TAG, "LocalNameListChange");
+			}
+			
 		};
 		((FragmentActivity_Main)context).GETDeviceDisplayList().setMusicListner(FMLBAListner);
+	}
+	public FM_Music_ListView_BaseAdapter_Listner GetListner(){
+		return this.FMLBAListner;
 	}
 	@Override
 	public int getCount() {
@@ -182,17 +198,7 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 				//Media Server
 				return this.DeviceList.size();					
 			case 1:
-				//AGS PlayList
-				this.LocalNameList = null;//歸零
-				this.LocalNameList = new ArrayList<String>();
-				SharedPreferences sharedPreferences = context.getSharedPreferences("LocalMusicList", Context.MODE_PRIVATE);
-				String strLocalMusicListName = sharedPreferences.getString("LocalMusicList", "{}");
-				JSONObject MusicList = Tool.StringToJSONObject(strLocalMusicListName);
-				Iterator Names = MusicList.keys();
-				while(Names.hasNext()){
-					String name = (String)Names.next();
-					this.LocalNameList.add(name);
-				}
+				//AGS PlayList				
 				return LocalNameList.size();					
 			}			
 		}else if(ParentID.size()==0){
@@ -319,6 +325,7 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 		handler.obtainMessage(10).sendToTarget();
 		handler.obtainMessage(13, MusicBack_Button).sendToTarget();
 	}
+	
 	//Media Server => kind=1、kind=2
 	public void ShowFile(final Button MusicBack_Button,String ParentID,List<Container> ContainerList,List<Item> Itemlist){
 		if(ContainerList!=null){
@@ -346,6 +353,20 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 	}
 	
 	//AGS PlayList
+	public void GetLocalNameList(){	
+		if(this.LocalNameList!=null){
+			LocalNameList.clear();
+		}
+		this.LocalNameList = new ArrayList<String>();
+		SharedPreferences sharedPreferences = context.getSharedPreferences("LocalMusicList", Context.MODE_PRIVATE);
+		String strLocalMusicListName = sharedPreferences.getString("LocalMusicList", "{}");
+		JSONObject MusicList = Tool.StringToJSONObject(strLocalMusicListName);
+		Iterator Names = MusicList.keys();
+		while(Names.hasNext()){
+			String name = (String)Names.next();
+			this.LocalNameList.add(name);
+		}
+	}
 	public void ShowLocalFile(Button MusicBack_Button,String Name){
 		this.ParentID.add(""+Name);
 		this.LocalMusicTrackList = null;//歸零

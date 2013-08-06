@@ -1,6 +1,8 @@
 package com.alpha.fragments;
 
 import com.FM.SETTING.FM_ListView;
+import com.FM.SETTING.FM_Music_ListView_BaseAdapter_PAD;
+import com.FM.SETTING.FM_Music_ListView_BaseAdapter_Phone;
 import com.FM.SETTING.FM_VIEW_SETTING;
 import com.FM.SETTING.FM_VIEW_LISTNER;
 import com.alpha.upnpui.FragmentActivity_Main;
@@ -24,6 +26,8 @@ import android.widget.RelativeLayout;
 public class Fragment_Music extends Fragment {
 	//VIEWS
 	private View Fragment_MainView;	
+	
+	private FM_ListView musicListView;
 	
 	//Fragment Manager
 	private FragmentManager fragmentManager = null;
@@ -74,7 +78,8 @@ public class Fragment_Music extends Fragment {
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFM_RLayout_TITLE3_RLayout));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_TITLE4_RLayout));
 		//==========Msic List================
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_RLayout_Music_ListView));
+		musicListView = (FM_ListView)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_RLayout_Music_ListView);
+		this.VIEW_SETTING.VIEWSET(musicListView);
 		//==========Msic================
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFM_RLayout_Bottom_RLayout));
 	}
@@ -87,7 +92,12 @@ public class Fragment_Music extends Fragment {
 		VIEW_LISTNER.SET_Music_ListView_Listner((FM_ListView)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_RLayout_Music_ListView),
 												(Button)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_MusicBack_Button));
 		//Back «ö¶s
-		VIEW_LISTNER.SET_MusicBack_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_MusicBack_Button),(FM_ListView)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_RLayout_Music_ListView));
+		VIEW_LISTNER.SET_MusicBack_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_MusicBack_Button),
+												(FM_ListView)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_RLayout_Music_ListView));
+		//BackTop «ö¶s
+		VIEW_LISTNER.SET_MusicTop_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_MusicBack_Button),
+												(Button)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_MusicTop_Button),
+												(FM_ListView)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_RLayout_Music_ListView));
 		
 		//===========·j´M±ø¥ó «ö¶s===============
 		VIEW_LISTNER.SET_SerchCondition1_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchCondition1_Button),
@@ -108,7 +118,8 @@ public class Fragment_Music extends Fragment {
 		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FM_RLayout_TITLE2_RLayout));
 		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FM_RLayout_TITLE3_RLayout));
 		//==========Msic List================
-		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FM_RLayout_Music_ListView));
+		musicListView = (FM_ListView)Fragment_MainView.findViewById(R.id.FM_RLayout_Music_ListView);
+		VIEW_SETTING.VIEWSET(musicListView);
 		//==========Msic================
 		mlog.info(TAG, "findView OK");
 	}	
@@ -131,7 +142,12 @@ public class Fragment_Music extends Fragment {
 														(ImageView)Fragment_MainView.findViewById(R.id.FM_RLayout_RLayout_SerchConditionBG_ImageView));
 		//===========·j´M±ø¥ó===============
 		//Back «ö¶s
-		VIEW_LISTNER.SET_MusicBack_Button_Listner((Button)Fragment_MainView.findViewById(R.id.FM_RLayout_RLayout_MusicBack_Button),(FM_ListView)Fragment_MainView.findViewById(R.id.FM_RLayout_Music_ListView));
+		VIEW_LISTNER.SET_MusicBack_Button_Listner((Button)Fragment_MainView.findViewById(R.id.FM_RLayout_RLayout_MusicBack_Button),
+													(FM_ListView)Fragment_MainView.findViewById(R.id.FM_RLayout_Music_ListView));
+		//BackTop «ö¶s
+		VIEW_LISTNER.SET_MusicTop_Button_Listner((Button)Fragment_MainView.findViewById(R.id.FM_RLayout_RLayout_MusicBack_Button),
+												(Button)Fragment_MainView.findViewById(R.id.FM_RLayout_RLayout_MusicTop_Button),
+													(FM_ListView)Fragment_MainView.findViewById(R.id.FM_RLayout_Music_ListView));
 	}
 	
 	@Override
@@ -186,5 +202,14 @@ public class Fragment_Music extends Fragment {
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
+	}
+	public void MusicListViewLocalNameListChange(){
+		if(this.musicListView!=null){
+			if(device_size==6){			
+				((FM_Music_ListView_BaseAdapter_Phone)musicListView.getAdapter()).GetListner().LocalNameListChange();
+			}else{				
+				((FM_Music_ListView_BaseAdapter_PAD)musicListView.getAdapter()).GetListner().LocalNameListChange();
+			}
+		}
 	}
 }
