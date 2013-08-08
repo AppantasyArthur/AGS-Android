@@ -1,7 +1,7 @@
 package com.alpha.upnpui;
 
 import org.teleal.cling.android.AndroidUpnpService;
-import org.teleal.cling.android.AndroidUpnpServiceImpl;
+import com.tkb.UpnpOverride.AndroidUpnpServiceImpl;
 import com.FAM.SETTING.FAM_VIEW_LISTNER;
 import com.FAM.SETTING.FAM_VIEW_SETTING;
 import com.alpha.UPNP.BrowseRegistryListener;
@@ -32,6 +32,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -48,7 +49,7 @@ public class FragmentActivity_Main extends FragmentActivity {
 	private Fragment fragment_Music;
 	//SETTING
 	private FAM_VIEW_SETTING VIEW_SETTING;
-	private FAM_VIEW_LISTNER VIEW_LISTNER;
+	public FAM_VIEW_LISTNER VIEW_LISTNER;
 	
 	//Fragment Manager
 	private FragmentManager fragmentManager = null;
@@ -155,6 +156,8 @@ public class FragmentActivity_Main extends FragmentActivity {
 	}
 	private void PAD_findLISTNER() {		
 		//³]©wVIEW LISTNER
+		//ActionProgress_ProgressBar
+		this.VIEW_LISTNER.CreateProcessBarListner((ProgressBar)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_ActionProgress_ProgressBar));
 		//ShowCloseMediaC2 IButton LISTNER
 		this.VIEW_LISTNER.ShowCloseMediaC2_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_ShowCloseMediaC2_IButton),
 															(RelativeLayout)MainView.findViewById(R.id.FAM_RLayout_LLayout_MediaC2_RLayout));
@@ -194,7 +197,7 @@ public class FragmentActivity_Main extends FragmentActivity {
 	
 	private void CreateUpnpService() {		
 		browseRegistryListener = new BrowseRegistryListener(deviceDisplayList);
-		upnpServiceConnection = new UpnpServiceConnection(context,browseRegistryListener);
+		upnpServiceConnection = new UpnpServiceConnection(context,this.device_size,browseRegistryListener);
 	}
 	private void StartUpnpService() {		
 		Intent intent = new Intent(context,AndroidUpnpServiceImpl.class);

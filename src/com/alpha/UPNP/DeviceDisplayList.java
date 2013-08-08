@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
-import java.util.TimerTask;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -21,13 +20,10 @@ import org.teleal.cling.model.message.UpnpResponse;
 import org.teleal.cling.model.meta.Action;
 import org.teleal.cling.model.meta.ActionArgument;
 import org.teleal.cling.model.meta.Device;
-import org.teleal.cling.model.meta.DeviceDetails;
 import org.teleal.cling.model.meta.Service;
 import org.teleal.cling.model.state.StateVariableValue;
 import org.teleal.cling.model.types.DeviceType;
 import org.teleal.cling.model.types.UDAServiceId;
-import org.teleal.cling.support.avtransport.callback.GetPositionInfo;
-import org.teleal.cling.support.model.PositionInfo;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -51,6 +47,7 @@ import com.appantasy.androidapptemplate.event.lastchange.LastChangeDO;
 import com.appantasy.androidapptemplate.event.lastchange.LastChangeHandler;
 import com.appantasy.androidapptemplate.event.lastchange.TrackDO;
 import com.appantasy.androidapptemplate.event.lastchange.TrackHanlder;
+import com.tkb.UpnpOverride.ProcessBarListner;
 import com.tkb.tool.MLog;
 
 public class DeviceDisplayList {
@@ -80,7 +77,7 @@ public class DeviceDisplayList {
 	private PlayMode_IButton_Listner Info_PMIListner;//PlayMode«ö¶s
 	private MusicInfo_Listner MIListner;//Info
 	private FI_Queqe_ListView_BaseAdapter_Queqe_Listner queqe_listner;//Queue
-	
+	private ProcessBarListner processBarListner;
 	
 	public DeviceDisplayList(Context context){
 		this.context = context;
@@ -397,6 +394,9 @@ public class DeviceDisplayList {
 	public void setQueqe_Listner(FI_Queqe_ListView_BaseAdapter_Queqe_Listner queqe_listner) {
 		this.queqe_listner = queqe_listner;
 	}
+	public void setProcessBarListner(ProcessBarListner processBarListner){
+		this.processBarListner = processBarListner;
+	}
 	public void CancelAllListner(){
 		FSELAListner = null;
 		runState_TextView_Listner2 = null;
@@ -680,7 +680,7 @@ public class DeviceDisplayList {
 						}
 					}
 					@Override
-					protected void eventReceived(GENASubscription arg0) {				
+					protected void eventReceived(GENASubscription arg0) {						
 						 Map<String, StateVariableValue> values = arg0.getCurrentValues();
 						 for(Map.Entry<String, StateVariableValue> value:values.entrySet()){
 							 mlog.info(TAG, "==========EVEN STAR==========");
@@ -688,6 +688,9 @@ public class DeviceDisplayList {
 							 mlog.info(TAG, "==========EVEN END==========");
 						 }
 						 StateVariableValue status = values.get("LastChange");
+						 if(processBarListner!=null){
+							 processBarListner.SetProcessBarNotDispaly();
+						 }
 						 
 						 if(status!=null){				 
 							 mlog.info(TAG, "==========EVEN STAR==========");

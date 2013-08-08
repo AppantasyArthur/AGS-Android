@@ -34,7 +34,7 @@
             android:launchMode="singleTask"
             android:configChanges="orientation|screenSize"
             ></activity>
-        <service android:name="org.teleal.cling.android.AndroidUpnpServiceImpl"/>
+        <service android:name="com.tkb.UpnpOverride.AndroidUpnpServiceImpl"/>
     </application>
 
 </manifest>

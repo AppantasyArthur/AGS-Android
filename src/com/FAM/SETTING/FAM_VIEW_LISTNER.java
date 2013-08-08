@@ -7,7 +7,6 @@ import org.teleal.cling.model.action.ActionInvocation;
 import org.teleal.cling.model.message.UpnpResponse;
 import org.teleal.cling.model.meta.Action;
 import org.teleal.cling.model.meta.ActionArgument;
-import org.teleal.cling.model.meta.Device;
 import org.teleal.cling.model.meta.Service;
 import org.teleal.cling.model.types.ServiceId;
 import org.teleal.cling.model.types.UDAServiceId;
@@ -18,6 +17,7 @@ import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.fragments.Fragment_Information;
 import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.FragmentActivity_Setting;
+import com.tkb.UpnpOverride.ProcessBarListner;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
 import com.tkb.tool.ThreadReadStateListInAssets;
@@ -32,6 +32,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -44,10 +45,39 @@ public class FAM_VIEW_LISTNER {
 	private int device_size = 0;
 	
 	private FAM_Save_PopupWindow popupWindow;
+	
+	private ProcessBarListner processBarListner;
 	public FAM_VIEW_LISTNER(Context context, int device_size) {
 		this.context = context;
 		this.mlog.LogSwitch = true;
 		this.device_size = device_size;
+	}
+	public void CreateProcessBarListner(final ProgressBar processBar){
+		processBarListner = new ProcessBarListner(){
+			@Override
+			public void SetProcessBarDisplay() {				
+				processBar.post(new Runnable() {
+					@Override
+					public void run() {
+						processBar.setVisibility(View.VISIBLE);						
+					}
+				});
+			}
+			@Override
+			public void SetProcessBarNotDispaly() {
+				processBar.post(new Runnable() {
+					@Override
+					public void run() {
+						processBar.setVisibility(View.GONE);
+						
+					}
+				});			
+			}		
+		};
+		((FragmentActivity_Main)context).GETDeviceDisplayList().setProcessBarListner(processBarListner);
+	}
+	public ProcessBarListner GetProcessBarListner(){
+		return processBarListner;
 	}
 	public void ShowCloseMediaC2_IButton_LISTNER(ImageButton ShowCloseMediaC2_IButton,final RelativeLayout MediaC2_RLayout) {
 		ShowCloseMediaC2_IButton.setOnClickListener(new View.OnClickListener() {

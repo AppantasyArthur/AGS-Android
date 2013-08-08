@@ -86,6 +86,12 @@ public class FAM_VIEW_SETTING {
 		Tool.fitsViewHeight(34, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Next_IButton));
 		view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Next_IButton).getLayoutParams().width = Tool.getHeight(34);
 		new ThreadReadStateListInAssets(context, "pad/PlayBack/ff_f.png","pad/PlayBack/ff_n.png", view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Next_IButton), 2);
+		
+		//ActionProgress_ProgressBar
+		Tool.fitsViewHeight(50, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_ActionProgress_ProgressBar));
+		view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_ActionProgress_ProgressBar).getLayoutParams().width = Tool.getHeight(50);
+		Tool.fitsViewRightMargin(10, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_ActionProgress_ProgressBar));
+		
 		//ShowCloseMediaC2 ImageButton
 		Tool.fitsViewHeight(29, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_ShowCloseMediaC2_IButton));
 		view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_ShowCloseMediaC2_IButton).getLayoutParams().width = Tool.getHeight(29);

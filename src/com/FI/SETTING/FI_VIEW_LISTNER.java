@@ -22,8 +22,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -676,7 +674,7 @@ public class FI_VIEW_LISTNER {
 						((FI_Queqe_ListView_BaseAdapter_Phone)arg0.getAdapter()).SET_Edite(true);
 						((FragmentActivity_Main)context).ShowDoneButton();
 					}
-					return false;
+					return true;
 				}			
 			});
 			//***************************PHONE*********************************	
@@ -698,7 +696,7 @@ public class FI_VIEW_LISTNER {
 						((FI_Queqe_ListView_BaseAdapter_PAD)arg0.getAdapter()).SET_Edite(true);
 						((FragmentActivity_Main)context).ShowDoneButton();
 					}
-					return false;
+					return true;
 				}			
 			});
 			
