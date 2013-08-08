@@ -53,10 +53,10 @@ public class FAM_VIEW_SETTING {
 //***************************PHONE*********************************
 //***************************PAD*********************************
 	private void PAD_FAM_RLayout_LLayout_MediaC1_RLayout(View view){
-		Tool.fitsViewHeight(75, view);
+		Tool.fitsViewHeight(76, view);
 		new ThreadReadBitMapInAssets(context, "pad/PlayBack/playback_bg.png", view, 3);
 		//Sound ImageButton
-		Tool.fitsViewLeftMargin(33, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Sound_IButton));		
+		Tool.fitsViewLeftMargin(30, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Sound_IButton));		
 		Tool.fitsViewHeight(21, view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Sound_IButton));
 		view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Sound_IButton).getLayoutParams().width = Tool.getHeight(30);
 		new ThreadReadBitMapInAssets(context, "pad/PlayBack/volumn_03.png", view.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Sound_IButton), 2);
@@ -66,7 +66,7 @@ public class FAM_VIEW_SETTING {
 		seekBar.getLayoutParams().width = Tool.getHeight(110);
 		Tool.fitsViewLeftMargin(10, seekBar);		
 		seekBar.setPadding(Tool.getHeight(15), Tool.getHeight(8), Tool.getHeight(15), Tool.getHeight(8));
-		Bitmap myThumbO = Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "pad/PlayBack/volumn_control.png"), Tool.getHeight(23), Tool.getHeight(27), false);
+		Bitmap myThumbO = Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "pad/PlayBack/volumn_control.png"), Tool.getHeight(23), Tool.getHeight(26), false);
 		Drawable myThumb = new BitmapDrawable(context.getResources(),myThumbO);
 		seekBar.setThumb(myThumb);
 		
@@ -141,7 +141,7 @@ public class FAM_VIEW_SETTING {
 		Tool.fitsViewTopMargin(-6, view);		
 	}
 	private void PAD_FAM_RLayout_RIGHT_RLayout(View view) {
-		Tool.fitsViewWidth(357, view);
+		Tool.fitsViewWidth(359, view);
 		new ThreadReadBitMapInAssets(context, "pad/Playlist/playlist_bg.png", view, 3);
 		Tool.fitsViewTopMargin(-6, view);		
 	}

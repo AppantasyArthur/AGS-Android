@@ -10,7 +10,7 @@
 	    android:layout_alignParentLeft="true"
 	    android:layout_below="@+id/FAM_RLayout_TOP_RLayout"
 	    android:layout_above="@+id/FAM_RLayout_BOTTOM_RLayout"
-	    android:background="#00000000"
+	    android:background="#000000"
 	    >	    
 	</RelativeLayout>
 	<RelativeLayout 
@@ -31,7 +31,7 @@
 	    android:layout_alignParentRight="true"
 	    android:layout_below="@+id/FAM_RLayout_TOP_RLayout"
 	    android:layout_above="@+id/FAM_RLayout_BOTTOM_RLayout"
-	    android:background="#00000000"
+	    android:background="#000000"
 	    >	    
 	</RelativeLayout>
 	<RelativeLayout 
@@ -222,6 +222,7 @@
 		        android:max="100"
 		        android:progressDrawable="@drawable/seekbar_sort_style"		        
 		        android:thumbOffset="0dp"
+		        android:visibility="gone"
 		        />		    
 		    <ImageButton 
 		        android:id="@+id/FAM_RLayout_LLayout_RLayout_Previous_IButton"

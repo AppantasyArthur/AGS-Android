@@ -106,6 +106,7 @@
 		    android:max="100"
 		    android:progressDrawable="@drawable/seekbar_sort_style"		        
 		    android:thumbOffset="0dp"
+		    android:visibility="gone"
 		    />	        	        
 		<ImageButton 
 		    android:id="@+id/pFI_RLayout_RLayout_Previous_IButton"

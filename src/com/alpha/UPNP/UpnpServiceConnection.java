@@ -2,9 +2,6 @@ package com.alpha.UPNP;
 
 import org.teleal.cling.android.AndroidUpnpService;
 import org.teleal.cling.model.meta.Device;
-
-import com.alpha.upnpui.FragmentActivity_Main;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.ServiceConnection;

@@ -13,6 +13,8 @@ import com.tkb.tool.ThreadReadBitMapInAssets;
 import com.tkb.tool.Tool;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Spannable;
@@ -42,6 +44,9 @@ public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAd
 	private ImageSpan play_Span;
 	private ImageSpan stop_Span;
 	private ImageSpan pause_Span;
+	private Drawable menu1;
+	private Drawable menu2;
+	private Drawable menu3;
 	
 //	private FS_PopupWindow popupWindow;
 	
@@ -103,6 +108,10 @@ public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAd
 		this.play_Span = new ImageSpan(context, Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "phone/speaker/play_icon.png"), Tool.getWidth(9), Tool.getWidth(14), false),ImageSpan.ALIGN_BASELINE);
 		this.stop_Span = new ImageSpan(context, Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "phone/speaker/stop_icon.png"), Tool.getWidth(9), Tool.getWidth(14), false),ImageSpan.ALIGN_BASELINE);
 		this.pause_Span = new ImageSpan(context, Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "phone/speaker/pause_icon.png"), Tool.getWidth(9), Tool.getWidth(14), false),ImageSpan.ALIGN_BASELINE);
+		
+		this.menu1 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "phone/speaker/menu_top.PNG"));
+		this.menu2 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "phone/speaker/menu_center.PNG"));
+		this.menu3 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "phone/speaker/menu_botton.PNG"));
 	}
 	
 	@Override
@@ -134,15 +143,15 @@ public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAd
 		if(childPosition==0&&!isLastChild){
 			//第一個
 			Tool.fitsViewHeight(42,viewHandler.CCell_RLayout);
-			new ThreadReadBitMapInAssets(context, "phone/speaker/menu_top.PNG", viewHandler.CCell_RLayout, 3);
+			viewHandler.CCell_RLayout.setBackgroundDrawable(this.menu1);
 		}else if(isLastChild){
 			//最後一個
 			Tool.fitsViewHeight(42,viewHandler.CCell_RLayout);
-			new ThreadReadBitMapInAssets(context, "phone/speaker/menu_botton.PNG", viewHandler.CCell_RLayout, 3);
+			viewHandler.CCell_RLayout.setBackgroundDrawable(this.menu3);
 		}else{
 			//其他
 			Tool.fitsViewHeight(37,viewHandler.CCell_RLayout);
-			new ThreadReadBitMapInAssets(context, "phone/speaker/menu_center.PNG", viewHandler.CCell_RLayout, 3);
+			viewHandler.CCell_RLayout.setBackgroundDrawable(this.menu2);
 		}
 		try{
 			viewHandler.Name_TextView.setText(GroupList.get(groupPosition).getGroupVO().getGroup().getMembers().get(childPosition).getName());

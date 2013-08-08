@@ -23,7 +23,6 @@ import android.content.res.Configuration;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -39,7 +38,6 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 public class FragmentActivity_Main extends FragmentActivity {
-	
 	
 	//VIEWS
 	private View MainView;

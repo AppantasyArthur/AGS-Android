@@ -490,10 +490,11 @@ public class DeviceDisplayList {
 						StateVariableValue status = values.get("DisplayInfo");
 						mlog.info(TAG,"FriendlyName = "+EventHandler.this.deviceDisplay.getDevice().getDetails().getFriendlyName());
 						for(Map.Entry<String, StateVariableValue>value:values.entrySet()){
-							mlog.info(TAG, "even = "+value.getKey()+"  value = "+value.getValue().toString());
+//							mlog.info(TAG, "even = "+value.getKey()+"  value = "+value.getValue().toString());
 						}
 						if(status!=null){
-							GroupVO groupVO = _parseGroup(status.toString());							
+							GroupVO groupVO = _parseGroup(status.toString());
+							mlog.info(TAG, "groupVO = "+groupVO.getGroup());
 							if(groupVO.isSlave()){
 								//even 通知  isSlave
 								//移除Slave
@@ -514,17 +515,15 @@ public class DeviceDisplayList {
 								//even 通知 not isSlave
 								//更新GroupEventHandler狀態
 								EventHandler.this.deviceDisplay.setGroupVO(groupVO);
-								
+								groupList.AddDeviceDisplay(EventHandler.this.deviceDisplay);
 								//加入GroupList 是否加入成功
-								if(groupList.AddDeviceDisplay(EventHandler.this.deviceDisplay)){
-									//通知 FS 刷新
-									if(FSELAListner!=null){					
-										FSELAListner.SetPositionChange();	
-									}
-									//通知 MI 刷新
-									if(MIListner!=null){
-										MIListner.MediaRendererCountChange();
-									}
+								//通知 FS 刷新
+								if(FSELAListner!=null){					
+									FSELAListner.SetPositionChange();	
+								}
+								//通知 MI 刷新
+								if(MIListner!=null){
+									MIListner.MediaRendererCountChange();
 								}							
 							}
 						}					

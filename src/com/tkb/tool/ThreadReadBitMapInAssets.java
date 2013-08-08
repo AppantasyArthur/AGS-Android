@@ -22,7 +22,7 @@ public class ThreadReadBitMapInAssets {
 	private View view;
 	private int type;
 	private static HashMap<String,SoftReference<Bitmap>> map = new HashMap<String,SoftReference<Bitmap>>();
-	private static final ExecutorService executorService = Executors.newFixedThreadPool(2);
+	private static final ExecutorService executorService = Executors.newFixedThreadPool(1);
 	private static Handler mHandler = new Handler() {  
         public void handleMessage (Message msg) {
         	HandlerView hview = (HandlerView)msg.obj;

@@ -12,6 +12,8 @@ import com.tkb.tool.ThreadReadBitMapInAssets;
 import com.tkb.tool.Tool;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Spannable;
@@ -42,6 +44,9 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 	private ImageSpan play_Span;
 	private ImageSpan stop_Span;
 	private ImageSpan pause_Span;
+	private Drawable menu1;
+	private Drawable menu2;
+	private Drawable menu3;
 	
 	private FS_PopupWindow popupWindow;
 	
@@ -92,7 +97,7 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 		FSELAListner = new FS_SPEAKER_ExpandableListAdapter_Listner(){
 			@Override
 			public void SetPositionChange() {
-				handler.obtainMessage(0).sendToTarget();
+				handler.obtainMessage(0).sendToTarget();				
 				mlog.info(TAG, "SetPositionChange");
 			}
 		};
@@ -104,6 +109,12 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 		this.play_Span = new ImageSpan(context, Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "pad/Speakermanagement/status_play.png"), Tool.getHeight(15), Tool.getHeight(18), false),ImageSpan.ALIGN_BASELINE);
 		this.stop_Span = new ImageSpan(context, Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "pad/Speakermanagement/status_stop.png"), Tool.getHeight(15), Tool.getHeight(18), false),ImageSpan.ALIGN_BASELINE);
 		this.pause_Span = new ImageSpan(context, Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "pad/Speakermanagement/status_pause.png"), Tool.getHeight(15), Tool.getHeight(18), false),ImageSpan.ALIGN_BASELINE);
+		
+		this.menu1 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "pad/Speakermanagement/menu_01.png"));
+		this.menu2 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "pad/Speakermanagement/menu_02.png"));
+		this.menu3 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "pad/Speakermanagement/menu_03.png"));
+	
+		
 	}
 	
 	@Override
@@ -120,10 +131,11 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 
 	@Override
 	public View getChildView(int groupPosition, int childPosition,boolean isLastChild, View convertView, ViewGroup parent) {
+		
 		CViewHandler viewHandler =null;
 		if(convertView==null){
 			convertView = LayoutInflater.from(context).inflate(R.layout.fs_speaker_elistview_ccell_pad, null);
-			convertView.setLayoutParams(new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT,Tool.getHeight(38)));
+			convertView.setLayoutParams(new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
 			viewHandler = new CViewHandler(convertView);
 			basicSetChildView(viewHandler);	
 			convertView.setTag(viewHandler);
@@ -134,17 +146,18 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 		
 		if(childPosition==0&&!isLastChild){
 			//第一個
-			Tool.fitsViewHeight(36,viewHandler.CCell_RLayout);
-			new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/menu_01.png", viewHandler.CCell_RLayout, 3);
+			Tool.fitsViewHeight(36,viewHandler.CCell_RLayout);			
+			viewHandler.CCell_RLayout.setBackgroundDrawable(this.menu1);
 		}else if(isLastChild){
 			//最後一個
-			Tool.fitsViewHeight(40,viewHandler.CCell_RLayout);
-			new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/menu_03.png", viewHandler.CCell_RLayout, 3);
+			Tool.fitsViewHeight(40,viewHandler.CCell_RLayout);	
+			viewHandler.CCell_RLayout.setBackgroundDrawable(this.menu3);			
 		}else{
 			//其他
-			Tool.fitsViewHeight(37,viewHandler.CCell_RLayout);
-			new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/menu_02.png", viewHandler.CCell_RLayout, 3);
+			Tool.fitsViewHeight(37,viewHandler.CCell_RLayout);	
+			viewHandler.CCell_RLayout.setBackgroundDrawable(this.menu2);			
 		}
+		
 		try{
 			viewHandler.Name_TextView.setText(GroupList.get(groupPosition).getGroupVO().getGroup().getMembers().get(childPosition).getName());
 		}catch(Exception e){
@@ -177,7 +190,8 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 	
 	@Override
 	public int getChildrenCount(int groupPosition) {
-		DeviceDisplay deviceDisplay = GroupList.get(groupPosition);		
+		DeviceDisplay deviceDisplay = GroupList.get(groupPosition);	
+		mlog.info(TAG, "getChildrenCount = "+deviceDisplay.getGroupVO().getGroup().getMembers().size());
 		return deviceDisplay.getGroupVO().getGroup().getMembers().size();		
 	}
 	
@@ -192,7 +206,6 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 	}
 	@Override
 	public int getGroupCount() {
-		// TODO Auto-generated method stub
 		return GroupList.size();
 	}
 
