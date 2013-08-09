@@ -3,6 +3,7 @@ package com.FSM.SETTING;
 import com.alpha.fragments.Fragment_SAbout;
 import com.alpha.fragments.Fragment_SFirmrware;
 import com.alpha.fragments.Fragment_SIdenrify;
+import com.alpha.fragments.Fragment_SRenderers;
 import com.alpha.fragments.Fragment_SWireless;
 import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.Fragment_SETTING;
@@ -125,5 +126,24 @@ public class FSM_VIEW_LISTNER {
 				}
 			});
 		}
+//		if(device_size==6){
+//			Idenrify_Button.setOnClickListener(new View.OnClickListener() {
+//				@Override
+//				public void onClick(View v) {
+//					Tool.FragmentActivity_MainReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SRenderers(), "Fragment_SRenderers", R.id.pFAS_RLayout_ViewFlipper_Right_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+//					Fragment_SETTING fragment_SETTING = (Fragment_SETTING)((FragmentActivity_Main)context).getSupportFragmentManager().findFragmentByTag("Fragment_SETTING");
+//					if(fragment_SETTING!=null){
+//						fragment_SETTING.ShowViewContent_ViewFlipperDisplay(1, R.animator.translate_bottom_in,R.animator.alpha_out);
+//					}	
+//				}
+//			});
+//		}else{
+//			Idenrify_Button.setOnClickListener(new View.OnClickListener() {
+//				@Override
+//				public void onClick(View v) {
+//					Tool.FragmentActivity_MainReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SRenderers(), "Fragment_SRenderers", R.id.FAS_RLayout_Right_RLayout, R.animator.translate_top_in, 0);
+//				}
+//			});
+//		}
 	}
 }
