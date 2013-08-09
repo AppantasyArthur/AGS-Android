@@ -8,11 +8,8 @@ import java.lang.reflect.Field;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.alpha.upnpui.R;
 import com.alpha.upnpui.R.drawable;
-
-import android.R.integer;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -20,10 +17,9 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
@@ -292,5 +288,27 @@ public class Tool {
 		fragmentTransaction.replace(View_ID, fragment,Tag);
 		fragmentTransaction.commit();
 		mLog.info(TAG, "FragmentActivity_MainReplaceFragment");
+	}
+	public static void FragmentActivity_MainReplaceAddStackFragment(FragmentTransaction fragmentTransaction,Fragment fragment,String Tag,int View_ID,int AnimationIn,int AnimationOut,int AnimationIn2,int AnimationOut2){
+		fragmentTransaction.setCustomAnimations(AnimationIn, AnimationOut,AnimationIn2, AnimationOut2);
+		fragmentTransaction.replace(View_ID, fragment,Tag);
+		fragmentTransaction.addToBackStack(null);
+		fragmentTransaction.commit();
+		mLog.info(TAG, "FragmentActivity_MainReplaceAddStackFragment");
+	}
+	public static void FragmentActivity_MainRemoveFragment(FragmentManager fragmentManager,String Tag,int AnimationIn,int AnimationOut){
+		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		Fragment fragment = fragmentManager.findFragmentByTag(Tag);
+		if(fragment!=null){
+			fragmentTransaction.setCustomAnimations(AnimationIn, AnimationOut);
+			fragmentTransaction.remove(fragment);
+			fragmentTransaction.commit();
+			mLog.info(TAG, "FragmentActivity_MainRemoveFragment");
+		}	
+		mLog.info(TAG, "FragmentActivity_MainRemoveFragment null");
+	}
+	public static void FragmentActivity_MainPopFragment(FragmentManager fragmentManager){
+		fragmentManager.popBackStack();
+		mLog.info(TAG, "FragmentActivity_MainPopFragment");
 	}
 }

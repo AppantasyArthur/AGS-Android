@@ -26,7 +26,6 @@ import org.teleal.cling.support.model.item.Item;
 
 import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.upnpui.FragmentActivity_Main;
-import com.alpha.upnpui.FragmentActivity_Setting;
 import com.alpha.upnpui.R;
 import com.appantasy.androidapptemplate.event.lastchange.TrackDO;
 import com.tkb.tool.MLog;

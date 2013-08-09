@@ -2,7 +2,7 @@ package com.alpha.fragments;
 
 import com.FSM.SETTING.FSM_VIEW_LISTNER;
 import com.FSM.SETTING.FSM_VIEW_SETTING;
-import com.alpha.upnpui.FragmentActivity_Setting;
+import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import android.content.Context;
@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
-import android.widget.ViewFlipper;
 
 public class Fragment_SMenu extends Fragment {
 	//VIEWS
@@ -32,6 +31,9 @@ public class Fragment_SMenu extends Fragment {
 	private MLog mlog = new MLog();
 	private Context context;
 	private int device_size = 0;
+	public Fragment_SMenu(FragmentManager fragmentManager){
+		this.fragmentManager = fragmentManager;
+	}
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -41,8 +43,8 @@ public class Fragment_SMenu extends Fragment {
 	private void CreateProcess() {
 		this.context = this.getActivity();
 		this.mlog.LogSwitch = true;		
-		device_size = ((FragmentActivity_Setting)context).getDevice_Size();
-		fragmentManager = ((FragmentActivity_Setting)context).getSupportFragmentManager();
+		device_size = ((FragmentActivity_Main)context).getDevice_Size();
+		
 		//¨ú±oView_SETTING
         this.VIEW_SETTING = new FSM_VIEW_SETTING(this.context,this.device_size);
         this.VIEW_LISTNER = new FSM_VIEW_LISTNER(this.context,this.device_size);

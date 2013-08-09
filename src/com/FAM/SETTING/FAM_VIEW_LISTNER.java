@@ -16,15 +16,17 @@ import org.teleal.cling.support.avtransport.callback.Stop;
 import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.fragments.Fragment_Information;
 import com.alpha.upnpui.FragmentActivity_Main;
-import com.alpha.upnpui.FragmentActivity_Setting;
+import com.alpha.upnpui.Fragment_SETTING;
+import com.alpha.upnpui.R;
 import com.tkb.UpnpOverride.ProcessBarListner;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
 import com.tkb.tool.ThreadReadStateListInAssets;
+import com.tkb.tool.Tool;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -43,14 +45,16 @@ public class FAM_VIEW_LISTNER {
 	private MLog mlog = new MLog();
 	private static final String TAG = "FAM_VIEW_LISTNER";
 	private int device_size = 0;
+	private FragmentManager fragmentManager;
 	
-	private FAM_Save_PopupWindow popupWindow;
+	private FAM_Save_PopupWindow popupWindow;	
 	
 	private ProcessBarListner processBarListner;
-	public FAM_VIEW_LISTNER(Context context, int device_size) {
+	public FAM_VIEW_LISTNER(Context context, int device_size,FragmentManager fragmentManager) {
 		this.context = context;
 		this.mlog.LogSwitch = true;
 		this.device_size = device_size;
+		this.fragmentManager = fragmentManager;
 	}
 	public void CreateProcessBarListner(final ProgressBar processBar){
 		processBarListner = new ProcessBarListner(){
@@ -400,9 +404,10 @@ public class FAM_VIEW_LISTNER {
 			Setting_IButton.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Intent intnet = new Intent();
-					intnet.setClass(context, FragmentActivity_Setting.class);
-					context.startActivity(intnet);
+					if(fragmentManager.findFragmentByTag("Fragment_SETTING")==null){
+						Fragment_SETTING fragment_SETTING = new Fragment_SETTING();
+						Tool.FragmentActivity_MainReplaceAddStackFragment(fragmentManager.beginTransaction(), fragment_SETTING, "Fragment_SETTING", R.id.FAM_RLayout_SETTING_RLayoutt, R.animator.translate_right_in, R.animator.alpha_out,R.animator.alpha_in, R.animator.translate_right_out);
+					}					
 				}
 			});
 			//***************************PAD*********************************

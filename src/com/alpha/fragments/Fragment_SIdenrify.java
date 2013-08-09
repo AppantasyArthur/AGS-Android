@@ -2,7 +2,7 @@ package com.alpha.fragments;
 
 import com.FSI.SETTING.FSI_VIEW_LISTNER;
 import com.FSI.SETTING.FSI_VIEW_SETTING;
-import com.alpha.upnpui.FragmentActivity_Setting;
+import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import android.content.Context;
@@ -40,8 +40,8 @@ public class Fragment_SIdenrify extends Fragment {
 	private void CreateProcess() {
 		this.context = this.getActivity();
 		this.mlog.LogSwitch = true;		
-		device_size = ((FragmentActivity_Setting)context).getDevice_Size();
-		fragmentManager = ((FragmentActivity_Setting)context).getSupportFragmentManager();
+		device_size = ((FragmentActivity_Main)context).getDevice_Size();
+		fragmentManager = this.getChildFragmentManager();
 		//¨ú±oView_SETTING
         this.VIEW_SETTING = new FSI_VIEW_SETTING(this.context,this.device_size);
         this.VIEW_LISTNER = new FSI_VIEW_LISTNER(this.context,this.device_size);

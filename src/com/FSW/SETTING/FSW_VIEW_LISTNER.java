@@ -1,6 +1,7 @@
 package com.FSW.SETTING;
 
-import com.alpha.upnpui.FragmentActivity_Setting;
+import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.Fragment_SETTING;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import android.content.Context;
@@ -21,7 +22,10 @@ public class FSW_VIEW_LISTNER {
 		Back_Button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {			
-				((FragmentActivity_Setting)context).ShowViewContent_ViewFlipperDisplay(0, R.animator.alpha_in, R.animator.translate_bottom_out);
+				Fragment_SETTING fragment_SETTING = (Fragment_SETTING)((FragmentActivity_Main)context).getSupportFragmentManager().findFragmentByTag("Fragment_SETTING");
+				if(fragment_SETTING!=null){
+					fragment_SETTING.ShowViewContent_ViewFlipperDisplay(0, R.animator.alpha_in, R.animator.translate_bottom_out);
+				}	
 			}
 		});	
 	}

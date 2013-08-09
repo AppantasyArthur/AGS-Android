@@ -52,7 +52,7 @@ public class Fragment_Music extends Fragment {
 		//介面設定取得
         this.VIEW_SETTING = new FM_VIEW_SETTING(this.context,this.device_size);
         //動作設定取得
-        this.VIEW_LISTNER = new FM_VIEW_LISTNER(this.context,this.device_size);
+        this.VIEW_LISTNER = new FM_VIEW_LISTNER(this.context,this.device_size,this.fragmentManager);
 	}
 
 	@Override

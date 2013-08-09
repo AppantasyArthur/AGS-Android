@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
-import com.tkb.tool.ThreadReadBitMapInAssets;
 import com.tkb.tool.ThreadReadStateListInAssets;
 import com.tkb.tool.Tool;
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,12 @@ public class FSI_IdSpeaker_ListView_BaseAdapter_Phone extends BaseAdapter {
 	private static final String TAG = "FSI_IdSpeaker_ListView_BaseAdapter";
 		
 	private List<String> dataList = new ArrayList<String>();
+	
+	private Drawable menu1;
+	private Drawable menu2;
+	private Drawable menu3;
+	private Drawable menu4;
+	
 	public FSI_IdSpeaker_ListView_BaseAdapter_Phone(Context context){
 		this.context = context;		
 		this.mlog.LogSwitch = true;
@@ -31,22 +38,26 @@ public class FSI_IdSpeaker_ListView_BaseAdapter_Phone extends BaseAdapter {
 		for(int i = 0;i<40;i++){
 			dataList.add(""+i);
 		}
+		LoadBitmap();
+	}
+	private void LoadBitmap(){		
+		this.menu1 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "phone/setting/setting_identify_bar_top.png"));
+		this.menu2 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "phone/setting/settimg_identify_bar_center.png"));
+		this.menu3 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "phone/setting/settimg_identify_bar_bottom.png"));
+		this.menu4 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "phone/setting/setting_firmware_about_bar.PNG"));
 	}
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
 		return dataList.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public long getItemId(int position) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -66,20 +77,20 @@ public class FSI_IdSpeaker_ListView_BaseAdapter_Phone extends BaseAdapter {
 		if(position==0&&!(position==(this.getCount()-1))){
 			//第一個
 			Tool.fitsViewHeight(30, viewHandler.CCell_RLayout);
-			new ThreadReadBitMapInAssets(context, "phone/setting/setting_identify_bar_top.png", viewHandler.CCell_RLayout, 3);
+			viewHandler.CCell_RLayout.setBackgroundDrawable(menu1);
 			
 		}else if(position==0&&(position==(this.getCount()-1))){
 			//只有一個
 			Tool.fitsViewHeight(34, viewHandler.CCell_RLayout);
-			new ThreadReadBitMapInAssets(context, "phone/setting/setting_firmware_about_bar.PNG", viewHandler.CCell_RLayout, 3);
+			viewHandler.CCell_RLayout.setBackgroundDrawable(menu4);
 		}else if((position==(this.getCount()-1))){
 			//最後一個
 			Tool.fitsViewHeight(33, viewHandler.CCell_RLayout);
-			new ThreadReadBitMapInAssets(context, "phone/setting/settimg_identify_bar_bottom.png", viewHandler.CCell_RLayout, 3);
+			viewHandler.CCell_RLayout.setBackgroundDrawable(menu3);
 		}else{
 			//其他
 			Tool.fitsViewHeight(31, viewHandler.CCell_RLayout);
-			new ThreadReadBitMapInAssets(context, "phone/setting/settimg_identify_bar_center.png", viewHandler.CCell_RLayout, 3);
+			viewHandler.CCell_RLayout.setBackgroundDrawable(menu2);
 		}
 		viewHandler.Name_TextView.setText("render id = "+dataList.get(position));
 		return convertView;

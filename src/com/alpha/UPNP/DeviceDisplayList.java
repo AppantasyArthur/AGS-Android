@@ -28,6 +28,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 import com.FAM.SETTING.Music_SeekBar_Listner;
 import com.FAM.SETTING.PlayMode_IButton_Listner;
@@ -50,7 +52,8 @@ import com.appantasy.androidapptemplate.event.lastchange.TrackHanlder;
 import com.tkb.UpnpOverride.ProcessBarListner;
 import com.tkb.tool.MLog;
 
-public class DeviceDisplayList {
+public class DeviceDisplayList implements Parcelable  {
+	
 	private Context context;
 	private static String TAG = "DeviceDisplayList";
 	private MLog mlog = new MLog();
@@ -889,5 +892,15 @@ public class DeviceDisplayList {
 			  e.printStackTrace();
 		  }  
 		  return data;   
+	}
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		// TODO Auto-generated method stub
+		
 	}
 }

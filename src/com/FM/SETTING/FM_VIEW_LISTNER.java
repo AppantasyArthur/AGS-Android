@@ -17,12 +17,15 @@ import org.teleal.cling.support.model.item.Item;
 import com.FM.SETTING.FM_Music_ListView_BaseAdapter_PAD.ViewHandler;
 import com.appantasy.androidapptemplate.event.lastchange.TrackDO;
 import com.alpha.upnpui.FragmentActivity_Main;
-import com.alpha.upnpui.FragmentActivity_Setting;
+import com.alpha.upnpui.Fragment_SETTING;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
+import com.tkb.tool.Tool;
+
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
@@ -41,10 +44,12 @@ public class FM_VIEW_LISTNER {
 	private MLog mlog = new MLog();
 	private static final String TAG = "FM_VIEW_LISTNER";
 	private int device_size = 0;
-	public FM_VIEW_LISTNER(Context context, int device_size) {
+	private FragmentManager fragmentManager;
+	public FM_VIEW_LISTNER(Context context, int device_size,FragmentManager fragmentManager) {
 		this.context = context;
 		this.mlog.LogSwitch = true;
 		this.device_size = device_size;
+		this.fragmentManager = fragmentManager;
 	}
 	public void Speaker_Button_LISTNER(Button Speaker_Button){
 		Speaker_Button.setOnClickListener(new View.OnClickListener() {
@@ -553,9 +558,10 @@ public class FM_VIEW_LISTNER {
 		Setting_IButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intnet = new Intent();
-				intnet.setClass(context, FragmentActivity_Setting.class);
-				context.startActivity(intnet);
+				if(fragmentManager.findFragmentByTag("Fragment_SETTING")==null){
+					Fragment_SETTING fragment_SETTING = new Fragment_SETTING();
+					Tool.FragmentActivity_MainReplaceAddStackFragment(fragmentManager.beginTransaction(), fragment_SETTING, "Fragment_SETTING", R.id.pFAM_RLayout_SETTING_RLayoutt, R.animator.translate_right_in, R.animator.alpha_out,R.animator.alpha_in, R.animator.translate_right_out);
+				}
 			}
 		});		
 	}

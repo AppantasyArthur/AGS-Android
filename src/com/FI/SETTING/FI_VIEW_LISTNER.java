@@ -18,6 +18,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -43,7 +44,7 @@ import com.FAM.SETTING.Sound_SeekBar_Listner;
 import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.fragments.Fragment_Information;
 import com.alpha.upnpui.FragmentActivity_Main;
-import com.alpha.upnpui.FragmentActivity_Setting;
+import com.alpha.upnpui.Fragment_SETTING;
 import com.alpha.upnpui.R;
 import com.appantasy.androidapptemplate.event.lastchange.TrackDO;
 import com.tkb.tool.MLog;
@@ -56,12 +57,13 @@ public class FI_VIEW_LISTNER {
 	private MLog mlog = new MLog();
 	private static final String TAG = "FI_VIEW_LISTNER";
 	private int device_size = 0;
-	
+	private FragmentManager fragmentManager;
 	private FAM_Save_PopupWindow popupWindow;
-	public FI_VIEW_LISTNER(Context context,int device_size){
+	public FI_VIEW_LISTNER(Context context,int device_size,FragmentManager fragmentManager){
 		this.context = context;
 		this.mlog.LogSwitch = true;
 		this.device_size = device_size;
+		this.fragmentManager =fragmentManager;
 	}
 	public void SET_QUEUE_Button_Listner(Button QUEUE_Button,final RelativeLayout TITLE2_1_RLayout,final RelativeLayout Bottom2_RLayout,final ViewFlipper ViewContent_ViewFlipper) {
 		QUEUE_Button.setOnClickListener(new View.OnClickListener() {
@@ -765,9 +767,10 @@ public class FI_VIEW_LISTNER {
 		Setting_IButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intnet = new Intent();
-				intnet.setClass(context, FragmentActivity_Setting.class);
-				context.startActivity(intnet);
+				if(fragmentManager.findFragmentByTag("Fragment_SETTING")==null){
+					Fragment_SETTING fragment_SETTING = new Fragment_SETTING();
+					Tool.FragmentActivity_MainReplaceAddStackFragment(fragmentManager.beginTransaction(), fragment_SETTING, "Fragment_SETTING", R.id.pFAM_RLayout_SETTING_RLayoutt, R.animator.translate_right_in, R.animator.alpha_out,R.animator.alpha_in, R.animator.translate_right_out);
+				}
 			}
 		});		
 	}

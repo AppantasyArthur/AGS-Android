@@ -129,7 +129,7 @@ public class FragmentActivity_Main extends FragmentActivity {
 	    this.fragmentManager = this.getSupportFragmentManager();         
         //取得View_SETTING
         this.VIEW_SETTING = new FAM_VIEW_SETTING(this.context,this.device_size);
-        this.VIEW_LISTNER = new FAM_VIEW_LISTNER(this.context,this.device_size);
+        this.VIEW_LISTNER = new FAM_VIEW_LISTNER(this.context,this.device_size,this.fragmentManager);
         //建立Device主要清單
         deviceDisplayList = new DeviceDisplayList(context);
 	}
