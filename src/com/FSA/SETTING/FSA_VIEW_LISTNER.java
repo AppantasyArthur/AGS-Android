@@ -1,11 +1,12 @@
 package com.FSA.SETTING;
 
-import com.alpha.upnpui.FragmentActivity_Main;
-import com.alpha.upnpui.Fragment_SETTING;
+
+import com.alpha.fragments.Fragment_SRenderers;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
-import android.R.raw;
+import com.tkb.tool.Tool;
 import android.content.Context;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.Button;
 
@@ -20,15 +21,21 @@ public class FSA_VIEW_LISTNER {
 		this.device_size = device_size;
 	}	
 	
-	public void Back_Button_Listner(Button Back_Button){
-		Back_Button.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {	
-				Fragment_SETTING fragment_SETTING = (Fragment_SETTING)((FragmentActivity_Main)context).getSupportFragmentManager().findFragmentByTag("Fragment_SETTING");
-				if(fragment_SETTING!=null){
-					fragment_SETTING.ShowViewContent_ViewFlipperDisplay(0, R.animator.alpha_in, R.animator.translate_bottom_out);
-				}				
-			}
-		});	
+	public void Back_Button_Listner(Button Back_Button,final FragmentManager fragmentManager){
+		if(device_size==6){
+			Back_Button.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {	
+					Tool.FragmentActivity_MainReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SRenderers(), "Fragment_SRenderers", R.id.pFAS_RLayout_ViewFlipper_Right_RLayout, R.animator.translate_top_in, R.animator.translate_bottom_out);			
+				}
+			});	
+		}else{
+			Back_Button.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {	
+					Tool.FragmentActivity_MainReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SRenderers(), "Fragment_SRenderers", R.id.FAS_RLayout_Right_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+				}
+			});	
+		}		
 	}
 }

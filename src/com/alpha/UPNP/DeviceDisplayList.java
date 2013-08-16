@@ -40,6 +40,7 @@ import com.FI.SETTING.MusicInfo_Listner;
 import com.FM.SETTING.FM_Music_ListView_BaseAdapter_Listner;
 import com.FS.SETTING.FS_SPEAKER_ExpandableListAdapter_Listner;
 import com.FS.SETTING.RunState_TextView_Listner2;
+import com.FSR.SETTING.FSR_Renderers_ListView_BaseAdapter_Renderer_Listner;
 import com.alpha.upnpui.FragmentActivity_Main;
 import com.appantasy.androidapptemplate.event.lastchange.GroupHandler;
 import com.appantasy.androidapptemplate.event.lastchange.GroupVO;
@@ -81,6 +82,8 @@ public class DeviceDisplayList implements Parcelable  {
 	private MusicInfo_Listner MIListner;//Info
 	private FI_Queqe_ListView_BaseAdapter_Queqe_Listner queqe_listner;//Queue
 	private ProcessBarListner processBarListner;
+	//Setting Listners
+	private FSR_Renderers_ListView_BaseAdapter_Renderer_Listner FSRRRLBListner;
 	
 	public DeviceDisplayList(Context context){
 		this.context = context;
@@ -101,7 +104,10 @@ public class DeviceDisplayList implements Parcelable  {
 		if(deviceType.getType().toString().equals("MediaRenderer")){
 			//MediaRenderer List
 			MRList.add(dd);
-			
+			//FSRRRLBListner
+			if(FSRRRLBListner!=null){
+				FSRRRLBListner.RenderersChange();
+			}
 			//¿À¨d¨Oß_¶≥Group
 			DeviceType deviceType_f = new DeviceType("schemas-upnp-org", "DeviceManager");
 			Device[] devices = dd.getDevice().findDevices(deviceType_f);
@@ -172,6 +178,10 @@ public class DeviceDisplayList implements Parcelable  {
 				DeviceDisplayList.this.setChooseMediaRenderer(null);
 			}			
 			MRList.remove(dd);
+			//FSRRRLBListner
+			if(FSRRRLBListner!=null){
+				FSRRRLBListner.RenderersChange();
+			}
 			mlog.info(TAG, "removeDeviceDisplay = MR");
 		}else if(deviceType.getType().toString().equals("MediaServer")){
 			if(FMLBAListner!=null){
@@ -399,6 +409,9 @@ public class DeviceDisplayList implements Parcelable  {
 	}
 	public void setProcessBarListner(ProcessBarListner processBarListner){
 		this.processBarListner = processBarListner;
+	}
+	public void setFSR_Renderers_ListView_BaseAdapter_Renderer_Listner(FSR_Renderers_ListView_BaseAdapter_Renderer_Listner FSRRRLBListner){
+		this.FSRRRLBListner = FSRRRLBListner;
 	}
 	public void CancelAllListner(){
 		FSELAListner = null;

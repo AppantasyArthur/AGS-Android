@@ -2,6 +2,7 @@ package com.alpha.fragments;
 
 import com.FSF.SETTING.FSF_VIEW_LISTNER;
 import com.FSF.SETTING.FSF_VIEW_SETTING;
+import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
@@ -31,6 +32,10 @@ public class Fragment_SFirmrware extends Fragment {
 	private MLog mlog = new MLog();
 	private Context context;
 	private int device_size = 0;
+	private DeviceDisplay chooseDeviceDisplay;
+	public Fragment_SFirmrware(DeviceDisplay deviceDisplay){
+		this.chooseDeviceDisplay = deviceDisplay;
+	}
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -41,7 +46,7 @@ public class Fragment_SFirmrware extends Fragment {
 		this.context = this.getActivity();
 		this.mlog.LogSwitch = true;		
 		device_size = ((FragmentActivity_Main)context).getDevice_Size();
-		fragmentManager = this.getChildFragmentManager();
+		fragmentManager = this.getFragmentManager();
 		//¨ú±oView_SETTING
         this.VIEW_SETTING = new FSF_VIEW_SETTING(this.context,this.device_size);
         this.VIEW_LISTNER = new FSF_VIEW_LISTNER(this.context,this.device_size);
@@ -70,7 +75,8 @@ public class Fragment_SFirmrware extends Fragment {
 		mlog.info(TAG, "findView OK");		
 	}
 	private void Phone_findViewListner() {
-		this.VIEW_LISTNER.Back_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFSF_RLayout_RLayout_Back_Button));
+		this.VIEW_LISTNER.Back_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFSF_RLayout_RLayout_Back_Button),
+												this.fragmentManager);
 		
 	}
 	private void PAD_findView() {
@@ -79,8 +85,9 @@ public class Fragment_SFirmrware extends Fragment {
 		mlog.info(TAG, "findView OK");
 	}	
 	private void PAD_findViewListner() {		
-		
-	}
+		this.VIEW_LISTNER.Back_Button_Listner((Button)Fragment_MainView.findViewById(R.id.FSF_RLayout_RLayout_Back_Button),
+												this.fragmentManager);
+	}	
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {

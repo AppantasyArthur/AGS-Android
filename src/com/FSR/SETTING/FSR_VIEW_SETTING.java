@@ -2,6 +2,8 @@ package com.FSR.SETTING;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.ListView;
+
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
@@ -61,7 +63,11 @@ public class FSR_VIEW_SETTING {
 		Tool.fitsViewTextSize(18, view.findViewById(R.id.pFSR_RLayout_RLayout_Title_TextView));
 	}
 	private void pFSR_RLayout_BODY_RLayout(View view){
-		
+		FSR_Renders_ListView_BaseAdapter_Phone baseAdapter = new FSR_Renders_ListView_BaseAdapter_Phone(this.context);
+		ListView renderersListView = (ListView)view.findViewById(R.id.pFSR_RLayout_RLayout_Renders_ListView);
+		Tool.fitsViewWidth(276, renderersListView);
+		Tool.fitsViewTopMargin(20, renderersListView);
+		renderersListView.setAdapter(baseAdapter);
 	}
 //***************************PHONE*********************************
 //***************************PAD*********************************
@@ -74,6 +80,14 @@ public class FSR_VIEW_SETTING {
 	}
 	private void PAD_FSR_RLayout_BODY_RLayout(View view) {
 		
+		FSR_Renders_ListView_BaseAdapter_PAD baseAdapter = new FSR_Renders_ListView_BaseAdapter_PAD(this.context);
+		ListView renderersListView = (ListView)view.findViewById(R.id.FSR_RLayout_RLayout_Renders_ListView);
+		
+		Tool.fitsViewWidth(276, renderersListView);
+		Tool.fitsViewTopMargin(20, renderersListView);
+		Tool.fitsViewLeftMargin(20, renderersListView);
+		
+		renderersListView.setAdapter(baseAdapter);
 	}
 //***************************PAD*********************************
 }

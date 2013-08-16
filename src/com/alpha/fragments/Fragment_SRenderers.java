@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.ListView;
 
 public class Fragment_SRenderers extends Fragment {
 	//VIEWS
@@ -41,7 +42,7 @@ public class Fragment_SRenderers extends Fragment {
 		this.context = this.getActivity();
 		this.mlog.LogSwitch = true;		
 		device_size = ((FragmentActivity_Main)context).getDevice_Size();
-		fragmentManager = this.getChildFragmentManager();
+		fragmentManager = this.getFragmentManager();
 		//¨ú±oView_SETTING
         this.VIEW_SETTING = new FSR_VIEW_SETTING(this.context,this.device_size);
         this.VIEW_LISTNER = new FSR_VIEW_LISTNER(this.context,this.device_size);
@@ -71,6 +72,8 @@ public class Fragment_SRenderers extends Fragment {
 	}
 	private void Phone_findViewListner() {		
 		this.VIEW_LISTNER.Back_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFSR_RLayout_RLayout_Back_Button));
+		this.VIEW_LISTNER.Renderers_ListView_LISTNER((ListView)Fragment_MainView.findViewById(R.id.pFSR_RLayout_RLayout_Renders_ListView),
+													fragmentManager);
 	}
 	private void PAD_findView() {
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FSR_RLayout_TITLE_RLayout));
@@ -78,7 +81,8 @@ public class Fragment_SRenderers extends Fragment {
 		mlog.info(TAG, "findView OK");
 	}	
 	private void PAD_findViewListner() {		
-		
+		this.VIEW_LISTNER.Renderers_ListView_LISTNER((ListView)Fragment_MainView.findViewById(R.id.FSR_RLayout_RLayout_Renders_ListView),
+													fragmentManager);
 	}
 	
 	@Override

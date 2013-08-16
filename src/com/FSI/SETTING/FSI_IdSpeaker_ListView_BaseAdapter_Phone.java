@@ -2,6 +2,8 @@ package com.FSI.SETTING;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadStateListInAssets;
@@ -24,20 +26,17 @@ public class FSI_IdSpeaker_ListView_BaseAdapter_Phone extends BaseAdapter {
 	private MLog mlog = new MLog();
 	private static final String TAG = "FSI_IdSpeaker_ListView_BaseAdapter";
 		
-	private List<String> dataList = new ArrayList<String>();
+	private List<DeviceDisplay> dataList = new ArrayList<DeviceDisplay>();
 	
 	private Drawable menu1;
 	private Drawable menu2;
 	private Drawable menu3;
 	private Drawable menu4;
 	
-	public FSI_IdSpeaker_ListView_BaseAdapter_Phone(Context context){
+	public FSI_IdSpeaker_ListView_BaseAdapter_Phone(Context context,DeviceDisplay deviceDisplay){
 		this.context = context;		
 		this.mlog.LogSwitch = true;
-		dataList.clear();
-		for(int i = 0;i<40;i++){
-			dataList.add(""+i);
-		}
+		dataList.add(deviceDisplay);
 		LoadBitmap();
 	}
 	private void LoadBitmap(){		
@@ -92,7 +91,7 @@ public class FSI_IdSpeaker_ListView_BaseAdapter_Phone extends BaseAdapter {
 			Tool.fitsViewHeight(31, viewHandler.CCell_RLayout);
 			viewHandler.CCell_RLayout.setBackgroundDrawable(menu2);
 		}
-		viewHandler.Name_TextView.setText("render id = "+dataList.get(position));
+		viewHandler.Name_TextView.setText(dataList.get(position).getDevice().getDetails().getFriendlyName());
 		return convertView;
 	}
 	private class ViewHandler{

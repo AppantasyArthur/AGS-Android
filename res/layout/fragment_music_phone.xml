@@ -213,7 +213,15 @@
 	        android:layout_centerVertical="true"
 	        android:background="#00000000"
 	        android:scaleType="fitXY"
-       	    />       	
+       	    />  
+       	<TextView 
+		    android:id="@+id/pFM_RLayout_RLayout_Verson_TextView"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_centerVertical="true"
+		    android:layout_toRightOf="@+id/pFM_RLayout_RLayout_Setting_IButton"
+		    android:gravity="center"
+		    />     	
     </RelativeLayout>  
 </RelativeLayout>
 

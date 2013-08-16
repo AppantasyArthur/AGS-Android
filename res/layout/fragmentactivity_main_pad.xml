@@ -121,6 +121,14 @@
 		    android:layout_alignParentRight="true"	
 		    android:background="#00000000"		 		   
 	   		>
+		    <TextView 
+		        android:id="@+id/FAM_RLayout_RLayout_RLayout_Verson_TextView"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_centerVertical="true"
+		        android:layout_toLeftOf="@+id/FAM_RLayout_RLayout_RLayout_Setting_IButton"
+		        android:gravity="center"
+		        />
 		    <ImageButton 
 		        android:id="@+id/FAM_RLayout_RLayout_RLayout_Setting_IButton"
 		        android:layout_width="wrap_content"

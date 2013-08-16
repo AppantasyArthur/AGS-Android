@@ -3,6 +3,7 @@ package com.tkb.tool;
 import java.lang.reflect.Method;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.util.DisplayMetrics;
 import android.view.Display;
 
@@ -68,20 +69,20 @@ public class DeviceInformation {
 //		mlog.info(TAG, "OS = "+sdk);
 //		return sdk;
 //	}
-//	private String getVersion(){
-//		String versionName = "";
-//		
-//		try {
-//			versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
-//		} catch (NameNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-////		version = Float.valueOf(versionName);
-////		version = version+0.0f;			
+	public String getVersion(){
+		String versionName = "";
+		
+		try {
+			versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+		} catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		version = Float.valueOf(versionName);
+//		version = version+0.0f;			
 //		mlog.info(TAG,"versionName ="+versionName);
-//		return versionName;
-//	}
+		return versionName;
+	}
 //	private double[] getPosition(){
 //		mlog.info(TAG, "getPosition");
 //		double[] position = {777,777};

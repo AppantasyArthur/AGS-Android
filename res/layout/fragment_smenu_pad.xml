@@ -36,52 +36,79 @@
         	android:text="Settings"
             />
     </RelativeLayout>
-    <RelativeLayout 
-        android:id="@+id/FSM_RLayout_Menu_RLayout"
+   	<ScrollView 
+   	    android:id="@+id/FSM_RLayout_Menu_ScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/FSM_RLayout_TITLE_RLayout"
-        android:background="#00000000"
-        >
-        <Button
-            android:id="@+id/FSM_RLayout_RLayout_About_Button"
-        	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:layout_alignParentLeft="true"
-        	android:layout_alignParentTop="true"
-        	android:gravity="center_vertical"
-        	android:textColor="#ffffff"        	
-        	android:text="About"
-            />
-        <Button
-            android:id="@+id/FSM_RLayout_RLayout_Firmrware_Button"
-        	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:layout_alignParentLeft="true"
-        	android:layout_alignParentTop="true"
-        	android:gravity="center_vertical"
-        	android:textColor="#ffffff"        
-        	android:text="Firmrware"
-            /> 
-        <Button
-            android:id="@+id/FSM_RLayout_RLayout_Wireless_Button"
-        	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:layout_alignParentLeft="true"
-        	android:layout_alignParentTop="true"
-        	android:gravity="center_vertical"
-        	android:textColor="#ffffff"        
-        	android:text="Wireless Setup"
-            /> 
-        <Button
-            android:id="@+id/FSM_RLayout_RLayout_Idenrify_Button"
-        	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:layout_alignParentLeft="true"
-        	android:layout_alignParentTop="true"
-        	android:gravity="center_vertical"
-        	android:textColor="#ffffff"        	
-        	android:text="Idenrify Speaker"
-            />        
-    </RelativeLayout>   
+   	    >
+	    <RelativeLayout 
+	        android:id="@+id/FSM_RLayout_Menu_RLayout"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        
+	        android:background="#00000000"
+	        >
+	        <Button
+	            android:id="@+id/FSM_RLayout_RLayout_About_Button"
+	        	android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	        	android:layout_alignParentLeft="true"
+	        	android:layout_alignParentTop="true"
+	        	android:gravity="center_vertical"
+	        	android:textColor="#ffffff"        	
+	        	android:text="About"
+	            />
+	        <Button
+	            android:id="@+id/FSM_RLayout_RLayout_Firmrware_Button"
+	        	android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	        	android:layout_alignParentLeft="true"
+	        	android:layout_alignParentTop="true"
+	        	android:gravity="center_vertical"
+	        	android:textColor="#ffffff"        
+	        	android:text="Firmrware"
+	            /> 
+	        <Button
+	            android:id="@+id/FSM_RLayout_RLayout_Wireless_Button"
+	        	android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	        	android:layout_alignParentLeft="true"
+	        	android:layout_alignParentTop="true"
+	        	android:gravity="center_vertical"
+	        	android:textColor="#ffffff"        
+	        	android:text="Network Setup"
+	            /> 
+	        <Button
+	            android:id="@+id/FSM_RLayout_RLayout_Idenrify_Button"
+	        	android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	        	android:layout_alignParentLeft="true"
+	        	android:layout_alignParentTop="true"
+	        	android:gravity="center_vertical"
+	        	android:textColor="#ffffff"        	
+	        	android:text="Idenrify Speaker"
+	            /> 
+	        <Button
+	            android:id="@+id/FSM_RLayout_RLayout_Alarm_Button"
+	        	android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	        	android:layout_alignParentLeft="true"
+	        	android:layout_alignParentTop="true"
+	        	android:gravity="center_vertical"
+	        	android:textColor="#ffffff"        	
+	        	android:text="Alarm"
+	            />     
+	        <Button
+	            android:id="@+id/FSM_RLayout_RLayout_SleepTimer_Button"
+	        	android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	        	android:layout_alignParentLeft="true"
+	        	android:layout_alignParentTop="true"
+	        	android:gravity="center_vertical"
+	        	android:textColor="#ffffff"        	
+	        	android:text="Sleep Timer"
+	            />            
+	    </RelativeLayout> 
+    </ScrollView>  
 </RelativeLayout>

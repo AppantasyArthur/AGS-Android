@@ -1,17 +1,13 @@
 package com.FM.SETTING;
 
 import android.content.Context;
-import android.util.Log;
-import android.view.Display;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.alpha.upnpui.R;
+import com.tkb.tool.DeviceInformation;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
 import com.tkb.tool.ThreadReadStateListInAssets;
@@ -175,6 +171,12 @@ public class FM_VIEW_SETTING {
 		view.findViewById(R.id.pFM_RLayout_RLayout_Setting_IButton).getLayoutParams().height = Tool.getWidth(30);
 		Tool.fitsViewLeftMargin(7, view.findViewById(R.id.pFM_RLayout_RLayout_Setting_IButton));		
 		new ThreadReadBitMapInAssets(context, "phone/grouprooms/setting.png", view.findViewById(R.id.pFM_RLayout_RLayout_Setting_IButton), 2);
+		//Verson TextView
+		TextView Verson_TextView = (TextView)view.findViewById(R.id.pFM_RLayout_RLayout_Verson_TextView);
+		Tool.fitsViewLeftMargin(10,Verson_TextView);
+		Tool.fitsViewTextSize(15, Verson_TextView);
+		DeviceInformation DeviceInformation = new DeviceInformation(context);
+		Verson_TextView.setText("Ver:"+DeviceInformation.getVersion());
 	}
 //***************************PHONE*********************************
 //***************************PAD*********************************	

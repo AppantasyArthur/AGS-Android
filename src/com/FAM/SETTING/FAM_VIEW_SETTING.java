@@ -4,9 +4,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.view.TextureView;
 import android.view.View;
 import android.widget.SeekBar;
+import android.widget.TextView;
+
 import com.alpha.upnpui.R;
+import com.tkb.tool.DeviceInformation;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
 import com.tkb.tool.ThreadReadStateListInAssets;
@@ -188,6 +192,12 @@ public class FAM_VIEW_SETTING {
 		new ThreadReadStateListInAssets(context, "pad/Settingsbar/clear&save_f.png", "pad/Settingsbar/clear&save_done.png", view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Done_Button), 4);
 		//BRIGHT RLayout
 		Tool.fitsViewWidth(344, view.findViewById(R.id.FAM_RLayout_RLayout_BRIGHT_RLayout));
+		//Verson TextView
+		TextView Verson_TextView = (TextView)view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Verson_TextView);
+		Tool.fitsViewRightMargin(20,Verson_TextView);
+		Tool.fitsViewTextSize(6, Verson_TextView);
+		DeviceInformation DeviceInformation = new DeviceInformation(context);
+		Verson_TextView.setText("Ver:"+DeviceInformation.getVersion());
 		//Setting IButton 
 		Tool.fitsViewRightMargin(20, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Setting_IButton));
 		Tool.fitsViewHeight(33, view.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Setting_IButton));

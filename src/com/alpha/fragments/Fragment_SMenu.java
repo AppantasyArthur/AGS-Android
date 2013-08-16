@@ -5,6 +5,9 @@ import com.FSM.SETTING.FSM_VIEW_SETTING;
 import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
+import com.tkb.tool.ThreadReadBitMapInAssets;
+
+import android.R.integer;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -31,9 +34,8 @@ public class Fragment_SMenu extends Fragment {
 	private MLog mlog = new MLog();
 	private Context context;
 	private int device_size = 0;
-	public Fragment_SMenu(FragmentManager fragmentManager){
-		this.fragmentManager = fragmentManager;
-	}
+	
+	private int choosedMenu = 0;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,10 +46,10 @@ public class Fragment_SMenu extends Fragment {
 		this.context = this.getActivity();
 		this.mlog.LogSwitch = true;		
 		device_size = ((FragmentActivity_Main)context).getDevice_Size();
-		
+		this.fragmentManager = this.getFragmentManager();
 		//取得View_SETTING
         this.VIEW_SETTING = new FSM_VIEW_SETTING(this.context,this.device_size);
-        this.VIEW_LISTNER = new FSM_VIEW_LISTNER(this.context,this.device_size);
+        this.VIEW_LISTNER = new FSM_VIEW_LISTNER(this.context,this.device_size,Fragment_SMenu.this);
 	}
 
 	@Override
@@ -77,6 +79,8 @@ public class Fragment_SMenu extends Fragment {
 		this.VIEW_LISTNER.Firmrware_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFSM_RLayout_RLayout_Firmrware_Button), fragmentManager);
 		this.VIEW_LISTNER.Wireless_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFSM_RLayout_RLayout_Wireless_Button), fragmentManager);
 		this.VIEW_LISTNER.Idenrify_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFSM_RLayout_RLayout_Idenrify_Button), fragmentManager);
+		this.VIEW_LISTNER.Alarm_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFSM_RLayout_RLayout_Alarm_Button), fragmentManager);
+		this.VIEW_LISTNER.SleepTimer_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFSM_RLayout_RLayout_SleepTimer_Button), fragmentManager);
 	}
 	private void PAD_findView() {
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FSM_RLayout_TITLE_RLayout));
@@ -89,6 +93,8 @@ public class Fragment_SMenu extends Fragment {
 		this.VIEW_LISTNER.Firmrware_Button_Listner((Button)Fragment_MainView.findViewById(R.id.FSM_RLayout_RLayout_Firmrware_Button), fragmentManager);
 		this.VIEW_LISTNER.Wireless_Button_Listner((Button)Fragment_MainView.findViewById(R.id.FSM_RLayout_RLayout_Wireless_Button), fragmentManager);
 		this.VIEW_LISTNER.Idenrify_Button_Listner((Button)Fragment_MainView.findViewById(R.id.FSM_RLayout_RLayout_Idenrify_Button), fragmentManager);
+		this.VIEW_LISTNER.Alarm_Button_Listner((Button)Fragment_MainView.findViewById(R.id.FSM_RLayout_RLayout_Alarm_Button), fragmentManager);
+		this.VIEW_LISTNER.SleepTimer_Button_Listner((Button)Fragment_MainView.findViewById(R.id.FSM_RLayout_RLayout_SleepTimer_Button), fragmentManager);
 	}
 	
 	@Override
@@ -143,6 +149,60 @@ public class Fragment_SMenu extends Fragment {
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
+	}
+	
+	public void SetChooseMenu(int choose){
+		if(device_size==6){
+			
+		}else{
+			//改變 old Menu Image
+			switch (choosedMenu){
+			case 1:
+				new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_item_n.png", Fragment_MainView.findViewById(R.id.FSM_RLayout_RLayout_About_Button), 3);
+				break;
+			case 2:
+				new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_item_n.png", Fragment_MainView.findViewById(R.id.FSM_RLayout_RLayout_Firmrware_Button), 3);
+				break;
+			case 3:
+				new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_item_n.png", Fragment_MainView.findViewById(R.id.FSM_RLayout_RLayout_Wireless_Button), 3);
+				break;
+			case 4:
+				new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_item_n.png", Fragment_MainView.findViewById(R.id.FSM_RLayout_RLayout_Idenrify_Button), 3);
+				break;
+			case 5:
+				new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_item_n.png", Fragment_MainView.findViewById(R.id.FSM_RLayout_RLayout_Alarm_Button), 3);
+				break;
+			case 6:
+				new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_item_n.png", Fragment_MainView.findViewById(R.id.FSM_RLayout_RLayout_SleepTimer_Button), 3);
+				break;
+			}
+			//改變 new Menu Image
+			switch (choose){
+			case 1:
+				new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_item_f.png", Fragment_MainView.findViewById(R.id.FSM_RLayout_RLayout_About_Button), 3);
+				break;
+			case 2:
+				new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_item_f.png", Fragment_MainView.findViewById(R.id.FSM_RLayout_RLayout_Firmrware_Button), 3);
+				break;
+			case 3:
+				new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_item_f.png", Fragment_MainView.findViewById(R.id.FSM_RLayout_RLayout_Wireless_Button), 3);
+				break;
+			case 4:
+				new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_item_f.png", Fragment_MainView.findViewById(R.id.FSM_RLayout_RLayout_Idenrify_Button), 3);
+				break;
+			case 5:
+				new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_item_f.png", Fragment_MainView.findViewById(R.id.FSM_RLayout_RLayout_Alarm_Button), 3);
+				break;
+			case 6:
+				new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_item_f.png", Fragment_MainView.findViewById(R.id.FSM_RLayout_RLayout_SleepTimer_Button), 3);
+				break;
+			}
+			
+		}
+		this.choosedMenu = choose;
+	}
+	public int getChooseMenu(){
+		return this.choosedMenu;
 	}
 	
 }

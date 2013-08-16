@@ -96,7 +96,12 @@ public class FSF_VIEW_SETTING {
 //***************************PAD*********************************
 	private void PAD_FSA_RLayout_TITLE_RLayout(View view) {
 		Tool.fitsViewHeight(55, view);
-		
+		//Back Button
+		Tool.fitsViewWidth(55, view.findViewById(R.id.FSF_RLayout_RLayout_Back_Button));
+		Tool.fitsViewHeight(32, view.findViewById(R.id.FSF_RLayout_RLayout_Back_Button));
+		Tool.fitsViewLeftMargin(44, view.findViewById(R.id.FSF_RLayout_RLayout_Back_Button));
+		Tool.fitsViewTextSize(6, view.findViewById(R.id.FSF_RLayout_RLayout_Back_Button));
+		new ThreadReadBitMapInAssets(context, "pad/Playlist/playlist_back_btn.png", view.findViewById(R.id.FSF_RLayout_RLayout_Back_Button), 3);
 		//Title TextView
 		Tool.fitsViewHeight(50, view.findViewById(R.id.FSF_RLayout_RLayout_Title_TextView));
 		Tool.fitsViewTextSize(8, view.findViewById(R.id.FSF_RLayout_RLayout_Title_TextView));

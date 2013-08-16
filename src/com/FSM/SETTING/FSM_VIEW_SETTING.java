@@ -1,10 +1,7 @@
 package com.FSM.SETTING;
 
-import android.R.raw;
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
-
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
@@ -94,6 +91,20 @@ public class FSM_VIEW_SETTING {
 		Tool.fitsViewLeftMargin(22, view.findViewById(R.id.pFSM_RLayout_RLayout_Idenrify_Button));
 		Tool.fitsViewTextSize(14, view.findViewById(R.id.pFSM_RLayout_RLayout_Idenrify_Button));
 		new ThreadReadStateListInAssets(context, "phone/setting/settings_bar_f.PNG", "phone/setting/settings_bar_n.PNG", view.findViewById(R.id.pFSM_RLayout_RLayout_Idenrify_Button), 4);
+		//Alarm Button
+		Tool.fitsViewHeight(61, view.findViewById(R.id.pFSM_RLayout_RLayout_Alarm_Button));
+		Tool.fitsViewWidth(276, view.findViewById(R.id.pFSM_RLayout_RLayout_Alarm_Button));
+		Tool.fitsViewTopMargin(429, view.findViewById(R.id.pFSM_RLayout_RLayout_Alarm_Button));
+		Tool.fitsViewLeftMargin(22, view.findViewById(R.id.pFSM_RLayout_RLayout_Alarm_Button));
+		Tool.fitsViewTextSize(14, view.findViewById(R.id.pFSM_RLayout_RLayout_Alarm_Button));
+		new ThreadReadStateListInAssets(context, "phone/setting/settings_bar_f.PNG", "phone/setting/settings_bar_n.PNG", view.findViewById(R.id.pFSM_RLayout_RLayout_Alarm_Button), 4);
+		//SleepTimer Button
+		Tool.fitsViewHeight(61, view.findViewById(R.id.pFSM_RLayout_RLayout_SleepTimer_Button));
+		Tool.fitsViewWidth(276, view.findViewById(R.id.pFSM_RLayout_RLayout_SleepTimer_Button));
+		Tool.fitsViewTopMargin(525, view.findViewById(R.id.pFSM_RLayout_RLayout_SleepTimer_Button));
+		Tool.fitsViewLeftMargin(22, view.findViewById(R.id.pFSM_RLayout_RLayout_SleepTimer_Button));
+		Tool.fitsViewTextSize(14, view.findViewById(R.id.pFSM_RLayout_RLayout_SleepTimer_Button));
+		new ThreadReadStateListInAssets(context, "phone/setting/settings_bar_f.PNG", "phone/setting/settings_bar_n.PNG", view.findViewById(R.id.pFSM_RLayout_RLayout_SleepTimer_Button), 4);
 	}
 //***************************PHONE*********************************
 //***************************PAD*********************************
@@ -118,28 +129,42 @@ public class FSM_VIEW_SETTING {
 		Tool.fitsViewTopMargin(33, view.findViewById(R.id.FSM_RLayout_RLayout_About_Button));
 		Tool.fitsViewLeftMargin(24, view.findViewById(R.id.FSM_RLayout_RLayout_About_Button));
 		Tool.fitsViewTextSize(8, view.findViewById(R.id.FSM_RLayout_RLayout_About_Button));
-		new ThreadReadStateListInAssets(context, "pad/Settings/Settings_item_f.png", "pad/Settings/Settings_item_n.png", view.findViewById(R.id.FSM_RLayout_RLayout_About_Button), 4);
+		new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_item_n.png", view.findViewById(R.id.FSM_RLayout_RLayout_About_Button), 3);
 		//Firmrware Button
 		Tool.fitsViewHeight(66, view.findViewById(R.id.FSM_RLayout_RLayout_Firmrware_Button));
 		Tool.fitsViewWidth(230, view.findViewById(R.id.FSM_RLayout_RLayout_Firmrware_Button));
 		Tool.fitsViewTopMargin(132, view.findViewById(R.id.FSM_RLayout_RLayout_Firmrware_Button));
 		Tool.fitsViewLeftMargin(24, view.findViewById(R.id.FSM_RLayout_RLayout_Firmrware_Button));
 		Tool.fitsViewTextSize(8, view.findViewById(R.id.FSM_RLayout_RLayout_Firmrware_Button));
-		new ThreadReadStateListInAssets(context, "pad/Settings/Settings_item_f.png", "pad/Settings/Settings_item_n.png", view.findViewById(R.id.FSM_RLayout_RLayout_Firmrware_Button), 4);
+		new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_item_n.png", view.findViewById(R.id.FSM_RLayout_RLayout_Firmrware_Button), 3);
 		//Wireless Button
 		Tool.fitsViewHeight(66, view.findViewById(R.id.FSM_RLayout_RLayout_Wireless_Button));
 		Tool.fitsViewWidth(230, view.findViewById(R.id.FSM_RLayout_RLayout_Wireless_Button));
 		Tool.fitsViewTopMargin(231, view.findViewById(R.id.FSM_RLayout_RLayout_Wireless_Button));
 		Tool.fitsViewLeftMargin(24, view.findViewById(R.id.FSM_RLayout_RLayout_Wireless_Button));
 		Tool.fitsViewTextSize(8, view.findViewById(R.id.FSM_RLayout_RLayout_Wireless_Button));
-		new ThreadReadStateListInAssets(context, "pad/Settings/Settings_item_f.png", "pad/Settings/Settings_item_n.png", view.findViewById(R.id.FSM_RLayout_RLayout_Wireless_Button), 4);
+		new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_item_n.png", view.findViewById(R.id.FSM_RLayout_RLayout_Wireless_Button), 3);
 		//Idenrify Button
 		Tool.fitsViewHeight(66, view.findViewById(R.id.FSM_RLayout_RLayout_Idenrify_Button));
 		Tool.fitsViewWidth(230, view.findViewById(R.id.FSM_RLayout_RLayout_Idenrify_Button));
 		Tool.fitsViewTopMargin(330, view.findViewById(R.id.FSM_RLayout_RLayout_Idenrify_Button));
 		Tool.fitsViewLeftMargin(24, view.findViewById(R.id.FSM_RLayout_RLayout_Idenrify_Button));
 		Tool.fitsViewTextSize(8, view.findViewById(R.id.FSM_RLayout_RLayout_Idenrify_Button));
-		new ThreadReadStateListInAssets(context, "pad/Settings/Settings_item_f.png", "pad/Settings/Settings_item_n.png", view.findViewById(R.id.FSM_RLayout_RLayout_Idenrify_Button), 4);
+		new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_item_n.png", view.findViewById(R.id.FSM_RLayout_RLayout_Idenrify_Button), 3);
+		//Alarm Button
+		Tool.fitsViewHeight(66, view.findViewById(R.id.FSM_RLayout_RLayout_Alarm_Button));
+		Tool.fitsViewWidth(230, view.findViewById(R.id.FSM_RLayout_RLayout_Alarm_Button));
+		Tool.fitsViewTopMargin(429, view.findViewById(R.id.FSM_RLayout_RLayout_Alarm_Button));
+		Tool.fitsViewLeftMargin(24, view.findViewById(R.id.FSM_RLayout_RLayout_Alarm_Button));
+		Tool.fitsViewTextSize(8, view.findViewById(R.id.FSM_RLayout_RLayout_Alarm_Button));
+		new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_item_n.png", view.findViewById(R.id.FSM_RLayout_RLayout_Alarm_Button), 3);
+		//SleepTimer Button
+		Tool.fitsViewHeight(66, view.findViewById(R.id.FSM_RLayout_RLayout_SleepTimer_Button));
+		Tool.fitsViewWidth(230, view.findViewById(R.id.FSM_RLayout_RLayout_SleepTimer_Button));
+		Tool.fitsViewTopMargin(528, view.findViewById(R.id.FSM_RLayout_RLayout_SleepTimer_Button));
+		Tool.fitsViewLeftMargin(24, view.findViewById(R.id.FSM_RLayout_RLayout_SleepTimer_Button));
+		Tool.fitsViewTextSize(8, view.findViewById(R.id.FSM_RLayout_RLayout_SleepTimer_Button));
+		new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_item_n.png", view.findViewById(R.id.FSM_RLayout_RLayout_SleepTimer_Button), 3);
 	}
 //***************************PAD*********************************
 }

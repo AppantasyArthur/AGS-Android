@@ -1,9 +1,7 @@
 package com.FSA.SETTING;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
-
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
@@ -54,7 +52,7 @@ public class FSA_VIEW_SETTING {
 	private void pFSA_RLayout_TITLE_RLayout(View view) {
 		Tool.fitsViewHeight(37, view);
 		new ThreadReadBitMapInAssets(context, "phone/setting/top_talie.PNG", view, 3);
-		//Done Button
+		//Back Button
 		Tool.fitsViewWidth(59, view.findViewById(R.id.pFSA_RLayout_RLayout_Back_Button));
 		view.findViewById(R.id.pFSA_RLayout_RLayout_Back_Button).getLayoutParams().height = Tool.getWidth(26);
 		Tool.fitsViewRightMargin(7, view.findViewById(R.id.pFSA_RLayout_RLayout_Back_Button));
@@ -64,44 +62,38 @@ public class FSA_VIEW_SETTING {
 		Tool.fitsViewTextSize(18, view.findViewById(R.id.pFSA_RLayout_RLayout_Title_TextView));
 	}
 	private void pFSA_RLayout_BODY_RLayout(View view) {
-		//About_RLayout
-		Tool.fitsViewHeight(30, view.findViewById(R.id.pFSA_RLayout_RLayout_About_RLayout));
-		Tool.fitsViewWidth(297, view.findViewById(R.id.pFSA_RLayout_RLayout_About_RLayout));
-		Tool.fitsViewTopMargin(74, view.findViewById(R.id.pFSA_RLayout_RLayout_About_RLayout));
-		Tool.fitsViewLeftMargin(12, view.findViewById(R.id.pFSA_RLayout_RLayout_About_RLayout));
-		new ThreadReadBitMapInAssets(context, "phone/setting/setting_firmware_about_bar.PNG", view.findViewById(R.id.pFSA_RLayout_RLayout_About_RLayout), 3);
-		//LAbout TextView		
-		Tool.fitsViewWidth(140, view.findViewById(R.id.pFSA_RLayout_RLayout_RLayout_LAbout_TextView));
-		Tool.fitsViewTextSize(14, view.findViewById(R.id.pFSA_RLayout_RLayout_RLayout_LAbout_TextView));
-		Tool.fitsViewLeftMargin(9, view.findViewById(R.id.pFSA_RLayout_RLayout_RLayout_LAbout_TextView));
-		//RAbout TextView		
-		Tool.fitsViewWidth(140, view.findViewById(R.id.pFSA_RLayout_RLayout_RLayout_RAbout_TextView));
-		Tool.fitsViewTextSize(10, view.findViewById(R.id.pFSA_RLayout_RLayout_RLayout_RAbout_TextView));
-		Tool.fitsViewRightMargin(9, view.findViewById(R.id.pFSA_RLayout_RLayout_RLayout_RAbout_TextView));
+		//Name TextView
+		Tool.fitsViewTopMargin(20, view.findViewById(R.id.pFSA_RLayout_RLayout_Name_TextView));
+		Tool.fitsViewLeftMargin(12, view.findViewById(R.id.pFSA_RLayout_RLayout_Name_TextView));
+		Tool.fitsViewTextSize(18, view.findViewById(R.id.pFSA_RLayout_RLayout_Name_TextView));
+		//About_ListView
+		Tool.fitsViewWidth(297, view.findViewById(R.id.pFSA_RLayout_RLayout_About_ListView));
+		Tool.fitsViewLeftMargin(12, view.findViewById(R.id.pFSA_RLayout_RLayout_About_ListView));
+		Tool.fitsViewTopMargin(10, view.findViewById(R.id.pFSA_RLayout_RLayout_About_ListView));
 	}
 //***************************PHONE*********************************
 //***************************PAD*********************************
 	private void PAD_FSA_RLayout_TITLE_RLayout(View view) {
-		Tool.fitsViewHeight(55, view);		
+		Tool.fitsViewHeight(55, view);	
+		//Back Button
+		Tool.fitsViewWidth(55, view.findViewById(R.id.FSA_RLayout_RLayout_Back_Button));
+		Tool.fitsViewHeight(32, view.findViewById(R.id.FSA_RLayout_RLayout_Back_Button));
+		Tool.fitsViewLeftMargin(44, view.findViewById(R.id.FSA_RLayout_RLayout_Back_Button));
+		Tool.fitsViewTextSize(6, view.findViewById(R.id.FSA_RLayout_RLayout_Back_Button));
+		new ThreadReadBitMapInAssets(context, "pad/Playlist/playlist_back_btn.png", view.findViewById(R.id.FSA_RLayout_RLayout_Back_Button), 3);
 		//Title TextView
 		Tool.fitsViewHeight(50, view.findViewById(R.id.FSA_RLayout_RLayout_Title_TextView));
 		Tool.fitsViewTextSize(8, view.findViewById(R.id.FSA_RLayout_RLayout_Title_TextView));
 	}
 	private void PAD_FSA_RLayout_BODY_RLayout(View view) {
-		//About_RLayout
-		Tool.fitsViewHeight(62, view.findViewById(R.id.FSA_RLayout_RLayout_About_RLayout));
-		Tool.fitsViewWidth(667, view.findViewById(R.id.FSA_RLayout_RLayout_About_RLayout));
-		Tool.fitsViewTopMargin(37, view.findViewById(R.id.FSA_RLayout_RLayout_About_RLayout));
-		Tool.fitsViewLeftMargin(44, view.findViewById(R.id.FSA_RLayout_RLayout_About_RLayout));
-		new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_box.png", view.findViewById(R.id.FSA_RLayout_RLayout_About_RLayout), 3);
-		//LAbout TextView		
-		Tool.fitsViewWidth(324, view.findViewById(R.id.FSA_RLayout_RLayout_RLayout_LAbout_TextView));
-		Tool.fitsViewTextSize(10, view.findViewById(R.id.FSA_RLayout_RLayout_RLayout_LAbout_TextView));
-		Tool.fitsViewLeftMargin(10, view.findViewById(R.id.FSA_RLayout_RLayout_RLayout_LAbout_TextView));
-		//RAbout TextView		
-		Tool.fitsViewWidth(324, view.findViewById(R.id.FSA_RLayout_RLayout_RLayout_RAbout_TextView));
-		Tool.fitsViewTextSize(8, view.findViewById(R.id.FSA_RLayout_RLayout_RLayout_RAbout_TextView));
-		Tool.fitsViewRightMargin(10, view.findViewById(R.id.FSA_RLayout_RLayout_RLayout_RAbout_TextView));
+		//Name TextView
+		Tool.fitsViewTopMargin(37, view.findViewById(R.id.FSA_RLayout_RLayout_Name_TextView));
+		Tool.fitsViewLeftMargin(44, view.findViewById(R.id.FSA_RLayout_RLayout_Name_TextView));
+		Tool.fitsViewTextSize(10, view.findViewById(R.id.FSA_RLayout_RLayout_Name_TextView));
+		//About_ListView
+		Tool.fitsViewWidth(667, view.findViewById(R.id.FSA_RLayout_RLayout_About_ListView));
+		Tool.fitsViewLeftMargin(44, view.findViewById(R.id.FSA_RLayout_RLayout_About_ListView));
+		Tool.fitsViewTopMargin(10, view.findViewById(R.id.FSA_RLayout_RLayout_About_ListView));
 	}
 //***************************PAD*********************************
 }

@@ -11,7 +11,18 @@
    		android:layout_height="wrap_content"
    		android:layout_alignParentTop="true"
    		android:background="#00000000"
-	    >  
+	    > 
+	    <Button
+            android:id="@+id/FSW_RLayout_RLayout_Back_Button"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_alignParentLeft="true"
+        	android:layout_centerVertical="true"
+        	android:padding="0dp"        	
+        	android:textColor="#ffffff"
+        	android:gravity="center"
+        	android:text="Back"
+            />  
 	    <TextView 
             android:id="@+id/FSW_RLayout_RLayout_Title_TextView"
         	android:layout_width="match_parent"
@@ -31,5 +42,80 @@
    		android:layout_below="@+id/FSW_RLayout_TITLE_RLayout"
    		android:background="#00000000"
 	    >  
+	    <RelativeLayout
+	        android:id="@+id/FSW_RLayout_RLayout_WIFI_RLayout"
+	    	android:layout_width="wrap_content"
+	   		android:layout_height="wrap_content"
+	   		android:layout_alignParentTop="true"
+	   		android:layout_alignParentLeft="true"
+	        >
+	        <TextView
+	            android:id="@+id/FSW_RLayout_RLayout_RLayout_WIFI_TextView"
+		    	android:layout_width="match_parent"
+		   		android:layout_height="match_parent"
+		   		android:gravity="center_vertical"
+		   		android:layout_alignParentLeft="true"
+		   		android:textColor="#ffffff"
+		   		android:text="WI-FI"
+	            />
+	        <Switch
+	            android:id="@+id/FSW_RLayout_RLayout_RLayout_WIFISwitch_Switch"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_alignParentRight="true"
+	            android:layout_centerVertical="true"
+	            android:switchTextAppearance="@style/SwitchTextAppearance"
+	            android:textOn="開"
+	            android:textOff="關"
+	            />
+	    </RelativeLayout>
+	    <RelativeLayout
+	        android:id="@+id/FSW_RLayout_RLayout_WIFIInfo_RLayout"
+	    	android:layout_width="wrap_content"
+	   		android:layout_height="wrap_content"
+	   		android:layout_below="@+id/FSW_RLayout_RLayout_WIFI_RLayout"	   		
+	   		android:layout_alignParentLeft="true"
+	   		android:background="#ff0000"
+	   		android:visibility="gone"	   		
+	        >
+	        <RelativeLayout
+		        android:id="@+id/FSW_RLayout_RLayout_RLayout_WIFIState_RLayout"
+		    	android:layout_width="match_parent"
+		   		android:layout_height="wrap_content"
+		   		android:layout_alignParentTop="true"	
+		   		android:layout_alignParentLeft="true"
+		   		android:background="#00ff00"	   		
+		        >
+		        <TextView
+		            android:id="@+id/FSW_RLayout_RLayout_RLayout_RLayout_WIFIState_TextView"
+			    	android:layout_width="wrap_content"
+			   		android:layout_height="match_parent"
+			   		android:gravity="center_vertical"
+			   		android:layout_alignParentLeft="true"
+			   		android:textColor="#ffffff"
+			   		android:text="Choose a Network..."
+		            />
+		        <ProgressBar
+		            android:id="@+id/FSW_RLayout_RLayout_RLayout_RLayout_WIFIState_ProgressBar"
+			    	android:layout_width="wrap_content"
+			   		android:layout_height="wrap_content"
+			   		android:layout_centerVertical="true"
+			   		android:layout_toRightOf="@+id/FSW_RLayout_RLayout_RLayout_RLayout_WIFIState_TextView"
+		            >		            
+		        </ProgressBar>
+	        </RelativeLayout>
+	        <ListView 
+	            android:id="@+id/FSW_RLayout_RLayout_RLayout_WIFIAP_ListView"
+	            android:layout_width="match_parent"
+		   		android:layout_height="match_parent"
+		   		android:layout_below="@+id/FSW_RLayout_RLayout_RLayout_WIFIState_RLayout"
+		   		android:listSelector="@android:color/transparent" 
+		        android:background="#0000ff"
+		        android:divider="#00000000" 
+	            >
+	        </ListView>
+	        
+	    </RelativeLayout>
+
 	</RelativeLayout>
 </RelativeLayout>

@@ -68,14 +68,18 @@ public class FSI_VIEW_SETTING {
 		Tool.fitsViewWidth(294, view.findViewById(R.id.pFSI_RLayout_RLayout_IdSpeaker_ListView));
 		Tool.fitsViewTopMargin(62, view.findViewById(R.id.pFSI_RLayout_RLayout_IdSpeaker_ListView));
 		Tool.fitsViewLeftMargin(12, view.findViewById(R.id.pFSI_RLayout_RLayout_IdSpeaker_ListView));
-		FSI_IdSpeaker_ListView_BaseAdapter_Phone baseAdapter = new FSI_IdSpeaker_ListView_BaseAdapter_Phone(context);
-		((ListView)view.findViewById(R.id.pFSI_RLayout_RLayout_IdSpeaker_ListView)).setAdapter(baseAdapter);
+		
 	}
 //***************************PHONE*********************************
 //***************************PAD*********************************
 	private void PAD_FSA_RLayout_TITLE_RLayout(View view) {
 		Tool.fitsViewHeight(55, view);
-		
+		//Back Button
+		Tool.fitsViewWidth(55, view.findViewById(R.id.FSI_RLayout_RLayout_Back_Button));
+		Tool.fitsViewHeight(32, view.findViewById(R.id.FSI_RLayout_RLayout_Back_Button));
+		Tool.fitsViewLeftMargin(44, view.findViewById(R.id.FSI_RLayout_RLayout_Back_Button));
+		Tool.fitsViewTextSize(6, view.findViewById(R.id.FSI_RLayout_RLayout_Back_Button));
+		new ThreadReadBitMapInAssets(context, "pad/Playlist/playlist_back_btn.png", view.findViewById(R.id.FSI_RLayout_RLayout_Back_Button), 3);
 		//Title TextView
 		Tool.fitsViewHeight(50, view.findViewById(R.id.FSI_RLayout_RLayout_Title_TextView));
 		Tool.fitsViewTextSize(8, view.findViewById(R.id.FSI_RLayout_RLayout_Title_TextView));
@@ -85,8 +89,6 @@ public class FSI_VIEW_SETTING {
 		Tool.fitsViewHeight(550, view.findViewById(R.id.FSI_RLayout_RLayout_IdSpeaker_ListView));
 		Tool.fitsViewTopMargin(62, view.findViewById(R.id.FSI_RLayout_RLayout_IdSpeaker_ListView));
 		Tool.fitsViewLeftMargin(44, view.findViewById(R.id.FSI_RLayout_RLayout_IdSpeaker_ListView));
-		FSI_IdSpeaker_ListView_BaseAdapter_PAD baseAdapter = new FSI_IdSpeaker_ListView_BaseAdapter_PAD(context);
-		((ListView)view.findViewById(R.id.FSI_RLayout_RLayout_IdSpeaker_ListView)).setAdapter(baseAdapter);
 	}
 //***************************PAD*********************************
 }

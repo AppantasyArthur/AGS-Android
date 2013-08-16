@@ -1,7 +1,10 @@
 package com.alpha.fragments;
 
+import com.FSA.SETTING.FSA_About_ListView_BaseAdapter_PAD;
+import com.FSA.SETTING.FSA_About_ListView_BaseAdapter_Phone;
 import com.FSA.SETTING.FSA_VIEW_LISTNER;
 import com.FSA.SETTING.FSA_VIEW_SETTING;
+import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
@@ -16,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 
 public class Fragment_SAbout extends Fragment {
 	//VIEWS
@@ -31,6 +36,10 @@ public class Fragment_SAbout extends Fragment {
 	private MLog mlog = new MLog();
 	private Context context;
 	private int device_size = 0;
+	private DeviceDisplay chooseDeviceDisplay;
+	public Fragment_SAbout(DeviceDisplay deviceDisplay){
+		this.chooseDeviceDisplay = deviceDisplay;
+	}
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -41,7 +50,7 @@ public class Fragment_SAbout extends Fragment {
 		this.context = this.getActivity();
 		this.mlog.LogSwitch = true;		
 		device_size = ((FragmentActivity_Main)context).getDevice_Size();
-		fragmentManager = this.getChildFragmentManager();
+		fragmentManager = this.getFragmentManager();
 		//¨ú±oView_SETTING
         this.VIEW_SETTING = new FSA_VIEW_SETTING(this.context,this.device_size);
         this.VIEW_LISTNER = new FSA_VIEW_LISTNER(this.context,this.device_size);
@@ -67,18 +76,36 @@ public class Fragment_SAbout extends Fragment {
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFSA_RLayout));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFSA_RLayout_TITLE_RLayout));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFSA_RLayout_BODY_RLayout));
+		//Name_TextView
+		TextView NameTextView = (TextView)Fragment_MainView.findViewById(R.id.pFSA_RLayout_RLayout_Name_TextView);
+		NameTextView.setText(chooseDeviceDisplay.getDevice().getDetails().getFriendlyName());
+		//About ListView
+		FSA_About_ListView_BaseAdapter_Phone baseAdapter = new FSA_About_ListView_BaseAdapter_Phone(context);
+		ListView AboutListView = (ListView)Fragment_MainView.findViewById(R.id.pFSA_RLayout_RLayout_About_ListView);
+		AboutListView.setAdapter(baseAdapter);
 		mlog.info(TAG, "findView OK");
 	}
 	private void Phone_findViewListner() {		
-		this.VIEW_LISTNER.Back_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFSA_RLayout_RLayout_Back_Button));
+		this.VIEW_LISTNER.Back_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFSA_RLayout_RLayout_Back_Button),
+												this.fragmentManager);
 	}
 	private void PAD_findView() {
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FSA_RLayout_TITLE_RLayout));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FSA_RLayout_BODY_RLayout));
+		
+		//Name_TextView
+		TextView NameTextView = (TextView)Fragment_MainView.findViewById(R.id.FSA_RLayout_RLayout_Name_TextView);
+		NameTextView.setText(chooseDeviceDisplay.getDevice().getDetails().getFriendlyName());
+		//About ListView
+		FSA_About_ListView_BaseAdapter_PAD baseAdapter = new FSA_About_ListView_BaseAdapter_PAD(context);
+		ListView AboutListView = (ListView)Fragment_MainView.findViewById(R.id.FSA_RLayout_RLayout_About_ListView);
+		AboutListView.setAdapter(baseAdapter);
+		
 		mlog.info(TAG, "findView OK");
 	}	
 	private void PAD_findViewListner() {		
-		
+		this.VIEW_LISTNER.Back_Button_Listner((Button)Fragment_MainView.findViewById(R.id.FSA_RLayout_RLayout_Back_Button),
+												this.fragmentManager);
 	}
 	
 	@Override
