@@ -1,16 +1,10 @@
 package com.FM.SETTING;
 
-import java.io.InputStream;
-
 import com.alpha.upnpui.FragmentActivity_Main;
-import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
-import com.tkb.tool.ThreadReadBitMapInAssets;
 import com.tkb.tool.Tool;
-
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
 import android.util.AttributeSet;
 import android.view.Gravity;

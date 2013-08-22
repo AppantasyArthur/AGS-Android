@@ -2,6 +2,7 @@ package com.FSR.SETTING;
 
 import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.fragments.Fragment_SAbout;
+import com.alpha.fragments.Fragment_SAlarm;
 import com.alpha.fragments.Fragment_SFirmrware;
 import com.alpha.fragments.Fragment_SIdenrify;
 import com.alpha.fragments.Fragment_SMenu;
@@ -52,21 +53,22 @@ public class FSR_VIEW_LISTNER {
 					if(fragment_SMenu!=null&&(chooseMenu=fragment_SMenu.getChooseMenu())!=0){
 						switch(chooseMenu){
 						case 1:
-							Tool.FragmentActivity_MainReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SAbout(deviceDisplay), "Fragment_SAbout", R.id.pFAS_RLayout_ViewFlipper_Right_RLayout, R.animator.translate_bottom_in, R.animator.translate_top_out);
+							Tool.FragmentActivity_MainReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SAbout(deviceDisplay), "Fragment_SAbout", R.id.pFAS_RLayout_ViewFlipper_Right_FLayout, R.animator.translate_bottom_in, R.animator.translate_top_out);
 							break;
 						case 2:
-							Tool.FragmentActivity_MainReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SFirmrware(deviceDisplay), "Fragment_SFirmrware", R.id.pFAS_RLayout_ViewFlipper_Right_RLayout, R.animator.translate_bottom_in, R.animator.translate_top_out);
+							Tool.FragmentActivity_MainReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SFirmrware(deviceDisplay), "Fragment_SFirmrware", R.id.pFAS_RLayout_ViewFlipper_Right_FLayout, R.animator.translate_bottom_in, R.animator.translate_top_out);
 							break;
 						case 3:
-							Tool.FragmentActivity_MainReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SWireless(deviceDisplay), "Fragment_SWireless", R.id.pFAS_RLayout_ViewFlipper_Right_RLayout, R.animator.translate_bottom_in, R.animator.translate_top_out);
+							Tool.FragmentActivity_MainReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SWireless(deviceDisplay), "Fragment_SWireless", R.id.pFAS_RLayout_ViewFlipper_Right_FLayout, R.animator.translate_bottom_in, R.animator.translate_top_out);
 							break;
 						case 4:
-							Tool.FragmentActivity_MainReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SIdenrify(deviceDisplay), "Fragment_SIdenrify", R.id.pFAS_RLayout_ViewFlipper_Right_RLayout, R.animator.translate_bottom_in, R.animator.translate_top_out);
+							Tool.FragmentActivity_MainReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SIdenrify(deviceDisplay), "Fragment_SIdenrify", R.id.pFAS_RLayout_ViewFlipper_Right_FLayout, R.animator.translate_bottom_in, R.animator.translate_top_out);
 							break;
 						case 5:
+							Tool.FragmentActivity_MainReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SAlarm(deviceDisplay), "Fragment_SAlarm", R.id.pFAS_RLayout_ViewFlipper_Right_FLayout, R.animator.translate_bottom_in, R.animator.translate_top_out);
 							break;
 						case 6:
-							Tool.FragmentActivity_MainReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SSleepTimer(deviceDisplay), "Fragment_SSleepTimer", R.id.pFAS_RLayout_ViewFlipper_Right_RLayout, R.animator.translate_bottom_in, R.animator.translate_top_out);
+							Tool.FragmentActivity_MainReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SSleepTimer(deviceDisplay), "Fragment_SSleepTimer", R.id.pFAS_RLayout_ViewFlipper_Right_FLayout, R.animator.translate_bottom_in, R.animator.translate_top_out);
 							break;
 						}
 					}
@@ -94,6 +96,7 @@ public class FSR_VIEW_LISTNER {
 							Tool.FragmentActivity_MainReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SIdenrify(deviceDisplay), "Fragment_SIdenrify", R.id.FAS_RLayout_Right_RLayout, R.animator.alpha_in, R.animator.alpha_out);
 							break;
 						case 5:
+							Tool.FragmentActivity_MainReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SAlarm(deviceDisplay), "Fragment_SAlarm", R.id.FAS_RLayout_Right_RLayout, R.animator.alpha_in, R.animator.alpha_out);
 							break;
 						case 6:
 							Tool.FragmentActivity_MainReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SSleepTimer(deviceDisplay), "Fragment_SSleepTimer", R.id.FAS_RLayout_Right_RLayout, R.animator.alpha_in, R.animator.alpha_out);

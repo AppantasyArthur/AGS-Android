@@ -13,7 +13,6 @@ import org.teleal.cling.model.meta.ActionArgument;
 import org.teleal.cling.model.meta.Device;
 import org.teleal.cling.model.meta.Service;
 import org.teleal.cling.model.types.UDAServiceId;
-
 import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.R;
@@ -23,17 +22,12 @@ import com.tkb.tool.ThreadReadBitMapInAssets;
 import com.tkb.tool.ThreadReadStateListInAssets;
 import com.tkb.tool.Tool;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 public class FS_PopupWindow extends PopupWindow {
 	private View contentView;

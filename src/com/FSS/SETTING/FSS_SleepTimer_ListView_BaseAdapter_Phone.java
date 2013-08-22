@@ -114,7 +114,7 @@ public class FSS_SleepTimer_ListView_BaseAdapter_Phone extends BaseAdapter {
 		}
 		
 		viewHandler.Time_TextView.setText(dataList.get(position));
-		
+		mlog.info(TAG, "position = "+position);
 		return convertView;
 	}
 	private class ViewHandler{

@@ -62,11 +62,12 @@ public class FSR_VIEW_SETTING {
 		//Title TextView
 		Tool.fitsViewTextSize(18, view.findViewById(R.id.pFSR_RLayout_RLayout_Title_TextView));
 	}
-	private void pFSR_RLayout_BODY_RLayout(View view){
+	private void pFSR_RLayout_BODY_RLayout(View view){		
+		Tool.fitsViewWidth(276, view.findViewById(R.id.pFSR_RLayout_RLayout_Renders_RLayout));
+		Tool.fitsViewTopMargin(20, view.findViewById(R.id.pFSR_RLayout_RLayout_Renders_RLayout));
+		
 		FSR_Renders_ListView_BaseAdapter_Phone baseAdapter = new FSR_Renders_ListView_BaseAdapter_Phone(this.context);
 		ListView renderersListView = (ListView)view.findViewById(R.id.pFSR_RLayout_RLayout_Renders_ListView);
-		Tool.fitsViewWidth(276, renderersListView);
-		Tool.fitsViewTopMargin(20, renderersListView);
 		renderersListView.setAdapter(baseAdapter);
 	}
 //***************************PHONE*********************************
@@ -80,13 +81,12 @@ public class FSR_VIEW_SETTING {
 	}
 	private void PAD_FSR_RLayout_BODY_RLayout(View view) {
 		
+		Tool.fitsViewWidth(276, view.findViewById(R.id.FSR_RLayout_RLayout_Renders_RLayout));
+		Tool.fitsViewTopMargin(20, view.findViewById(R.id.FSR_RLayout_RLayout_Renders_RLayout));
+		Tool.fitsViewLeftMargin(20, view.findViewById(R.id.FSR_RLayout_RLayout_Renders_RLayout));
+		
 		FSR_Renders_ListView_BaseAdapter_PAD baseAdapter = new FSR_Renders_ListView_BaseAdapter_PAD(this.context);
 		ListView renderersListView = (ListView)view.findViewById(R.id.FSR_RLayout_RLayout_Renders_ListView);
-		
-		Tool.fitsViewWidth(276, renderersListView);
-		Tool.fitsViewTopMargin(20, renderersListView);
-		Tool.fitsViewLeftMargin(20, renderersListView);
-		
 		renderersListView.setAdapter(baseAdapter);
 	}
 //***************************PAD*********************************

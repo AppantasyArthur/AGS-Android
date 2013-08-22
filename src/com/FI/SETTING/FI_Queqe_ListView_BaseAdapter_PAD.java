@@ -13,8 +13,6 @@ import org.teleal.cling.model.meta.ActionArgument;
 import org.teleal.cling.model.meta.Service;
 import org.teleal.cling.model.types.ServiceId;
 import org.teleal.cling.model.types.UDAServiceId;
-import org.teleal.cling.support.model.item.Item;
-
 import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.R;
@@ -23,7 +21,6 @@ import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
 import com.tkb.tool.Tool;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -31,8 +28,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -185,7 +180,7 @@ public class FI_Queqe_ListView_BaseAdapter_PAD extends BaseAdapter {
 				new ThreadReadBitMapInAssets(context, "pad/Playlist/playlist_btn_n.png", viewHandler.cellBG_RLayout, 3);
 			}
 		}
-		
+		mlog.info(TAG, "position = "+position);
 		return convertView;
 	}
 	

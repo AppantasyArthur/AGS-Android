@@ -66,10 +66,10 @@ public class FSA_VIEW_SETTING {
 		Tool.fitsViewTopMargin(20, view.findViewById(R.id.pFSA_RLayout_RLayout_Name_TextView));
 		Tool.fitsViewLeftMargin(12, view.findViewById(R.id.pFSA_RLayout_RLayout_Name_TextView));
 		Tool.fitsViewTextSize(18, view.findViewById(R.id.pFSA_RLayout_RLayout_Name_TextView));
-		//About_ListView
-		Tool.fitsViewWidth(297, view.findViewById(R.id.pFSA_RLayout_RLayout_About_ListView));
-		Tool.fitsViewLeftMargin(12, view.findViewById(R.id.pFSA_RLayout_RLayout_About_ListView));
-		Tool.fitsViewTopMargin(10, view.findViewById(R.id.pFSA_RLayout_RLayout_About_ListView));
+		//About_RLayout
+		Tool.fitsViewWidth(297, view.findViewById(R.id.pFSA_RLayout_RLayout_About_RLayout));
+		Tool.fitsViewLeftMargin(12, view.findViewById(R.id.pFSA_RLayout_RLayout_About_RLayout));
+		Tool.fitsViewTopMargin(10, view.findViewById(R.id.pFSA_RLayout_RLayout_About_RLayout));
 	}
 //***************************PHONE*********************************
 //***************************PAD*********************************
@@ -90,10 +90,10 @@ public class FSA_VIEW_SETTING {
 		Tool.fitsViewTopMargin(37, view.findViewById(R.id.FSA_RLayout_RLayout_Name_TextView));
 		Tool.fitsViewLeftMargin(44, view.findViewById(R.id.FSA_RLayout_RLayout_Name_TextView));
 		Tool.fitsViewTextSize(10, view.findViewById(R.id.FSA_RLayout_RLayout_Name_TextView));
-		//About_ListView
-		Tool.fitsViewWidth(667, view.findViewById(R.id.FSA_RLayout_RLayout_About_ListView));
-		Tool.fitsViewLeftMargin(44, view.findViewById(R.id.FSA_RLayout_RLayout_About_ListView));
-		Tool.fitsViewTopMargin(10, view.findViewById(R.id.FSA_RLayout_RLayout_About_ListView));
+		//About_RLayout
+		Tool.fitsViewWidth(637, view.findViewById(R.id.FSA_RLayout_RLayout_About_RLayout));
+		Tool.fitsViewLeftMargin(44, view.findViewById(R.id.FSA_RLayout_RLayout_About_RLayout));
+		Tool.fitsViewTopMargin(15, view.findViewById(R.id.FSA_RLayout_RLayout_About_RLayout));
 	}
 //***************************PAD*********************************
 }

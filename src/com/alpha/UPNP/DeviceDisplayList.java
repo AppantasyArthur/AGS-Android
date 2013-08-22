@@ -40,6 +40,7 @@ import com.FI.SETTING.MusicInfo_Listner;
 import com.FM.SETTING.FM_Music_ListView_BaseAdapter_Listner;
 import com.FS.SETTING.FS_SPEAKER_ExpandableListAdapter_Listner;
 import com.FS.SETTING.RunState_TextView_Listner2;
+import com.FSAL_Music.SETTING.FSAl_Music_ListView_BaseAdapter_Listner;
 import com.FSR.SETTING.FSR_Renderers_ListView_BaseAdapter_Renderer_Listner;
 import com.alpha.upnpui.FragmentActivity_Main;
 import com.appantasy.androidapptemplate.event.lastchange.GroupHandler;
@@ -84,6 +85,7 @@ public class DeviceDisplayList implements Parcelable  {
 	private ProcessBarListner processBarListner;
 	//Setting Listners
 	private FSR_Renderers_ListView_BaseAdapter_Renderer_Listner FSRRRLBListner;
+	private FSAl_Music_ListView_BaseAdapter_Listner FSALMLBListner;
 	
 	public DeviceDisplayList(Context context){
 		this.context = context;
@@ -153,7 +155,10 @@ public class DeviceDisplayList implements Parcelable  {
 			//MediaServer List
 			MSList.add(dd);
 			if(FMLBAListner!=null){
-				FMLBAListner.AddMediaServer(dd);
+				FMLBAListner.AddMediaServer(dd);				
+			}
+			if(FSALMLBListner!=null){
+				FSALMLBListner.AddMediaServer(dd);
 			}
 		}else{
 			DDList.add(dd);
@@ -186,6 +191,9 @@ public class DeviceDisplayList implements Parcelable  {
 		}else if(deviceType.getType().toString().equals("MediaServer")){
 			if(FMLBAListner!=null){
 				FMLBAListner.RemoveMediaServer(dd);
+			}
+			if(FSALMLBListner!=null){
+				FSALMLBListner.RemoveMediaServer(dd);
 			}
 			mlog.info(TAG, "removeDeviceDisplay = MS");
 			MSList.remove(dd);
@@ -413,6 +421,9 @@ public class DeviceDisplayList implements Parcelable  {
 	public void setFSR_Renderers_ListView_BaseAdapter_Renderer_Listner(FSR_Renderers_ListView_BaseAdapter_Renderer_Listner FSRRRLBListner){
 		this.FSRRRLBListner = FSRRRLBListner;
 	}
+	public void setFSAl_Music_ListView_BaseAdapter_Listner(FSAl_Music_ListView_BaseAdapter_Listner FSALMLBListner){
+		this.FSALMLBListner = FSALMLBListner;
+	}
 	public void CancelAllListner(){
 		FSELAListner = null;
 		runState_TextView_Listner2 = null;
@@ -425,6 +436,9 @@ public class DeviceDisplayList implements Parcelable  {
 		Info_PMIListner = null;
 		MIListner = null;
 		queqe_listner = null;
+		
+		FSRRRLBListner = null;
+		FSALMLBListner = null;
 	}
 	//===========Listner================
 	

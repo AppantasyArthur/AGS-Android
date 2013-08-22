@@ -105,17 +105,22 @@
 		            >		            
 		        </ProgressBar>
 	        </RelativeLayout>
-	        <ListView 
-	            android:id="@+id/pFSW_RLayout_RLayout_RLayout_WIFIAP_ListView"
-	            android:layout_width="match_parent"
-		   		android:layout_height="match_parent"
-		   		android:layout_below="@+id/pFSW_RLayout_RLayout_RLayout_WIFIState_RLayout"
-		   		android:listSelector="@android:color/transparent" 
-		        android:background="#0000ff"
-		        android:divider="#00000000" 
+	        <RelativeLayout
+	            android:id="@+id/pFSW_RLayout_RLayout_RLayout_WIFIAP_RLayout"
+		        android:layout_width="match_parent"
+			   	android:layout_height="match_parent"
+			   	android:layout_below="@+id/pFSW_RLayout_RLayout_RLayout_WIFIState_RLayout"
 	            >
-	        </ListView>
-	        
+		        <ListView 
+		            android:id="@+id/pFSW_RLayout_RLayout_RLayout_WIFIAP_ListView"
+		            android:layout_width="match_parent"
+			   		android:layout_height="match_parent"			   		
+			   		android:listSelector="@android:color/transparent" 
+			        android:background="#0000ff"
+			        android:divider="#00000000" 
+		            >
+		        </ListView>
+	        </RelativeLayout>
 	    </RelativeLayout>
 	</RelativeLayout>
 </RelativeLayout>

@@ -13,7 +13,6 @@ import org.teleal.cling.model.meta.ActionArgument;
 import org.teleal.cling.model.meta.Device;
 import org.teleal.cling.model.meta.Service;
 import org.teleal.cling.model.types.UDAServiceId;
-
 import com.FAM.SETTING.FAM_ViewFlipper;
 import com.FS.SETTING.FS_VIEW_LISTNER;
 import com.FS.SETTING.FS_VIEW_SETTING;
@@ -24,8 +23,6 @@ import com.alpha.upnpui.R;
 import com.appantasy.androidapptemplate.event.lastchange.GroupVO;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
-
-import android.R.raw;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -154,7 +151,7 @@ public class Fragment_Speaker extends Fragment {
 //		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FS_RLayout_TITLE2_RLayout));
 		//===========Speaker List===========
 		FS_SPEAKER_EListView = (ExpandableListView)Fragment_MainView.findViewById(R.id.FS_RLayout_SPEAKER_EListView);
-		VIEW_SETTING.VIEWSET(FS_SPEAKER_EListView);
+		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FS_RLayout_SPEAKER_RLayout));
 		//===========Speaker===========
 		
 		mlog.info(TAG, "findView OK");

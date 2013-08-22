@@ -1,7 +1,6 @@
 package com.FM.SETTING;
 
 import java.util.List;
-
 import org.teleal.cling.android.AndroidUpnpService;
 import org.teleal.cling.model.action.ActionInvocation;
 import org.teleal.cling.model.message.UpnpResponse;
@@ -22,9 +21,7 @@ import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
 import com.tkb.tool.Tool;
-
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
 import android.view.View;
@@ -560,7 +557,7 @@ public class FM_VIEW_LISTNER {
 			public void onClick(View v) {
 				if(fragmentManager.findFragmentByTag("Fragment_SETTING")==null){
 					Fragment_SETTING fragment_SETTING = new Fragment_SETTING();
-					Tool.FragmentActivity_MainReplaceAddStackFragment(fragmentManager.beginTransaction(), fragment_SETTING, "Fragment_SETTING", R.id.pFAM_RLayout_SETTING_RLayoutt, R.animator.translate_right_in, R.animator.alpha_out,R.animator.alpha_in, R.animator.translate_right_out);
+					Tool.FragmentActivity_MainReplaceAddStackFragment(fragmentManager.beginTransaction(), fragment_SETTING, "Fragment_SETTING", R.id.pFAM_RLayout_SETTING_FLayoutt, R.animator.translate_right_in, R.animator.alpha_out,R.animator.alpha_in, R.animator.translate_right_out);
 				}
 			}
 		});		

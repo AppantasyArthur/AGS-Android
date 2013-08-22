@@ -2,7 +2,6 @@ package com.FAM.SETTING;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.ViewFlipper;
 
 public class FAM_ViewFlipper extends ViewFlipper {

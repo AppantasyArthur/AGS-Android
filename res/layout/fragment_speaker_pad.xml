@@ -41,15 +41,21 @@
             android:text="Currently Playing"      
             />
     </RelativeLayout>-->
+    <RelativeLayout 
+        android:id="@+id/FS_RLayout_SPEAKER_RLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"       
+        android:layout_below="@+id/FS_RLayout_TITLE_RLayout"
+        android:layout_alignParentLeft="true" 
+        >
     <ExpandableListView
         android:id="@+id/FS_RLayout_SPEAKER_EListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"       
-        android:layout_below="@+id/FS_RLayout_TITLE_RLayout" 
         android:listSelector="@android:color/transparent" 
         android:background="#00000000"
         android:divider="#00000000"    
         >        
     </ExpandableListView>
-   
+   </RelativeLayout>
 </RelativeLayout>

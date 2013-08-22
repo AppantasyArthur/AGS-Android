@@ -43,16 +43,23 @@
    		android:layout_below="@+id/pFSR_RLayout_TITLE_RLayout"
    		android:background="#373737"
 	    > 
-	    <ListView 
-	        android:id="@+id/pFSR_RLayout_RLayout_Renders_ListView"
-	        android:layout_width="match_parent"
-   			android:layout_height="match_parent"
-   			android:layout_alignParentTop="true"
-   			android:layout_centerHorizontal="true"
-   			android:divider="#000000"
-   			android:background="#00000000"
-       		android:listSelector="@android:color/transparent"
-	        >
-	    </ListView>
+	    <RelativeLayout 
+		    android:id="@+id/pFSR_RLayout_RLayout_Renders_RLayout"
+	    	android:layout_width="match_parent"
+	   		android:layout_height="match_parent"
+	   		android:layout_alignParentTop="true"
+	   		android:layout_centerHorizontal="true"
+	   		android:background="#00000000"
+		    > 
+		    <ListView 
+		        android:id="@+id/pFSR_RLayout_RLayout_Renders_ListView"
+		        android:layout_width="match_parent"
+	   			android:layout_height="match_parent"	   			
+	   			android:divider="#000000"
+	   			android:background="#00000000"
+	       		android:listSelector="@android:color/transparent"
+		        >
+		    </ListView>
+		</RelativeLayout>
 	</RelativeLayout>
 </RelativeLayout>

@@ -79,7 +79,7 @@ public class Fragment_SETTING extends Fragment {
 	}
 	private void set_Phone_First_Fragment() {		
 		fragment_SMenu = new Fragment_SMenu();		
-		Tool.FragmentActivity_MainAddFragment(fragmentManager.beginTransaction(), fragment_SMenu, "Fragment_SMenu", R.id.pFAS_RLayout_ViewFlipper_Left_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+		Tool.FragmentActivity_MainAddFragment(fragmentManager.beginTransaction(), fragment_SMenu, "Fragment_SMenu", R.id.pFAS_RLayout_ViewFlipper_Left_FLayout, R.animator.alpha_in, R.animator.alpha_out);
 	}
 	private void PAD_findView() {
 		//³]©wPAD¤¶­±

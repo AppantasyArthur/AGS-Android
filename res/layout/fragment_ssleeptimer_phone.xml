@@ -50,17 +50,23 @@
 	   		android:layout_alignParentTop="true"
 	   		android:layout_alignParentLeft="true"
 	   		android:textColor="#ffffff"
-	        /> 
-	    <ListView 
-	        android:id="@+id/pFSS_RLayout_RLayout_SleepTimer_ListView"
-	    	android:layout_width="wrap_content"
-	   		android:layout_height="match_parent"
-	   		android:layout_below="@+id/pFSS_RLayout_RLayout_Name_TextView"
-	   		android:layout_alignParentLeft="true"
-	   		android:listSelector="@android:color/transparent"
-	   		android:divider="#00000000"
-	   		android:background="#00000000"
+	        />
+	    <RelativeLayout 
+	        android:id="@+id/pFSS_RLayout_RLayout_SleepTimer_RLayout"
+		    android:layout_width="wrap_content"
+		   	android:layout_height="match_parent"
+		   	android:layout_below="@+id/pFSS_RLayout_RLayout_Name_TextView"
+		   	android:layout_alignParentLeft="true"
 	        >
-	    </ListView>
+		    <ListView 
+		        android:id="@+id/pFSS_RLayout_RLayout_SleepTimer_ListView"
+		    	android:layout_width="match_parent"
+		   		android:layout_height="match_parent"		   		
+		   		android:listSelector="@android:color/transparent"
+		   		android:divider="#00000000"
+		   		android:background="#00000000"
+		        >
+		    </ListView>
+	    </RelativeLayout> 
 	</RelativeLayout>
 </RelativeLayout>

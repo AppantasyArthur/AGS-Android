@@ -27,7 +27,7 @@ public class FSI_VIEW_LISTNER {
 			Back_Button.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {	
-					Tool.FragmentActivity_MainReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SRenderers(), "Fragment_SRenderers", R.id.pFAS_RLayout_ViewFlipper_Right_RLayout, R.animator.translate_top_in, R.animator.translate_bottom_out);			
+					Tool.FragmentActivity_MainReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SRenderers(), "Fragment_SRenderers", R.id.pFAS_RLayout_ViewFlipper_Right_FLayout, R.animator.translate_top_in, R.animator.translate_bottom_out);			
 				}
 			});	
 		}else{

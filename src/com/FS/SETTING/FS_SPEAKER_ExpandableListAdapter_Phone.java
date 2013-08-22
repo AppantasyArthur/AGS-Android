@@ -158,6 +158,7 @@ public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAd
 		}catch(Exception e){
 			Log.e(TAG, e.getMessage());
 		}
+		mlog.info(TAG, "Gposition = "+groupPosition+"childPosition = "+childPosition);
 		return convertView;
 	}
 	private void basicSetChildView(CViewHandler viewHandler){
@@ -288,6 +289,7 @@ public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAd
 
 		viewHandler.RunState_TextView.setSelected(true);
 		viewHandler.Name_TextView.setText(GroupList.get(groupPosition).getDevice().getDetails().getFriendlyName());
+		mlog.info(TAG, "Gposition = "+groupPosition);
 		return convertView;
 	}
 

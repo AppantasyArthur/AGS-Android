@@ -767,7 +767,7 @@ public class FI_VIEW_LISTNER {
 			public void onClick(View v) {
 				if(fragmentManager.findFragmentByTag("Fragment_SETTING")==null){
 					Fragment_SETTING fragment_SETTING = new Fragment_SETTING();
-					Tool.FragmentActivity_MainReplaceAddStackFragment(fragmentManager.beginTransaction(), fragment_SETTING, "Fragment_SETTING", R.id.pFAM_RLayout_SETTING_RLayoutt, R.animator.translate_right_in, R.animator.alpha_out,R.animator.alpha_in, R.animator.translate_right_out);
+					Tool.FragmentActivity_MainReplaceAddStackFragment(fragmentManager.beginTransaction(), fragment_SETTING, "Fragment_SETTING", R.id.pFAM_RLayout_SETTING_FLayoutt, R.animator.translate_right_in, R.animator.alpha_out,R.animator.alpha_in, R.animator.translate_right_out);
 				}
 			}
 		});		

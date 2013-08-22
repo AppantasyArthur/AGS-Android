@@ -25,8 +25,6 @@ public class FSW_WIFIAP_ListView_BaseAdapter_PAD extends BaseAdapter {
 	private Context context;
 	private MLog mlog = new MLog();
 	private static final String TAG = "FSI_IdSpeaker_ListView_BaseAdapter";
-		
-//	private List<DeviceDisplay> dataList = new ArrayList<DeviceDisplay>();
 	
 	private Drawable Wave1;
 	private Drawable Wave2;
@@ -133,6 +131,7 @@ public class FSW_WIFIAP_ListView_BaseAdapter_PAD extends BaseAdapter {
 				break;
 			}
 		}
+		mlog.info(TAG, "position = "+position);
 		return convertView;
 	}
 	private class ViewHandler{

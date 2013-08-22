@@ -132,6 +132,7 @@ public class FSW_WIFIAP_ListView_BaseAdapter_Phone extends BaseAdapter {
 				break;
 			}
 		}
+		mlog.info(TAG, "position = "+position);
 		return convertView;
 	}
 	private class ViewHandler{

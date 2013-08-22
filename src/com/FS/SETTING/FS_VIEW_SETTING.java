@@ -64,8 +64,8 @@ public class FS_VIEW_SETTING {
 //			case R.id.FS_RLayout_TITLE2_RLayout:
 //				PAD_FS_RLayout_TITLE2_RLayout(view);
 //				break;
-			case R.id.FS_RLayout_SPEAKER_EListView:
-				PAD_FS_RLayout_SPEAKER_EListView(view);
+			case R.id.FS_RLayout_SPEAKER_RLayout:
+				FS_RLayout_SPEAKER_RLayout(view);
 				break;
 			}	
 		}
@@ -243,12 +243,14 @@ public class FS_VIEW_SETTING {
 //		Tool.fitsViewLeftMargin(30, view.findViewById(R.id.FS_RLayout_RLayout_Speaker2_TextView));
 //		Tool.fitsViewTextSize(8, view.findViewById(R.id.FS_RLayout_RLayout_Speaker2_TextView));
 //	}
-	private void PAD_FS_RLayout_SPEAKER_EListView(View view) {		
-		Tool.fitsViewWidth(270, view);	
-		FS_SPEAKER_ExpandableListAdapter_Pad EBaseAdapter = new FS_SPEAKER_ExpandableListAdapter_Pad(context,(ExpandableListView)view);
-		((ExpandableListView)view).setAdapter(EBaseAdapter);
-		((ExpandableListView)view).setItemsCanFocus(true);
-		((ExpandableListView)view).setGroupIndicator(null);		
+	private void FS_RLayout_SPEAKER_RLayout(View view) {		
+		Tool.fitsViewWidth(270, view);
+		
+		ExpandableListView SPEAKER_EListView = (ExpandableListView)view.findViewById(R.id.FS_RLayout_SPEAKER_EListView);
+		FS_SPEAKER_ExpandableListAdapter_Pad EBaseAdapter = new FS_SPEAKER_ExpandableListAdapter_Pad(context,SPEAKER_EListView);
+		SPEAKER_EListView.setAdapter(EBaseAdapter);
+		SPEAKER_EListView.setItemsCanFocus(true);
+		SPEAKER_EListView.setGroupIndicator(null);		
 	}
 //***************************PAD*********************************
 	

@@ -73,18 +73,22 @@
 	            android:text="Queue"      
 	            />       
     	</RelativeLayout>
-
-        <com.FI.SETTING.FI_ListView
-            android:id="@+id/FI_RLayout_RLayout_QUEUE_ListView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/FI_RLayout_RLayout_DTITLE_RLayout"
-            android:background="#00000000"
-            android:listSelector="@android:color/transparent"
-            android:divider="#00000000"
-            >
-        </com.FI.SETTING.FI_ListView>
-
+		<RelativeLayout 
+		    android:id="@+id/FI_RLayout_RLayout_QUEUE_RLayout"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_below="@+id/FI_RLayout_RLayout_DTITLE_RLayout"
+		    >
+	        <com.FI.SETTING.FI_ListView
+	            android:id="@+id/FI_RLayout_RLayout_QUEUE_ListView"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"	          
+	            android:background="#00000000"
+	            android:listSelector="@android:color/transparent"
+	            android:divider="#00000000"
+	            >
+	        </com.FI.SETTING.FI_ListView>
+		</RelativeLayout>
     </RelativeLayout>
    
 </RelativeLayout>

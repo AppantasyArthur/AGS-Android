@@ -23,7 +23,6 @@ import org.teleal.cling.support.model.DIDLContent;
 import org.teleal.cling.support.model.Res;
 import org.teleal.cling.support.model.SortCriterion;
 import org.teleal.cling.support.model.item.Item;
-
 import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.R;
@@ -32,8 +31,6 @@ import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
 import com.tkb.tool.ThreadReadStateListInAssets;
 import com.tkb.tool.Tool;
-
-import android.R.integer;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;

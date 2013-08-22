@@ -6,8 +6,6 @@ import com.alpha.upnpui.FragmentActivity_Main;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
-
-import android.R.integer;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;

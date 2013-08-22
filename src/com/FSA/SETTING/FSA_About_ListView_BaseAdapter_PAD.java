@@ -21,7 +21,7 @@ import android.widget.TextView;
 public class FSA_About_ListView_BaseAdapter_PAD extends BaseAdapter {
 	private Context context;
 	private MLog mlog = new MLog();
-	private static final String TAG = "FSI_IdSpeaker_ListView_BaseAdapter";
+	private static final String TAG = "FSA_About_ListView_BaseAdapter_PAD";
 		
 	private List<AboutItemContent> dataList = new ArrayList<AboutItemContent>();
 	
@@ -83,26 +83,24 @@ public class FSA_About_ListView_BaseAdapter_PAD extends BaseAdapter {
 			//第一個
 			Tool.fitsViewHeight(70, viewHandler.CCell_RLayout);
 			viewHandler.CCell_RLayout.setBackgroundDrawable(menu1);
-//			new ThreadReadBitMapInAssets(context, "pad/Settings/identify_01_box.png", viewHandler.CCell_RLayout, 3);
 		}else if(position==0&&(position==(this.getCount()-1))){
 			//只有一個
 			Tool.fitsViewHeight(62, viewHandler.CCell_RLayout);
 			viewHandler.CCell_RLayout.setBackgroundDrawable(menu4);
-//			new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_box.png", viewHandler.CCell_RLayout, 3);
 		}else if((position==(this.getCount()-1))){
 			//最後一個
 			Tool.fitsViewHeight(73, viewHandler.CCell_RLayout);
 			viewHandler.CCell_RLayout.setBackgroundDrawable(menu3);
-//			new ThreadReadBitMapInAssets(context, "pad/Settings/identify_03_box.png", viewHandler.CCell_RLayout, 3);
 		}else{
 			//其他
 			Tool.fitsViewHeight(71, viewHandler.CCell_RLayout);
 			viewHandler.CCell_RLayout.setBackgroundDrawable(menu2);
-//			new ThreadReadBitMapInAssets(context, "pad/Settings/identify_02_box.png", viewHandler.CCell_RLayout, 3);
 		}
 		
 		viewHandler.LeftText_TextView.setText(dataList.get(position).getLeftString());
 		viewHandler.RightText_TextView.setText(dataList.get(position).getRightString());
+		
+		mlog.info(TAG, "position = "+position);
 		return convertView;
 	}
 	private class ViewHandler{

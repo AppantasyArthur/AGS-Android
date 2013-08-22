@@ -284,6 +284,8 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 			viewHandler.object = position;
 			viewHandler.cell_RLayout_Image_ImageView.setVisibility(View.VISIBLE);
 		}
+		
+		mlog.info(TAG, "position = "+position);
 		return convertView;
 	}
 	

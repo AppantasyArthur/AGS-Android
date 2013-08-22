@@ -44,7 +44,7 @@ public class FSS_SleepTimer_ListView_BaseAdapter_PAD extends BaseAdapter {
 		dataList.add("45 Minutes");
 		dataList.add("1 Hour");
 		dataList.add("2 Hour");
-		dataList.add("3 Hour");		
+		dataList.add("3 Hour");	
 	}
 	private void LoadBitmap(){		
 		this.menu1 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "pad/Settings/identify_01_box.png"));
@@ -113,7 +113,7 @@ public class FSS_SleepTimer_ListView_BaseAdapter_PAD extends BaseAdapter {
 		}		
 		
 		viewHandler.Time_TextView.setText(dataList.get(position));
-		
+		mlog.info(TAG, "position = "+position);
 		return convertView;
 	}
 	private class ViewHandler{

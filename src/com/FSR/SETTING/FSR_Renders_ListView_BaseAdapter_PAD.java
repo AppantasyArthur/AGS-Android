@@ -95,9 +95,10 @@ public class FSR_Renders_ListView_BaseAdapter_PAD extends BaseAdapter {
 		}else{
 			viewHandler = (ViewHandler)convertView.getTag();
 		}
-		viewHandler.SET_Position(position);
-		
+		viewHandler.SET_Position(position);		
 		viewHandler.Name_TextView.setText(MRList.get(position).getDevice().getDetails().getFriendlyName());
+		
+		mlog.info(TAG, "position = "+position);
 		return convertView;
 	}
 	private class ViewHandler{

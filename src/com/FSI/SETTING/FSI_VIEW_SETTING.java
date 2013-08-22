@@ -65,9 +65,10 @@ public class FSI_VIEW_SETTING {
 		Tool.fitsViewTextSize(18, view.findViewById(R.id.pFSI_RLayout_RLayout_Title_TextView));
 	}
 	private void pFSI_RLayout_BODY_RLayout(View view) {
-		Tool.fitsViewWidth(294, view.findViewById(R.id.pFSI_RLayout_RLayout_IdSpeaker_ListView));
-		Tool.fitsViewTopMargin(62, view.findViewById(R.id.pFSI_RLayout_RLayout_IdSpeaker_ListView));
-		Tool.fitsViewLeftMargin(12, view.findViewById(R.id.pFSI_RLayout_RLayout_IdSpeaker_ListView));
+		//IdSpeaker_RLayout
+		Tool.fitsViewWidth(294, view.findViewById(R.id.pFSI_RLayout_RLayout_IdSpeaker_RLayout));
+		Tool.fitsViewTopMargin(62, view.findViewById(R.id.pFSI_RLayout_RLayout_IdSpeaker_RLayout));
+		Tool.fitsViewLeftMargin(12, view.findViewById(R.id.pFSI_RLayout_RLayout_IdSpeaker_RLayout));
 		
 	}
 //***************************PHONE*********************************
@@ -85,10 +86,12 @@ public class FSI_VIEW_SETTING {
 		Tool.fitsViewTextSize(8, view.findViewById(R.id.FSI_RLayout_RLayout_Title_TextView));
 	}
 	private void PAD_FSA_RLayout_BODY_RLayout(View view) {
-		Tool.fitsViewWidth(666, view.findViewById(R.id.FSI_RLayout_RLayout_IdSpeaker_ListView));
-		Tool.fitsViewHeight(550, view.findViewById(R.id.FSI_RLayout_RLayout_IdSpeaker_ListView));
-		Tool.fitsViewTopMargin(62, view.findViewById(R.id.FSI_RLayout_RLayout_IdSpeaker_ListView));
-		Tool.fitsViewLeftMargin(44, view.findViewById(R.id.FSI_RLayout_RLayout_IdSpeaker_ListView));
+		
+		//IdSpeaker_RLayout
+		Tool.fitsViewWidth(666, view.findViewById(R.id.FSI_RLayout_RLayout_IdSpeaker_RLayout));
+		Tool.fitsViewHeight(550, view.findViewById(R.id.FSI_RLayout_RLayout_IdSpeaker_RLayout));
+		Tool.fitsViewTopMargin(62, view.findViewById(R.id.FSI_RLayout_RLayout_IdSpeaker_RLayout));
+		Tool.fitsViewLeftMargin(44, view.findViewById(R.id.FSI_RLayout_RLayout_IdSpeaker_RLayout));
 	}
 //***************************PAD*********************************
 }

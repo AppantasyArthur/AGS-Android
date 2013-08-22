@@ -129,7 +129,7 @@ public class FI_ViewFlipper extends ViewFlipper {
 		try{			
 			super.onDetachedFromWindow();			
 		}catch (IllegalArgumentException e) {
-			Log.e(TAG, ""+e.getMessage());        
+			this.stopFlipping();	        
         }
 		
 	}

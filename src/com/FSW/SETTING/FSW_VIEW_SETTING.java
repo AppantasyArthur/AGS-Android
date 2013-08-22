@@ -88,8 +88,8 @@ public class FSW_VIEW_SETTING {
 		Tool.fitsViewLeftMargin(5, view.findViewById(R.id.pFSW_RLayout_RLayout_RLayout_RLayout_WIFIState_ProgressBar));
 		Tool.fitsViewWidth(25, view.findViewById(R.id.pFSW_RLayout_RLayout_RLayout_RLayout_WIFIState_ProgressBar));
 		Tool.fitsViewHeight(25, view.findViewById(R.id.pFSW_RLayout_RLayout_RLayout_RLayout_WIFIState_ProgressBar));
-		//WIFIAP_ListView
-		Tool.fitsViewTopMargin(5, view.findViewById(R.id.pFSW_RLayout_RLayout_RLayout_WIFIAP_ListView));
+		//WIFIAP_RLayout
+		Tool.fitsViewTopMargin(5, view.findViewById(R.id.pFSW_RLayout_RLayout_RLayout_WIFIAP_RLayout));
 	}
 //***************************PHONE*********************************
 //***************************PAD*********************************
@@ -133,8 +133,8 @@ public class FSW_VIEW_SETTING {
 		Tool.fitsViewLeftMargin(20, view.findViewById(R.id.FSW_RLayout_RLayout_RLayout_RLayout_WIFIState_ProgressBar));
 		Tool.fitsViewWidth(40, view.findViewById(R.id.FSW_RLayout_RLayout_RLayout_RLayout_WIFIState_ProgressBar));
 		Tool.fitsViewHeight(40, view.findViewById(R.id.FSW_RLayout_RLayout_RLayout_RLayout_WIFIState_ProgressBar));
-		//WIFIAP_ListView
-		Tool.fitsViewTopMargin(10, view.findViewById(R.id.FSW_RLayout_RLayout_RLayout_WIFIAP_ListView));
+		//WIFIAP_RLayout
+		Tool.fitsViewTopMargin(10, view.findViewById(R.id.FSW_RLayout_RLayout_RLayout_WIFIAP_RLayout));
 	}
 //***************************PAD*********************************
 }

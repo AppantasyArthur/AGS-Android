@@ -60,8 +60,8 @@ public class FM_VIEW_SETTING {
 			case R.id.FM_RLayout_TITLE3_RLayout:
 				PAD_FM_RLayout_TITLE3_RLayout(view);
 				break;
-			case R.id.FM_RLayout_Music_ListView:
-				PAD_FM_RLayout_Music_ListView(view);
+			case R.id.FM_RLayout_Music_RLayout:
+				PAD_FM_RLayout_Music_RLayout(view);
 				break;
 			}	
 		}
@@ -256,10 +256,10 @@ public class FM_VIEW_SETTING {
 		Tool.fitsViewLeftMargin(1, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition4_Button));
 		Tool.fitsViewTextSize(6, view.findViewById(R.id.FM_RLayout_RLayout_SerchCondition4_Button));
 	}
-	private void PAD_FM_RLayout_Music_ListView(View view) {
+	private void PAD_FM_RLayout_Music_RLayout(View view) {
 		Tool.fitsViewWidth(344, view);
 		//Music ListView
-		ListView listView = (ListView)view;
+		ListView listView = (ListView)view.findViewById(R.id.FM_RLayout_Music_ListView);
 		FM_Music_ListView_BaseAdapter_PAD baseAdapter = new FM_Music_ListView_BaseAdapter_PAD(context);
 		listView.setAdapter(baseAdapter);
 	}

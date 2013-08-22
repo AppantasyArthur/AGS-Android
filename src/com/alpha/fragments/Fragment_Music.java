@@ -119,7 +119,7 @@ public class Fragment_Music extends Fragment {
 		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FM_RLayout_TITLE3_RLayout));
 		//==========Msic List================
 		musicListView = (FM_ListView)Fragment_MainView.findViewById(R.id.FM_RLayout_Music_ListView);
-		VIEW_SETTING.VIEWSET(musicListView);
+		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FM_RLayout_Music_RLayout));
 		//==========Msic================
 		mlog.info(TAG, "findView OK");
 	}	

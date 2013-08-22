@@ -20,7 +20,7 @@ import android.widget.TextView;
 public class FSA_About_ListView_BaseAdapter_Phone extends BaseAdapter {
 	private Context context;
 	private MLog mlog = new MLog();
-	private static final String TAG = "FSI_IdSpeaker_ListView_BaseAdapter";
+	private static final String TAG = "FSA_About_ListView_BaseAdapter_Phone";
 		
 	private List<AboutItemContent> dataList = new ArrayList<AboutItemContent>();
 	
@@ -47,6 +47,10 @@ public class FSA_About_ListView_BaseAdapter_Phone extends BaseAdapter {
 		this.menu3 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "phone/setting/settimg_identify_bar_bottom.png"));
 		this.menu4 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "phone/setting/setting_firmware_about_bar.PNG"));
 	}
+	public void SetDataList(List<AboutItemContent> dataList){
+		this.dataList = dataList;
+		this.notifyDataSetChanged();
+	}
 	@Override
 	public int getCount() {
 		return dataList.size();
@@ -63,7 +67,7 @@ public class FSA_About_ListView_BaseAdapter_Phone extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {	
+	public View getView(int position, View convertView, ViewGroup parent) {		
 		ViewHandler viewHandler =null;
 		if(convertView==null){
 			convertView = LayoutInflater.from(context).inflate(R.layout.fsa_about_listview_cell_pad, null);
@@ -93,8 +97,11 @@ public class FSA_About_ListView_BaseAdapter_Phone extends BaseAdapter {
 			Tool.fitsViewHeight(31, viewHandler.CCell_RLayout);
 			viewHandler.CCell_RLayout.setBackgroundDrawable(menu2);
 		}
+		
 		viewHandler.LeftText_TextView.setText(dataList.get(position).getLeftString());
 		viewHandler.RightText_TextView.setText(dataList.get(position).getRightString());
+		
+		mlog.info(TAG, "position = "+position);
 		return convertView;
 	}
 	private class ViewHandler{

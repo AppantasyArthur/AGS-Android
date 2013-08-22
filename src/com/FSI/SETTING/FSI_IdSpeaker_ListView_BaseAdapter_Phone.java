@@ -92,6 +92,7 @@ public class FSI_IdSpeaker_ListView_BaseAdapter_Phone extends BaseAdapter {
 			viewHandler.CCell_RLayout.setBackgroundDrawable(menu2);
 		}
 		viewHandler.Name_TextView.setText(dataList.get(position).getDevice().getDetails().getFriendlyName());
+		mlog.info(TAG, "position = "+position);
 		return convertView;
 	}
 	private class ViewHandler{

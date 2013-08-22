@@ -42,16 +42,22 @@
    		android:layout_height="match_parent"
    		android:layout_below="@+id/pFSI_RLayout_TITLE_RLayout"
    		android:background="#00000000"
-	    >  
-	    <ListView 
-	        android:id="@+id/pFSI_RLayout_RLayout_IdSpeaker_ListView"
-	    	android:layout_width="wrap_content"
-	   		android:layout_height="match_parent"
-	   		android:layout_alignParentTop="true"
-	   		android:layout_alignParentLeft="true"
-	   		android:listSelector="@android:color/transparent"
-	   		android:divider="#00000000"
-	   		android:background="#00000000"
-	        ></ListView>
+	    >
+	    <RelativeLayout 
+	        android:id="@+id/pFSI_RLayout_RLayout_IdSpeaker_RLayout"
+		    android:layout_width="wrap_content"
+		   	android:layout_height="match_parent"
+		   	android:layout_alignParentTop="true"
+		   	android:layout_alignParentLeft="true"
+	        >
+		    <ListView 
+		        android:id="@+id/pFSI_RLayout_RLayout_IdSpeaker_ListView"
+		    	android:layout_width="match_parent"
+		   		android:layout_height="match_parent"
+		   		android:listSelector="@android:color/transparent"
+		   		android:divider="#00000000"
+		   		android:background="#00000000"
+		        ></ListView>
+	    </RelativeLayout>  
 	</RelativeLayout>
 </RelativeLayout>
