@@ -75,7 +75,7 @@
 	   		android:layout_height="wrap_content"
 	   		android:layout_below="@+id/FSW_RLayout_RLayout_WIFI_RLayout"	   		
 	   		android:layout_alignParentLeft="true"
-	   		android:background="#ff0000"
+	   		android:background="#00000000"
 	   		android:visibility="gone"	   		
 	        >
 	        <RelativeLayout
@@ -84,7 +84,7 @@
 		   		android:layout_height="wrap_content"
 		   		android:layout_alignParentTop="true"	
 		   		android:layout_alignParentLeft="true"
-		   		android:background="#00ff00"	   		
+		   		android:background="#00000000"	   		
 		        >
 		        <TextView
 		            android:id="@+id/FSW_RLayout_RLayout_RLayout_RLayout_WIFIState_TextView"
@@ -115,7 +115,7 @@
 		            android:layout_width="match_parent"
 			   		android:layout_height="match_parent"			   	
 			   		android:listSelector="@android:color/transparent" 
-			        android:background="#0000ff"
+			        android:background="#00000000"
 			        android:divider="#00000000" 
 		            >
 		        </ListView>

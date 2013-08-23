@@ -5,10 +5,9 @@ import java.util.List;
 
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
+import com.tkb.tool.ThreadReadStateListInAssets;
 import com.tkb.tool.Tool;
 import android.content.Context;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,14 +26,9 @@ public class FSS_SleepTimer_ListView_BaseAdapter_PAD extends BaseAdapter {
 	private List<String> dataList = new ArrayList<String>();
 	private int chooseItem = -1;
 	
-	private Drawable menu1;
-	private Drawable menu2;
-	private Drawable menu3;
-	private Drawable menu4;
 	public FSS_SleepTimer_ListView_BaseAdapter_PAD(Context context){
 		this.context = context;		
-		this.mlog.LogSwitch = true;
-		LoadBitmap();
+		this.mlog.LogSwitch = true;	
 		CreateDataList();
 	}
 	private void CreateDataList(){
@@ -45,12 +39,6 @@ public class FSS_SleepTimer_ListView_BaseAdapter_PAD extends BaseAdapter {
 		dataList.add("1 Hour");
 		dataList.add("2 Hour");
 		dataList.add("3 Hour");	
-	}
-	private void LoadBitmap(){		
-		this.menu1 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "pad/Settings/identify_01_box.png"));
-		this.menu2 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "pad/Settings/identify_02_box.png"));
-		this.menu3 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "pad/Settings/identify_03_box.png"));
-		this.menu4 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "pad/Settings/Settings_box.png"));
 	}
 	public void SetChooseItem(int chooseItem){
 		this.chooseItem = chooseItem;
@@ -84,22 +72,23 @@ public class FSS_SleepTimer_ListView_BaseAdapter_PAD extends BaseAdapter {
 			viewHandler = (ViewHandler)convertView.getTag();
 		}
 		viewHandler.SET_Position(position);
+		//底圖
 		if(position==0&&!(position==(this.getCount()-1))){
 			//第一個
 			Tool.fitsViewHeight(70, viewHandler.CCell_RLayout);
-			viewHandler.CCell_RLayout.setBackgroundDrawable(menu1);
+			new ThreadReadStateListInAssets(context, "pad/Settings/alarm_box_01_f.png","pad/Settings/alarm_box_01_n.png", viewHandler.CCell_RLayout, 3);
 		}else if(position==0&&(position==(this.getCount()-1))){
 			//只有一個
 			Tool.fitsViewHeight(62, viewHandler.CCell_RLayout);
-			viewHandler.CCell_RLayout.setBackgroundDrawable(menu4);
+			new ThreadReadStateListInAssets(context, "pad/Settings/alarm_box_02_f.png","pad/Settings/alarm_box_02_n.png", viewHandler.CCell_RLayout, 3);
 		}else if((position==(this.getCount()-1))){
 			//最後一個
 			Tool.fitsViewHeight(73, viewHandler.CCell_RLayout);
-			viewHandler.CCell_RLayout.setBackgroundDrawable(menu3);
+			new ThreadReadStateListInAssets(context, "pad/Settings/alarm_box_03_f.png","pad/Settings/alarm_box_03_n.png", viewHandler.CCell_RLayout, 3);
 		}else{
 			//其他
 			Tool.fitsViewHeight(71, viewHandler.CCell_RLayout);
-			viewHandler.CCell_RLayout.setBackgroundDrawable(menu2);
+			new ThreadReadStateListInAssets(context, "pad/Settings/alarm_box_02_f.png","pad/Settings/alarm_box_02_n.png", viewHandler.CCell_RLayout, 3);
 		}
 		
 		if(position==chooseItem){
@@ -140,6 +129,7 @@ public class FSS_SleepTimer_ListView_BaseAdapter_PAD extends BaseAdapter {
 		Tool.fitsViewHeight(50, viewHandler.Tick_ImageView);
 		Tool.fitsViewWidth(50, viewHandler.Tick_ImageView);
 		Tool.fitsViewRightMargin(10, viewHandler.Tick_ImageView);
+		new ThreadReadStateListInAssets(context, "pad/Settings/pick_f.png","pad/Settings/pick_n.png", viewHandler.Tick_ImageView, 1);
 	}
 
 }

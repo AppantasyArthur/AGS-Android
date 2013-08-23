@@ -44,7 +44,7 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 	
 	private Context context;
 	private MLog mlog = new MLog();
-	private static final String TAG = "FM_Music_ListView_BaseAdapter";	
+	private static final String TAG = "FM_Music_ListView_BaseAdapter_PAD";	
 
 	//==============類別清單================
 	private List<String> CategoryList;

@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
+import com.tkb.tool.ThreadReadBitMapInAssets;
+import com.tkb.tool.ThreadReadStateListInAssets;
 import com.tkb.tool.Tool;
 import android.content.Context;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,18 +26,11 @@ public class FSAl_Alarm_ListView_BaseAdapter_PAD extends BaseAdapter {
 	
 	private boolean isEdit = false;
 		
-	private List<AlarmItemContent> dataList = new ArrayList<AlarmItemContent>();
-	
-	private Drawable menu1;
-	private Drawable menu2;
-	private Drawable menu3;
-	private Drawable menu4;
-	
+	private List<AlarmItemContent> dataList = new ArrayList<AlarmItemContent>();	
 	
 	public FSAl_Alarm_ListView_BaseAdapter_PAD(Context context){
 		this.context = context;		
 		this.mlog.LogSwitch = true;
-		LoadBitmap();
 		CreateDataList();
 	}
 	private void CreateDataList(){
@@ -46,12 +39,7 @@ public class FSAl_Alarm_ListView_BaseAdapter_PAD extends BaseAdapter {
 		dataList.add(new AlarmItemContent("aaaa", "bbbb","cccc",0,"dddd"));
 		dataList.add(new AlarmItemContent("aaaa", "bbbb","cccc",0,"dddd"));
 	}
-	private void LoadBitmap(){		
-		this.menu1 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "pad/Settings/identify_01_box.png"));
-		this.menu2 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "pad/Settings/identify_02_box.png"));
-		this.menu3 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "pad/Settings/identify_03_box.png"));
-		this.menu4 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "pad/Settings/Settings_box.png"));
-	}
+	
 	public void SetDataList(List<AlarmItemContent> dataList){
 		this.dataList = dataList;
 		this.notifyDataSetChanged();
@@ -93,22 +81,23 @@ public class FSAl_Alarm_ListView_BaseAdapter_PAD extends BaseAdapter {
 			viewHandler = (ViewHandler)convertView.getTag();
 		}
 		viewHandler.SET_Position(position);
+		//底圖
 		if(position==0&&!(position==(this.getCount()-1))){
 			//第一個
 			Tool.fitsViewHeight(70, viewHandler.CCell_RLayout);
-			viewHandler.CCell_RLayout.setBackgroundDrawable(menu1);
+			new ThreadReadStateListInAssets(context, "pad/Settings/alarm_box_01_f.png","pad/Settings/alarm_box_01_n.png", viewHandler.CCell_RLayout, 3);
 		}else if(position==0&&(position==(this.getCount()-1))){
 			//只有一個
 			Tool.fitsViewHeight(62, viewHandler.CCell_RLayout);
-			viewHandler.CCell_RLayout.setBackgroundDrawable(menu4);
+			new ThreadReadStateListInAssets(context, "pad/Settings/alarm_box_02_f.png","pad/Settings/alarm_box_02_n.png", viewHandler.CCell_RLayout, 3);
 		}else if((position==(this.getCount()-1))){
 			//最後一個
 			Tool.fitsViewHeight(73, viewHandler.CCell_RLayout);
-			viewHandler.CCell_RLayout.setBackgroundDrawable(menu3);
+			new ThreadReadStateListInAssets(context, "pad/Settings/alarm_box_03_f.png","pad/Settings/alarm_box_03_n.png", viewHandler.CCell_RLayout, 3);
 		}else{
 			//其他
 			Tool.fitsViewHeight(71, viewHandler.CCell_RLayout);
-			viewHandler.CCell_RLayout.setBackgroundDrawable(menu2);
+			new ThreadReadStateListInAssets(context, "pad/Settings/alarm_box_02_f.png","pad/Settings/alarm_box_02_n.png", viewHandler.CCell_RLayout, 3);
 		}
 		
 		if(this.isEdit){
@@ -163,9 +152,10 @@ public class FSAl_Alarm_ListView_BaseAdapter_PAD extends BaseAdapter {
 	}
 	private void basicSetChildView(ViewHandler viewHandler){
 		//Delete_ImageView
-		Tool.fitsViewHeight(35, viewHandler.Delete_ImageView);
-		Tool.fitsViewWidth(60, viewHandler.Delete_ImageView);
+		Tool.fitsViewHeight(40, viewHandler.Delete_ImageView);
+		Tool.fitsViewWidth(50, viewHandler.Delete_ImageView);
 		Tool.fitsViewLeftMargin(10, viewHandler.Delete_ImageView);
+		new ThreadReadBitMapInAssets(context, "pad/Queqe/delete.png", viewHandler.Delete_ImageView, 1);
 		//Time_TextView
 		Tool.fitsViewHeight(35, viewHandler.Time_TextView);
 		Tool.fitsViewTextSize(8, viewHandler.Time_TextView);
@@ -179,9 +169,10 @@ public class FSAl_Alarm_ListView_BaseAdapter_PAD extends BaseAdapter {
 		Tool.fitsViewTextSize(8, viewHandler.AlarmName_TextView);
 		Tool.fitsViewRightMargin(10, viewHandler.AlarmName_TextView);
 		//Arrow_ImageView
-		Tool.fitsViewHeight(35, viewHandler.Arrow_ImageView);
-		Tool.fitsViewWidth(40, viewHandler.Arrow_ImageView);
+		Tool.fitsViewHeight(13, viewHandler.Arrow_ImageView);
+		viewHandler.Arrow_ImageView.getLayoutParams().width = Tool.getHeight(7);
 		Tool.fitsViewRightMargin(10, viewHandler.Arrow_ImageView);
+		new ThreadReadStateListInAssets(context, "pad/Playlist/playlist_arrow_f.png", "pad/Playlist/playlist_arrow_n.png", viewHandler.Arrow_ImageView, 1);
 	}
 
 }

@@ -54,37 +54,42 @@ public class FSW_PopupWindow extends PopupWindow {
 	private void Phone_CreateContentView() {
 		this.contentView = LayoutInflater.from(context).inflate(R.layout.fsw_popupwindow_context, null,true);		
 		//Content RLayout
-		Tool.fitsViewHeight(237, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout));
-		Tool.fitsViewWidth(311, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout));
-		new ThreadReadBitMapInAssets(context, "phone/pop/save_pop_bg.png", this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout), 3);
+		Tool.fitsViewHeight(358, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout));
+		Tool.fitsViewWidth(300, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout));
+		new ThreadReadBitMapInAssets(context, "pad/Settings/pop_bg_01.png", this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout), 3);
 		//TITLE RLayout
-		Tool.fitsViewHeight(32, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_TITLE_RLayout));
+		Tool.fitsViewHeight(34, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_TITLE_RLayout));
+		Tool.fitsViewTopMargin(5,this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_TITLE_RLayout));
 		//Title TextView
 		Tool.fitsViewTextSize(12, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_TITLE_TextView));
 		//Close Button
-		Tool.fitsViewHeight(16, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_Close_Button));
-		Tool.fitsViewWidth(32, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_Close_Button));
+		Tool.fitsViewHeight(22, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_Close_Button));
+		Tool.fitsViewWidth(46, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_Close_Button));
 		Tool.fitsViewTopMargin(9, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_Close_Button));
 		Tool.fitsViewLeftMargin(16, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_Close_Button));
 		Tool.fitsViewTextSize(8, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_Close_Button));
 		new ThreadReadStateListInAssets(context, "phone/pop/save_close_botton.png", "phone/pop/save_close_botton.png", this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_Close_Button), 4);
 		//Body_RLayout
-		Tool.fitsViewHeight(177, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_Body_RLayout));
-		Tool.fitsViewWidth(270, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_Body_RLayout));
-		new ThreadReadBitMapInAssets(context, "phone/pop/save_pop_bg_01.png", this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_Body_RLayout), 3);
+		Tool.fitsViewHeight(300, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_Body_RLayout));
+		Tool.fitsViewWidth(268, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_Body_RLayout));
+		new ThreadReadBitMapInAssets(context, "pad/Settings/pop_bg_02.png", this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_Body_RLayout), 3);
 		//OPTION_ScrollView
-		Tool.fitsViewHeight(169, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_OPTION_ScrollView));
-		Tool.fitsViewWidth(250, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_OPTION_ScrollView));
-		Tool.fitsViewTopMargin(4, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_OPTION_ScrollView));
+		Tool.fitsViewHeight(300, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_OPTION_ScrollView));
+		Tool.fitsViewWidth(238, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_OPTION_ScrollView));
+		Tool.fitsViewTopMargin(12, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_OPTION_ScrollView));
+		//EditBG_ImageView
+		new ThreadReadBitMapInAssets(context, "pad/Settings/info_bg.png", this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_EditBG_ImageView), 1);
 		//Name EditText
-		Tool.fitsViewHeight(32, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_Name_EditText));
+		Tool.fitsViewHeight(36, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_Name_EditText));
 		Tool.fitsViewTextSize(12, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_Name_EditText));
+		Tool.fitsViewLeftMargin(6, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_Name_EditText));
 		//Securty EditText
-		Tool.fitsViewHeight(32, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_Securty_EditText));
+		Tool.fitsViewHeight(36, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_Securty_EditText));
 		Tool.fitsViewTextSize(12, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_Securty_EditText));
+		Tool.fitsViewLeftMargin(6, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_Securty_EditText));
 		//Join Button
 		Tool.fitsViewHeight(20, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_Join_Button));
-		new ThreadReadStateListInAssets(context, "phone/pop/save_close_botton.png", "phone/pop/save_close_botton.png", this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_Join_Button), 4);
+		new ThreadReadStateListInAssets(context, "pad/Settings/join_f.png", "pad/Settings/join_n.png", this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_Join_Button), 4);
 		Tool.fitsViewTextSize(10, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_Join_Button));
 		Tool.fitsViewTopMargin(10, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_Join_Button));
 		mlog.info(TAG, "CreateContentView");
@@ -92,11 +97,12 @@ public class FSW_PopupWindow extends PopupWindow {
 	private void PAD_CreateContentView() {
 		this.contentView = LayoutInflater.from(context).inflate(R.layout.fsw_popupwindow_context, null,true);
 		//Content RLayout
-		Tool.fitsViewHeight(393, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout));
-		Tool.fitsViewWidth(519, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout));
-		new ThreadReadBitMapInAssets(context, "pad/pop/save queqe_01_bg.png", this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout), 3);
+		Tool.fitsViewHeight(597, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout));
+		Tool.fitsViewWidth(500, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout));
+		new ThreadReadBitMapInAssets(context, "pad/Settings/pop_bg_01.png", this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout), 3);
 		//TITLE RLayout
-		Tool.fitsViewHeight(61, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_TITLE_RLayout));
+		Tool.fitsViewHeight(57, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_TITLE_RLayout));
+		Tool.fitsViewTopMargin(8,this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_TITLE_RLayout));
 		//Title TextView
 		Tool.fitsViewTextSize(8, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_TITLE_TextView));
 		//Close Button
@@ -107,22 +113,26 @@ public class FSW_PopupWindow extends PopupWindow {
 		Tool.fitsViewTextSize(6, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_Close_Button));
 		new ThreadReadStateListInAssets(context, "pad/pop/cancel_f.png", "pad/pop/cancel_n.png", this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_Close_Button), 4);
 		//Body_RLayout
-		Tool.fitsViewHeight(295, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_Body_RLayout));
-		Tool.fitsViewWidth(449, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_Body_RLayout));
-		new ThreadReadBitMapInAssets(context, "pad/pop/save queqe_02_bg.png", this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_Body_RLayout), 3);
+		Tool.fitsViewHeight(500, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_Body_RLayout));
+		Tool.fitsViewWidth(447, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_Body_RLayout));
+		new ThreadReadBitMapInAssets(context, "pad/Settings/pop_bg_02.png", this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_Body_RLayout), 3);
 		//OPTION_ScrollView
-		Tool.fitsViewHeight(285, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_OPTION_ScrollView));
-		Tool.fitsViewWidth(429, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_OPTION_ScrollView));
-		Tool.fitsViewTopMargin(5, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_OPTION_ScrollView));
+		Tool.fitsViewHeight(500, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_OPTION_ScrollView));
+		Tool.fitsViewWidth(397, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_OPTION_ScrollView));
+		Tool.fitsViewTopMargin(20, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_OPTION_ScrollView));
+		//EditBG_ImageView
+		new ThreadReadBitMapInAssets(context, "pad/Settings/info_bg.png", this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_EditBG_ImageView), 1);
 		//Name EditText
 		Tool.fitsViewHeight(61, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_Name_EditText));
 		Tool.fitsViewTextSize(8, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_Name_EditText));
+		Tool.fitsViewLeftMargin(10, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_Name_EditText));
 		//Securty EditText
 		Tool.fitsViewHeight(61, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_Securty_EditText));
 		Tool.fitsViewTextSize(8, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_Securty_EditText));
+		Tool.fitsViewLeftMargin(10, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_Securty_EditText));
 		//Join Button
 		Tool.fitsViewHeight(45, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_Join_Button));
-		new ThreadReadStateListInAssets(context, "pad/pop/cancel_f.png", "pad/pop/cancel_n.png", this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_Join_Button), 4);
+		new ThreadReadStateListInAssets(context, "pad/Settings/join_f.png", "pad/Settings/join_n.png", this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_Join_Button), 4);
 		Tool.fitsViewTextSize(8, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_Join_Button));
 		Tool.fitsViewTopMargin(20, this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_Join_Button));
 		mlog.info(TAG, "CreateContentView");

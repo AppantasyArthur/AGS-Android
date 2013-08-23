@@ -127,25 +127,14 @@ public class FSAl_Music_ListView_BaseAdapter_Phone extends BaseAdapter {
 			}
 		}
 	};
-	private Drawable menu1;
-	private Drawable menu2;
-	private Drawable menu3;
-	private Drawable menu4;
 	public FSAl_Music_ListView_BaseAdapter_Phone(Context context){
 		this.context = context;		
 		this.mlog.LogSwitch = true;
 		this.DeviceList = new ArrayList<DeviceDisplay>();
 		this.ContainerList =  new ArrayList<Container>();
 		this.MusicTrackList = new ArrayList<Item>();
-		LoadBitmap();
 		SetList();
 		SetListner();		
-	}
-	private void LoadBitmap(){		
-		this.menu1 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "phone/setting/setting_identify_bar_top.png"));
-		this.menu2 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "phone/setting/settimg_identify_bar_center.png"));
-		this.menu3 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "phone/setting/settimg_identify_bar_bottom.png"));
-		this.menu4 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "phone/setting/setting_firmware_about_bar.PNG"));
 	}
 	private void SetList(){
 		//新增分類 順序有差
@@ -304,24 +293,23 @@ public class FSAl_Music_ListView_BaseAdapter_Phone extends BaseAdapter {
 			viewHandler.cell_RLayout_Tick_ImageView.setVisibility(View.INVISIBLE);
 		}
 		
-		//背景
 		if(position==0&&!(position==(this.getCount()-1))){
 			//第一個
 			Tool.fitsViewHeight(30, viewHandler.cell_RLayout);
-			viewHandler.cell_RLayout.setBackgroundDrawable(menu1);
+			new ThreadReadStateListInAssets(context, "pad/Settings/alarm_box_01_f.png","pad/Settings/alarm_box_01_n.png", viewHandler.cell_RLayout, 3);
 			
 		}else if(position==0&&(position==(this.getCount()-1))){
 			//只有一個
 			Tool.fitsViewHeight(34, viewHandler.cell_RLayout);
-			viewHandler.cell_RLayout.setBackgroundDrawable(menu4);
+			new ThreadReadStateListInAssets(context, "pad/Settings/alarm_box_02_f.png","pad/Settings/alarm_box_02_n.png", viewHandler.cell_RLayout, 3);
 		}else if((position==(this.getCount()-1))){
 			//最後一個
 			Tool.fitsViewHeight(33, viewHandler.cell_RLayout);
-			viewHandler.cell_RLayout.setBackgroundDrawable(menu3);
+			new ThreadReadStateListInAssets(context, "pad/Settings/alarm_box_03_f.png","pad/Settings/alarm_box_03_n.png", viewHandler.cell_RLayout, 3);
 		}else{
 			//其他
 			Tool.fitsViewHeight(31, viewHandler.cell_RLayout);
-			viewHandler.cell_RLayout.setBackgroundDrawable(menu2);
+			new ThreadReadStateListInAssets(context, "pad/Settings/alarm_box_02_f.png","pad/Settings/alarm_box_02_n.png", viewHandler.cell_RLayout, 3);
 		}
 		mlog.info(TAG, "position = "+position);
 		return convertView;
@@ -353,6 +341,7 @@ public class FSAl_Music_ListView_BaseAdapter_Phone extends BaseAdapter {
 		Tool.fitsViewHeight(18, viewHandler.cell_RLayout_Tick_ImageView);
 		viewHandler.cell_RLayout_Tick_ImageView.getLayoutParams().width = Tool.getHeight(32);
 		Tool.fitsViewRightMargin(35, viewHandler.cell_RLayout_Tick_ImageView);
+		new ThreadReadStateListInAssets(context, "pad/Settings/pick_f.png","pad/Settings/pick_n.png", viewHandler.cell_RLayout_Tick_ImageView, 1);
 		//cell_RLayout_Image_ImageView
 		Tool.fitsViewHeight(9, viewHandler.cell_RLayout_Image_ImageView);
 		viewHandler.cell_RLayout_Image_ImageView.getLayoutParams().width = Tool.getHeight(16);

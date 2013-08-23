@@ -18,7 +18,7 @@
     		android:layout_alignParentLeft="true"
     		android:layout_centerVertical="true"
     		android:scaleType="fitXY"
-    		android:background="#ff0000"
+    		android:background="#00000000"
             />
         <TextView
             android:id="@+id/FSW_WIFIAP_ListView_RLayout_Name_TextView"
@@ -37,7 +37,7 @@
     		android:layout_toLeftOf="@+id/FSW_WIFIAP_ListView_RLayout_WaveArrow_ImageView"
     		android:layout_centerVertical="true" 
     		android:scaleType="fitXY"    		 
-    		android:background="#00ff00"  		
+    		android:background="#00000000"  		
             />
         <ImageView 
             android:id="@+id/FSW_WIFIAP_ListView_RLayout_WaveArrow_ImageView"
@@ -46,7 +46,7 @@
     		android:layout_alignParentRight="true"
     		android:layout_centerVertical="true" 
     		android:scaleType="fitXY"    		
-    		android:background="#0000ff"  		
+    		android:background="#00000000"  		
             />
     </RelativeLayout>
 </RelativeLayout>

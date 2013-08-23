@@ -62,17 +62,17 @@ public class FSAl_List_VIEW_SETTING {
 		new ThreadReadStateListInAssets(context, "phone/setting/done_f.png", "phone/setting/done_n.png", view.findViewById(R.id.pFSAl_List_RLayout_RLayout_Back_Button), 4);
 		//Edit Button
 		Tool.fitsViewWidth(59, view.findViewById(R.id.pFSAl_List_RLayout_RLayout_Edit_Button));
-		view.findViewById(R.id.pFSAl_List_RLayout_RLayout_Edit_Button).getLayoutParams().height = Tool.getWidth(26);
+		view.findViewById(R.id.pFSAl_List_RLayout_RLayout_Edit_Button).getLayoutParams().height = Tool.getWidth(27);
 		Tool.fitsViewLeftMargin(7, view.findViewById(R.id.pFSAl_List_RLayout_RLayout_Edit_Button));
 		Tool.fitsViewTextSize(10, view.findViewById(R.id.pFSAl_List_RLayout_RLayout_Edit_Button));
-		new ThreadReadStateListInAssets(context, "phone/setting/done_f.png", "phone/setting/done_n.png", view.findViewById(R.id.pFSAl_List_RLayout_RLayout_Edit_Button), 4);
+		new ThreadReadStateListInAssets(context, "phone/speaker/bottom_button_f.png","phone/speaker/bottom_button_single.png", view.findViewById(R.id.pFSAl_List_RLayout_RLayout_Edit_Button), 4);
 		//Title TextView
 		Tool.fitsViewTextSize(18, view.findViewById(R.id.pFSAl_List_RLayout_RLayout_Title_TextView));
 		//Add Button
-		Tool.fitsViewWidth(15, view.findViewById(R.id.pFSAl_List_RLayout_RLayout_Add_Button));
-		Tool.fitsViewHeight(15, view.findViewById(R.id.pFSAl_List_RLayout_RLayout_Add_Button));
+		Tool.fitsViewWidth(20, view.findViewById(R.id.pFSAl_List_RLayout_RLayout_Add_Button));
+		Tool.fitsViewHeight(20, view.findViewById(R.id.pFSAl_List_RLayout_RLayout_Add_Button));
 		Tool.fitsViewRightMargin(10, view.findViewById(R.id.pFSAl_List_RLayout_RLayout_Add_Button));
-		new ThreadReadStateListInAssets(context, "phone/setting/done_f.png", "phone/setting/done_n.png", view.findViewById(R.id.pFSAl_List_RLayout_RLayout_Add_Button), 4);
+		new ThreadReadBitMapInAssets(context, "pad/Settings/add_btn.png", view.findViewById(R.id.pFSAl_List_RLayout_RLayout_Add_Button), 3);
 	}
 	private void pFSAl_List_RLayout_BODY_RLayout(View view) {
 		//Alarm_ListView
@@ -98,15 +98,15 @@ public class FSAl_List_VIEW_SETTING {
 		Tool.fitsViewHeight(32, view.findViewById(R.id.FSAl_List_RLayout_RLayout_Edit_Button));
 		Tool.fitsViewLeftMargin(10, view.findViewById(R.id.FSAl_List_RLayout_RLayout_Edit_Button));
 		Tool.fitsViewTextSize(6, view.findViewById(R.id.FSAl_List_RLayout_RLayout_Edit_Button));
-		new ThreadReadBitMapInAssets(context, "pad/Playlist/playlist_back_btn.png", view.findViewById(R.id.FSAl_List_RLayout_RLayout_Edit_Button), 3);
+		new ThreadReadBitMapInAssets(context, "phone/pop/save_close_botton.png", view.findViewById(R.id.FSAl_List_RLayout_RLayout_Edit_Button), 3);
 		//Title TextView
 		Tool.fitsViewHeight(50, view.findViewById(R.id.FSAl_List_RLayout_RLayout_Title_TextView));
 		Tool.fitsViewTextSize(8, view.findViewById(R.id.FSAl_List_RLayout_RLayout_Title_TextView));
 		//Add Button
-		Tool.fitsViewWidth(32, view.findViewById(R.id.FSAl_List_RLayout_RLayout_Add_Button));
-		Tool.fitsViewHeight(32, view.findViewById(R.id.FSAl_List_RLayout_RLayout_Add_Button));
+		view.findViewById(R.id.FSAl_List_RLayout_RLayout_Add_Button).getLayoutParams().width = Tool.getHeight(31);
+		Tool.fitsViewHeight(30, view.findViewById(R.id.FSAl_List_RLayout_RLayout_Add_Button));
 		Tool.fitsViewRightMargin(44, view.findViewById(R.id.FSAl_List_RLayout_RLayout_Add_Button));
-		new ThreadReadBitMapInAssets(context, "pad/Playlist/playlist_back_btn.png", view.findViewById(R.id.FSAl_List_RLayout_RLayout_Add_Button), 3);
+		new ThreadReadBitMapInAssets(context, "pad/Settings/add_btn.png", view.findViewById(R.id.FSAl_List_RLayout_RLayout_Add_Button), 3);
 	}
 	private void FSAl_List_RLayout_BODY_RLayout(View view) {		
 		//Alarm_ListView

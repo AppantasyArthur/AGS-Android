@@ -28,8 +28,8 @@ public class FSM_VIEW_SETTING {
 			case R.id.pFSM_RLayout_TITLE_RLayout:
 				pFSM_RLayout_TITLE_RLayout(view);
 				break;
-			case R.id.pFSM_RLayout_Menu_RLayout:
-				pFSM_RLayout_Menu_RLayout(view);
+			case R.id.pFSM_RLayout_Body_RLayout:
+				pFSM_RLayout_Body_RLayout(view);
 				break;
 			}
 		}else{
@@ -37,8 +37,8 @@ public class FSM_VIEW_SETTING {
 			case R.id.FSM_RLayout_TITLE_RLayout:
 				PAD_FSM_RLayout_TITLE_RLayout(view);
 				break;
-			case R.id.FSM_RLayout_Menu_RLayout:
-				PAD_FSM_RLayout_Menu_RLayout(view);
+			case R.id.FSM_RLayout_Body_RLayout:
+				PAD_FSM_RLayout_Body_RLayout(view);
 				break;
 			}	
 		}
@@ -62,49 +62,8 @@ public class FSM_VIEW_SETTING {
 		//Title TextView
 		Tool.fitsViewTextSize(18, view.findViewById(R.id.pFSM_RLayout_RLayout_Title_TextView));
 	}
-	private void pFSM_RLayout_Menu_RLayout(View view) {
-		//About Button
-		Tool.fitsViewHeight(61, view.findViewById(R.id.pFSM_RLayout_RLayout_About_Button));
-		Tool.fitsViewWidth(276, view.findViewById(R.id.pFSM_RLayout_RLayout_About_Button));
-		Tool.fitsViewTopMargin(45, view.findViewById(R.id.pFSM_RLayout_RLayout_About_Button));
-		Tool.fitsViewLeftMargin(22, view.findViewById(R.id.pFSM_RLayout_RLayout_About_Button));
-		Tool.fitsViewTextSize(14, view.findViewById(R.id.pFSM_RLayout_RLayout_About_Button));	
-		new ThreadReadStateListInAssets(context, "phone/setting/settings_bar_f.PNG", "phone/setting/settings_bar_n.PNG", view.findViewById(R.id.pFSM_RLayout_RLayout_About_Button), 4);
-		//Firmrware Button
-		Tool.fitsViewHeight(61, view.findViewById(R.id.pFSM_RLayout_RLayout_Firmrware_Button));
-		Tool.fitsViewWidth(276, view.findViewById(R.id.pFSM_RLayout_RLayout_Firmrware_Button));
-		Tool.fitsViewTopMargin(141, view.findViewById(R.id.pFSM_RLayout_RLayout_Firmrware_Button));
-		Tool.fitsViewLeftMargin(22, view.findViewById(R.id.pFSM_RLayout_RLayout_Firmrware_Button));
-		Tool.fitsViewTextSize(14, view.findViewById(R.id.pFSM_RLayout_RLayout_Firmrware_Button));
-		new ThreadReadStateListInAssets(context, "phone/setting/settings_bar_f.PNG", "phone/setting/settings_bar_n.PNG", view.findViewById(R.id.pFSM_RLayout_RLayout_Firmrware_Button), 4);
-		//Wireless Button
-		Tool.fitsViewHeight(61, view.findViewById(R.id.pFSM_RLayout_RLayout_Wireless_Button));
-		Tool.fitsViewWidth(276, view.findViewById(R.id.pFSM_RLayout_RLayout_Wireless_Button));
-		Tool.fitsViewTopMargin(237, view.findViewById(R.id.pFSM_RLayout_RLayout_Wireless_Button));
-		Tool.fitsViewLeftMargin(22, view.findViewById(R.id.pFSM_RLayout_RLayout_Wireless_Button));
-		Tool.fitsViewTextSize(14, view.findViewById(R.id.pFSM_RLayout_RLayout_Wireless_Button));
-		new ThreadReadStateListInAssets(context, "phone/setting/settings_bar_f.PNG", "phone/setting/settings_bar_n.PNG", view.findViewById(R.id.pFSM_RLayout_RLayout_Wireless_Button), 4);
-		//Idenrify Button
-		Tool.fitsViewHeight(61, view.findViewById(R.id.pFSM_RLayout_RLayout_Idenrify_Button));
-		Tool.fitsViewWidth(276, view.findViewById(R.id.pFSM_RLayout_RLayout_Idenrify_Button));
-		Tool.fitsViewTopMargin(333, view.findViewById(R.id.pFSM_RLayout_RLayout_Idenrify_Button));
-		Tool.fitsViewLeftMargin(22, view.findViewById(R.id.pFSM_RLayout_RLayout_Idenrify_Button));
-		Tool.fitsViewTextSize(14, view.findViewById(R.id.pFSM_RLayout_RLayout_Idenrify_Button));
-		new ThreadReadStateListInAssets(context, "phone/setting/settings_bar_f.PNG", "phone/setting/settings_bar_n.PNG", view.findViewById(R.id.pFSM_RLayout_RLayout_Idenrify_Button), 4);
-		//Alarm Button
-		Tool.fitsViewHeight(61, view.findViewById(R.id.pFSM_RLayout_RLayout_Alarm_Button));
-		Tool.fitsViewWidth(276, view.findViewById(R.id.pFSM_RLayout_RLayout_Alarm_Button));
-		Tool.fitsViewTopMargin(429, view.findViewById(R.id.pFSM_RLayout_RLayout_Alarm_Button));
-		Tool.fitsViewLeftMargin(22, view.findViewById(R.id.pFSM_RLayout_RLayout_Alarm_Button));
-		Tool.fitsViewTextSize(14, view.findViewById(R.id.pFSM_RLayout_RLayout_Alarm_Button));
-		new ThreadReadStateListInAssets(context, "phone/setting/settings_bar_f.PNG", "phone/setting/settings_bar_n.PNG", view.findViewById(R.id.pFSM_RLayout_RLayout_Alarm_Button), 4);
-		//SleepTimer Button
-		Tool.fitsViewHeight(61, view.findViewById(R.id.pFSM_RLayout_RLayout_SleepTimer_Button));
-		Tool.fitsViewWidth(276, view.findViewById(R.id.pFSM_RLayout_RLayout_SleepTimer_Button));
-		Tool.fitsViewTopMargin(525, view.findViewById(R.id.pFSM_RLayout_RLayout_SleepTimer_Button));
-		Tool.fitsViewLeftMargin(22, view.findViewById(R.id.pFSM_RLayout_RLayout_SleepTimer_Button));
-		Tool.fitsViewTextSize(14, view.findViewById(R.id.pFSM_RLayout_RLayout_SleepTimer_Button));
-		new ThreadReadStateListInAssets(context, "phone/setting/settings_bar_f.PNG", "phone/setting/settings_bar_n.PNG", view.findViewById(R.id.pFSM_RLayout_RLayout_SleepTimer_Button), 4);
+	private void pFSM_RLayout_Body_RLayout(View view) {
+		Tool.fitsViewWidth(276, view.findViewById(R.id.pFSM_RLayout_RLayout_Menu_RLayout));		
 	}
 //***************************PHONE*********************************
 //***************************PAD*********************************
@@ -122,49 +81,8 @@ public class FSM_VIEW_SETTING {
 		view.findViewById(R.id.FSM_RLayout_RLayout_Title_TextView).getLayoutParams().width = Tool.getHeight(90);
 		Tool.fitsViewTextSize(8, view.findViewById(R.id.FSM_RLayout_RLayout_Title_TextView));
 	}
-	private void PAD_FSM_RLayout_Menu_RLayout(View view) {
-		//About Button
-		Tool.fitsViewHeight(66, view.findViewById(R.id.FSM_RLayout_RLayout_About_Button));
-		Tool.fitsViewWidth(230, view.findViewById(R.id.FSM_RLayout_RLayout_About_Button));
-		Tool.fitsViewTopMargin(33, view.findViewById(R.id.FSM_RLayout_RLayout_About_Button));
-		Tool.fitsViewLeftMargin(24, view.findViewById(R.id.FSM_RLayout_RLayout_About_Button));
-		Tool.fitsViewTextSize(8, view.findViewById(R.id.FSM_RLayout_RLayout_About_Button));
-		new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_item_n.png", view.findViewById(R.id.FSM_RLayout_RLayout_About_Button), 3);
-		//Firmrware Button
-		Tool.fitsViewHeight(66, view.findViewById(R.id.FSM_RLayout_RLayout_Firmrware_Button));
-		Tool.fitsViewWidth(230, view.findViewById(R.id.FSM_RLayout_RLayout_Firmrware_Button));
-		Tool.fitsViewTopMargin(132, view.findViewById(R.id.FSM_RLayout_RLayout_Firmrware_Button));
-		Tool.fitsViewLeftMargin(24, view.findViewById(R.id.FSM_RLayout_RLayout_Firmrware_Button));
-		Tool.fitsViewTextSize(8, view.findViewById(R.id.FSM_RLayout_RLayout_Firmrware_Button));
-		new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_item_n.png", view.findViewById(R.id.FSM_RLayout_RLayout_Firmrware_Button), 3);
-		//Wireless Button
-		Tool.fitsViewHeight(66, view.findViewById(R.id.FSM_RLayout_RLayout_Wireless_Button));
-		Tool.fitsViewWidth(230, view.findViewById(R.id.FSM_RLayout_RLayout_Wireless_Button));
-		Tool.fitsViewTopMargin(231, view.findViewById(R.id.FSM_RLayout_RLayout_Wireless_Button));
-		Tool.fitsViewLeftMargin(24, view.findViewById(R.id.FSM_RLayout_RLayout_Wireless_Button));
-		Tool.fitsViewTextSize(8, view.findViewById(R.id.FSM_RLayout_RLayout_Wireless_Button));
-		new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_item_n.png", view.findViewById(R.id.FSM_RLayout_RLayout_Wireless_Button), 3);
-		//Idenrify Button
-		Tool.fitsViewHeight(66, view.findViewById(R.id.FSM_RLayout_RLayout_Idenrify_Button));
-		Tool.fitsViewWidth(230, view.findViewById(R.id.FSM_RLayout_RLayout_Idenrify_Button));
-		Tool.fitsViewTopMargin(330, view.findViewById(R.id.FSM_RLayout_RLayout_Idenrify_Button));
-		Tool.fitsViewLeftMargin(24, view.findViewById(R.id.FSM_RLayout_RLayout_Idenrify_Button));
-		Tool.fitsViewTextSize(8, view.findViewById(R.id.FSM_RLayout_RLayout_Idenrify_Button));
-		new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_item_n.png", view.findViewById(R.id.FSM_RLayout_RLayout_Idenrify_Button), 3);
-		//Alarm Button
-		Tool.fitsViewHeight(66, view.findViewById(R.id.FSM_RLayout_RLayout_Alarm_Button));
-		Tool.fitsViewWidth(230, view.findViewById(R.id.FSM_RLayout_RLayout_Alarm_Button));
-		Tool.fitsViewTopMargin(429, view.findViewById(R.id.FSM_RLayout_RLayout_Alarm_Button));
-		Tool.fitsViewLeftMargin(24, view.findViewById(R.id.FSM_RLayout_RLayout_Alarm_Button));
-		Tool.fitsViewTextSize(8, view.findViewById(R.id.FSM_RLayout_RLayout_Alarm_Button));
-		new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_item_n.png", view.findViewById(R.id.FSM_RLayout_RLayout_Alarm_Button), 3);
-		//SleepTimer Button
-		Tool.fitsViewHeight(66, view.findViewById(R.id.FSM_RLayout_RLayout_SleepTimer_Button));
-		Tool.fitsViewWidth(230, view.findViewById(R.id.FSM_RLayout_RLayout_SleepTimer_Button));
-		Tool.fitsViewTopMargin(528, view.findViewById(R.id.FSM_RLayout_RLayout_SleepTimer_Button));
-		Tool.fitsViewLeftMargin(24, view.findViewById(R.id.FSM_RLayout_RLayout_SleepTimer_Button));
-		Tool.fitsViewTextSize(8, view.findViewById(R.id.FSM_RLayout_RLayout_SleepTimer_Button));
-		new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_item_n.png", view.findViewById(R.id.FSM_RLayout_RLayout_SleepTimer_Button), 3);
+	private void PAD_FSM_RLayout_Body_RLayout(View view) {		
+		Tool.fitsViewWidth(272, view.findViewById(R.id.FSM_RLayout_RLayout_Menu_RLayout));
 	}
 //***************************PAD*********************************
 }

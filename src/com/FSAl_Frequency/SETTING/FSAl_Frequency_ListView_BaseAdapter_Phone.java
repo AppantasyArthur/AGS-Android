@@ -6,6 +6,7 @@ import java.util.List;
 import com.alpha.fragments.Fragment_SAlarm_EditAdd;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
+import com.tkb.tool.ThreadReadStateListInAssets;
 import com.tkb.tool.Tool;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
@@ -30,16 +31,12 @@ public class FSAl_Frequency_ListView_BaseAdapter_Phone extends BaseAdapter {
 	private List<String> dataList = new ArrayList<String>();
 	
 	private int chooseItem = -1;
-	private Drawable menu1;
-	private Drawable menu2;
-	private Drawable menu3;
-	private Drawable menu4;
 	
 	public FSAl_Frequency_ListView_BaseAdapter_Phone(Context context,FragmentManager fragmentManager){
 		this.context = context;		
 		this.mlog.LogSwitch = true;	
 		this.fragmentManager = fragmentManager;
-		LoadBitmap();
+		SetChooseItem();
 		CreateDataList();
 	}
 	private void CreateDataList(){
@@ -52,11 +49,11 @@ public class FSAl_Frequency_ListView_BaseAdapter_Phone extends BaseAdapter {
 		dataList.add("Every Saturday");
 		dataList.add("Every Sunday");
 	}
-	private void LoadBitmap(){		
-		this.menu1 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "phone/setting/setting_identify_bar_top.png"));
-		this.menu2 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "phone/setting/settimg_identify_bar_center.png"));
-		this.menu3 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "phone/setting/settimg_identify_bar_bottom.png"));
-		this.menu4 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "phone/setting/setting_firmware_about_bar.PNG"));
+	private void SetChooseItem(){		
+		Fragment_SAlarm_EditAdd fragment_SAlarm_EditAdd = (Fragment_SAlarm_EditAdd)fragmentManager.findFragmentByTag("Fragment_SAlarm_EditAdd");
+		if(fragment_SAlarm_EditAdd!=null){
+			this.chooseItem = fragment_SAlarm_EditAdd.GetFrequency();
+		}
 	}
 	public void SetChooseItem(int chooseItem){
 		Fragment_SAlarm_EditAdd fragment_SAlarm_EditAdd = (Fragment_SAlarm_EditAdd)fragmentManager.findFragmentByTag("Fragment_SAlarm_EditAdd");
@@ -95,20 +92,20 @@ public class FSAl_Frequency_ListView_BaseAdapter_Phone extends BaseAdapter {
 		if(position==0&&!(position==(this.getCount()-1))){
 			//第一個
 			Tool.fitsViewHeight(30, viewHandler.CCell_RLayout);
-			viewHandler.CCell_RLayout.setBackgroundDrawable(menu1);
+			new ThreadReadStateListInAssets(context, "pad/Settings/alarm_box_01_f.png","pad/Settings/alarm_box_01_n.png", viewHandler.CCell_RLayout, 3);
 			
 		}else if(position==0&&(position==(this.getCount()-1))){
 			//只有一個
 			Tool.fitsViewHeight(34, viewHandler.CCell_RLayout);
-			viewHandler.CCell_RLayout.setBackgroundDrawable(menu4);
+			new ThreadReadStateListInAssets(context, "pad/Settings/alarm_box_02_f.png","pad/Settings/alarm_box_02_n.png", viewHandler.CCell_RLayout, 3);
 		}else if((position==(this.getCount()-1))){
 			//最後一個
 			Tool.fitsViewHeight(33, viewHandler.CCell_RLayout);
-			viewHandler.CCell_RLayout.setBackgroundDrawable(menu3);
+			new ThreadReadStateListInAssets(context, "pad/Settings/alarm_box_03_f.png","pad/Settings/alarm_box_03_n.png", viewHandler.CCell_RLayout, 3);
 		}else{
 			//其他
 			Tool.fitsViewHeight(31, viewHandler.CCell_RLayout);
-			viewHandler.CCell_RLayout.setBackgroundDrawable(menu2);
+			new ThreadReadStateListInAssets(context, "pad/Settings/alarm_box_02_f.png","pad/Settings/alarm_box_02_n.png", viewHandler.CCell_RLayout, 3);
 		}
 		
 		if(position==chooseItem){
@@ -142,7 +139,6 @@ public class FSAl_Frequency_ListView_BaseAdapter_Phone extends BaseAdapter {
 		}
 	}
 	private void basicSetChildView(ViewHandler viewHandler){
-
 		//Time_TextView		
 		Tool.fitsViewTextSize(12, viewHandler.Time_TextView);
 		Tool.fitsViewLeftMargin(5, viewHandler.Time_TextView);
@@ -150,6 +146,7 @@ public class FSAl_Frequency_ListView_BaseAdapter_Phone extends BaseAdapter {
 		Tool.fitsViewHeight(25, viewHandler.Tick_ImageView);
 		Tool.fitsViewWidth(25, viewHandler.Tick_ImageView);
 		Tool.fitsViewRightMargin(10, viewHandler.Tick_ImageView);
+		new ThreadReadStateListInAssets(context, "pad/Settings/pick_f.png","pad/Settings/pick_n.png", viewHandler.Tick_ImageView, 1);
 	}
 
 }

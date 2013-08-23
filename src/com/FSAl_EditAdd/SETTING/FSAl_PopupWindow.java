@@ -60,62 +60,62 @@ public class FSAl_PopupWindow extends PopupWindow {
 	private void Phone_CreateContentView() {
 		this.contentView = LayoutInflater.from(context).inflate(R.layout.fsal_popupwindow_context, null,true);
 		//Content RLayout
-		Tool.fitsViewHeight(237, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout));
-		Tool.fitsViewWidth(311, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout));
-		new ThreadReadBitMapInAssets(context, "phone/pop/save_pop_bg.png", this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout), 3);
+		Tool.fitsViewHeight(172, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout));
+		Tool.fitsViewWidth(252, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout));
+		new ThreadReadBitMapInAssets(context, "pad/Settings/time_bg_01.png", this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout), 3);
 		//TITLE RLayout
-		Tool.fitsViewHeight(32, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_TITLE_RLayout));
+		Tool.fitsViewHeight(19, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_TITLE_RLayout));
+		Tool.fitsViewTopMargin(5, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_TITLE_RLayout));
 		//Close Button
-		Tool.fitsViewHeight(16, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Close_Button));
+		Tool.fitsViewHeight(14, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Close_Button));
 		Tool.fitsViewWidth(32, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Close_Button));
-		Tool.fitsViewTopMargin(9, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Close_Button));
 		Tool.fitsViewLeftMargin(16, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Close_Button));
 		Tool.fitsViewTextSize(8, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Close_Button));
 		new ThreadReadStateListInAssets(context, "phone/pop/save_close_botton.png", "phone/pop/save_close_botton.png", this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Close_Button), 4);
 		//Title TextView
 		Tool.fitsViewTextSize(12, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_TITLE_TextView));
 		//Done Button
-		Tool.fitsViewHeight(16, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Done_Button));
+		Tool.fitsViewHeight(14, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Done_Button));
 		Tool.fitsViewWidth(32, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Done_Button));
-		Tool.fitsViewTopMargin(9, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Done_Button));
 		Tool.fitsViewRightMargin(16, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Done_Button));
 		Tool.fitsViewTextSize(8, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Done_Button));
 		new ThreadReadStateListInAssets(context, "phone/pop/save_done_botton_f.png", "phone/pop/save_done_botton_n.png", this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Done_Button), 4);
 		//Body_RLayout
-		Tool.fitsViewHeight(177, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_Body_RLayout));
-		Tool.fitsViewWidth(270, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_Body_RLayout));
-		new ThreadReadBitMapInAssets(context, "phone/pop/save_pop_bg_01.png", this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_Body_RLayout), 3);
+		Tool.fitsViewHeight(124, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_Body_RLayout));
+		Tool.fitsViewWidth(212, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_Body_RLayout));
+		Tool.fitsViewTopMargin(8, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_Body_RLayout));
+		new ThreadReadBitMapInAssets(context, "pad/Settings/time_bg_02.png", this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_Body_RLayout), 3);
 		mlog.info(TAG, "CreateContentView");
 	}
 
 	private void PAD_CreateContentView() {
 		this.contentView = LayoutInflater.from(context).inflate(R.layout.fsal_popupwindow_context, null,true);
 		//Content RLayout
-		Tool.fitsViewHeight(393, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout));
-		Tool.fitsViewWidth(519, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout));
-		new ThreadReadBitMapInAssets(context, "pad/pop/save queqe_01_bg.png", this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout), 3);
+		Tool.fitsViewHeight(286, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout));
+		Tool.fitsViewWidth(419, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout));
+		new ThreadReadBitMapInAssets(context, "pad/Settings/time_bg_01.png", this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout), 3);
 		//TITLE RLayout
-		Tool.fitsViewHeight(61, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_TITLE_RLayout));
+		Tool.fitsViewHeight(33, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_TITLE_RLayout));
+		Tool.fitsViewTopMargin(8, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_TITLE_RLayout));
 		//Close Button
-		Tool.fitsViewHeight(35, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Close_Button));
-		Tool.fitsViewWidth(56, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Close_Button));
-		Tool.fitsViewTopMargin(13, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Close_Button));
+		Tool.fitsViewHeight(30, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Close_Button));
+		Tool.fitsViewWidth(42, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Close_Button));
 		Tool.fitsViewLeftMargin(40, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Close_Button));
 		Tool.fitsViewTextSize(6, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Close_Button));
 		new ThreadReadStateListInAssets(context, "pad/pop/cancel_f.png", "pad/pop/cancel_n.png", this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Close_Button), 4);
 		//Title TextView
 		Tool.fitsViewTextSize(8, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_TITLE_TextView));
 		//Done Button
-		Tool.fitsViewHeight(35, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Done_Button));
-		Tool.fitsViewWidth(56, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Done_Button));
-		Tool.fitsViewTopMargin(13, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Done_Button));
+		Tool.fitsViewHeight(30, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Done_Button));
+		Tool.fitsViewWidth(42, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Done_Button));
 		Tool.fitsViewRightMargin(40, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Done_Button));
 		Tool.fitsViewTextSize(6, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Done_Button));
 		new ThreadReadStateListInAssets(context, "pad/pop/done_f.png", "pad/pop/done_n.png", this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_RLayout_Done_Button), 4);
 		//Body_RLayout
-		Tool.fitsViewHeight(295, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_Body_RLayout));
-		Tool.fitsViewWidth(449, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_Body_RLayout));
-		new ThreadReadBitMapInAssets(context, "pad/pop/save queqe_02_bg.png", this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_Body_RLayout), 3);
+		Tool.fitsViewHeight(206, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_Body_RLayout));
+		Tool.fitsViewWidth(353, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_Body_RLayout));
+		Tool.fitsViewTopMargin(15, this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_Body_RLayout));
+		new ThreadReadBitMapInAssets(context, "pad/Settings/time_bg_02.png", this.contentView.findViewById(R.id.FSAL_PopupWindow_Content_RLayout_Body_RLayout), 3);
 
 		mlog.info(TAG, "CreateContentView");
 	}

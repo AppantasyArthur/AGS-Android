@@ -28,8 +28,6 @@
     		android:layout_alignParentRight="true"
     		android:layout_centerVertical="true" 
     		android:scaleType="fitXY"
-    		android:clickable="true"
-    		android:focusable="false" 
     		android:background="#00000000"  		
             />
     </RelativeLayout>

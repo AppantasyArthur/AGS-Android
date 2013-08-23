@@ -129,7 +129,6 @@ public class FSR_Renders_ListView_BaseAdapter_PAD extends BaseAdapter {
 		Tool.fitsViewRightMargin(15, viewHandler.Image_ImageView);
 		Tool.fitsViewTopMargin(28, viewHandler.Image_ImageView);
 		new ThreadReadStateListInAssets(context, "pad/Playlist/playlist_arrow_f.png", "pad/Playlist/playlist_arrow_n.png", viewHandler.Image_ImageView, 1);
-		
 	}
 
 }

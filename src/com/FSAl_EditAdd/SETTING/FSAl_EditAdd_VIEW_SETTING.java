@@ -77,7 +77,7 @@ public class FSAl_EditAdd_VIEW_SETTING {
 		Tool.fitsViewLeftMargin(12, view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_Alarm_RLayout));
 		Tool.fitsViewWidth(297, view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_Alarm_RLayout));
 		Tool.fitsViewHeight(33, view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_Alarm_RLayout));
-		new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_box.png", view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_Alarm_RLayout), 3);
+		new ThreadReadBitMapInAssets(context, "pad/Settings/box.png", view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_Alarm_RLayout), 3);
 		//Alarm_TextView
 		Tool.fitsViewTextSize(14, view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_Alarm_TextView));
 		Tool.fitsViewLeftMargin(10,view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_Alarm_TextView));
@@ -93,7 +93,7 @@ public class FSAl_EditAdd_VIEW_SETTING {
 		//AlarmName_RLayout
 		Tool.fitsViewTopMargin(10, view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_AlarmName_RLayout));
 		Tool.fitsViewHeight(33, view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_AlarmName_RLayout));
-		new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_box.png", view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_AlarmName_RLayout), 3);
+		new ThreadReadBitMapInAssets(context, "pad/Settings/box.png", view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_AlarmName_RLayout), 3);
 		//AlarmName_EditText
 		Tool.fitsViewLeftMargin(10,view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_RLayout_AlarmName_EditText));
 		Tool.fitsViewRightMargin(30,view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_RLayout_AlarmName_EditText));
@@ -102,7 +102,7 @@ public class FSAl_EditAdd_VIEW_SETTING {
 		//AlarmTime_RLayout
 		Tool.fitsViewTopMargin(53, view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_AlarmTime_RLayout));
 		Tool.fitsViewHeight(33, view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_AlarmTime_RLayout));
-		new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_box.png", view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_AlarmTime_RLayout), 3);
+		new ThreadReadStateListInAssets(context, "pad/Settings/alarm_box_01_f.png","pad/Settings/alarm_box_01_n.png", view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_AlarmTime_RLayout), 3);
 		//LAlarmTime_TextView
 		Tool.fitsViewLeftMargin(10,view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_LAlarmTime_TextView));
 		Tool.fitsViewTextSize(14, view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_LAlarmTime_TextView));
@@ -112,7 +112,7 @@ public class FSAl_EditAdd_VIEW_SETTING {
 		
 		//AlarmFrequency_RLayout
 		Tool.fitsViewHeight(33, view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_AlarmFrequency_RLayout));
-		new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_box.png", view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_AlarmFrequency_RLayout), 3);
+		new ThreadReadStateListInAssets(context, "pad/Settings/alarm_box_03_f.png","pad/Settings/alarm_box_03_n.png", view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_AlarmFrequency_RLayout), 3);
 		//LAlarmFrequency_TextView
 		Tool.fitsViewLeftMargin(10,view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_LAlarmFrequency_TextView));
 		Tool.fitsViewTextSize(14, view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_LAlarmFrequency_TextView));
@@ -126,7 +126,7 @@ public class FSAl_EditAdd_VIEW_SETTING {
 		//AlarmMusic_RLayout
 		Tool.fitsViewTopMargin(129, view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_AlarmMusic_RLayout));
 		Tool.fitsViewHeight(33, view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_AlarmMusic_RLayout));
-		new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_box.png", view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_AlarmMusic_RLayout), 3);
+		new ThreadReadStateListInAssets(context, "pad/Settings/alarm_box_01_f.png","pad/Settings/alarm_box_01_n.png", view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_AlarmMusic_RLayout), 3);
 		//LAlarmMusic_TextView
 		Tool.fitsViewLeftMargin(10,view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_LAlarmMusic_TextView));
 		Tool.fitsViewTextSize(14, view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_LAlarmMusic_TextView));
@@ -139,7 +139,7 @@ public class FSAl_EditAdd_VIEW_SETTING {
 		
 		//AlarmVolume_RLayout
 		Tool.fitsViewHeight(33, view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_AlarmVolume_RLayout));
-		new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_box.png", view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_AlarmVolume_RLayout), 3);
+		new ThreadReadBitMapInAssets(context, "pad/Settings/alarm_box_03_n.png", view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_AlarmVolume_RLayout), 3);
 		//LAlarmVolume_TextView
 		Tool.fitsViewLeftMargin(10,view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_LAlarmVolume_TextView));
 		Tool.fitsViewTextSize(14, view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_RLayout_LAlarmVolume_TextView));
@@ -167,11 +167,11 @@ public class FSAl_EditAdd_VIEW_SETTING {
 		Tool.fitsViewHeight(50, view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_Title_TextView));
 		Tool.fitsViewTextSize(8, view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_Title_TextView));
 		//Save Button
-		Tool.fitsViewWidth(32, view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_Save_Button));
+		Tool.fitsViewWidth(55, view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_Save_Button));
 		Tool.fitsViewHeight(32, view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_Save_Button));
 		Tool.fitsViewRightMargin(44, view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_Save_Button));
 		Tool.fitsViewTextSize(6, view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_Save_Button));
-		new ThreadReadBitMapInAssets(context, "pad/Playlist/playlist_back_btn.png", view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_Save_Button), 3);
+		new ThreadReadStateListInAssets(context, "pad/Settings/Settings_done_f.png", "pad/Settings/Settings_done_n.png", view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_Save_Button), 4);
 	}
 	private void FSAl_EditAdd_RLayout_BODY_RLayout(View view){
 		//Alarm_RLayout
@@ -179,7 +179,7 @@ public class FSAl_EditAdd_VIEW_SETTING {
 		Tool.fitsViewLeftMargin(44, view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_Alarm_RLayout));
 		Tool.fitsViewWidth(667, view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_Alarm_RLayout));
 		Tool.fitsViewHeight(62, view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_Alarm_RLayout));
-		new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_box.png", view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_Alarm_RLayout), 3);
+		new ThreadReadBitMapInAssets(context, "pad/Settings/box.png", view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_Alarm_RLayout), 3);
 		//Alarm_TextView
 		Tool.fitsViewTextSize(10, view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_Alarm_TextView));
 		Tool.fitsViewLeftMargin(20,view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_Alarm_TextView));
@@ -195,7 +195,7 @@ public class FSAl_EditAdd_VIEW_SETTING {
 		//AlarmName_RLayout
 		Tool.fitsViewTopMargin(37, view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_AlarmName_RLayout));
 		Tool.fitsViewHeight(62, view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_AlarmName_RLayout));
-		new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_box.png", view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_AlarmName_RLayout), 3);
+		new ThreadReadBitMapInAssets(context, "pad/Settings/box.png", view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_AlarmName_RLayout), 3);
 		//AlarmName_EditText
 		Tool.fitsViewLeftMargin(20,view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_RLayout_AlarmName_EditText));
 		Tool.fitsViewRightMargin(40,view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_RLayout_AlarmName_EditText));
@@ -204,7 +204,7 @@ public class FSAl_EditAdd_VIEW_SETTING {
 		//AlarmTime_RLayout
 		Tool.fitsViewTopMargin(136, view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_AlarmTime_RLayout));
 		Tool.fitsViewHeight(62, view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_AlarmTime_RLayout));
-		new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_box.png", view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_AlarmTime_RLayout), 3);
+		new ThreadReadStateListInAssets(context, "pad/Settings/alarm_box_01_f.png","pad/Settings/alarm_box_01_n.png", view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_AlarmTime_RLayout), 3);
 		//LAlarmTime_TextView
 		Tool.fitsViewLeftMargin(20,view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_LAlarmTime_TextView));
 		Tool.fitsViewTextSize(8, view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_LAlarmTime_TextView));
@@ -214,7 +214,7 @@ public class FSAl_EditAdd_VIEW_SETTING {
 		
 		//AlarmFrequency_RLayout
 		Tool.fitsViewHeight(62, view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_AlarmFrequency_RLayout));
-		new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_box.png", view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_AlarmFrequency_RLayout), 3);
+		new ThreadReadStateListInAssets(context, "pad/Settings/alarm_box_03_f.png","pad/Settings/alarm_box_03_n.png", view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_AlarmFrequency_RLayout), 3);
 		//LAlarmFrequency_TextView
 		Tool.fitsViewLeftMargin(20,view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_LAlarmFrequency_TextView));
 		Tool.fitsViewTextSize(8, view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_LAlarmFrequency_TextView));
@@ -228,7 +228,7 @@ public class FSAl_EditAdd_VIEW_SETTING {
 		//AlarmMusic_RLayout
 		Tool.fitsViewTopMargin(297, view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_AlarmMusic_RLayout));
 		Tool.fitsViewHeight(62, view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_AlarmMusic_RLayout));
-		new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_box.png", view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_AlarmMusic_RLayout), 3);
+		new ThreadReadStateListInAssets(context, "pad/Settings/alarm_box_01_f.png","pad/Settings/alarm_box_01_n.png", view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_AlarmMusic_RLayout), 3);
 		//LAlarmMusic_TextView
 		Tool.fitsViewLeftMargin(20,view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_LAlarmMusic_TextView));
 		Tool.fitsViewTextSize(8, view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_LAlarmMusic_TextView));
@@ -241,7 +241,7 @@ public class FSAl_EditAdd_VIEW_SETTING {
 		
 		//AlarmVolume_RLayout
 		Tool.fitsViewHeight(62, view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_AlarmVolume_RLayout));
-		new ThreadReadBitMapInAssets(context, "pad/Settings/Settings_box.png", view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_AlarmVolume_RLayout), 3);
+		new ThreadReadBitMapInAssets(context, "pad/Settings/alarm_box_03_n.png", view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_AlarmVolume_RLayout), 3);
 		//LAlarmVolume_TextView
 		Tool.fitsViewLeftMargin(20,view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_LAlarmVolume_TextView));
 		Tool.fitsViewTextSize(8, view.findViewById(R.id.FSAl_EditAdd_RLayout_RLayout_RLayout_LAlarmVolume_TextView));

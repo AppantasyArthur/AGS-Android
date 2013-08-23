@@ -51,7 +51,7 @@ public class FSW_VIEW_SETTING {
 	private void pFSW_RLayout_TITLE_RLayout(View view) {
 		Tool.fitsViewHeight(37, view);
 		new ThreadReadBitMapInAssets(context, "phone/setting/top_talie.PNG", view, 3);
-		//Done Button
+		//Back Button
 		Tool.fitsViewWidth(59, view.findViewById(R.id.pFSW_RLayout_RLayout_Back_Button));
 		view.findViewById(R.id.pFSW_RLayout_RLayout_Back_Button).getLayoutParams().height = Tool.getWidth(26);
 		Tool.fitsViewRightMargin(7, view.findViewById(R.id.pFSW_RLayout_RLayout_Back_Button));
@@ -82,12 +82,11 @@ public class FSW_VIEW_SETTING {
 		//WIFIState_RLayout
 		Tool.fitsViewHeight(32, view.findViewById(R.id.pFSW_RLayout_RLayout_RLayout_WIFIState_RLayout));
 		//WIFIState_TextView
-		Tool.fitsViewLeftMargin(5, view.findViewById(R.id.pFSW_RLayout_RLayout_RLayout_RLayout_WIFIState_TextView));
 		Tool.fitsViewTextSize(12, view.findViewById(R.id.pFSW_RLayout_RLayout_RLayout_RLayout_WIFIState_TextView));
 		//WIFIState_ProgressBar
 		Tool.fitsViewLeftMargin(5, view.findViewById(R.id.pFSW_RLayout_RLayout_RLayout_RLayout_WIFIState_ProgressBar));
-		Tool.fitsViewWidth(25, view.findViewById(R.id.pFSW_RLayout_RLayout_RLayout_RLayout_WIFIState_ProgressBar));
-		Tool.fitsViewHeight(25, view.findViewById(R.id.pFSW_RLayout_RLayout_RLayout_RLayout_WIFIState_ProgressBar));
+		Tool.fitsViewWidth(20, view.findViewById(R.id.pFSW_RLayout_RLayout_RLayout_RLayout_WIFIState_ProgressBar));
+		Tool.fitsViewHeight(20, view.findViewById(R.id.pFSW_RLayout_RLayout_RLayout_RLayout_WIFIState_ProgressBar));
 		//WIFIAP_RLayout
 		Tool.fitsViewTopMargin(5, view.findViewById(R.id.pFSW_RLayout_RLayout_RLayout_WIFIAP_RLayout));
 	}
@@ -127,12 +126,11 @@ public class FSW_VIEW_SETTING {
 		//WIFIState_RLayout
 		Tool.fitsViewHeight(61, view.findViewById(R.id.FSW_RLayout_RLayout_RLayout_WIFIState_RLayout));
 		//WIFIState_TextView
-		Tool.fitsViewLeftMargin(20, view.findViewById(R.id.FSW_RLayout_RLayout_RLayout_RLayout_WIFIState_TextView));
 		Tool.fitsViewTextSize(8, view.findViewById(R.id.FSW_RLayout_RLayout_RLayout_RLayout_WIFIState_TextView));
 		//WIFIState_ProgressBar
 		Tool.fitsViewLeftMargin(20, view.findViewById(R.id.FSW_RLayout_RLayout_RLayout_RLayout_WIFIState_ProgressBar));
-		Tool.fitsViewWidth(40, view.findViewById(R.id.FSW_RLayout_RLayout_RLayout_RLayout_WIFIState_ProgressBar));
-		Tool.fitsViewHeight(40, view.findViewById(R.id.FSW_RLayout_RLayout_RLayout_RLayout_WIFIState_ProgressBar));
+		Tool.fitsViewWidth(30, view.findViewById(R.id.FSW_RLayout_RLayout_RLayout_RLayout_WIFIState_ProgressBar));
+		Tool.fitsViewHeight(30, view.findViewById(R.id.FSW_RLayout_RLayout_RLayout_RLayout_WIFIState_ProgressBar));
 		//WIFIAP_RLayout
 		Tool.fitsViewTopMargin(10, view.findViewById(R.id.FSW_RLayout_RLayout_RLayout_WIFIAP_RLayout));
 	}

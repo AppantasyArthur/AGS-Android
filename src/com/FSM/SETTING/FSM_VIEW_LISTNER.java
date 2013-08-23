@@ -10,7 +10,10 @@ import com.tkb.tool.Tool;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.ListView;
 
 public class FSM_VIEW_LISTNER {
 	private Context context;
@@ -41,63 +44,29 @@ public class FSM_VIEW_LISTNER {
 			});
 		}		
 	}
-	public void About_Button_Listner(Button About_Button,final FragmentManager fragmentManager){
-		About_Button.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				ShowFragment_SRenderers(fragmentManager,1);
-				
-			}
-		});
+	
+	public void Menu_ListView_LISTNER(ListView Menu_ListView,final FragmentManager fragmentManager){
+		if(device_size==6){
+			Menu_ListView.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View arg1,	int arg2, long arg3) {
+					FSM_MENU_ListView_BaseAdapter_Phone baseAdapter_PAD = (FSM_MENU_ListView_BaseAdapter_Phone)arg0.getAdapter();
+					baseAdapter_PAD.SetChoosedMenu(arg2);
+					ShowFragment_SRenderers(fragmentManager);
+				}
+			});
+		}else{
+			Menu_ListView.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View arg1,	int arg2, long arg3) {
+					FSM_MENU_ListView_BaseAdapter_PAD baseAdapter_PAD = (FSM_MENU_ListView_BaseAdapter_PAD)arg0.getAdapter();
+					baseAdapter_PAD.SetChoosedMenu(arg2);
+					ShowFragment_SRenderers(fragmentManager);
+				}
+			});
+		}		
 	}
-	public void Firmrware_Button_Listner(Button Firmrware_Button,final FragmentManager fragmentManager){
-		Firmrware_Button.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				ShowFragment_SRenderers(fragmentManager,2);
-				
-			}
-		});
-	}
-	public void Wireless_Button_Listner(Button Wireless_Button,final FragmentManager fragmentManager){
-		Wireless_Button.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				ShowFragment_SRenderers(fragmentManager,3);
-				
-			}
-		});
-	}
-	public void Idenrify_Button_Listner(Button Idenrify_Button,final FragmentManager fragmentManager){
-		Idenrify_Button.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				ShowFragment_SRenderers(fragmentManager,4);
-				
-			}
-		});
-	}
-	public void Alarm_Button_Listner(Button Alarm_Button,final FragmentManager fragmentManager){
-		Alarm_Button.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				ShowFragment_SRenderers(fragmentManager,5);
-				
-			}
-		});
-	}
-	public void SleepTimer_Button_Listner(Button SleepTimer_Button,final FragmentManager fragmentManager){
-
-		SleepTimer_Button.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				ShowFragment_SRenderers(fragmentManager,6);
-				
-			}
-		});
-	}
-	private void ShowFragment_SRenderers(FragmentManager fragmentManager,int ChooseMenu){
-		fragment_SMenu.SetChooseMenu(ChooseMenu);
+	private void ShowFragment_SRenderers(FragmentManager fragmentManager){
 		if(device_size==6){
 			if(fragmentManager.findFragmentByTag("Fragment_SRenderers")==null){
 				Tool.FragmentActivity_MainReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SRenderers(), "Fragment_SRenderers", R.id.pFAS_RLayout_ViewFlipper_Right_FLayout, R.animator.alpha_in, R.animator.alpha_out);
@@ -113,4 +82,5 @@ public class FSM_VIEW_LISTNER {
 			}
 		}
 	}
+	
 }
