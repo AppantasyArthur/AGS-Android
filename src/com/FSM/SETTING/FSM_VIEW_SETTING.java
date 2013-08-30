@@ -56,9 +56,9 @@ public class FSM_VIEW_SETTING {
 		//Done Button
 		Tool.fitsViewWidth(59, view.findViewById(R.id.pFSM_RLayout_RLayout_Done_Button));
 		view.findViewById(R.id.pFSM_RLayout_RLayout_Done_Button).getLayoutParams().height = Tool.getWidth(26);
-		Tool.fitsViewRightMargin(7, view.findViewById(R.id.pFSM_RLayout_RLayout_Done_Button));
+		Tool.fitsViewLeftMargin(7, view.findViewById(R.id.pFSM_RLayout_RLayout_Done_Button));
 		Tool.fitsViewTextSize(10, view.findViewById(R.id.pFSM_RLayout_RLayout_Done_Button));
-		new ThreadReadStateListInAssets(context, "phone/setting/done_f.png", "phone/setting/done_n.png", view.findViewById(R.id.pFSM_RLayout_RLayout_Done_Button), 4);
+		new ThreadReadBitMapInAssets(context, "phone/grouprooms/back.png", view.findViewById(R.id.pFSM_RLayout_RLayout_Done_Button), 3);
 		//Title TextView
 		Tool.fitsViewTextSize(18, view.findViewById(R.id.pFSM_RLayout_RLayout_Title_TextView));
 	}

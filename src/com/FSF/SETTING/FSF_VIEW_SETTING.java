@@ -57,9 +57,9 @@ public class FSF_VIEW_SETTING {
 		//Done Button
 		Tool.fitsViewWidth(59, view.findViewById(R.id.pFSF_RLayout_RLayout_Back_Button));
 		view.findViewById(R.id.pFSF_RLayout_RLayout_Back_Button).getLayoutParams().height = Tool.getWidth(26);
-		Tool.fitsViewRightMargin(7, view.findViewById(R.id.pFSF_RLayout_RLayout_Back_Button));
+		Tool.fitsViewLeftMargin(7, view.findViewById(R.id.pFSF_RLayout_RLayout_Back_Button));
 		Tool.fitsViewTextSize(10, view.findViewById(R.id.pFSF_RLayout_RLayout_Back_Button));
-		new ThreadReadStateListInAssets(context, "phone/setting/done_f.png", "phone/setting/done_n.png", view.findViewById(R.id.pFSF_RLayout_RLayout_Back_Button), 4);
+		new ThreadReadBitMapInAssets(context, "phone/grouprooms/back.png", view.findViewById(R.id.pFSF_RLayout_RLayout_Back_Button), 3);
 		//Title TextView
 		Tool.fitsViewTextSize(18, view.findViewById(R.id.pFSF_RLayout_RLayout_Title_TextView));
 	}
@@ -86,7 +86,7 @@ public class FSF_VIEW_SETTING {
 		Tool.fitsViewRightMargin(9, view.findViewById(R.id.pFSF_RLayout_RLayout_RLayout_RNVision_TextView));
 		//Update Button
 		Tool.fitsViewHeight(22, view.findViewById(R.id.pFSF_RLayout_RLayout_Update_Button));
-		Tool.fitsViewWidth(297, view.findViewById(R.id.pFSF_RLayout_RLayout_Update_Button));
+		Tool.fitsViewWidth(80, view.findViewById(R.id.pFSF_RLayout_RLayout_Update_Button));
 		Tool.fitsViewTopMargin(140, view.findViewById(R.id.pFSF_RLayout_RLayout_Update_Button));
 		Tool.fitsViewLeftMargin(12, view.findViewById(R.id.pFSF_RLayout_RLayout_Update_Button));
 		Tool.fitsViewTextSize(10, view.findViewById(R.id.pFSF_RLayout_RLayout_Update_Button));

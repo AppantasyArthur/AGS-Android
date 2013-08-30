@@ -71,7 +71,17 @@
    		android:layout_height="match_parent"
    		android:layout_below="@+id/FSAl_List_RLayout_TITLE_RLayout"
    		android:background="#00000000"
-	    > 
+	    >
+	    <TextView 
+	        android:id="@+id/FSAl_List_RLayout_RLayout_Alarm_TextView "
+	    	android:layout_width="wrap_content"
+	   		android:layout_height="wrap_content"
+	   		android:layout_centerInParent="true"
+	   		android:textStyle="bold"
+	   		android:textColor="#ffffff"
+	   		android:text="No Alarm"
+	   		android:visibility="invisible"
+	        /> 
 	    <RelativeLayout 
 	        android:id="@+id/FSAl_List_RLayout_RLayout_Alarm_RLayout"
 	    	android:layout_width="wrap_content"

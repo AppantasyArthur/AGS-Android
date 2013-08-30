@@ -32,7 +32,7 @@
         	android:textStyle="bold"
         	android:textColor="#ff0000"
         	android:gravity="center"
-        	android:text="Idenrify Speaker"
+        	android:text="Identify Speaker"
             />
 	</RelativeLayout>
 	<RelativeLayout 

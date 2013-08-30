@@ -341,7 +341,7 @@ public class FI_ViewFlipper extends ViewFlipper {
 		//Image_RLayout
 		view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_Image_RLayout).getLayoutParams().height = Tool.getWidth(160);
 		Tool.fitsViewWidth(158, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_Image_RLayout));
-		Tool.fitsViewTopMargin(64, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_Image_RLayout));
+		Tool.fitsViewTopMargin(40, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_Image_RLayout));
 		Tool.fitsViewRightMargin(80, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_Image_RLayout));
 		//Image_ImageView
 		view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_RLayout_Image_ImageView).getLayoutParams().height = Tool.getWidth(160);

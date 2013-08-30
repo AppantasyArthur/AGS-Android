@@ -62,7 +62,7 @@ public class FSAl_EditAdd_VIEW_SETTING {
 		view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_Back_Button).getLayoutParams().height = Tool.getWidth(26);
 		Tool.fitsViewLeftMargin(7, view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_Back_Button));
 		Tool.fitsViewTextSize(10, view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_Back_Button));
-		new ThreadReadStateListInAssets(context, "phone/setting/done_f.png", "phone/setting/done_n.png", view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_Back_Button), 4);
+		new ThreadReadBitMapInAssets(context, "phone/grouprooms/back.png", view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_Back_Button), 3);
 		//Title TextView
 		Tool.fitsViewTextSize(18, view.findViewById(R.id.pFSAl_EditAdd_RLayout_RLayout_Title_TextView));
 		//Save Button

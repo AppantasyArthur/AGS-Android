@@ -133,10 +133,10 @@ public class FM_PopupWindow extends PopupWindow {
 		OPTION_LLayout.getLayoutParams().height = Tool.getHeight(180);		
 		CreateOptionButtons(OPTION_LLayout);
 		//CANCEL Button
-		Tool.fitsViewHeight(40, this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_CANCEL_Button));
-		Tool.fitsViewWidth(210, this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_CANCEL_Button));
+		Tool.fitsViewHeight(30, this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_CANCEL_Button));
+		Tool.fitsViewWidth(190, this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_CANCEL_Button));
 		Tool.fitsViewTextSize(6, this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_CANCEL_Button));
-		Tool.fitsViewBottomMargin(5, this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_CANCEL_Button));
+		Tool.fitsViewBottomMargin(28, this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_CANCEL_Button));
 		new ThreadReadStateListInAssets(context, "pad/Playlist/pls_cancel_bt_f.png", "pad/Playlist/pls_cancel_bt_n.png",  this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_CANCEL_Button), 4);
 		mlog.info(TAG, "CreateContentView");
 	}

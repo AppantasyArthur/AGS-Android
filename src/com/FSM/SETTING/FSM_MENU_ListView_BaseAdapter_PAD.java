@@ -46,7 +46,7 @@ public class FSM_MENU_ListView_BaseAdapter_PAD extends BaseAdapter {
 		menuList.add("About");
 		menuList.add("Firmrware");
 		menuList.add("Network Setup");
-		menuList.add("Idenrify Speaker");
+		menuList.add("Identify Speaker");
 		menuList.add("Alarm");
 		menuList.add("Sleep Timer");		
 	}

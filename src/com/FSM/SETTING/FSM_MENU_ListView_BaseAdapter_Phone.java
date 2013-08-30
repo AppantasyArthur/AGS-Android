@@ -39,7 +39,7 @@ public class FSM_MENU_ListView_BaseAdapter_Phone extends BaseAdapter {
 		menuList.add("About");
 		menuList.add("Firmrware");
 		menuList.add("Network Setup");
-		menuList.add("Idenrify Speaker");
+		menuList.add("Identify Speaker");
 		menuList.add("Alarm");
 		menuList.add("Sleep Timer");		
 	}
@@ -74,7 +74,7 @@ public class FSM_MENU_ListView_BaseAdapter_Phone extends BaseAdapter {
 		ViewHandler viewHandler =null;
 		if(convertView==null){
 			convertView = LayoutInflater.from(context).inflate(R.layout.fsm_menu_listview_cell_pad, null);
-			convertView.setLayoutParams(new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT,Tool.getHeight(80)));
+			convertView.setLayoutParams(new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT,Tool.getHeight(73)));
 			viewHandler = new ViewHandler(convertView);
 			basicSetChildView(viewHandler);	
 			convertView.setTag(viewHandler);

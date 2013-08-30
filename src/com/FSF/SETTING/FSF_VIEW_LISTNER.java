@@ -1,5 +1,6 @@
 package com.FSF.SETTING;
 
+import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.fragments.Fragment_SRenderers;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
@@ -36,5 +37,22 @@ public class FSF_VIEW_LISTNER {
 				}
 			});	
 		}		
+	}
+	
+	public void Update_Button_Listner(Button Update_Button, final DeviceDisplay chooseDeviceDisplay) {
+		if(device_size==6){
+			Update_Button.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {	
+				}
+			});	
+		}else{
+			Update_Button.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					
+				}
+			});	
+		}	
 	}
 }

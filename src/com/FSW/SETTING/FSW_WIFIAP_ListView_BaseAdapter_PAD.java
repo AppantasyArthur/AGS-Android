@@ -94,7 +94,7 @@ public class FSW_WIFIAP_ListView_BaseAdapter_PAD extends BaseAdapter {
 			}
 			viewHandler.Name_TextView.setText("Other");
 			
-			new ThreadReadStateListInAssets(context, "pad/Playlist/playlist_arrow_f.png","pad/Playlist/playlist_arrow_n.png", viewHandler.WaveArrow_ImageView, 1);
+			new ThreadReadBitMapInAssets(context, "phone/setting/icon_arrow.png", viewHandler.WaveArrow_ImageView, 1);
 		}else{
 			//判斷是否要顯示Tick
 			if(true){
@@ -158,12 +158,12 @@ public class FSW_WIFIAP_ListView_BaseAdapter_PAD extends BaseAdapter {
 		Tool.fitsViewTextSize(8, viewHandler.Name_TextView);
 		//Lock_ImageView
 		Tool.fitsViewHeight(30, viewHandler.Lock_ImageView);
-		viewHandler.Lock_ImageView.getLayoutParams().width = Tool.getHeight(33);
+		viewHandler.Lock_ImageView.getLayoutParams().width = Tool.getHeight(30);
 		Tool.fitsViewRightMargin(10, viewHandler.Lock_ImageView);
 		new ThreadReadStateListInAssets(context,"pad/Settings/Lock_n.png", "pad/Settings/Lock_n.png", viewHandler.Lock_ImageView, 1);
 		//WaveArrow_ImageView
-		Tool.fitsViewHeight(30, viewHandler.WaveArrow_ImageView);
-		viewHandler.WaveArrow_ImageView.getLayoutParams().width = Tool.getHeight(33);
+		Tool.fitsViewHeight(42, viewHandler.WaveArrow_ImageView);
+		viewHandler.WaveArrow_ImageView.getLayoutParams().width = Tool.getHeight(36);
 		Tool.fitsViewRightMargin(10, viewHandler.WaveArrow_ImageView);
 	}
 

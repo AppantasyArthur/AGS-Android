@@ -26,13 +26,15 @@ public class FSAl_Alarm_ListView_BaseAdapter_Phone extends BaseAdapter {
 	private MLog mlog = new MLog();
 	private static final String TAG = "FSI_IdSpeaker_ListView_BaseAdapter";
 		
+	private TextView alarm_TextView;
 	private List<AlarmItemContent> dataList = new ArrayList<AlarmItemContent>();
 	
 	private boolean isEdit = false;
 	
-	public FSAl_Alarm_ListView_BaseAdapter_Phone(Context context){
+	public FSAl_Alarm_ListView_BaseAdapter_Phone(Context context, TextView alarm_TextView){
 		this.context = context;		
-		this.mlog.LogSwitch = true;		
+		this.mlog.LogSwitch = true;	
+		this.alarm_TextView = alarm_TextView;
 		CreateDataList();
 	}
 	private void CreateDataList(){
@@ -57,7 +59,17 @@ public class FSAl_Alarm_ListView_BaseAdapter_Phone extends BaseAdapter {
 	}
 	@Override
 	public int getCount() {
-		return dataList.size();
+		int count = dataList.size();
+		if(count==0){
+			if(alarm_TextView.getVisibility()!=View.VISIBLE){
+				alarm_TextView.setVisibility(View.VISIBLE);
+			}			
+		}else{
+			if(alarm_TextView.getVisibility()==View.VISIBLE){
+				alarm_TextView.setVisibility(View.INVISIBLE);
+			}			
+		}
+		return count;
 	}
 
 	@Override

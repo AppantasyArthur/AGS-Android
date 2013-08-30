@@ -1,5 +1,6 @@
 package com.FSI.SETTING;
 
+import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.fragments.Fragment_SRenderers;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
@@ -8,7 +9,10 @@ import com.tkb.tool.Tool;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.ListView;
 
 public class FSI_VIEW_LISTNER {
 	private Context context;
@@ -36,5 +40,24 @@ public class FSI_VIEW_LISTNER {
 				}
 			});	
 		}		
+	}
+	public void IdSpeaker_ListView_LISTNER(ListView IdSpeaker_ListView){
+		if(device_size==6){
+			IdSpeaker_ListView.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+					DeviceDisplay devicedisplay = (DeviceDisplay)arg0.getItemAtPosition(arg2);
+					
+				}
+			});
+		}else{
+			IdSpeaker_ListView.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+					DeviceDisplay devicedisplay = (DeviceDisplay)arg0.getItemAtPosition(arg2);
+					
+				}
+			});
+		}	
 	}
 }

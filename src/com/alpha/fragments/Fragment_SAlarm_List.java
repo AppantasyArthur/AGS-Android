@@ -21,6 +21,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class Fragment_SAlarm_List extends Fragment {
 	//VIEWS
@@ -64,7 +65,7 @@ public class Fragment_SAlarm_List extends Fragment {
 			Fragment_MainView = (ViewGroup)inflater.inflate(R.layout.fragment_salarm_list_phone, null);
 			Fragment_MainView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 			Phone_findView();
-			alarm_ListView_BaseAdapter = new FSAl_Alarm_ListView_BaseAdapter_Phone(context);
+			alarm_ListView_BaseAdapter = new FSAl_Alarm_ListView_BaseAdapter_Phone(context,(TextView)Fragment_MainView.findViewById(R.id.pFSAl_List_RLayout_RLayout_Alarm_TextView));
 			ListView alarm_ListView = (ListView)Fragment_MainView.findViewById(R.id.pFSAl_List_RLayout_RLayout_Alarm_ListView);
 			alarm_ListView.setAdapter(alarm_ListView_BaseAdapter);
 			Phone_findViewListner();
@@ -72,7 +73,7 @@ public class Fragment_SAlarm_List extends Fragment {
 			Fragment_MainView = (ViewGroup)inflater.inflate(R.layout.fragment_salarm_list_pad, null);
 			Fragment_MainView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 			PAD_findView();
-			alarm_ListView_BaseAdapter = new FSAl_Alarm_ListView_BaseAdapter_PAD(context);
+			alarm_ListView_BaseAdapter = new FSAl_Alarm_ListView_BaseAdapter_PAD(context,(TextView)Fragment_MainView.findViewById(R.id.FSAl_List_RLayout_RLayout_Alarm_TextView));
 			ListView alarm_ListView = (ListView)Fragment_MainView.findViewById(R.id.FSAl_List_RLayout_RLayout_Alarm_ListView);
 			alarm_ListView.setAdapter(alarm_ListView_BaseAdapter);
 			PAD_findViewListner();

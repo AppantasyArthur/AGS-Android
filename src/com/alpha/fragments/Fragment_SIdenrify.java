@@ -82,6 +82,7 @@ public class Fragment_SIdenrify extends Fragment {
 	private void Phone_findViewListner() {
 		this.VIEW_LISTNER.Back_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFSI_RLayout_RLayout_Back_Button),
 												this.fragmentManager);
+		this.VIEW_LISTNER.IdSpeaker_ListView_LISTNER((ListView)Fragment_MainView.findViewById(R.id.pFSI_RLayout_RLayout_IdSpeaker_ListView));
 	}
 	private void PAD_findView() {
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FSI_RLayout_TITLE_RLayout));
@@ -93,6 +94,7 @@ public class Fragment_SIdenrify extends Fragment {
 	private void PAD_findViewListner() {		
 		this.VIEW_LISTNER.Back_Button_Listner((Button)Fragment_MainView.findViewById(R.id.FSI_RLayout_RLayout_Back_Button),
 												this.fragmentManager);
+		this.VIEW_LISTNER.IdSpeaker_ListView_LISTNER((ListView)Fragment_MainView.findViewById(R.id.FSI_RLayout_RLayout_IdSpeaker_ListView));
 	}
 	
 	@Override

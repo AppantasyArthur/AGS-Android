@@ -78,7 +78,7 @@ public class Fragment_SSleepTimer extends Fragment {
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFSS_RLayout_BODY_RLayout));
 		//Name_TextView
 		TextView NameTextView = (TextView)Fragment_MainView.findViewById(R.id.pFSS_RLayout_RLayout_Name_TextView);
-		NameTextView.setText(chooseDeviceDisplay.getDevice().getDetails().getFriendlyName());
+		NameTextView.setText("Choose a Sleep Time for the "+chooseDeviceDisplay.getDevice().getDetails().getFriendlyName()+".");
 		//SleepTimer ListView
 		FSS_SleepTimer_ListView_BaseAdapter_Phone baseAdapter = new FSS_SleepTimer_ListView_BaseAdapter_Phone(context);
 		ListView SleepTimerListView = (ListView)Fragment_MainView.findViewById(R.id.pFSS_RLayout_RLayout_SleepTimer_ListView);

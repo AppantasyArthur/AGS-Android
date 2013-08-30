@@ -35,7 +35,7 @@
             android:id="@+id/pFSAl_List_RLayout_RLayout_Edit_Button"
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
-        	android:layout_toRightOf="@+id/pFSAl_List_RLayout_RLayout_Back_Button"
+        	android:layout_toLeftOf="@+id/pFSAl_List_RLayout_RLayout_Add_Button"
         	android:layout_centerVertical="true"
         	android:padding="0dp"        	
         	android:textColor="#ffffff"
@@ -72,6 +72,17 @@
    		android:layout_below="@+id/pFSAl_List_RLayout_TITLE_RLayout"
    		android:background="#00000000"
 	    > 
+	    <TextView 
+	        android:id="@+id/pFSAl_List_RLayout_RLayout_Alarm_TextView "
+	    	android:layout_width="wrap_content"
+	   		android:layout_height="wrap_content"
+	   		android:layout_alignParentTop="true"
+	   		android:layout_centerHorizontal="true"
+	   		android:textStyle="bold"
+	   		android:textColor="#ffffff"
+	   		android:text="No Alarm"
+	   		android:visibility="invisible"
+	        />
 	    <RelativeLayout 
 	        android:id="@+id/pFSAl_List_RLayout_RLayout_Alarm_RLayout"
 	    	android:layout_width="wrap_content"

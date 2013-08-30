@@ -51,7 +51,7 @@ public class FSI_IdSpeaker_ListView_BaseAdapter_PAD extends BaseAdapter {
 
 	@Override
 	public Object getItem(int position) {
-		return null;
+		return dataList.get(position);
 	}
 
 	@Override

@@ -77,6 +77,8 @@ public class Fragment_SFirmrware extends Fragment {
 	private void Phone_findViewListner() {
 		this.VIEW_LISTNER.Back_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFSF_RLayout_RLayout_Back_Button),
 												this.fragmentManager);
+		this.VIEW_LISTNER.Update_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFSF_RLayout_RLayout_Update_Button),
+													chooseDeviceDisplay);
 		
 	}
 	private void PAD_findView() {
@@ -87,6 +89,8 @@ public class Fragment_SFirmrware extends Fragment {
 	private void PAD_findViewListner() {		
 		this.VIEW_LISTNER.Back_Button_Listner((Button)Fragment_MainView.findViewById(R.id.FSF_RLayout_RLayout_Back_Button),
 												this.fragmentManager);
+		this.VIEW_LISTNER.Update_Button_Listner((Button)Fragment_MainView.findViewById(R.id.FSF_RLayout_RLayout_Update_Button),
+												chooseDeviceDisplay);
 	}	
 	
 	@Override

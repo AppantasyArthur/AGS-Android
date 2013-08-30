@@ -32,7 +32,7 @@
         	android:textStyle="bold"
         	android:textColor="#ff0000"
         	android:gravity="center"
-        	android:text="Wireless"
+        	android:text="Network Setup"
             />
 	</RelativeLayout>
 	<RelativeLayout 

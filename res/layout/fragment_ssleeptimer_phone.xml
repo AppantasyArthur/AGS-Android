@@ -16,7 +16,7 @@
             android:id="@+id/pFSS_RLayout_RLayout_Back_Button"
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
-        	android:layout_alignParentRight="true"
+        	android:layout_alignParentLeft="true"
         	android:layout_centerVertical="true"
         	android:padding="0dp"
         	android:textStyle="bold"
