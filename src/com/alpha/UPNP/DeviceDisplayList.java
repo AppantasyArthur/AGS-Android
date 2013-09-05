@@ -6,9 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.teleal.cling.android.AndroidUpnpService;
 import org.teleal.cling.controlpoint.ActionCallback;
 import org.teleal.cling.controlpoint.SubscriptionCallback;
@@ -27,10 +30,12 @@ import org.teleal.cling.model.types.UDAServiceId;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
+
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
+
 import com.FAM.SETTING.Music_SeekBar_Listner;
 import com.FAM.SETTING.PlayMode_IButton_Listner;
 import com.FAM.SETTING.Play_IButton_Listner;
@@ -747,14 +752,19 @@ public class DeviceDisplayList implements Parcelable  {
 										mlog.info(TAG, "============Start=============");					 
 										mlog.info(TAG, "Item_MetaData = "+Item_MetaData);
 										item_DO =  _parseItem(Item_MetaData);
-										metaData_Title = item_DO.getTitle();
-										mlog.info(TAG, "============End=============");
-										mlog.info(TAG, "============Start=============");	
-										mlog.info(TAG, "==item_MetaData=="+item_DO.getTitle());
-										mlog.info(TAG, "==item_MetaData=="+item_DO.getGenre());	
-										mlog.info(TAG, "==item_MetaData=="+item_DO.getAlbum());	
-										mlog.info(TAG, "==item_MetaData=="+item_DO.getAlbumURI());	
-										mlog.info(TAG, "============End=============");
+										if(item_DO != null){
+										
+											metaData_Title = item_DO.getTitle();
+											mlog.info(TAG, "============End=============");
+											mlog.info(TAG, "============Start=============");	
+											mlog.info(TAG, "==item_MetaData=="+item_DO.getTitle());
+											mlog.info(TAG, "==item_MetaData=="+item_DO.getGenre());	
+											mlog.info(TAG, "==item_MetaData=="+item_DO.getAlbum());	
+											mlog.info(TAG, "==item_MetaData=="+item_DO.getAlbumURI());	
+											mlog.info(TAG, "============End=============");
+											
+										}
+										
 									}								 
 								 if(EventHandler.this.deviceDisplay.equals(ChooseMediaRenderer)){
 									 UpdataItem_MetaData();
@@ -846,6 +856,7 @@ public class DeviceDisplayList implements Parcelable  {
 		    xr.setContentHandler(dataHandler);   
 		    
 		    if(true){	
+		    	xml = xml.replace("&", "&amp;");
 //		    	xml = StringEscapeUtils.unescapeHtml4(xml);
 		    	xr.parse(new InputSource(new StringReader(xml))); 
 			    data = dataHandler.getData();  
@@ -875,7 +886,8 @@ public class DeviceDisplayList implements Parcelable  {
 		    xr.setContentHandler(dataHandler);   
 		    
 		    if(true){
-		    	
+		    	xml = StringEscapeUtils.unescapeHtml4(xml);
+		    	xml = xml.replace("&", "&amp;");
 		    	xml = xml.replace(" dlna:profileID=\"JPEG_TN\"", "");
 		    	xml = xml.replace("pv:", ""); 	
 //		    	xml = StringEscapeUtils.unescapeHtml4(xml);

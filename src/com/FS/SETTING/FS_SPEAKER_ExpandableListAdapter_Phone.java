@@ -2,17 +2,10 @@ package com.FS.SETTING;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.alpha.UPNP.DeviceDisplay;
-import com.alpha.fragments.Fragment_Speaker;
-import com.alpha.upnpui.FragmentActivity_Main;
-import com.alpha.upnpui.R;
-import com.appantasy.androidapptemplate.event.lastchange.GroupVO;
-import com.appantasy.androidapptemplate.event.lastchange.GroupVO.Group;
-import com.tkb.tool.MLog;
-import com.tkb.tool.ThreadReadBitMapInAssets;
-import com.tkb.tool.Tool;
+
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -34,6 +27,16 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.alpha.UPNP.DeviceDisplay;
+import com.alpha.fragments.Fragment_Speaker;
+import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.R;
+import com.appantasy.androidapptemplate.event.lastchange.GroupVO;
+import com.appantasy.androidapptemplate.event.lastchange.GroupVO.Group;
+import com.tkb.tool.MLog;
+import com.tkb.tool.ThreadReadBitMapInAssets;
+import com.tkb.tool.Tool;
 
 public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAdapter {
 	
@@ -154,6 +157,14 @@ public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAd
 			viewHandler.CCell_RLayout.setBackgroundDrawable(this.menu2);
 		}
 		try{
+			
+			boolean alive = GroupList.get(groupPosition).getGroupVO().getGroup().getMembers().get(childPosition).isAlive();
+			if(alive){
+				viewHandler.Name_TextView.setTextColor(Color.parseColor("white"));
+			}else{
+				viewHandler.Name_TextView.setTextColor(Color.parseColor("gray"));
+			}
+			
 			viewHandler.Name_TextView.setText(GroupList.get(groupPosition).getGroupVO().getGroup().getMembers().get(childPosition).getName());
 		}catch(Exception e){
 			Log.e(TAG, e.getMessage());
@@ -288,8 +299,18 @@ public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAd
 		setRunState(runStateHandler);
 
 		viewHandler.RunState_TextView.setSelected(true);
-		viewHandler.Name_TextView.setText(GroupList.get(groupPosition).getDevice().getDetails().getFriendlyName());
-		mlog.info(TAG, "Gposition = "+groupPosition);
+		
+		
+		//viewHandler.Name_TextView.setText(GroupList.get(groupPosition).getDevice().getDetails().getFriendlyName());
+		//mlog.info(TAG, "Gposition = "+groupPosition);
+		
+		// is group
+		if(ChildrenCount > 0)
+			viewHandler.Name_TextView.setText(GroupList.get(groupPosition).getGroupVO().getGroup().getName());
+		else
+			//viewHandler.Name_TextView.setText(GroupList.get(groupPosition).getDevice().getDetails().getFriendlyName());
+			viewHandler.Name_TextView.setText(GroupList.get(groupPosition).getGroupVO().getName());
+		
 		return convertView;
 	}
 

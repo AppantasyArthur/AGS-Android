@@ -40,8 +40,11 @@ public class UpnpServiceConnection implements ServiceConnection{
         }
 		
 		upnpService.getRegistry().addListener(browseRegistryListener);
+		
 		// Search asynchronously for all devices
+		upnpService.getRegistry().removeAllRemoteDevices();
         upnpService.getControlPoint().search(); // 呼叫 Service 裡的 upnpservice 開始 search
+        
 	}
 
 	@Override

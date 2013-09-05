@@ -23,14 +23,8 @@ import org.teleal.cling.support.model.DIDLContent;
 import org.teleal.cling.support.model.Res;
 import org.teleal.cling.support.model.SortCriterion;
 import org.teleal.cling.support.model.item.Item;
-import com.alpha.UPNP.DeviceDisplay;
-import com.alpha.upnpui.FragmentActivity_Main;
-import com.alpha.upnpui.R;
-import com.appantasy.androidapptemplate.event.lastchange.TrackDO;
-import com.tkb.tool.MLog;
-import com.tkb.tool.ThreadReadBitMapInAssets;
-import com.tkb.tool.ThreadReadStateListInAssets;
-import com.tkb.tool.Tool;
+
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -41,7 +35,15 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.Switch;
+
+import com.alpha.UPNP.DeviceDisplay;
+import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.R;
+import com.appantasy.androidapptemplate.event.lastchange.TrackDO;
+import com.tkb.tool.MLog;
+import com.tkb.tool.ThreadReadBitMapInAssets;
+import com.tkb.tool.ThreadReadStateListInAssets;
+import com.tkb.tool.Tool;
 
 public class FM_PopupWindow extends PopupWindow {
 	
@@ -152,8 +154,8 @@ public class FM_PopupWindow extends PopupWindow {
 		//設定 OPTION_Button 介面
 		SetOptionButtonView(OPTION_Button_1,"Play Now",0);
 		SetOptionButtonView(OPTION_Button_2,"Play Next",1);
-		SetOptionButtonView(OPTION_Button_3,"Replay Queqe",1);
-		SetOptionButtonView(OPTION_Button_4,"Add To Queqe",2);
+		SetOptionButtonView(OPTION_Button_3,"Replace Queue",1);
+		SetOptionButtonView(OPTION_Button_4,"Add To Queue",2);
 		//設定LISTNER
 		SetOPTION_Button_1_LISTNER(OPTION_Button_1);
 		SetOPTION_Button_2_LISTNER(OPTION_Button_2);
@@ -259,7 +261,20 @@ public class FM_PopupWindow extends PopupWindow {
 					//取得device 的 "AVTransport" service
 					AVTransportService = MR_Device.getDevice().findService(serviceId);
 				}else{
+					
+					// 1. Instantiate an AlertDialog.Builder with its constructor
+					AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+					// 2. Chain together various setter methods to set the dialog characteristics
+					builder.setMessage("Select a render first.")
+					       .setTitle("AGS WARNING");
+
+					// 3. Get the AlertDialog from create()
+					AlertDialog dialog = builder.create();
+					dialog.show();
+					
 					return;
+					
 				}
 				//res顯示內容
 				try{

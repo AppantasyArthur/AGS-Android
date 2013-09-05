@@ -3,6 +3,7 @@ package com.alpha.UPNP;
 import org.teleal.cling.model.meta.Device;
 import org.teleal.cling.model.meta.LocalDevice;
 import org.teleal.cling.model.meta.RemoteDevice;
+import org.teleal.cling.model.types.DeviceType;
 import org.teleal.cling.registry.DefaultRegistryListener;
 import org.teleal.cling.registry.Registry;
 
@@ -43,8 +44,27 @@ public class BrowseRegistryListener extends DefaultRegistryListener {
     }
 
     public void deviceAdded(final Device device) {
-    	DeviceDisplay dd = new DeviceDisplay(device);
-    	deviceDisplayList.addDeviceDisplay(dd);
+    	
+    	DeviceType deviceType_f = new DeviceType("schemas-upnp-org", "DeviceManager");
+    	boolean isAGSDevice = false;
+    	Device[] embs = device.getEmbeddedDevices();
+    	for(int i = 0;i < embs.length;i++){
+    		
+    		Device emb = embs[i];
+    		if(emb.findDevices(deviceType_f).length > 0){
+    			isAGSDevice = true;
+    			break;
+    		}
+    		
+    	}
+
+    	if(isAGSDevice){
+    	
+    		DeviceDisplay dd = new DeviceDisplay(device);
+        	deviceDisplayList.addDeviceDisplay(dd);
+    		
+    	}
+    	
     }
 
     public void deviceRemoved(final Device device) {
