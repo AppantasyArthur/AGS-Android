@@ -16,7 +16,7 @@ import org.teleal.cling.support.model.container.Container;
 import org.teleal.cling.support.model.item.Item;
 import com.FSAL_Music.SETTING.FSAl_Music_ListView_BaseAdapter_PAD.ViewHandler;
 import com.alpha.fragments.Fragment_SAlarm_EditAdd;
-import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
 import com.appantasy.androidapptemplate.event.lastchange.TrackDO;
 import com.tkb.tool.MLog;
@@ -63,7 +63,7 @@ public class FSAl_Music_VIEW_LISTNER {
 			Music_ListView.setOnItemClickListener(new OnItemClickListener(){				
 				@Override
 				public void onItemClick(final AdapterView<?> adapterView, final View view, int arg2, long arg3) {
-					AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+					AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
 					
 					com.FSAL_Music.SETTING.FSAl_Music_ListView_BaseAdapter_Phone.ViewHandler viewHandler = (com.FSAL_Music.SETTING.FSAl_Music_ListView_BaseAdapter_Phone.ViewHandler)view.getTag();
 					
@@ -167,7 +167,7 @@ public class FSAl_Music_VIEW_LISTNER {
 			Music_ListView.setOnItemClickListener(new OnItemClickListener(){				
 				@Override
 				public void onItemClick(final AdapterView<?> adapterView, final View view, int arg2, long arg3) {
-					AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+					AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
 					ViewHandler viewHandler = (ViewHandler)view.getTag();
 					int kind = ((ViewHandler)view.getTag()).kindOfItme;					
 					SortCriterion[] sortCriterion = new SortCriterion[]{new SortCriterion("+dc:title")};

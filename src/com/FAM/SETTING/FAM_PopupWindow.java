@@ -29,7 +29,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
 import com.alpha.UPNP.DeviceDisplay;
-import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
 import com.appantasy.androidapptemplate.event.lastchange.GroupVO.Group;
 import com.appantasy.androidapptemplate.event.lastchange.SoundLastChangeDO;
@@ -69,7 +69,7 @@ public class FAM_PopupWindow extends PopupWindow {
 		super(context);
 		this.mlog.LogSwitch = true;
 		this.context = context;
-		this.device_size = ((FragmentActivity_Main)context).getDevice_Size();
+		this.device_size = ((MainFragmentActivity)context).getDevice_Size();
 		if(device_size==6){
 			Phone_CreateContentView();
 			//設定內容
@@ -188,7 +188,7 @@ public class FAM_PopupWindow extends PopupWindow {
 		
 		private AndroidUpnpService upnpServer;	
 		public SoundHandler(ViewHandler viewHandler,DeviceDisplay deviceDisplay){
-			this.upnpServer = ((FragmentActivity_Main)context).GETUPnPService();		
+			this.upnpServer = ((MainFragmentActivity)context).GETUPnPService();		
 			this.viewHandler = viewHandler;
 			this.deviceDisplay = deviceDisplay;
 			CreateSoundCallBack();
@@ -313,7 +313,7 @@ public class FAM_PopupWindow extends PopupWindow {
 		}
 	}
 	private void SetSoundPosition(Device device,int position){
-		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
 		if(device!=null){
 			Service RenderingControlService = device.findService(new UDAServiceId("RenderingControl"));
 			if(RenderingControlService!=null){
@@ -334,7 +334,8 @@ public class FAM_PopupWindow extends PopupWindow {
 						ActionCallback SetVolumeActionCallBack = new ActionCallback(ai){
 							@Override
 							public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
-								mlog.info(TAG, "SetVolumeActionCallBack failure = "+arg2);
+								mlog.info(TAG, "SetVolumeActionCallBack failure = " + arg2);
+								mlog.info(TAG, "UPnP failure response = " + arg1);
 							}
 							@Override
 							public void success(ActionInvocation arg0) {									
@@ -359,7 +360,7 @@ public class FAM_PopupWindow extends PopupWindow {
 	@Override
 	public void showAsDropDown(View anchor) {
 		
-		DeviceDisplay ChooseMediaRenderer = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+		DeviceDisplay ChooseMediaRenderer = ((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer();
 		if(ChooseMediaRenderer==null){
 			//沒有選取
 		}else{
@@ -372,7 +373,7 @@ public class FAM_PopupWindow extends PopupWindow {
 			//add Slave的DeviceDisplay
 			Group groups =ChooseMediaRenderer.getGroupVO().getGroup();
 			for(int j=1;j<groups.getMembers().size();j++){
-				DeviceDisplay searchDeviceDisplay = ((FragmentActivity_Main)context).GETDeviceDisplayList().GetDeviceDisplayByUDN(groups.getMembers().get(j).getUdn());
+				DeviceDisplay searchDeviceDisplay = ((MainFragmentActivity)context).GETDeviceDisplayList().GetDeviceDisplayByUDN(groups.getMembers().get(j).getUdn());
 				soundDevicesList.add(searchDeviceDisplay);
 			}			
 			CreateOptionButtons(OPTION_LLayout, soundDevicesList);

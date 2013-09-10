@@ -2,7 +2,7 @@ package com.alpha.UPNP;
 
 import org.teleal.cling.android.AndroidUpnpService;
 import org.teleal.cling.model.meta.Device;
-import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.MainFragmentActivity;
 import com.tkb.UpnpOverride.ControlPointProcessBar;
 import android.content.ComponentName;
 import android.content.Context;
@@ -32,7 +32,7 @@ public class UpnpServiceConnection implements ServiceConnection{
 		if(device_size==6){
 			
 		}else{			
-			controlPointProcessBar.SetProcessBarListner(((FragmentActivity_Main)context).VIEW_LISTNER.GetProcessBarListner());
+			controlPointProcessBar.SetProcessBarListner(((MainFragmentActivity)context).VIEW_LISTNER.GetProcessBarListner());
 		}
 		//±½´y¤@¦¸
 		for (Device device : upnpService.getRegistry().getDevices()) {

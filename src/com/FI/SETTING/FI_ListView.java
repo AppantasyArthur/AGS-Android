@@ -2,7 +2,7 @@ package com.FI.SETTING;
 
 import java.util.List;
 
-import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
 import com.appantasy.androidapptemplate.event.lastchange.TrackDO;
 import com.tkb.tool.MLog;
@@ -105,7 +105,7 @@ public class FI_ListView extends ListView {
 	private void CreateProcess(){
 		this.context = this.getContext();
 		this.mlog.LogSwitch = true;
-		this.device_size = ((FragmentActivity_Main)context).getDevice_Size();
+		this.device_size = ((MainFragmentActivity)context).getDevice_Size();
 		this.windowManager = (WindowManager)this.context.getSystemService(Context.WINDOW_SERVICE);
 		this.ScrollSlop = 10;//自動上下一個的範圍
 		mlog.info(TAG, "CreateProcess");

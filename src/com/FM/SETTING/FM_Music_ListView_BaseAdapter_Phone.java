@@ -18,7 +18,7 @@ import org.teleal.cling.support.model.SortCriterion;
 import org.teleal.cling.support.model.container.Container;
 import org.teleal.cling.support.model.item.Item;
 import com.alpha.UPNP.DeviceDisplay;
-import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
 import com.appantasy.androidapptemplate.event.lastchange.TrackDO;
 import com.tkb.tool.MLog;
@@ -141,7 +141,7 @@ public class FM_Music_ListView_BaseAdapter_Phone extends BaseAdapter {
 		CategoryList.add("AGS PlayList");
 		
 		//分類MRList
-		List<DeviceDisplay> MSList = ((FragmentActivity_Main)context).GETDeviceDisplayList().getMediaServerList();
+		List<DeviceDisplay> MSList = ((MainFragmentActivity)context).GETDeviceDisplayList().getMediaServerList();
 		if(MSList!=null){
 			for(int i =0;i<MSList.size();i++){
 				DeviceList.add(MSList.get(i));
@@ -169,7 +169,7 @@ public class FM_Music_ListView_BaseAdapter_Phone extends BaseAdapter {
 				mlog.info(TAG, "LocalNameListChange");
 			}
 		};
-		((FragmentActivity_Main)context).GETDeviceDisplayList().setMusicListner(FMLBAListner);
+		((MainFragmentActivity)context).GETDeviceDisplayList().setMusicListner(FMLBAListner);
 	}
 	public FM_Music_ListView_BaseAdapter_Listner GetListner(){
 		return this.FMLBAListner;
@@ -430,7 +430,7 @@ public class FM_Music_ListView_BaseAdapter_Phone extends BaseAdapter {
 	}
 	//Media Server 回上一頁
 	private void ShowPrivousFile(final Button MusicBack_Button){
-		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
 		SortCriterion[] sortCriterion = new SortCriterion[]{new SortCriterion("+cd:title")};
 		Browse browse = new Browse(chooseDevice.findService(new UDAServiceType("ContentDirectory")), this.ParentID.get(ParentID.size()-1), BrowseFlag.DIRECT_CHILDREN, "", 0, 0l, null){
 			@Override

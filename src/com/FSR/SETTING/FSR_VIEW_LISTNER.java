@@ -8,7 +8,7 @@ import com.alpha.fragments.Fragment_SIdenrify;
 import com.alpha.fragments.Fragment_SMenu;
 import com.alpha.fragments.Fragment_SSleepTimer;
 import com.alpha.fragments.Fragment_SWireless;
-import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.Fragment_SETTING;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
@@ -35,7 +35,7 @@ public class FSR_VIEW_LISTNER {
 		Back_Button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {			
-				Fragment_SETTING fragment_SETTING = (Fragment_SETTING)((FragmentActivity_Main)context).getSupportFragmentManager().findFragmentByTag("Fragment_SETTING");
+				Fragment_SETTING fragment_SETTING = (Fragment_SETTING)((MainFragmentActivity)context).getSupportFragmentManager().findFragmentByTag("Fragment_SETTING");
 				if(fragment_SETTING!=null){
 					fragment_SETTING.ShowViewContent_ViewFlipperDisplay(0, R.animator.translate_top_in, R.animator.translate_bottom_out);
 				}	

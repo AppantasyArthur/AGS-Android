@@ -5,7 +5,7 @@ import com.FM.SETTING.FM_Music_ListView_BaseAdapter_PAD;
 import com.FM.SETTING.FM_Music_ListView_BaseAdapter_Phone;
 import com.FM.SETTING.FM_VIEW_SETTING;
 import com.FM.SETTING.FM_VIEW_LISTNER;
-import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import android.content.Context;
@@ -47,8 +47,8 @@ public class Fragment_Music extends Fragment {
 	private void CreateProcess() {
 		this.context = this.getActivity();
 		this.mlog.LogSwitch = true;		
-		device_size = ((FragmentActivity_Main)context).getDevice_Size();
-		fragmentManager = ((FragmentActivity_Main)context).getSupportFragmentManager();
+		device_size = ((MainFragmentActivity)context).getDevice_Size();
+		fragmentManager = ((MainFragmentActivity)context).getSupportFragmentManager();
 		//介面設定取得
         this.VIEW_SETTING = new FM_VIEW_SETTING(this.context,this.device_size);
         //動作設定取得

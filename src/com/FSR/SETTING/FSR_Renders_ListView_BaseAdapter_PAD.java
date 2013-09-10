@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.alpha.UPNP.DeviceDisplay;
-import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadStateListInAssets;
@@ -55,11 +55,11 @@ public class FSR_Renders_ListView_BaseAdapter_PAD extends BaseAdapter {
 				handler.obtainMessage(0).sendToTarget();
 			}			
 		};
-		((FragmentActivity_Main)context).GETDeviceDisplayList().setFSR_Renderers_ListView_BaseAdapter_Renderer_Listner(FSRRRLBListner);
+		((MainFragmentActivity)context).GETDeviceDisplayList().setFSR_Renderers_ListView_BaseAdapter_Renderer_Listner(FSRRRLBListner);
 	}
 	private void GetMRList(){
 		this.MRList.clear();
-		List<DeviceDisplay> list = ((FragmentActivity_Main)context).GETDeviceDisplayList().getMediaRendererList();
+		List<DeviceDisplay> list = ((MainFragmentActivity)context).GETDeviceDisplayList().getMediaRendererList();
 		for (DeviceDisplay deviceDisplay:list){
 			MRList.add(deviceDisplay);
 		}

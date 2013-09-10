@@ -14,7 +14,7 @@ import org.teleal.cling.model.meta.Device;
 import org.teleal.cling.model.meta.Service;
 import org.teleal.cling.model.types.UDAServiceId;
 import com.alpha.UPNP.DeviceDisplay;
-import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
 import com.appantasy.androidapptemplate.event.lastchange.GroupVO;
 import com.tkb.tool.MLog;
@@ -176,10 +176,10 @@ public class FS_PopupWindow extends PopupWindow {
 	
 	private void SetRelationWithMaster(String SUDN,boolean isAdd){
 		//¨ú±oupnpServer
-		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
 		Device mMMDevice = addDeviceDisplay.getMMDevice();
 		String MUDN = mMMDevice.getIdentity().getUdn().toString();
-		Device MMDevice = ((FragmentActivity_Main)context).GETDeviceDisplayList().GetMMDevice(SUDN);
+		Device MMDevice = ((MainFragmentActivity)context).GETDeviceDisplayList().GetMMDevice(SUDN);
 		if(MMDevice==null){
 			return;
 		}

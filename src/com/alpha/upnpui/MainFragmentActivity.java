@@ -38,7 +38,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-public class FragmentActivity_Main extends FragmentActivity {
+// FragmentActivity_Main
+public class MainFragmentActivity extends FragmentActivity {
 	
 	//VIEWS
 	private View MainView;
@@ -243,8 +244,8 @@ public class FragmentActivity_Main extends FragmentActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();			
-		FragmentActivity_Main.this.deviceDisplayList.CancelAllListner();//清除所有Listner
-		FragmentActivity_Main.this.unbindService(upnpServiceConnection);		
+		MainFragmentActivity.this.deviceDisplayList.CancelAllListner();//清除所有Listner
+		MainFragmentActivity.this.unbindService(upnpServiceConnection);		
 //		FragmentActivity_Main.this.deviceDisplayList.cancelTimeSeekBarTimer();//關閉Timer
 		Log.v(TAG,"onDestroy");		
 	}

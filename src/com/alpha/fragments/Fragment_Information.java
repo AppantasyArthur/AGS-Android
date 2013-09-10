@@ -11,7 +11,7 @@ import com.FI.SETTING.FI_Queqe_ListView_BaseAdapter_Phone;
 import com.FI.SETTING.FI_VIEW_LISTNER;
 import com.FI.SETTING.FI_VIEW_SETTING;
 import com.FI.SETTING.FI_ViewFlipper;
-import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
 import com.appantasy.androidapptemplate.event.lastchange.TrackDO;
 import com.tkb.tool.MLog;
@@ -62,8 +62,8 @@ public class Fragment_Information extends Fragment {
 	private void CreateProcess() {
 		this.context = this.getActivity();
 		this.mlog.LogSwitch = true;		
-		device_size = ((FragmentActivity_Main)context).getDevice_Size();
-		fragmentManager = ((FragmentActivity_Main)context).getSupportFragmentManager();
+		device_size = ((MainFragmentActivity)context).getDevice_Size();
+		fragmentManager = ((MainFragmentActivity)context).getSupportFragmentManager();
 		//介面設定取得
         this.VIEW_SETTING = new FI_VIEW_SETTING(this.context,this.device_size);
         //動作設定取得

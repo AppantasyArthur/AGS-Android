@@ -2,7 +2,7 @@ package com.FSW.SETTING;
 
 import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.fragments.Fragment_SRenderers;
-import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.Fragment_SETTING;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;

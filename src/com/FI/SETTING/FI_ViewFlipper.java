@@ -3,7 +3,7 @@ package com.FI.SETTING;
 import java.util.ArrayList;
 import java.util.List;
 import com.alpha.UPNP.DeviceDisplay;
-import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
 import com.tkb.tool.DownLoadUrlBitmap;
 import com.tkb.tool.MLog;
@@ -105,7 +105,7 @@ public class FI_ViewFlipper extends ViewFlipper {
 				break;
 			case 6:
 				if(context!=null&&FI_ViewFlipper.this.Point_LLayout!=null){				
-					FI_ViewFlipper.this.CurrentPage = GroupList.indexOf(((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer());
+					FI_ViewFlipper.this.CurrentPage = GroupList.indexOf(((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer());
 					FI_ViewFlipper.this.Point_LLayout.setPointCurrent(CurrentPage);
 				}
 				break;
@@ -150,12 +150,12 @@ public class FI_ViewFlipper extends ViewFlipper {
 		this.mlog.LogSwitch = true;
 		this.GroupList = GetGroupList();
 		ViewGestureDetector = new GestureDetector(context,new MyGestureListener());
-		device_size = ((FragmentActivity_Main)context).getDevice_Size();
+		device_size = ((MainFragmentActivity)context).getDevice_Size();
 		CreateMusicInfor_Listner();
 	}
 	private List<DeviceDisplay> GetGroupList(){
 		List<DeviceDisplay> list = new ArrayList<DeviceDisplay>();
-		for(DeviceDisplay deviceDisplay:((FragmentActivity_Main)context).GETDeviceDisplayList().getGroupList()){
+		for(DeviceDisplay deviceDisplay:((MainFragmentActivity)context).GETDeviceDisplayList().getGroupList()){
 			list.add(deviceDisplay);
 		}
 		return list;		
@@ -200,7 +200,7 @@ public class FI_ViewFlipper extends ViewFlipper {
 			}
 				
 		};
-		((FragmentActivity_Main)context).GETDeviceDisplayList().setMusicInfo_Listner(musicInfo);
+		((MainFragmentActivity)context).GETDeviceDisplayList().setMusicInfo_Listner(musicInfo);
 	}
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
@@ -264,7 +264,7 @@ public class FI_ViewFlipper extends ViewFlipper {
 					e.printStackTrace();
 				}
 				if(CurrentPage>=0){
-					((FragmentActivity_Main)context).GETDeviceDisplayList().setChooseMediaRenderer(GroupList.get(CurrentPage));
+					((MainFragmentActivity)context).GETDeviceDisplayList().setChooseMediaRenderer(GroupList.get(CurrentPage));
 				}	
 			}			
 		}).start();

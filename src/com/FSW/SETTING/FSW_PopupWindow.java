@@ -1,7 +1,7 @@
 package com.FSW.SETTING;
 
 import com.alpha.UPNP.DeviceDisplay;
-import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
@@ -30,7 +30,7 @@ public class FSW_PopupWindow extends PopupWindow {
 		super(context);
 		this.mlog.LogSwitch = true;
 		this.context = context;
-		this.device_size = ((FragmentActivity_Main)context).getDevice_Size();
+		this.device_size = ((MainFragmentActivity)context).getDevice_Size();
 		if(device_size==6){
 			Phone_CreateContentView();
 		}else{

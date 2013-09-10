@@ -19,7 +19,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.alpha.upnpui.FragmentActivity_Main"
+            android:name="com.alpha.upnpui.MainFragmentActivity"
             android:label="@string/app_name" 
             android:launchMode="singleTask"
             android:configChanges="orientation|screenSize"

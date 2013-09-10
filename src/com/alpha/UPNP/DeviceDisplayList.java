@@ -47,7 +47,7 @@ import com.FS.SETTING.FS_SPEAKER_ExpandableListAdapter_Listner;
 import com.FS.SETTING.RunState_TextView_Listner2;
 import com.FSAL_Music.SETTING.FSAl_Music_ListView_BaseAdapter_Listner;
 import com.FSR.SETTING.FSR_Renderers_ListView_BaseAdapter_Renderer_Listner;
-import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.MainFragmentActivity;
 import com.appantasy.androidapptemplate.event.lastchange.GroupHandler;
 import com.appantasy.androidapptemplate.event.lastchange.GroupVO;
 import com.appantasy.androidapptemplate.event.lastchange.ItemDO;
@@ -458,7 +458,7 @@ public class DeviceDisplayList implements Parcelable  {
 		public EventHandler(DeviceDisplay deviceDisplay){
 			this.deviceDisplay = deviceDisplay;
 			//¨ú±oupnpServer
-			this.upnpServer = ((FragmentActivity_Main)context).GETUPnPService();			
+			this.upnpServer = ((MainFragmentActivity)context).GETUPnPService();			
 		}		
 		//ÀË¬dGroup GetDisplayInfo Event
 		public void checkMasterORSingle(){

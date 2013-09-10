@@ -1,6 +1,6 @@
 package com.FM.SETTING;
 
-import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.MainFragmentActivity;
 import com.tkb.tool.MLog;
 import com.tkb.tool.Tool;
 import android.content.Context;
@@ -55,7 +55,7 @@ public class FM_ListView extends ListView {
 	public boolean onTouchEvent(MotionEvent event) {
 		//¶Ç°e MotionEvent//
 		if(this.isItemLongClick){
-			((FragmentActivity_Main)context).FMTransformTouchToFI(event);
+			((MainFragmentActivity)context).FMTransformTouchToFI(event);
 		}
 		//*************//
 		this.ev_RX = (int)event.getRawX();

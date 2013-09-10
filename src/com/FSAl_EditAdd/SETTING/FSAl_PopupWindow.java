@@ -1,7 +1,7 @@
 package com.FSAl_EditAdd.SETTING;
 
 import com.alpha.fragments.Fragment_SAlarm_EditAdd;
-import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
@@ -36,7 +36,7 @@ public class FSAl_PopupWindow extends PopupWindow {
 		this.mlog.LogSwitch = true;
 		this.context = context;		
 		this.fragmentManager = fragmentManager;
-		this.device_size = ((FragmentActivity_Main)context).getDevice_Size();
+		this.device_size = ((MainFragmentActivity)context).getDevice_Size();
 		if(device_size==6){
 			Phone_CreateContentView();			
 		}else{

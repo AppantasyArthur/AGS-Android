@@ -36,10 +36,10 @@ public class FSA_About_ListView_BaseAdapter_PAD extends BaseAdapter {
 		CreateDataList();
 	}
 	private void CreateDataList(){
-		dataList.add(new AboutItemContent("aaaa", "bbbb"));
-		dataList.add(new AboutItemContent("aaaa", "bbbb"));
-		dataList.add(new AboutItemContent("aaaa", "bbbb"));
-		dataList.add(new AboutItemContent("aaaa", "bbbb"));
+		//dataList.add(new AboutItemContent("aaaa", "bbbb"));
+		//dataList.add(new AboutItemContent("aaaa", "bbbb"));
+		//dataList.add(new AboutItemContent("aaaa", "bbbb"));
+		//dataList.add(new AboutItemContent("aaaa", "bbbb"));
 	}
 	private void LoadBitmap(){		
 		this.menu1 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "pad/Settings/identify_01_box.png"));

@@ -7,7 +7,7 @@ import org.teleal.cling.support.model.item.Item;
 import com.FSAl_EditAdd.SETTING.FSAl_EditAdd_VIEW_LISTNER;
 import com.FSAl_EditAdd.SETTING.FSAl_EditAdd_VIEW_SETTING;
 import com.alpha.UPNP.DeviceDisplay;
-import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
 import com.appantasy.androidapptemplate.event.lastchange.TrackDO;
 import com.tkb.tool.MLog;
@@ -60,7 +60,7 @@ public class Fragment_SAlarm_EditAdd extends Fragment {
 	private void CreateProcess() {
 		this.context = this.getActivity();
 		this.mlog.LogSwitch = true;		
-		device_size = ((FragmentActivity_Main)context).getDevice_Size();
+		device_size = ((MainFragmentActivity)context).getDevice_Size();
 		fragmentManager = this.getFragmentManager();
 		cFragmentManager = this.getChildFragmentManager();
 		//¨ú±oView_SETTING

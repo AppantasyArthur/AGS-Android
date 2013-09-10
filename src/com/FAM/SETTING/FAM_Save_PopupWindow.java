@@ -6,7 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
 import com.appantasy.androidapptemplate.event.lastchange.TrackDO;
 import com.tkb.tool.MLog;
@@ -37,7 +37,7 @@ public class FAM_Save_PopupWindow extends PopupWindow {
 		super(context);
 		this.mlog.LogSwitch = true;
 		this.context = context;
-		this.device_size = ((FragmentActivity_Main)context).getDevice_Size();
+		this.device_size = ((MainFragmentActivity)context).getDevice_Size();
 		if(device_size==6){
 			Phone_CreateContentView();
 		}else{
@@ -175,7 +175,7 @@ public class FAM_Save_PopupWindow extends PopupWindow {
 				
 				String inputName = InputName_EditText.getText().toString();
 				//取得Queue 轉成 JSONArray
-				List<TrackDO> queueItems = ((FragmentActivity_Main)context).GETFragment_Infor().GetQueueItems();
+				List<TrackDO> queueItems = ((MainFragmentActivity)context).GETFragment_Infor().GetQueueItems();
 				JSONArray queueArray = new JSONArray();
 				for(TrackDO item:queueItems){
 					JSONObject jItme = new JSONObject();
@@ -218,7 +218,7 @@ public class FAM_Save_PopupWindow extends PopupWindow {
 							
 				sharedPreferences.edit().putString("LocalMusicList", MusicList.toString()).commit();
 				//刷新MusicList
-				((FragmentActivity_Main)context).GETFragment_Music().MusicListViewLocalNameListChange();
+				((MainFragmentActivity)context).GETFragment_Music().MusicListViewLocalNameListChange();
 				FAM_Save_PopupWindow.this.dismiss();				
 			}
 		});	

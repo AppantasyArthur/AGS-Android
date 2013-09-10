@@ -18,7 +18,7 @@ import com.FS.SETTING.FS_VIEW_LISTNER;
 import com.FS.SETTING.FS_VIEW_SETTING;
 import com.FS.SETTING.OptionButton;
 import com.alpha.UPNP.DeviceDisplay;
-import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
 import com.appantasy.androidapptemplate.event.lastchange.GroupVO;
 import com.tkb.tool.MLog;
@@ -66,8 +66,8 @@ public class Fragment_Speaker extends Fragment {
 	private void CreateProcess() {
 		this.context = this.getActivity();
 		this.mlog.LogSwitch = true;		
-		device_size = ((FragmentActivity_Main)context).getDevice_Size();
-		fragmentManager = ((FragmentActivity_Main)context).getSupportFragmentManager();
+		device_size = ((MainFragmentActivity)context).getDevice_Size();
+		fragmentManager = ((MainFragmentActivity)context).getSupportFragmentManager();
 		
 		//介面設定取得
         this.VIEW_SETTING = new FS_VIEW_SETTING(this.context,this.device_size);
@@ -312,10 +312,10 @@ public class Fragment_Speaker extends Fragment {
 	//Phone Master Slave 設定
 	private void SetRelationWithMaster(String SUDN,boolean isAdd){
 		//取得upnpServer
-		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
 		Device mMMDevice = addDeviceDisplay.getMMDevice();
 		String MUDN = mMMDevice.getIdentity().getUdn().toString();
-		Device MMDevice = ((FragmentActivity_Main)context).GETDeviceDisplayList().GetMMDevice(SUDN);
+		Device MMDevice = ((MainFragmentActivity)context).GETDeviceDisplayList().GetMMDevice(SUDN);
 		if(MMDevice==null){
 			return;
 		}

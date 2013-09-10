@@ -15,7 +15,7 @@ import org.teleal.cling.support.model.container.Container;
 import org.teleal.cling.support.model.item.Item;
 import com.FM.SETTING.FM_Music_ListView_BaseAdapter_PAD.ViewHandler;
 import com.appantasy.androidapptemplate.event.lastchange.TrackDO;
-import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.Fragment_SETTING;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
@@ -52,7 +52,7 @@ public class FM_VIEW_LISTNER {
 		Speaker_Button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				((FragmentActivity_Main)context).ShowViewContent_ViewFlipperDisplay(0,R.animator.alpha_in,R.animator.translate_right_out);
+				((MainFragmentActivity)context).ShowViewContent_ViewFlipperDisplay(0,R.animator.alpha_in,R.animator.translate_right_out);
 			}
 		});
 	}
@@ -60,7 +60,7 @@ public class FM_VIEW_LISTNER {
 		NowPlaying_Button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				((FragmentActivity_Main)context).ShowViewContent_ViewFlipperDisplay(1,R.animator.translate_right_in,R.animator.alpha_out);
+				((MainFragmentActivity)context).ShowViewContent_ViewFlipperDisplay(1,R.animator.translate_right_in,R.animator.alpha_out);
 			}
 		});
 	}
@@ -72,7 +72,7 @@ public class FM_VIEW_LISTNER {
 			Music_ListView.setOnItemClickListener(new OnItemClickListener(){				
 				@Override
 				public void onItemClick(final AdapterView<?> adapterView, final View view, int arg2, long arg3) {
-					AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+					AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
 					
 					com.FM.SETTING.FM_Music_ListView_BaseAdapter_Phone.ViewHandler viewHandler = (com.FM.SETTING.FM_Music_ListView_BaseAdapter_Phone.ViewHandler)view.getTag();
 					
@@ -191,7 +191,7 @@ public class FM_VIEW_LISTNER {
 			Music_ListView.setOnItemClickListener(new OnItemClickListener(){				
 				@Override
 				public void onItemClick(final AdapterView<?> adapterView, final View view, int arg2, long arg3) {
-					AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+					AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
 					ViewHandler viewHandler = (ViewHandler)view.getTag();
 					int kind = ((ViewHandler)view.getTag()).kindOfItme;					
 					SortCriterion[] sortCriterion = new SortCriterion[]{new SortCriterion("+dc:title")};

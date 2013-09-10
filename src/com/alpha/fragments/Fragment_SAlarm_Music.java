@@ -2,7 +2,7 @@ package com.alpha.fragments;
 
 import com.FSAL_Music.SETTING.FSAl_Music_VIEW_LISTNER;
 import com.FSAL_Music.SETTING.FSAl_Music_VIEW_SETTING;
-import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import android.content.Context;
@@ -44,7 +44,7 @@ public class Fragment_SAlarm_Music extends Fragment {
 	private void CreateProcess() {
 		this.context = this.getActivity();
 		this.mlog.LogSwitch = true;		
-		device_size = ((FragmentActivity_Main)context).getDevice_Size();
+		device_size = ((MainFragmentActivity)context).getDevice_Size();
 		fragmentManager = this.getFragmentManager();
 		cFragmentManager = this.getChildFragmentManager();
 		//¨ú±oView_SETTING

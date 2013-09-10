@@ -15,7 +15,7 @@ import org.teleal.cling.support.avtransport.callback.Play;
 import org.teleal.cling.support.avtransport.callback.Stop;
 import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.fragments.Fragment_Information;
-import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.Fragment_SETTING;
 import com.alpha.upnpui.R;
 import com.tkb.UpnpOverride.ProcessBarListner;
@@ -78,7 +78,7 @@ public class FAM_VIEW_LISTNER {
 				});			
 			}		
 		};
-		((FragmentActivity_Main)context).GETDeviceDisplayList().setProcessBarListner(processBarListner);
+		((MainFragmentActivity)context).GETDeviceDisplayList().setProcessBarListner(processBarListner);
 	}
 	public ProcessBarListner GetProcessBarListner(){
 		return processBarListner;
@@ -117,9 +117,9 @@ public class FAM_VIEW_LISTNER {
 				public void onClick(View v) {
 					Log.i(TAG, "Clear_Button On Click");
 					//¾켹upnpServer
-					AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+					AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
 					//¾켹MR Device
-					DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+					DeviceDisplay MR_Device = ((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer();
 					
 					ServiceId serviceId = new UDAServiceId("AVTransport");
 					Service AVTransportService = null;
@@ -312,14 +312,14 @@ public class FAM_VIEW_LISTNER {
 				}
 			};
 			//�`덜PlayMode EVEN
-			((FragmentActivity_Main)context).GETDeviceDisplayList().setPlayMode_IButton_Listner(PMI_Listner);
+			((MainFragmentActivity)context).GETDeviceDisplayList().setPlayMode_IButton_Listner(PMI_Listner);
 		}
 	}
 	private void SetPlayMode(int Mode){
 		//¾켹upnpServer
-		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
 		//¾켹MR Device
-		DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+		DeviceDisplay MR_Device = ((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer();
 		//¾켹instanceId
 		UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
 		//¾켹service
@@ -424,9 +424,9 @@ public class FAM_VIEW_LISTNER {
 				@Override
 				public void onClick(View v) {
 					//¾켹upnpServer
-					AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+					AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
 					//¾켹MR Device
-					DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+					DeviceDisplay MR_Device = ((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer();
 					//¾켹instanceId
 					UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
 					//¾켹service
@@ -481,9 +481,9 @@ public class FAM_VIEW_LISTNER {
 				@Override
 				public void onClick(View v) {
 					//¾켹upnpServer
-					AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+					AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
 					//¾켹MR Device
-					DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+					DeviceDisplay MR_Device = ((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer();
 					//¾켹instanceId
 					UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
 					//¾켹service
@@ -577,14 +577,14 @@ public class FAM_VIEW_LISTNER {
 			}
 		};
 		//�`덜Play EVEN
-		((FragmentActivity_Main)context).GETDeviceDisplayList().setPlay_IButton_Listner(PI_Listner);
+		((MainFragmentActivity)context).GETDeviceDisplayList().setPlay_IButton_Listner(PI_Listner);
 		
 	}
 	private void StopMusic(){
 		//¾켹upnpServer
-		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
 		//¾켹MR Device
-		DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+		DeviceDisplay MR_Device = ((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer();
 		//¾켹instanceId
 		UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
 		//¾켹service
@@ -613,9 +613,9 @@ public class FAM_VIEW_LISTNER {
 	}
 	private void PlayMusic(){
 		//¾켹upnpServer
-		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
 		//¾켹MR Device
-		DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+		DeviceDisplay MR_Device = ((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer();
 		//¾켹instanceId
 		UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
 		//¾켹service
@@ -675,7 +675,7 @@ public class FAM_VIEW_LISTNER {
 				
 			}
 		};
-		((FragmentActivity_Main)context).GETDeviceDisplayList().setMusic_SeekBar_Listner(music_SeekBar_Listner);
+		((MainFragmentActivity)context).GETDeviceDisplayList().setMusic_SeekBar_Listner(music_SeekBar_Listner);
 	}
 	public void Sound_SeekBarLISTNER(final SeekBar Sound_SeekBar,final ImageView Sound_ImageButton){
 		Sound_SeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
@@ -706,7 +706,7 @@ public class FAM_VIEW_LISTNER {
 				Sound_SeekBar.setProgress(volume);				
 			}
 		};
-		((FragmentActivity_Main)context).GETDeviceDisplayList().setSound_SeekBar_Listner(sound_SeekBar_Listner);
+		((MainFragmentActivity)context).GETDeviceDisplayList().setSound_SeekBar_Listner(sound_SeekBar_Listner);
 	}
 	
 	private void setSound_Image(int Vol,ImageView Sound_ImageButton){

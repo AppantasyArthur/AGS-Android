@@ -4,7 +4,7 @@ import com.FSM.SETTING.FSM_MENU_ListView_BaseAdapter_PAD;
 import com.FSM.SETTING.FSM_MENU_ListView_BaseAdapter_Phone;
 import com.FSM.SETTING.FSM_VIEW_LISTNER;
 import com.FSM.SETTING.FSM_VIEW_SETTING;
-import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import android.content.Context;
@@ -23,7 +23,7 @@ import android.widget.ListView;
 
 public class Fragment_SMenu extends Fragment {
 	//VIEWS
-	private View Fragment_MainView;		
+	private View fragmentMainView;		
 	
 	private BaseAdapter Menu_ListView_BaseAdapter;
 	//Fragment Manager
@@ -45,7 +45,7 @@ public class Fragment_SMenu extends Fragment {
 	private void CreateProcess() {
 		this.context = this.getActivity();
 		this.mlog.LogSwitch = true;		
-		device_size = ((FragmentActivity_Main)context).getDevice_Size();
+		device_size = ((MainFragmentActivity)context).getDevice_Size();
 		this.fragmentManager = this.getFragmentManager();
 		//¨ú±oView_SETTING
         this.VIEW_SETTING = new FSM_VIEW_SETTING(this.context,this.device_size);
@@ -55,45 +55,48 @@ public class Fragment_SMenu extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
 		if(device_size==6){
-			Fragment_MainView = (ViewGroup)inflater.inflate(R.layout.fragment_smenu_phone, null);
-			Fragment_MainView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+			fragmentMainView = (ViewGroup)inflater.inflate(R.layout.fragment_smenu_phone, null);
+			fragmentMainView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 			Phone_findView();
 			Phone_findViewListner();
 		}else{
-			Fragment_MainView = (ViewGroup)inflater.inflate(R.layout.fragment_smenu_pad, null);
-			Fragment_MainView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+			fragmentMainView = (ViewGroup)inflater.inflate(R.layout.fragment_smenu_pad, null);
+			fragmentMainView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 			PAD_findView();
 			PAD_findViewListner();
 		}		
-		return Fragment_MainView;
+		return fragmentMainView;
 	}
 	
 	private void Phone_findView() {
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFSM_RLayout));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFSM_RLayout_TITLE_RLayout));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFSM_RLayout_Body_RLayout));
+		this.VIEW_SETTING.setView(fragmentMainView.findViewById(R.id.pFSM_RLayout));
+		this.VIEW_SETTING.setView(fragmentMainView.findViewById(R.id.pFSM_RLayout_TITLE_RLayout));
+		this.VIEW_SETTING.setView(fragmentMainView.findViewById(R.id.pFSM_RLayout_Body_RLayout));
 		Menu_ListView_BaseAdapter = new FSM_MENU_ListView_BaseAdapter_Phone(context);
-		ListView menu_ListView = (ListView)Fragment_MainView.findViewById(R.id.pFSM_RLayout_RLayout_Menu_ListView);
+		ListView menu_ListView = (ListView)fragmentMainView.findViewById(R.id.pFSM_RLayout_RLayout_Menu_ListView);
 		menu_ListView.setAdapter(Menu_ListView_BaseAdapter);
 		mlog.info(TAG, "findView OK");
 	}
 	private void Phone_findViewListner() {
-		this.VIEW_LISTNER.Done_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFSM_RLayout_RLayout_Done_Button));
-		this.VIEW_LISTNER.Menu_ListView_LISTNER((ListView)Fragment_MainView.findViewById(R.id.pFSM_RLayout_RLayout_Menu_ListView),
+		this.VIEW_LISTNER.setDoneButtonListener((Button)fragmentMainView.findViewById(R.id.pFSM_RLayout_RLayout_Done_Button));
+		this.VIEW_LISTNER.setSettingFunctionMenuListener((ListView)fragmentMainView.findViewById(R.id.pFSM_RLayout_RLayout_Menu_ListView),
 													this.fragmentManager);
 	}
 	private void PAD_findView() {
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FSM_RLayout_TITLE_RLayout));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FSM_RLayout_Body_RLayout));
+		this.VIEW_SETTING.setView(fragmentMainView.findViewById(R.id.FSM_RLayout_TITLE_RLayout));
+		this.VIEW_SETTING.setView(fragmentMainView.findViewById(R.id.FSM_RLayout_Body_RLayout));
 		Menu_ListView_BaseAdapter = new FSM_MENU_ListView_BaseAdapter_PAD(context);
-		ListView menu_ListView = (ListView)Fragment_MainView.findViewById(R.id.FSM_RLayout_RLayout_Menu_ListView);
+		ListView menu_ListView = (ListView)fragmentMainView.findViewById(R.id.FSM_RLayout_RLayout_Menu_ListView);
 		menu_ListView.setAdapter(Menu_ListView_BaseAdapter);
 		mlog.info(TAG, "findView OK");
 	}	
 	private void PAD_findViewListner() {
-		this.VIEW_LISTNER.Done_Button_Listner((Button)Fragment_MainView.findViewById(R.id.FSM_RLayout_RLayout_Done_Button));
-		this.VIEW_LISTNER.Menu_ListView_LISTNER((ListView)Fragment_MainView.findViewById(R.id.FSM_RLayout_RLayout_Menu_ListView),
-													this.fragmentManager);
+		
+		this.VIEW_LISTNER.setDoneButtonListener((Button)fragmentMainView.findViewById(R.id.FSM_RLayout_RLayout_Done_Button));
+		this.VIEW_LISTNER.setSettingFunctionMenuListener(
+				(ListView)fragmentMainView.findViewById(R.id.FSM_RLayout_RLayout_Menu_ListView)
+				,this.fragmentManager);
+		
 	}
 	
 	@Override

@@ -37,7 +37,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import com.alpha.UPNP.DeviceDisplay;
-import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
 import com.appantasy.androidapptemplate.event.lastchange.TrackDO;
 import com.tkb.tool.MLog;
@@ -67,7 +67,7 @@ public class FM_PopupWindow extends PopupWindow {
 		super(context);
 		this.mlog.LogSwitch = true;
 		this.context = context;
-		this.device_size = ((FragmentActivity_Main)context).getDevice_Size();
+		this.device_size = ((MainFragmentActivity)context).getDevice_Size();
 		if(device_size==6){
 			Phone_CreateContentView();
 		}else{
@@ -233,7 +233,7 @@ public class FM_PopupWindow extends PopupWindow {
 	}
 	
 	private void ItemPlayNow(){
-		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
 		SortCriterion[] sortCriterion = new SortCriterion[]{new SortCriterion("+dc:title")};
 		Browse browse = new Browse(MS_Device.findService(new UDAServiceType("ContentDirectory")), item.getId(), BrowseFlag.METADATA, "*", 0, 1l, sortCriterion){
 			@Override
@@ -242,9 +242,9 @@ public class FM_PopupWindow extends PopupWindow {
 					return;
 				}
 				//¾켹upnpServer
-				AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+				AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
 				//¾켹MR Device
-				DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+				DeviceDisplay MR_Device = ((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer();
 				mlog.info(TAG, "MR_Device = "+MR_Device);
 				//¾켹MetaData								
 				String MetaData = arg0.getOutput()[0].toString();	
@@ -325,24 +325,24 @@ public class FM_PopupWindow extends PopupWindow {
 	}
 	private void TrackPlayNow(){
 		//¾켹upnpServer
-		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
 		//¾켹MR Device
-		DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+		DeviceDisplay MR_Device = ((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer();
 		//this.trackDO 룻첿ずtrackDO
 	
 	}
 	private void TrackListPlayNow(){
 		//¾켹upnpServer
-		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
 		//¾켹MR Device
-		DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+		DeviceDisplay MR_Device = ((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer();
 //		this.trackDOList// 룻첿ずtrackDOList
 	}
 	private void PlayMusic(){
 		//¾켹upnpServer
-		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
 		//¾켹MR Device
-		DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+		DeviceDisplay MR_Device = ((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer();
 		//¾켹instanceId
 		UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
 		//¾켹service
@@ -450,7 +450,7 @@ public class FM_PopupWindow extends PopupWindow {
 		});
 	}
 	private void ItemAddToQueue(){
-		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
 		SortCriterion[] sortCriterion = new SortCriterion[]{new SortCriterion("+dc:title")};
 		Browse browse = new Browse(MS_Device.findService(new UDAServiceType("ContentDirectory")), item.getId(), BrowseFlag.METADATA, "*", 0, 1l, sortCriterion){
 			@Override
@@ -459,9 +459,9 @@ public class FM_PopupWindow extends PopupWindow {
 					return;
 				}
 				//¾켹upnpServer
-				AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+				AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
 				//¾켹MR Device
-				DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+				DeviceDisplay MR_Device = ((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer();
 				mlog.info(TAG, "MR_Device = "+MR_Device);
 				//¾켹MetaData								
 				String MetaData = arg0.getOutput()[0].toString();	

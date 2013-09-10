@@ -4,8 +4,11 @@ import org.teleal.cling.model.meta.Device;
 import org.teleal.cling.model.meta.LocalDevice;
 import org.teleal.cling.model.meta.RemoteDevice;
 import org.teleal.cling.model.types.DeviceType;
+import org.teleal.cling.model.types.ServiceType;
 import org.teleal.cling.registry.DefaultRegistryListener;
 import org.teleal.cling.registry.Registry;
+
+import android.util.Log;
 
 public class BrowseRegistryListener extends DefaultRegistryListener {
 	private DeviceDisplayList deviceDisplayList;
@@ -45,19 +48,26 @@ public class BrowseRegistryListener extends DefaultRegistryListener {
 
     public void deviceAdded(final Device device) {
     	
-    	DeviceType deviceType_f = new DeviceType("schemas-upnp-org", "DeviceManager");
     	boolean isAGSDevice = false;
-    	Device[] embs = device.getEmbeddedDevices();
-    	for(int i = 0;i < embs.length;i++){
+    	if(device.getType().getType().toString().compareToIgnoreCase("MediaRenderer") == 0){
     		
-    		Device emb = embs[i];
-    		if(emb.findDevices(deviceType_f).length > 0){
+    		DeviceType deviceType_f = new DeviceType("schemas-upnp-org", "DeviceManager");
+    		//ServiceType groupService = new ServiceType("schemas-upnp-org", "Group");
+        	
+    		if(device.findDevices(deviceType_f).length > 0){
+    		//if(device.findServices(groupService).length > 0){
     			isAGSDevice = true;
-    			break;
+    		}else{
+    			isAGSDevice = false;
     		}
     		
+    	}else{ // other UPnP Device
+    		
+    		//Log.i(this.toString(), device.getType().getType().toString() + " deviceAdded !" );
+    		isAGSDevice = true; // show it currently
+    		
     	}
-
+    	
     	if(isAGSDevice){
     	
     		DeviceDisplay dd = new DeviceDisplay(device);

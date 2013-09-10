@@ -44,7 +44,7 @@ public class Fragment_SETTING extends Fragment {
 	private void CreateProcess() {
 		this.context = this.getActivity();
 		this.mlog.LogSwitch = true;		
-		device_size = ((FragmentActivity_Main)context).getDevice_Size();
+		device_size = ((MainFragmentActivity)context).getDevice_Size();
 		fragmentManager = this.getChildFragmentManager();
 		//¨ú±oView_SETTING
         this.VIEW_SETTING = new FAS_VIEW_SETTING(this.context,this.device_size);

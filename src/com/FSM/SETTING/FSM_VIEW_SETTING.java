@@ -19,7 +19,7 @@ public class FSM_VIEW_SETTING {
 		this.mlog.LogSwitch = true;
 		this.device_size = device_size;
 	}
-	public void VIEWSET(View view){
+	public void setView(View view){
 		if(this.device_size==6){
 			switch(view.getId()){
 			case R.id.pFSM_RLayout:

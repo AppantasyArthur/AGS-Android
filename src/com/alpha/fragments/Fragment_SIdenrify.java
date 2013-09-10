@@ -5,7 +5,7 @@ import com.FSI.SETTING.FSI_IdSpeaker_ListView_BaseAdapter_Phone;
 import com.FSI.SETTING.FSI_VIEW_LISTNER;
 import com.FSI.SETTING.FSI_VIEW_SETTING;
 import com.alpha.UPNP.DeviceDisplay;
-import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import android.content.Context;
@@ -48,7 +48,7 @@ public class Fragment_SIdenrify extends Fragment {
 	private void CreateProcess() {
 		this.context = this.getActivity();
 		this.mlog.LogSwitch = true;		
-		device_size = ((FragmentActivity_Main)context).getDevice_Size();
+		device_size = ((MainFragmentActivity)context).getDevice_Size();
 		fragmentManager = this.getFragmentManager();
 		//¨ú±oView_SETTING
         this.VIEW_SETTING = new FSI_VIEW_SETTING(this.context,this.device_size);

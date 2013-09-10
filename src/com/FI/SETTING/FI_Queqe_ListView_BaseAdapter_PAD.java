@@ -14,7 +14,7 @@ import org.teleal.cling.model.meta.Service;
 import org.teleal.cling.model.types.ServiceId;
 import org.teleal.cling.model.types.UDAServiceId;
 import com.alpha.UPNP.DeviceDisplay;
-import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
 import com.appantasy.androidapptemplate.event.lastchange.TrackDO;
 import com.tkb.tool.MLog;
@@ -91,7 +91,7 @@ public class FI_Queqe_ListView_BaseAdapter_PAD extends BaseAdapter {
 				mlog.info(TAG, "AddQueqeList");	
 			}			
 		};
-		((FragmentActivity_Main)context).GETDeviceDisplayList().setQueqe_Listner(queqe_listner);
+		((MainFragmentActivity)context).GETDeviceDisplayList().setQueqe_Listner(queqe_listner);
 		dataList.clear();
 	}
 	@Override
@@ -212,9 +212,9 @@ public class FI_Queqe_ListView_BaseAdapter_PAD extends BaseAdapter {
 				public void onClick(View v) {
 					Log.i(TAG, "delete = "+position);
 					//取得upnpServer
-					AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+					AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
 					//取得MR Device
-					DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+					DeviceDisplay MR_Device = ((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer();
 					
 					ServiceId serviceId = new UDAServiceId("AVTransport");
 					Service AVTransportService = null;

@@ -3,7 +3,7 @@ package com.FI.SETTING;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
 import com.tkb.tool.MLog;
 import com.tkb.tool.ThreadReadBitMapInAssets;
@@ -27,13 +27,13 @@ public class FI_PointLiLayout extends LinearLayout {
 	public FI_PointLiLayout(Context context) {
 		super(context);			
 		this.context = context;
-		this.device_size = ((FragmentActivity_Main)context).getDevice_Size();
+		this.device_size = ((MainFragmentActivity)context).getDevice_Size();
 		this.mlog.LogSwitch = true;
 	}
 	public FI_PointLiLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);	
 		this.context = context;
-		this.device_size = ((FragmentActivity_Main)context).getDevice_Size();
+		this.device_size = ((MainFragmentActivity)context).getDevice_Size();
 		this.mlog.LogSwitch = true;
 	}
 	

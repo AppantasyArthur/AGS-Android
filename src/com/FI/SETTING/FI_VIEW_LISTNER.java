@@ -41,7 +41,7 @@ import com.FAM.SETTING.Play_IButton_Listner;
 import com.FAM.SETTING.Sound_SeekBar_Listner;
 import com.alpha.UPNP.DeviceDisplay;
 import com.alpha.fragments.Fragment_Information;
-import com.alpha.upnpui.FragmentActivity_Main;
+import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.Fragment_SETTING;
 import com.alpha.upnpui.R;
 import com.appantasy.androidapptemplate.event.lastchange.TrackDO;
@@ -109,9 +109,9 @@ public class FI_VIEW_LISTNER {
 			public void onClick(View v) {
 				Log.i(TAG, "Clear_Button On Click");
 				//¾켹upnpServer
-				AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+				AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
 				//¾켹MR Device
-				DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+				DeviceDisplay MR_Device = ((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer();
 				
 				ServiceId serviceId = new UDAServiceId("AVTransport");
 				Service AVTransportService = null;
@@ -234,7 +234,7 @@ public class FI_VIEW_LISTNER {
 		Speaker_Button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				((FragmentActivity_Main)context).ShowViewContent_ViewFlipperDisplay(0,R.animator.alpha_in,R.animator.translate_right_out);
+				((MainFragmentActivity)context).ShowViewContent_ViewFlipperDisplay(0,R.animator.alpha_in,R.animator.translate_right_out);
 			}
 		});
 	}
@@ -242,7 +242,7 @@ public class FI_VIEW_LISTNER {
 		Music_Button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				((FragmentActivity_Main)context).ShowViewContent_ViewFlipperDisplay(2,R.animator.translate_right_in,R.animator.alpha_out);
+				((MainFragmentActivity)context).ShowViewContent_ViewFlipperDisplay(2,R.animator.translate_right_in,R.animator.alpha_out);
 			}
 		});
 	}
@@ -260,9 +260,9 @@ public class FI_VIEW_LISTNER {
 			@Override
 			public void onClick(View v) {
 				//¾켹upnpServer
-				AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+				AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
 				//¾켹MR Device
-				DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+				DeviceDisplay MR_Device = ((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer();
 				//¾켹instanceId
 				UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
 				//¾켹service
@@ -310,9 +310,9 @@ public class FI_VIEW_LISTNER {
 			@Override
 			public void onClick(View v) {
 				//¾켹upnpServer
-				AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+				AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
 				//¾켹MR Device
-				DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+				DeviceDisplay MR_Device = ((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer();
 				//¾켹instanceId
 				UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
 				//¾켹service
@@ -395,13 +395,13 @@ public class FI_VIEW_LISTNER {
 			}
 		};
 		//�`덜Play EVEN
-		((FragmentActivity_Main)context).GETDeviceDisplayList().setInfo_Play_IButton_Listner(Info_PI_Listner);
+		((MainFragmentActivity)context).GETDeviceDisplayList().setInfo_Play_IButton_Listner(Info_PI_Listner);
 	}
 	private void StopMusic(){
 		//¾켹upnpServer
-		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
 		//¾켹MR Device
-		DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+		DeviceDisplay MR_Device = ((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer();
 		//¾켹instanceId
 		UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
 		//¾켹service
@@ -430,9 +430,9 @@ public class FI_VIEW_LISTNER {
 	}
 	private void PlayMusic(){
 		//¾켹upnpServer
-		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
 		//¾켹MR Device
-		DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+		DeviceDisplay MR_Device = ((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer();
 		//¾켹instanceId
 		UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
 		//¾켹service
@@ -511,13 +511,13 @@ public class FI_VIEW_LISTNER {
 			}
 		};
 		//�`덜PlayMode EVEN
-		((FragmentActivity_Main)context).GETDeviceDisplayList().setInfo_PlayMode_IButton_Listner(Info_PMI_Listner);					
+		((MainFragmentActivity)context).GETDeviceDisplayList().setInfo_PlayMode_IButton_Listner(Info_PMI_Listner);					
 	}
 	private void SetPlayMode(int Mode){
 		//¾켹upnpServer
-		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
 		//¾켹MR Device
-		DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+		DeviceDisplay MR_Device = ((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer();
 		//¾켹instanceId
 		UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
 		//¾켹service
@@ -600,7 +600,7 @@ public class FI_VIEW_LISTNER {
 				
 			}
 		};
-		((FragmentActivity_Main)context).GETDeviceDisplayList().setInfo_Music_SeekBar_Listner(music_SeekBar_Listner);
+		((MainFragmentActivity)context).GETDeviceDisplayList().setInfo_Music_SeekBar_Listner(music_SeekBar_Listner);
 	}
 	public void Sound_SeekBarLISTNER(final SeekBar Sound_SeekBar,final ImageView Sound_ImageButton){
 		Sound_SeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
@@ -631,7 +631,7 @@ public class FI_VIEW_LISTNER {
 				Sound_SeekBar.setProgress(volume);				
 			}
 		};
-		((FragmentActivity_Main)context).GETDeviceDisplayList().setInfo_Sound_SeekBar_Listner(info_Sound_SeekBar_Listner);
+		((MainFragmentActivity)context).GETDeviceDisplayList().setInfo_Sound_SeekBar_Listner(info_Sound_SeekBar_Listner);
 	}
 	
 	private void setSound_Image(int Vol,ImageView Sound_ImageButton){
@@ -672,7 +672,7 @@ public class FI_VIEW_LISTNER {
 				public boolean onItemLongClick(AdapterView<?> arg0, View arg1,int arg2, long arg3) {
 					if(!((FI_Queqe_ListView_BaseAdapter_Phone)arg0.getAdapter()).GET_Edite()){
 						((FI_Queqe_ListView_BaseAdapter_Phone)arg0.getAdapter()).SET_Edite(true);
-						((FragmentActivity_Main)context).ShowDoneButton();
+						((MainFragmentActivity)context).ShowDoneButton();
 					}
 					return true;
 				}			
@@ -694,7 +694,7 @@ public class FI_VIEW_LISTNER {
 				public boolean onItemLongClick(AdapterView<?> arg0, View arg1,int arg2, long arg3) {
 					if(!((FI_Queqe_ListView_BaseAdapter_PAD)arg0.getAdapter()).GET_Edite()){
 						((FI_Queqe_ListView_BaseAdapter_PAD)arg0.getAdapter()).SET_Edite(true);
-						((FragmentActivity_Main)context).ShowDoneButton();
+						((MainFragmentActivity)context).ShowDoneButton();
 					}
 					return true;
 				}			
@@ -709,9 +709,9 @@ public class FI_VIEW_LISTNER {
 			return;
 		}
 		//¾켹upnpServer
-		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
+		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
 		//¾켹MR Device
-		DeviceDisplay MR_Device = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
+		DeviceDisplay MR_Device = ((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer();
 		//¾켹instanceId
 		UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
 		//¾켹service
