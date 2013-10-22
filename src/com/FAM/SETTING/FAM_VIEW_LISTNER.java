@@ -13,16 +13,7 @@ import org.teleal.cling.model.types.UDAServiceId;
 import org.teleal.cling.model.types.UnsignedIntegerFourBytes;
 import org.teleal.cling.support.avtransport.callback.Play;
 import org.teleal.cling.support.avtransport.callback.Stop;
-import com.alpha.UPNP.DeviceDisplay;
-import com.alpha.fragments.Fragment_Information;
-import com.alpha.upnpui.MainFragmentActivity;
-import com.alpha.upnpui.Fragment_SETTING;
-import com.alpha.upnpui.R;
-import com.tkb.UpnpOverride.ProcessBarListner;
-import com.tkb.tool.MLog;
-import com.tkb.tool.ThreadReadBitMapInAssets;
-import com.tkb.tool.ThreadReadStateListInAssets;
-import com.tkb.tool.Tool;
+
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
@@ -37,12 +28,24 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.TextView;
+
+import com.alpha.fragments.Fragment_Information;
+import com.alpha.upnp.DeviceDisplay;
+import com.alpha.upnpui.Fragment_SETTING;
+import com.alpha.upnpui.MainFragmentActivity;
+import com.alpha.upnpui.R;
+import com.alpha.util.DeviceProperty;
+import com.tkb.UpnpOverride.ProcessBarListner;
+import com.tkb.tool.TKBLog;
+import com.tkb.tool.TKBThreadReadBitMapInAssets;
+import com.tkb.tool.TKBThreadReadStateListInAssets;
+import com.tkb.tool.TKBTool;
 
 public class FAM_VIEW_LISTNER {
 	private Context context;
-	private MLog mlog = new MLog();
+	private TKBLog mlog = new TKBLog();
 	private static final String TAG = "FAM_VIEW_LISTNER";
 	private int device_size = 0;
 	private FragmentManager fragmentManager;
@@ -52,7 +55,7 @@ public class FAM_VIEW_LISTNER {
 	private ProcessBarListner processBarListner;
 	public FAM_VIEW_LISTNER(Context context, int device_size,FragmentManager fragmentManager) {
 		this.context = context;
-		this.mlog.LogSwitch = true;
+		this.mlog.switchLog = true;
 		this.device_size = device_size;
 		this.fragmentManager = fragmentManager;
 	}
@@ -78,7 +81,7 @@ public class FAM_VIEW_LISTNER {
 				});			
 			}		
 		};
-		((MainFragmentActivity)context).GETDeviceDisplayList().setProcessBarListner(processBarListner);
+		((MainFragmentActivity)context).getDeviceDisplayList().setProcessBarListner(processBarListner);
 	}
 	public ProcessBarListner GetProcessBarListner(){
 		return processBarListner;
@@ -88,10 +91,10 @@ public class FAM_VIEW_LISTNER {
 			@Override
 			public void onClick(View v) {
 				if(MediaC2_RLayout.getVisibility()==View.GONE){
-					new ThreadReadBitMapInAssets(context, "pad/PlayBack/playback_arrow_f.png", v, 2);
+					new TKBThreadReadBitMapInAssets(context, "pad/PlayBack/playback_arrow_f.png", v, 2);
 					MediaC2_RLayout.setVisibility(View.VISIBLE);
 				}else{
-					new ThreadReadBitMapInAssets(context, "pad/PlayBack/playback_arrow_n.png", v, 2);
+					new TKBThreadReadBitMapInAssets(context, "pad/PlayBack/playback_arrow_n.png", v, 2);
 					MediaC2_RLayout.setVisibility(View.GONE);
 				}
 			}
@@ -107,7 +110,7 @@ public class FAM_VIEW_LISTNER {
 		});
 	}	
 	public void Clear_Button_LISTNER(Button Clear_Button,final ImageView ButtonsBG_ImageView){
-		if(device_size==6){
+		if(DeviceProperty.isPhone()){
 			//***************************PHONE*********************************	
 			//***************************PHONE*********************************	
 		}else{
@@ -117,9 +120,9 @@ public class FAM_VIEW_LISTNER {
 				public void onClick(View v) {
 					Log.i(TAG, "Clear_Button On Click");
 					//¾켹upnpServer
-					AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
+					AndroidUpnpService upnpServer = ((MainFragmentActivity)context).getUPnPService();
 					//¾켹MR Device
-					DeviceDisplay MR_Device = ((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer();
+					DeviceDisplay MR_Device = ((MainFragmentActivity)context).getDeviceDisplayList().getChooseMediaRenderer();
 					
 					ServiceId serviceId = new UDAServiceId("AVTransport");
 					Service AVTransportService = null;
@@ -161,19 +164,19 @@ public class FAM_VIEW_LISTNER {
 					switch(event.getAction()){
 					case MotionEvent.ACTION_DOWN:
 						if(Tag==0){
-							new ThreadReadBitMapInAssets(context, "pad/Settingsbar/clear&save_01.png",ButtonsBG_ImageView, 1);
+							new TKBThreadReadBitMapInAssets(context, "pad/Settingsbar/clear&save_01.png",ButtonsBG_ImageView, 1);
 							ButtonsBG_ImageView.setTag(1);
 						}
 						break;
 					case MotionEvent.ACTION_UP:
 						if(Tag==1){
-							new ThreadReadBitMapInAssets(context, "pad/Settingsbar/clear&save_00.png",ButtonsBG_ImageView, 1);
+							new TKBThreadReadBitMapInAssets(context, "pad/Settingsbar/clear&save_00.png",ButtonsBG_ImageView, 1);
 							ButtonsBG_ImageView.setTag(0);
 						}
 						break;
 					case MotionEvent.ACTION_CANCEL:
 						if(Tag==1){
-							new ThreadReadBitMapInAssets(context, "pad/Settingsbar/clear&save_00.png",ButtonsBG_ImageView, 1);
+							new TKBThreadReadBitMapInAssets(context, "pad/Settingsbar/clear&save_00.png",ButtonsBG_ImageView, 1);
 							ButtonsBG_ImageView.setTag(0);
 						}
 						break;
@@ -185,7 +188,7 @@ public class FAM_VIEW_LISTNER {
 		}
 	}
 	public void Save_Button_LISTNER(Button Save_Button,final ImageView ButtonsBG_ImageView){
-		if(device_size==6){
+		if(DeviceProperty.isPhone()){
 			//***************************PHONE*********************************	
 			//***************************PHONE*********************************	
 		}else{
@@ -206,19 +209,19 @@ public class FAM_VIEW_LISTNER {
 					switch(event.getAction()){
 					case MotionEvent.ACTION_DOWN:
 						if(Tag==0){
-							new ThreadReadBitMapInAssets(context, "pad/Settingsbar/clear&save_02.png",ButtonsBG_ImageView, 1);
+							new TKBThreadReadBitMapInAssets(context, "pad/Settingsbar/clear&save_02.png",ButtonsBG_ImageView, 1);
 							ButtonsBG_ImageView.setTag(2);
 						}
 						break;
 					case MotionEvent.ACTION_UP:
 						if(Tag==2){
-							new ThreadReadBitMapInAssets(context, "pad/Settingsbar/clear&save_00.png",ButtonsBG_ImageView, 1);
+							new TKBThreadReadBitMapInAssets(context, "pad/Settingsbar/clear&save_00.png",ButtonsBG_ImageView, 1);
 							ButtonsBG_ImageView.setTag(0);
 						}
 						break;
 					case MotionEvent.ACTION_CANCEL:
 						if(Tag==2){
-							new ThreadReadBitMapInAssets(context, "pad/Settingsbar/clear&save_00.png",ButtonsBG_ImageView, 1);
+							new TKBThreadReadBitMapInAssets(context, "pad/Settingsbar/clear&save_00.png",ButtonsBG_ImageView, 1);
 							ButtonsBG_ImageView.setTag(0);
 						}
 						break;
@@ -230,7 +233,7 @@ public class FAM_VIEW_LISTNER {
 		}
 	}
 	public void Done_Button_LISTNER(Button Done_Button,final Button Edit_Button,final Button Clear_Button,final Fragment_Information fragment_Infor){
-		if(device_size==6){
+		if(DeviceProperty.isPhone()){
 			//***************************PHONE*********************************	
 			//***************************PHONE*********************************	
 		}else{
@@ -255,7 +258,7 @@ public class FAM_VIEW_LISTNER {
 		}
 	}
 	public void CycleRandom_IButton_LISTNER(final ImageButton Cycle_IButton,final ImageButton Random_IButton){
-		if(device_size==6){
+		if(DeviceProperty.isPhone()){
 			//***************************PHONE*********************************	
 			//***************************PHONE*********************************	
 		}else{
@@ -289,20 +292,20 @@ public class FAM_VIEW_LISTNER {
 						@Override
 						public void run() {
 							if(MR_PlayMode.equals("NORMAL")){
-								new ThreadReadBitMapInAssets(context, "pad/PlayBack/repeat_n.png", Cycle_IButton, 2);
-								new ThreadReadBitMapInAssets(context, "pad/PlayBack/shuffle_n.png", Random_IButton, 2);
+								new TKBThreadReadBitMapInAssets(context, "pad/PlayBack/repeat_n.png", Cycle_IButton, 2);
+								new TKBThreadReadBitMapInAssets(context, "pad/PlayBack/shuffle_n.png", Random_IButton, 2);
 								Cycle_IButton.setTag(0);
 							}else if(MR_PlayMode.equals("REPEAT_ALL")){
-								new ThreadReadBitMapInAssets(context, "pad/PlayBack/Repeat all.png", Cycle_IButton, 2);
-								new ThreadReadBitMapInAssets(context, "pad/PlayBack/shuffle_n.png", Random_IButton, 2);
+								new TKBThreadReadBitMapInAssets(context, "pad/PlayBack/Repeat all.png", Cycle_IButton, 2);
+								new TKBThreadReadBitMapInAssets(context, "pad/PlayBack/shuffle_n.png", Random_IButton, 2);
 								Cycle_IButton.setTag(1);
 							}else if(MR_PlayMode.equals("REPEAT_ONE")){
-								new ThreadReadBitMapInAssets(context, "pad/PlayBack/Repeat one.png", Cycle_IButton, 2);
-								new ThreadReadBitMapInAssets(context, "pad/PlayBack/shuffle_n.png", Random_IButton, 2);
+								new TKBThreadReadBitMapInAssets(context, "pad/PlayBack/Repeat one.png", Cycle_IButton, 2);
+								new TKBThreadReadBitMapInAssets(context, "pad/PlayBack/shuffle_n.png", Random_IButton, 2);
 								Cycle_IButton.setTag(2);	
 							}else if(MR_PlayMode.equals("SHUFFLE")||MR_PlayMode.equals("RANDOM")){
-								new ThreadReadBitMapInAssets(context, "pad/PlayBack/repeat_n.png", Cycle_IButton, 2);
-								new ThreadReadBitMapInAssets(context, "pad/PlayBack/shuffle_f.png", Random_IButton, 2);
+								new TKBThreadReadBitMapInAssets(context, "pad/PlayBack/repeat_n.png", Cycle_IButton, 2);
+								new TKBThreadReadBitMapInAssets(context, "pad/PlayBack/shuffle_f.png", Random_IButton, 2);
 								Cycle_IButton.setTag(3);
 							}
 							mlog.info(TAG, "SetPlay_IButton_State = "+MR_PlayMode);
@@ -312,14 +315,14 @@ public class FAM_VIEW_LISTNER {
 				}
 			};
 			//�`덜PlayMode EVEN
-			((MainFragmentActivity)context).GETDeviceDisplayList().setPlayMode_IButton_Listner(PMI_Listner);
+			((MainFragmentActivity)context).getDeviceDisplayList().setPlayMode_IButton_Listner(PMI_Listner);
 		}
 	}
 	private void SetPlayMode(int Mode){
 		//¾켹upnpServer
-		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
+		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).getUPnPService();
 		//¾켹MR Device
-		DeviceDisplay MR_Device = ((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer();
+		DeviceDisplay MR_Device = ((MainFragmentActivity)context).getDeviceDisplayList().getChooseMediaRenderer();
 		//¾켹instanceId
 		UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
 		//¾켹service
@@ -370,7 +373,7 @@ public class FAM_VIEW_LISTNER {
 		}
 	}
 //	public void Random_IButton_LISTNER(final ImageButton Random_IButton){
-//		if(device_size==6){
+//		if(DeviceProperty.isPhone()){
 //			//***************************PHONE*********************************	
 //			//***************************PHONE*********************************	
 //		}else{
@@ -396,7 +399,7 @@ public class FAM_VIEW_LISTNER {
 //		}
 //	}
 	public void Setting_IButton_LISTNER(ImageButton Setting_IButton) {
-		if(device_size==6){
+		if(DeviceProperty.isPhone()){
 			//***************************PHONE*********************************	
 			//***************************PHONE*********************************	
 		}else{
@@ -406,7 +409,7 @@ public class FAM_VIEW_LISTNER {
 				public void onClick(View v) {
 					if(fragmentManager.findFragmentByTag("Fragment_SETTING")==null){
 						Fragment_SETTING fragment_SETTING = new Fragment_SETTING();
-						Tool.FragmentActivity_MainReplaceAddStackFragment(fragmentManager.beginTransaction(), fragment_SETTING, "Fragment_SETTING", R.id.FAM_RLayout_SETTING_RLayoutt, R.animator.translate_right_in, R.animator.alpha_out,R.animator.alpha_in, R.animator.translate_right_out);
+						TKBTool.animationReplaceNAdd2BackFragment(fragmentManager.beginTransaction(), fragment_SETTING, "Fragment_SETTING", R.id.FAM_RLayout_SETTING_RLayoutt, R.animator.translate_right_in, R.animator.alpha_out,R.animator.alpha_in, R.animator.translate_right_out);
 					}					
 				}
 			});
@@ -415,7 +418,7 @@ public class FAM_VIEW_LISTNER {
 	}
 	
 	public void Previous_IButton_LISTNER(ImageButton Previous_IButton){
-		if(device_size==6){
+		if(DeviceProperty.isPhone()){
 			//***************************PHONE*********************************	
 			//***************************PHONE*********************************	
 		}else{
@@ -424,9 +427,9 @@ public class FAM_VIEW_LISTNER {
 				@Override
 				public void onClick(View v) {
 					//¾켹upnpServer
-					AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
+					AndroidUpnpService upnpServer = ((MainFragmentActivity)context).getUPnPService();
 					//¾켹MR Device
-					DeviceDisplay MR_Device = ((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer();
+					DeviceDisplay MR_Device = ((MainFragmentActivity)context).getDeviceDisplayList().getChooseMediaRenderer();
 					//¾켹instanceId
 					UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
 					//¾켹service
@@ -472,7 +475,7 @@ public class FAM_VIEW_LISTNER {
 	}
 	
 	public void Next_IButton_LISTNER(ImageButton Next_IButton){
-		if(device_size==6){
+		if(DeviceProperty.isPhone()){
 			//***************************PHONE*********************************	
 			//***************************PHONE*********************************	
 		}else{
@@ -481,9 +484,9 @@ public class FAM_VIEW_LISTNER {
 				@Override
 				public void onClick(View v) {
 					//¾켹upnpServer
-					AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
+					AndroidUpnpService upnpServer = ((MainFragmentActivity)context).getUPnPService();
 					//¾켹MR Device
-					DeviceDisplay MR_Device = ((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer();
+					DeviceDisplay MR_Device = ((MainFragmentActivity)context).getDeviceDisplayList().getChooseMediaRenderer();
 					//¾켹instanceId
 					UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
 					//¾켹service
@@ -530,7 +533,7 @@ public class FAM_VIEW_LISTNER {
 	
 	
 	public void Play_IButton_LISTNER(final ImageButton Play_IButton) {
-		if(device_size==6){
+		if(DeviceProperty.isPhone()){
 			//***************************PHONE*********************************	
 			//***************************PHONE*********************************	
 		}else{
@@ -560,7 +563,7 @@ public class FAM_VIEW_LISTNER {
 						@Override
 						public void run() {
 							Play_IButton.setTag(0);
-							new ThreadReadStateListInAssets(context, "phone/play_volume/play_f.png","phone/play_volume/play_n.png", Play_IButton, 2);	
+							new TKBThreadReadStateListInAssets(context, "phone/play_volume/play_f.png","phone/play_volume/play_n.png", Play_IButton, 2);	
 						}
 					});
 					
@@ -569,7 +572,7 @@ public class FAM_VIEW_LISTNER {
 						@Override
 						public void run() {
 							Play_IButton.setTag(1);
-							new ThreadReadStateListInAssets(context, "phone/play_volume/stop_f.png","phone/play_volume/stop_n.png", Play_IButton, 2);	
+							new TKBThreadReadStateListInAssets(context, "phone/play_volume/stop_f.png","phone/play_volume/stop_n.png", Play_IButton, 2);	
 						}
 					});
 				}
@@ -577,14 +580,14 @@ public class FAM_VIEW_LISTNER {
 			}
 		};
 		//�`덜Play EVEN
-		((MainFragmentActivity)context).GETDeviceDisplayList().setPlay_IButton_Listner(PI_Listner);
+		((MainFragmentActivity)context).getDeviceDisplayList().setPlay_IButton_Listner(PI_Listner);
 		
 	}
 	private void StopMusic(){
 		//¾켹upnpServer
-		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
+		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).getUPnPService();
 		//¾켹MR Device
-		DeviceDisplay MR_Device = ((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer();
+		DeviceDisplay MR_Device = ((MainFragmentActivity)context).getDeviceDisplayList().getChooseMediaRenderer();
 		//¾켹instanceId
 		UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
 		//¾켹service
@@ -613,9 +616,9 @@ public class FAM_VIEW_LISTNER {
 	}
 	private void PlayMusic(){
 		//¾켹upnpServer
-		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
+		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).getUPnPService();
 		//¾켹MR Device
-		DeviceDisplay MR_Device = ((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer();
+		DeviceDisplay MR_Device = ((MainFragmentActivity)context).getDeviceDisplayList().getChooseMediaRenderer();
 		//¾켹instanceId
 		UnsignedIntegerFourBytes instanceId = new UnsignedIntegerFourBytes("0");
 		//¾켹service
@@ -675,7 +678,7 @@ public class FAM_VIEW_LISTNER {
 				
 			}
 		};
-		((MainFragmentActivity)context).GETDeviceDisplayList().setMusic_SeekBar_Listner(music_SeekBar_Listner);
+		((MainFragmentActivity)context).getDeviceDisplayList().setMusic_SeekBar_Listner(music_SeekBar_Listner);
 	}
 	public void Sound_SeekBarLISTNER(final SeekBar Sound_SeekBar,final ImageView Sound_ImageButton){
 		Sound_SeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
@@ -706,18 +709,18 @@ public class FAM_VIEW_LISTNER {
 				Sound_SeekBar.setProgress(volume);				
 			}
 		};
-		((MainFragmentActivity)context).GETDeviceDisplayList().setSound_SeekBar_Listner(sound_SeekBar_Listner);
+		((MainFragmentActivity)context).getDeviceDisplayList().setSound_SeekBar_Listner(sound_SeekBar_Listner);
 	}
 	
 	private void setSound_Image(int Vol,ImageView Sound_ImageButton){
 		if(Vol ==0){
-			new ThreadReadBitMapInAssets(context, "pad/PlayBack/volumn_mute.png",Sound_ImageButton, 1);
+			new TKBThreadReadBitMapInAssets(context, "pad/PlayBack/volumn_mute.png",Sound_ImageButton, 1);
 		}else if(Vol>=1&&Vol<=50){
-			new ThreadReadBitMapInAssets(context, "pad/PlayBack/volumn_01.png",Sound_ImageButton, 1);
+			new TKBThreadReadBitMapInAssets(context, "pad/PlayBack/volumn_01.png",Sound_ImageButton, 1);
 		}else if(Vol>=51&&Vol<=99){
-			new ThreadReadBitMapInAssets(context, "pad/PlayBack/volumn_02.png",Sound_ImageButton, 1);
+			new TKBThreadReadBitMapInAssets(context, "pad/PlayBack/volumn_02.png",Sound_ImageButton, 1);
 		}else{
-			new ThreadReadBitMapInAssets(context, "pad/PlayBack/volumn_03.png",Sound_ImageButton, 1);
+			new TKBThreadReadBitMapInAssets(context, "pad/PlayBack/volumn_03.png",Sound_ImageButton, 1);
 		}		
 	}
 	

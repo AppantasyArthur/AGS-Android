@@ -3,23 +3,22 @@ package com.FI.SETTING;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.alpha.upnpui.MainFragmentActivity;
-import com.alpha.upnpui.R;
-import com.tkb.tool.MLog;
-import com.tkb.tool.ThreadReadBitMapInAssets;
-import com.tkb.tool.Tool;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 
+import com.alpha.upnpui.MainFragmentActivity;
+import com.alpha.util.DeviceProperty;
+import com.tkb.tool.TKBLog;
+import com.tkb.tool.TKBThreadReadBitMapInAssets;
+import com.tkb.tool.TKBTool;
+
 public class FI_PointLiLayout extends LinearLayout {
 	private Context context;
-	private MLog mlog = new MLog();
+	private TKBLog mlog = new TKBLog();
 	private static final String TAG = "BaseWord_PointLiLayout";
 	private List<ImageView> PointList;
 	private int Current = -1;
@@ -27,14 +26,14 @@ public class FI_PointLiLayout extends LinearLayout {
 	public FI_PointLiLayout(Context context) {
 		super(context);			
 		this.context = context;
-		this.device_size = ((MainFragmentActivity)context).getDevice_Size();
-		this.mlog.LogSwitch = true;
+		this.device_size = ((MainFragmentActivity)context).getDeviceScreenSize();
+		this.mlog.switchLog = true;
 	}
 	public FI_PointLiLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);	
 		this.context = context;
-		this.device_size = ((MainFragmentActivity)context).getDevice_Size();
-		this.mlog.LogSwitch = true;
+		this.device_size = ((MainFragmentActivity)context).getDeviceScreenSize();
+		this.mlog.switchLog = true;
 	}
 	
 	public void setPointCount(int Count){	
@@ -48,20 +47,20 @@ public class FI_PointLiLayout extends LinearLayout {
 		for(int i =0;i<Count;i++){
 			ImageView Point = new ImageView(context);			
 			this.addView(Point);
-			if(device_size==6){
-				Tool.fitsViewWidth(9, Point);
-				Point.getLayoutParams().height = Tool.getWidth(9);
+			if(DeviceProperty.isPhone()){
+				TKBTool.fitsViewWidth(9, Point);
+				Point.getLayoutParams().height = TKBTool.getWidth(9);
 			}else{
-				Tool.fitsViewHeight(9, Point);
-				Point.getLayoutParams().width = Tool.getHeight(9);
+				TKBTool.fitsViewHeight(9, Point);
+				Point.getLayoutParams().width = TKBTool.getHeight(9);
 			}
 			
 			Point.setBackgroundColor(Color.parseColor("#00000000"));
 			Point.setScaleType(ScaleType.FIT_XY);
 			if(i == Current){
-				new ThreadReadBitMapInAssets(context, "pad/Nowplaying/spot_f.png", Point, 1);
+				new TKBThreadReadBitMapInAssets(context, "pad/Nowplaying/spot_f.png", Point, 1);
 			}else{
-				new ThreadReadBitMapInAssets(context, "pad/Nowplaying/spot_n.png", Point, 1);				
+				new TKBThreadReadBitMapInAssets(context, "pad/Nowplaying/spot_n.png", Point, 1);				
 			}
 			
 			PointList.add(Point);
@@ -70,12 +69,12 @@ public class FI_PointLiLayout extends LinearLayout {
 	public void setPointCurrent(int CurrentPoint){		
 		if(Current>=0&&Current<PointList.size()){
 			ImageView PointCurrent = PointList.get(Current);
-			new ThreadReadBitMapInAssets(context, "pad/Nowplaying/spot_n.png", PointCurrent, 1);
+			new TKBThreadReadBitMapInAssets(context, "pad/Nowplaying/spot_n.png", PointCurrent, 1);
 		}	
 		Current = CurrentPoint;
 		if(CurrentPoint>=0){			
 			ImageView Point = PointList.get(CurrentPoint);
-			new ThreadReadBitMapInAssets(context, "pad/Nowplaying/spot_f.png", Point, 1);
+			new TKBThreadReadBitMapInAssets(context, "pad/Nowplaying/spot_f.png", Point, 1);
 		}
 		
 	}

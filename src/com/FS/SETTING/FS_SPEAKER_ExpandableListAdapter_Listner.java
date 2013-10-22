@@ -1,6 +1,6 @@
 package com.FS.SETTING;
 
-import com.alpha.UPNP.DeviceDisplay;
+import com.alpha.upnp.DeviceDisplay;
 
 public interface FS_SPEAKER_ExpandableListAdapter_Listner {
 	public void SetPositionChange();

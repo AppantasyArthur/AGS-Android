@@ -1,6 +1,7 @@
 package com.FM.SETTING;
 
 import java.util.List;
+
 import org.teleal.cling.android.AndroidUpnpService;
 import org.teleal.cling.model.action.ActionInvocation;
 import org.teleal.cling.model.message.UpnpResponse;
@@ -13,14 +14,7 @@ import org.teleal.cling.support.model.DIDLContent;
 import org.teleal.cling.support.model.SortCriterion;
 import org.teleal.cling.support.model.container.Container;
 import org.teleal.cling.support.model.item.Item;
-import com.FM.SETTING.FM_Music_ListView_BaseAdapter_PAD.ViewHandler;
-import com.appantasy.androidapptemplate.event.lastchange.TrackDO;
-import com.alpha.upnpui.MainFragmentActivity;
-import com.alpha.upnpui.Fragment_SETTING;
-import com.alpha.upnpui.R;
-import com.tkb.tool.MLog;
-import com.tkb.tool.ThreadReadBitMapInAssets;
-import com.tkb.tool.Tool;
+
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
@@ -36,15 +30,25 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.FM.SETTING.FM_Music_ListView_BaseAdapter_PAD.ViewHandler;
+import com.alpha.upnp.parser.TrackDO;
+import com.alpha.upnpui.Fragment_SETTING;
+import com.alpha.upnpui.MainFragmentActivity;
+import com.alpha.upnpui.R;
+import com.alpha.util.DeviceProperty;
+import com.tkb.tool.TKBLog;
+import com.tkb.tool.TKBThreadReadBitMapInAssets;
+import com.tkb.tool.TKBTool;
+
 public class FM_VIEW_LISTNER {
 	private Context context;
-	private MLog mlog = new MLog();
+	private TKBLog mlog = new TKBLog();
 	private static final String TAG = "FM_VIEW_LISTNER";
 	private int device_size = 0;
 	private FragmentManager fragmentManager;
 	public FM_VIEW_LISTNER(Context context, int device_size,FragmentManager fragmentManager) {
 		this.context = context;
-		this.mlog.LogSwitch = true;
+		this.mlog.switchLog = true;
 		this.device_size = device_size;
 		this.fragmentManager = fragmentManager;
 	}
@@ -64,15 +68,15 @@ public class FM_VIEW_LISTNER {
 			}
 		});
 	}
-	private FM_PopupWindow fm_PopupWindow;
+	private MusicBrowsingControlOptionPopupWindow fm_PopupWindow;
 	public void SET_Music_ListView_Listner(FM_ListView Music_ListView, final Button MusicBack_Button){
-		fm_PopupWindow = new FM_PopupWindow(context);
-		if(device_size==6){
+		fm_PopupWindow = new MusicBrowsingControlOptionPopupWindow(context);
+		if(DeviceProperty.isPhone()){
 			//***************************PHONE*********************************	
 			Music_ListView.setOnItemClickListener(new OnItemClickListener(){				
 				@Override
 				public void onItemClick(final AdapterView<?> adapterView, final View view, int arg2, long arg3) {
-					AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
+					AndroidUpnpService upnpServer = ((MainFragmentActivity)context).getUPnPService();
 					
 					com.FM.SETTING.FM_Music_ListView_BaseAdapter_Phone.ViewHandler viewHandler = (com.FM.SETTING.FM_Music_ListView_BaseAdapter_Phone.ViewHandler)view.getTag();
 					
@@ -191,7 +195,7 @@ public class FM_VIEW_LISTNER {
 			Music_ListView.setOnItemClickListener(new OnItemClickListener(){				
 				@Override
 				public void onItemClick(final AdapterView<?> adapterView, final View view, int arg2, long arg3) {
-					AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
+					AndroidUpnpService upnpServer = ((MainFragmentActivity)context).getUPnPService();
 					ViewHandler viewHandler = (ViewHandler)view.getTag();
 					int kind = ((ViewHandler)view.getTag()).kindOfItme;					
 					SortCriterion[] sortCriterion = new SortCriterion[]{new SortCriterion("+dc:title")};
@@ -313,7 +317,7 @@ public class FM_VIEW_LISTNER {
 	}
 
 	public void SET_SearchMusic_RLayout_Listner(final RelativeLayout SearchMusic_RLayout,final RelativeLayout TITLE2_RLayout,final RelativeLayout TITLE3_RLayout){
-		if(device_size==6){
+		if(DeviceProperty.isPhone()){
 			//***************************PHONE*********************************	
 			//***************************PHONE*********************************	
 		}else{
@@ -334,7 +338,7 @@ public class FM_VIEW_LISTNER {
 				}
 
 				public void SET_SearchMusic_RLayout_Listner(final RelativeLayout SearchMusic_RLayout,final RelativeLayout TITLE2_RLayout,final RelativeLayout TITLE3_RLayout){
-					if(device_size==6){
+					if(DeviceProperty.isPhone()){
 						//***************************PHONE*********************************	
 						//***************************PHONE*********************************	
 					}else{
@@ -363,17 +367,17 @@ public class FM_VIEW_LISTNER {
 	}
 	public void SET_SerchCondition1_Button_Listner(Button SerchCondition1_Button,final ImageView SerchConditionBG_ImageView){
 		
-		if(device_size==6){
+		if(DeviceProperty.isPhone()){
 			//***************************PHONE*********************************	
 			SerchCondition1_Button.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					int Tag = (Integer)SerchConditionBG_ImageView.getTag();
 					if(Tag==1){
-						new ThreadReadBitMapInAssets(context, "phone/playlist/search_btn_00.png", SerchConditionBG_ImageView, 1);
+						new TKBThreadReadBitMapInAssets(context, "phone/playlist/search_btn_00.png", SerchConditionBG_ImageView, 1);
 						SerchConditionBG_ImageView.setTag(0);
 					}else{
-						new ThreadReadBitMapInAssets(context, "phone/playlist/search_btn_f_01.png", SerchConditionBG_ImageView, 1);
+						new TKBThreadReadBitMapInAssets(context, "phone/playlist/search_btn_f_01.png", SerchConditionBG_ImageView, 1);
 						SerchConditionBG_ImageView.setTag(1);
 					}
 				}
@@ -386,10 +390,10 @@ public class FM_VIEW_LISTNER {
 				public void onClick(View v) {
 					int Tag = (Integer)SerchConditionBG_ImageView.getTag();
 					if(Tag==1){
-						new ThreadReadBitMapInAssets(context, "pad/Playlist/search_btn_00.png", SerchConditionBG_ImageView, 1);
+						new TKBThreadReadBitMapInAssets(context, "pad/Playlist/search_btn_00.png", SerchConditionBG_ImageView, 1);
 						SerchConditionBG_ImageView.setTag(0);
 					}else{
-						new ThreadReadBitMapInAssets(context, "pad/Playlist/search_btn_01.png", SerchConditionBG_ImageView, 1);
+						new TKBThreadReadBitMapInAssets(context, "pad/Playlist/search_btn_01.png", SerchConditionBG_ImageView, 1);
 						SerchConditionBG_ImageView.setTag(1);
 					}
 				}
@@ -399,17 +403,17 @@ public class FM_VIEW_LISTNER {
 	}
 	public void SET_SerchCondition2_Button_Listner(Button SerchCondition2_Button,final ImageView SerchConditionBG_ImageView){
 		
-		if(device_size==6){
+		if(DeviceProperty.isPhone()){
 			//***************************PHONE*********************************	
 			SerchCondition2_Button.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					int Tag = (Integer)SerchConditionBG_ImageView.getTag();
 					if(Tag==2){
-						new ThreadReadBitMapInAssets(context, "phone/playlist/search_btn_00.png", SerchConditionBG_ImageView, 1);
+						new TKBThreadReadBitMapInAssets(context, "phone/playlist/search_btn_00.png", SerchConditionBG_ImageView, 1);
 						SerchConditionBG_ImageView.setTag(0);
 					}else{
-						new ThreadReadBitMapInAssets(context, "phone/playlist/search_btn_f_02.png", SerchConditionBG_ImageView, 1);
+						new TKBThreadReadBitMapInAssets(context, "phone/playlist/search_btn_f_02.png", SerchConditionBG_ImageView, 1);
 						SerchConditionBG_ImageView.setTag(2);
 					}
 				}
@@ -422,10 +426,10 @@ public class FM_VIEW_LISTNER {
 				public void onClick(View v) {
 					int Tag = (Integer)SerchConditionBG_ImageView.getTag();
 					if(Tag==2){
-						new ThreadReadBitMapInAssets(context, "pad/Playlist/search_btn_00.png", SerchConditionBG_ImageView, 1);
+						new TKBThreadReadBitMapInAssets(context, "pad/Playlist/search_btn_00.png", SerchConditionBG_ImageView, 1);
 						SerchConditionBG_ImageView.setTag(0);
 					}else{
-						new ThreadReadBitMapInAssets(context, "pad/Playlist/search_btn_02.png", SerchConditionBG_ImageView, 1);
+						new TKBThreadReadBitMapInAssets(context, "pad/Playlist/search_btn_02.png", SerchConditionBG_ImageView, 1);
 						SerchConditionBG_ImageView.setTag(2);
 					}
 				}
@@ -435,17 +439,17 @@ public class FM_VIEW_LISTNER {
 	}
 	public void SET_SerchCondition3_Button_Listner(Button SerchCondition3_Button,final ImageView SerchConditionBG_ImageView){
 		
-		if(device_size==6){
+		if(DeviceProperty.isPhone()){
 			//***************************PHONE*********************************	
 			SerchCondition3_Button.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					int Tag = (Integer)SerchConditionBG_ImageView.getTag();
 					if(Tag==3){
-						new ThreadReadBitMapInAssets(context, "phone/playlist/search_btn_00.png", SerchConditionBG_ImageView, 1);
+						new TKBThreadReadBitMapInAssets(context, "phone/playlist/search_btn_00.png", SerchConditionBG_ImageView, 1);
 						SerchConditionBG_ImageView.setTag(0);
 					}else{
-						new ThreadReadBitMapInAssets(context, "phone/playlist/search_btn_f_03.png", SerchConditionBG_ImageView, 1);
+						new TKBThreadReadBitMapInAssets(context, "phone/playlist/search_btn_f_03.png", SerchConditionBG_ImageView, 1);
 						SerchConditionBG_ImageView.setTag(3);
 					}
 				}
@@ -458,10 +462,10 @@ public class FM_VIEW_LISTNER {
 				public void onClick(View v) {
 					int Tag = (Integer)SerchConditionBG_ImageView.getTag();
 					if(Tag==3){
-						new ThreadReadBitMapInAssets(context, "pad/Playlist/search_btn_00.png", SerchConditionBG_ImageView, 1);
+						new TKBThreadReadBitMapInAssets(context, "pad/Playlist/search_btn_00.png", SerchConditionBG_ImageView, 1);
 						SerchConditionBG_ImageView.setTag(0);
 					}else{
-						new ThreadReadBitMapInAssets(context, "pad/Playlist/search_btn_03.png", SerchConditionBG_ImageView, 1);
+						new TKBThreadReadBitMapInAssets(context, "pad/Playlist/search_btn_03.png", SerchConditionBG_ImageView, 1);
 						SerchConditionBG_ImageView.setTag(3);
 					}
 				}
@@ -471,17 +475,17 @@ public class FM_VIEW_LISTNER {
 	}
 	public void SET_SerchCondition4_Button_Listner(Button SerchCondition4_Button,final ImageView SerchConditionBG_ImageView){
 		
-		if(device_size==6){
+		if(DeviceProperty.isPhone()){
 			//***************************PHONE*********************************
 			SerchCondition4_Button.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					int Tag = (Integer)SerchConditionBG_ImageView.getTag();
 					if(Tag==4){
-						new ThreadReadBitMapInAssets(context, "phone/playlist/search_btn_00.png", SerchConditionBG_ImageView, 1);
+						new TKBThreadReadBitMapInAssets(context, "phone/playlist/search_btn_00.png", SerchConditionBG_ImageView, 1);
 						SerchConditionBG_ImageView.setTag(0);
 					}else{
-						new ThreadReadBitMapInAssets(context, "phone/playlist/search_btn_f_04.png", SerchConditionBG_ImageView, 1);
+						new TKBThreadReadBitMapInAssets(context, "phone/playlist/search_btn_f_04.png", SerchConditionBG_ImageView, 1);
 						SerchConditionBG_ImageView.setTag(4);
 					}
 				}
@@ -494,10 +498,10 @@ public class FM_VIEW_LISTNER {
 				public void onClick(View v) {
 					int Tag = (Integer)SerchConditionBG_ImageView.getTag();
 					if(Tag==4){
-						new ThreadReadBitMapInAssets(context, "pad/Playlist/search_btn_00.png", SerchConditionBG_ImageView, 1);
+						new TKBThreadReadBitMapInAssets(context, "pad/Playlist/search_btn_00.png", SerchConditionBG_ImageView, 1);
 						SerchConditionBG_ImageView.setTag(0);
 					}else{
-						new ThreadReadBitMapInAssets(context, "pad/Playlist/search_btn_04.png", SerchConditionBG_ImageView, 1);
+						new TKBThreadReadBitMapInAssets(context, "pad/Playlist/search_btn_04.png", SerchConditionBG_ImageView, 1);
 						SerchConditionBG_ImageView.setTag(4);
 					}
 				}
@@ -508,7 +512,7 @@ public class FM_VIEW_LISTNER {
 	
 
 	public void SET_MusicBack_Button_Listner(Button MusicBack,final FM_ListView Music_ListView) {
-		if(device_size==6){
+		if(DeviceProperty.isPhone()){
 			//***************************PHONE*********************************	
 			MusicBack.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -529,7 +533,7 @@ public class FM_VIEW_LISTNER {
 		}
 	}
 	public void SET_MusicTop_Button_Listner(final Button MusicBack, Button MusicTop,final FM_ListView Music_ListView){
-		if(device_size==6){
+		if(DeviceProperty.isPhone()){
 			//***************************PHONE*********************************	
 			MusicTop.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -557,7 +561,7 @@ public class FM_VIEW_LISTNER {
 			public void onClick(View v) {
 				if(fragmentManager.findFragmentByTag("Fragment_SETTING")==null){
 					Fragment_SETTING fragment_SETTING = new Fragment_SETTING();
-					Tool.FragmentActivity_MainReplaceAddStackFragment(fragmentManager.beginTransaction(), fragment_SETTING, "Fragment_SETTING", R.id.pFAM_RLayout_SETTING_FLayoutt, R.animator.translate_right_in, R.animator.alpha_out,R.animator.alpha_in, R.animator.translate_right_out);
+					TKBTool.animationReplaceNAdd2BackFragment(fragmentManager.beginTransaction(), fragment_SETTING, "Fragment_SETTING", R.id.pFAM_RLayout_SETTING_FLayoutt, R.animator.translate_right_in, R.animator.alpha_out,R.animator.alpha_in, R.animator.translate_right_out);
 				}
 			}
 		});		

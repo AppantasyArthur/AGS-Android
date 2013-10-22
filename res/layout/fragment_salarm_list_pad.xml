@@ -8,7 +8,7 @@
 	<RelativeLayout 
 	    android:id="@+id/FSAl_List_RLayout_TITLE_RLayout"
     	android:layout_width="match_parent"
-   		android:layout_height="wrap_content"
+   		android:layout_height="fill_parent"
    		android:layout_alignParentTop="true"
    		android:background="#00000000"
 	    > 
@@ -23,7 +23,7 @@
 	    <Button
             android:id="@+id/FSAl_List_RLayout_RLayout_Back_Button"
         	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
+        	android:layout_height="fill_parent"
         	android:layout_alignParentLeft="true"
         	android:layout_centerVertical="true"
         	android:padding="0dp"        	
@@ -34,7 +34,7 @@
 	    <Button
             android:id="@+id/FSAl_List_RLayout_RLayout_Edit_Button"
         	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
+        	android:layout_height="fill_parent"
         	android:layout_toRightOf="@+id/FSAl_List_RLayout_RLayout_Back_Button"
         	android:layout_centerVertical="true"
         	android:padding="0dp"        	
@@ -46,7 +46,7 @@
 	    <TextView 
             android:id="@+id/FSAl_List_RLayout_RLayout_Title_TextView"
         	android:layout_width="match_parent"
-        	android:layout_height="wrap_content"
+        	android:layout_height="fill_parent"
         	android:layout_centerInParent="true"
         	android:padding="0dp"
         	android:textStyle="bold"
@@ -57,7 +57,7 @@
 	    <Button
             android:id="@+id/FSAl_List_RLayout_RLayout_Add_Button"
         	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
+        	android:layout_height="fill_parent"
         	android:layout_alignParentRight="true"
         	android:layout_centerVertical="true"
         	android:padding="0dp"        	
@@ -67,15 +67,15 @@
 	</RelativeLayout>
 	<RelativeLayout 
 	    android:id="@+id/FSAl_List_RLayout_BODY_RLayout"
-    	android:layout_width="match_parent"
-   		android:layout_height="match_parent"
+    	android:layout_width="fill_parent"
+   		android:layout_height="fill_parent"
    		android:layout_below="@+id/FSAl_List_RLayout_TITLE_RLayout"
    		android:background="#00000000"
 	    >
 	    <TextView 
-	        android:id="@+id/FSAl_List_RLayout_RLayout_Alarm_TextView "
+	        android:id="@+id/AlarmSettingNoAlarmSign "
 	    	android:layout_width="wrap_content"
-	   		android:layout_height="wrap_content"
+	   		android:layout_height="fill_parent"
 	   		android:layout_centerInParent="true"
 	   		android:textStyle="bold"
 	   		android:textColor="#ffffff"
@@ -83,17 +83,17 @@
 	   		android:visibility="invisible"
 	        /> 
 	    <RelativeLayout 
-	        android:id="@+id/FSAl_List_RLayout_RLayout_Alarm_RLayout"
-	    	android:layout_width="wrap_content"
-	   		android:layout_height="wrap_content"
+	        android:id="@+id/AlarmSettingListViewPadViewLayout"
+	    	android:layout_width="fill_parent"
+	   		android:layout_height="fill_parent"
 	   		android:layout_alignParentTop="true"
 		   	android:layout_alignParentLeft="true"
 	   		android:background="#00000000"
 	        > 
 		    <ListView 
-		        android:id="@+id/FSAl_List_RLayout_RLayout_Alarm_ListView"
-		    	android:layout_width="match_parent"
-		   		android:layout_height="match_parent"
+		        android:id="@+id/AlarmSettingListViewPadView"
+		    	android:layout_width="fill_parent"
+		   		android:layout_height="fill_parent"
 				android:layout_alignParentTop="true"
 		   		android:layout_alignParentLeft="true"
 		   		android:listSelector="@android:color/transparent"

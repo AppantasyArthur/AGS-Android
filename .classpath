@@ -4,10 +4,18 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry exported="true" kind="lib" path="libs/android-support-v4.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/cling-core-1.0.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/cling-core-1.0.5.jar" sourcepath="/cling-core"/>
 	<classpathentry exported="true" kind="lib" path="libs/teleal-common-1.0.14.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/cling-support-1.0.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/commons-lang3-3.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/nanohttpd-webserver-1.0.0.jar"/>
+	<classpathentry kind="lib" path="libs/nanohttpd-1.0.0.jar" sourcepath="/nanohttpd"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cling-core"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cling-support"/>
+	<classpathentry exported="true" kind="lib" path="/Users/arthurlai/git/AGS-Android-0904/libs/nanohttpd-webserver-1.0.0.jar"/>
+	<classpathentry kind="src" path="/nanohttpd-webserver"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nanohttpd"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

@@ -13,14 +13,15 @@ import org.teleal.cling.model.meta.ActionArgument;
 import org.teleal.cling.model.meta.Device;
 import org.teleal.cling.model.meta.Service;
 import org.teleal.cling.model.types.UDAServiceId;
-import com.alpha.UPNP.DeviceDisplay;
+
+import com.alpha.upnp.DeviceDisplay;
+import com.alpha.upnp.parser.GroupVO;
 import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
-import com.appantasy.androidapptemplate.event.lastchange.GroupVO;
-import com.tkb.tool.MLog;
-import com.tkb.tool.ThreadReadBitMapInAssets;
-import com.tkb.tool.ThreadReadStateListInAssets;
-import com.tkb.tool.Tool;
+import com.tkb.tool.TKBLog;
+import com.tkb.tool.TKBThreadReadBitMapInAssets;
+import com.tkb.tool.TKBThreadReadStateListInAssets;
+import com.tkb.tool.TKBTool;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
@@ -33,13 +34,13 @@ public class FS_PopupWindow extends PopupWindow {
 	private View contentView;
 	
 	private Context context;
-	private MLog mlog = new MLog();
+	private TKBLog mlog = new TKBLog();
 	private static final String TAG = "FS_PopupWindow";
 	private List<OptionButton> OptionButtonsList;
 	private DeviceDisplay addDeviceDisplay;
 	public FS_PopupWindow(Context context){
 		super(context);
-		this.mlog.LogSwitch = true;
+		this.mlog.switchLog = true;
 		this.context = context;
 		
 		CreateContentView();
@@ -59,50 +60,50 @@ public class FS_PopupWindow extends PopupWindow {
 	private void CreateContentView() {
 		this.contentView = LayoutInflater.from(context).inflate(R.layout.fs_popupwindow_context, null,true);
 		//Content RLayout
-		Tool.fitsViewHeight(479, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout));
-		Tool.fitsViewWidth(417, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout));
-		new ThreadReadBitMapInAssets(context, "pad/pop/group_01_bg.png", this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout), 3);
+		TKBTool.fitsViewHeight(479, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout));
+		TKBTool.fitsViewWidth(417, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout));
+		new TKBThreadReadBitMapInAssets(context, "pad/pop/group_01_bg.png", this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout), 3);
 		//TITLE RLayout
-		Tool.fitsViewHeight(61, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_TITLE_RLayout));
+		TKBTool.fitsViewHeight(61, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_TITLE_RLayout));
 		//Close Button
-		Tool.fitsViewHeight(35, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Close_Button));
-		Tool.fitsViewWidth(56, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Close_Button));
-		Tool.fitsViewTopMargin(13, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Close_Button));
-		Tool.fitsViewLeftMargin(32, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Close_Button));
-		Tool.fitsViewTextSize(6, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Close_Button));
-		new ThreadReadStateListInAssets(context, "pad/pop/cancel_f.png", "pad/pop/cancel_n.png", this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Close_Button), 4);
+		TKBTool.fitsViewHeight(35, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Close_Button));
+		TKBTool.fitsViewWidth(56, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Close_Button));
+		TKBTool.fitsViewTopMargin(13, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Close_Button));
+		TKBTool.fitsViewLeftMargin(32, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Close_Button));
+		TKBTool.fitsViewTextSize(6, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Close_Button));
+		new TKBThreadReadStateListInAssets(context, "pad/pop/cancel_f.png", "pad/pop/cancel_n.png", this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Close_Button), 4);
 		//Title TextView		
-		Tool.fitsViewTextSize(8, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Title_TextView));
+		TKBTool.fitsViewTextSize(8, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Title_TextView));
 		//Done Button
-		Tool.fitsViewHeight(35, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Done_Button));
-		Tool.fitsViewWidth(56, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Done_Button));
-		Tool.fitsViewTopMargin(13, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Done_Button));
-		Tool.fitsViewRightMargin(32, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Done_Button));
-		Tool.fitsViewTextSize(6, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Done_Button));
-		new ThreadReadStateListInAssets(context, "pad/pop/done_f.png", "pad/pop/done_n.png", this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Done_Button), 4);
+		TKBTool.fitsViewHeight(35, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Done_Button));
+		TKBTool.fitsViewWidth(56, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Done_Button));
+		TKBTool.fitsViewTopMargin(13, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Done_Button));
+		TKBTool.fitsViewRightMargin(32, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Done_Button));
+		TKBTool.fitsViewTextSize(6, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Done_Button));
+		new TKBThreadReadStateListInAssets(context, "pad/pop/done_f.png", "pad/pop/done_n.png", this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Done_Button), 4);
 		//Body_RLayout
-		Tool.fitsViewHeight(359, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Body_RLayout));
-		Tool.fitsViewWidth(357, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Body_RLayout));
-		new ThreadReadBitMapInAssets(context, "pad/pop/group_02_bg.png", this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Body_RLayout), 3);
+		TKBTool.fitsViewHeight(359, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Body_RLayout));
+		TKBTool.fitsViewWidth(357, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Body_RLayout));
+		new TKBThreadReadBitMapInAssets(context, "pad/pop/group_02_bg.png", this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Body_RLayout), 3);
 		//Choose TextView
-		Tool.fitsViewHeight(35, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Choose_TextView));
-		Tool.fitsViewWidth(342, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Choose_TextView));
-		Tool.fitsViewTextSize(6, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Choose_TextView));
-		Tool.fitsViewTopMargin(3,this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Choose_TextView));
+		TKBTool.fitsViewHeight(35, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Choose_TextView));
+		TKBTool.fitsViewWidth(342, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Choose_TextView));
+		TKBTool.fitsViewTextSize(6, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Choose_TextView));
+		TKBTool.fitsViewTopMargin(3,this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Choose_TextView));
 		//ChooseNmae TextView
-		Tool.fitsViewHeight(30, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_ChooseName_TextView));
-		Tool.fitsViewWidth(342, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_ChooseName_TextView));
-		Tool.fitsViewTextSize(4, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_ChooseName_TextView));
+		TKBTool.fitsViewHeight(30, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_ChooseName_TextView));
+		TKBTool.fitsViewWidth(342, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_ChooseName_TextView));
+		TKBTool.fitsViewTextSize(4, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_ChooseName_TextView));
 		//ChooseScroll ScrollView
-		Tool.fitsViewHeight(280, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_ChooseScroll_ScrollView));
-		Tool.fitsViewWidth(342, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_ChooseScroll_ScrollView));
-		Tool.fitsViewTopMargin(71, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_ChooseScroll_ScrollView));
+		TKBTool.fitsViewHeight(280, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_ChooseScroll_ScrollView));
+		TKBTool.fitsViewWidth(342, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_ChooseScroll_ScrollView));
+		TKBTool.fitsViewTopMargin(71, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_ChooseScroll_ScrollView));
 		//SelectAll Button
-		Tool.fitsViewHeight(36, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_SelectALL_Button));
-		Tool.fitsViewWidth(112, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_SelectALL_Button));
-		Tool.fitsViewBottomMargin(24, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_SelectALL_Button));
-		Tool.fitsViewTextSize(6, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_SelectALL_Button));
-		new ThreadReadStateListInAssets(context, "pad/pop/unselect_f.png", "pad/pop/select_f.png", this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_SelectALL_Button), 4);
+		TKBTool.fitsViewHeight(36, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_SelectALL_Button));
+		TKBTool.fitsViewWidth(112, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_SelectALL_Button));
+		TKBTool.fitsViewBottomMargin(24, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_SelectALL_Button));
+		TKBTool.fitsViewTextSize(6, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_SelectALL_Button));
+		new TKBThreadReadStateListInAssets(context, "pad/pop/unselect_f.png", "pad/pop/select_f.png", this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_SelectALL_Button), 4);
 		mlog.info(TAG, "CreateContentView");
 	}
 	public void ShowPopupWindow(View parent,int gravity,int x,int y){
@@ -130,7 +131,7 @@ public class FS_PopupWindow extends PopupWindow {
 		if(OptionButtonsList!=null){
 			for(OptionButton optionButton:OptionButtonsList){
 				optionButton.isSelected = true;
-				new ThreadReadBitMapInAssets(context, "pad/pop/btn_f.png", optionButton.Radio_ImageButton, 2);
+				new TKBThreadReadBitMapInAssets(context, "pad/pop/btn_f.png", optionButton.Radio_ImageButton, 2);
 			}
 		}
 	}
@@ -176,10 +177,10 @@ public class FS_PopupWindow extends PopupWindow {
 	
 	private void SetRelationWithMaster(String SUDN,boolean isAdd){
 		//¨ú±oupnpServer
-		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
+		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).getUPnPService();
 		Device mMMDevice = addDeviceDisplay.getMMDevice();
 		String MUDN = mMMDevice.getIdentity().getUdn().toString();
-		Device MMDevice = ((MainFragmentActivity)context).GETDeviceDisplayList().GetMMDevice(SUDN);
+		Device MMDevice = ((MainFragmentActivity)context).getDeviceDisplayList().GetMMDevice(SUDN);
 		if(MMDevice==null){
 			return;
 		}

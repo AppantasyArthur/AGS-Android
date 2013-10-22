@@ -11,10 +11,10 @@ public class DeviceInformation {
 	private Context context;
 	
 	private static String TAG = "DeviceImformation";
-	private MLog mlog = new MLog();
+	private TKBLog mlog = new TKBLog();
 	public DeviceInformation(Context context) {
 		this.context = context;
-		this.mlog.LogSwitch = true;
+		this.mlog.switchLog = true;
 	}
 //	private boolean getDetect_Network(){
 //		mlog.info(TAG, "getDetect_Network");
@@ -30,7 +30,7 @@ public class DeviceInformation {
 //		return Detect_Network;
 //	}
 	
-	public int getDevice(){
+	public int getDeviceScreenSize(){
 		mlog.info(TAG, "getDevice");
 		int device = 6;//預設值是手機
 		Display display;

@@ -1,13 +1,5 @@
 package com.alpha.fragments;
 
-import com.FSW.SETTING.FSW_VIEW_LISTNER;
-import com.FSW.SETTING.FSW_VIEW_SETTING;
-import com.FSW.SETTING.FSW_WIFIAP_ListView_BaseAdapter_PAD;
-import com.FSW.SETTING.FSW_WIFIAP_ListView_BaseAdapter_Phone;
-import com.alpha.UPNP.DeviceDisplay;
-import com.alpha.upnpui.MainFragmentActivity;
-import com.alpha.upnpui.R;
-import com.tkb.tool.MLog;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -24,6 +16,16 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 
+import com.alpha.setting.wirelesssetup.WirelessSettingViewSetting;
+import com.alpha.setting.wirelesssetup.WirelessSettingPhoneViewAdapter;
+import com.alpha.setting.wirelesssetup.WirelessSettingPadViewAdapter;
+import com.alpha.setting.wirelesssetup.WirelessSettingViewListener;
+import com.alpha.upnp.DeviceDisplay;
+import com.alpha.upnpui.MainFragmentActivity;
+import com.alpha.upnpui.R;
+import com.alpha.util.DeviceProperty;
+import com.tkb.tool.TKBLog;
+
 public class Fragment_SWireless extends Fragment {
 	//VIEWS
 	private View Fragment_MainView;	
@@ -31,11 +33,11 @@ public class Fragment_SWireless extends Fragment {
 	//Fragment Manager
 	private FragmentManager fragmentManager = null;
 	//SETTING
-	private FSW_VIEW_SETTING VIEW_SETTING;
-	private FSW_VIEW_LISTNER VIEW_LISTNER;
+	private WirelessSettingViewSetting VIEW_SETTING;
+	private WirelessSettingViewListener VIEW_LISTNER;
 	
 	private static String TAG = "Fragment_SWireless";
-	private MLog mlog = new MLog();
+	private TKBLog mlog = new TKBLog();
 	private Context context;
 	private int device_size = 0;
 	private DeviceDisplay chooseDeviceDisplay;
@@ -50,17 +52,17 @@ public class Fragment_SWireless extends Fragment {
 	}	
 	private void CreateProcess() {
 		this.context = this.getActivity();
-		this.mlog.LogSwitch = true;		
-		device_size = ((MainFragmentActivity)context).getDevice_Size();
+		this.mlog.switchLog = true;		
+		device_size = ((MainFragmentActivity)context).getDeviceScreenSize();
 		fragmentManager = this.getFragmentManager();
 		//¨ú±oView_SETTING
-        this.VIEW_SETTING = new FSW_VIEW_SETTING(this.context,this.device_size);
-        this.VIEW_LISTNER = new FSW_VIEW_LISTNER(this.context,this.device_size);
+        this.VIEW_SETTING = new WirelessSettingViewSetting(this.context,this.device_size);
+        this.VIEW_LISTNER = new WirelessSettingViewListener(this.getActivity(),this.device_size);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
-		if(device_size==6){
+		if(DeviceProperty.isPhone()){
 			Fragment_MainView = (ViewGroup)inflater.inflate(R.layout.fragment_swireless_phone, null);
 			Fragment_MainView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 			Phone_findView();
@@ -80,16 +82,16 @@ public class Fragment_SWireless extends Fragment {
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFSW_RLayout_BODY_RLayout));
 		//WIFIAP_ListView
 		ListView WIFIAP_ListView = (ListView)Fragment_MainView.findViewById(R.id.pFSW_RLayout_RLayout_RLayout_WIFIAP_ListView);
-		WIFIAP_ListView_BaseAdapter = new FSW_WIFIAP_ListView_BaseAdapter_Phone(context);
+		WIFIAP_ListView_BaseAdapter = new WirelessSettingPhoneViewAdapter(context);
 		WIFIAP_ListView.setAdapter(WIFIAP_ListView_BaseAdapter);
 		mlog.info(TAG, "findView OK");		
 	}
 	private void Phone_findViewListner() {		
-		this.VIEW_LISTNER.Back_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFSW_RLayout_RLayout_Back_Button),
+		this.VIEW_LISTNER.setBackButtonListener((Button)Fragment_MainView.findViewById(R.id.pFSW_RLayout_RLayout_Back_Button),
 												this.fragmentManager);
-		this.VIEW_LISTNER.WIFISwitch_Switch_Listner((Switch)Fragment_MainView.findViewById(R.id.pFSW_RLayout_RLayout_RLayout_WIFISwitch_Switch),
+		this.VIEW_LISTNER.setWifiSwitchListener((Switch)Fragment_MainView.findViewById(R.id.pFSW_RLayout_RLayout_RLayout_WIFISwitch_Switch),
 													(RelativeLayout)Fragment_MainView.findViewById(R.id.pFSW_RLayout_RLayout_WIFIInfo_RLayout));
-		this.VIEW_LISTNER.WIFIAP_ListView_LISTNER((ListView)Fragment_MainView.findViewById(R.id.pFSW_RLayout_RLayout_RLayout_WIFIAP_ListView),
+		this.VIEW_LISTNER.setWifiListViewItemListener((ListView)Fragment_MainView.findViewById(R.id.pFSW_RLayout_RLayout_RLayout_WIFIAP_ListView),
 													this.chooseDeviceDisplay);
 	}
 	private void PAD_findView() {
@@ -97,16 +99,16 @@ public class Fragment_SWireless extends Fragment {
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FSW_RLayout_BODY_RLayout));
 		//WIFIAP_ListView
 		ListView WIFIAP_ListView = (ListView)Fragment_MainView.findViewById(R.id.FSW_RLayout_RLayout_RLayout_WIFIAP_ListView);
-		WIFIAP_ListView_BaseAdapter = new FSW_WIFIAP_ListView_BaseAdapter_PAD(context);
+		WIFIAP_ListView_BaseAdapter = new WirelessSettingPadViewAdapter(context);
 		WIFIAP_ListView.setAdapter(WIFIAP_ListView_BaseAdapter);
 		mlog.info(TAG, "findView OK");
 	}	
 	private void PAD_findViewListner() {
-		this.VIEW_LISTNER.Back_Button_Listner((Button)Fragment_MainView.findViewById(R.id.FSW_RLayout_RLayout_Back_Button),
+		this.VIEW_LISTNER.setBackButtonListener((Button)Fragment_MainView.findViewById(R.id.FSW_RLayout_RLayout_Back_Button),
 												this.fragmentManager);
-		this.VIEW_LISTNER.WIFISwitch_Switch_Listner((Switch)Fragment_MainView.findViewById(R.id.FSW_RLayout_RLayout_RLayout_WIFISwitch_Switch),
+		this.VIEW_LISTNER.setWifiSwitchListener((Switch)Fragment_MainView.findViewById(R.id.FSW_RLayout_RLayout_RLayout_WIFISwitch_Switch),
 													(RelativeLayout)Fragment_MainView.findViewById(R.id.FSW_RLayout_RLayout_WIFIInfo_RLayout));
-		this.VIEW_LISTNER.WIFIAP_ListView_LISTNER((ListView)Fragment_MainView.findViewById(R.id.FSW_RLayout_RLayout_RLayout_WIFIAP_ListView),
+		this.VIEW_LISTNER.setWifiListViewItemListener((ListView)Fragment_MainView.findViewById(R.id.FSW_RLayout_RLayout_RLayout_WIFIAP_ListView),
 													this.chooseDeviceDisplay);
 	}
 	

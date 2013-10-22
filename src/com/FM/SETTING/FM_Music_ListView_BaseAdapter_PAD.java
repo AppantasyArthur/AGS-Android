@@ -17,13 +17,14 @@ import org.teleal.cling.support.model.DIDLContent;
 import org.teleal.cling.support.model.SortCriterion;
 import org.teleal.cling.support.model.container.Container;
 import org.teleal.cling.support.model.item.Item;
-import com.alpha.UPNP.DeviceDisplay;
+
+import com.alpha.upnp.DeviceDisplay;
+import com.alpha.upnp.parser.TrackDO;
 import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
-import com.appantasy.androidapptemplate.event.lastchange.TrackDO;
-import com.tkb.tool.MLog;
-import com.tkb.tool.ThreadReadStateListInAssets;
-import com.tkb.tool.Tool;
+import com.tkb.tool.TKBLog;
+import com.tkb.tool.TKBThreadReadStateListInAssets;
+import com.tkb.tool.TKBTool;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -43,7 +44,7 @@ import android.widget.TextView;
 public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 	
 	private Context context;
-	private MLog mlog = new MLog();
+	private TKBLog mlog = new TKBLog();
 	private static final String TAG = "FM_Music_ListView_BaseAdapter_PAD";	
 
 	//==============類別清單================
@@ -128,7 +129,7 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 	};
 	public FM_Music_ListView_BaseAdapter_PAD(Context context){
 		this.context = context;		
-		this.mlog.LogSwitch = true;
+		this.mlog.switchLog = true;
 		this.DeviceList = new ArrayList<DeviceDisplay>();
 		this.ContainerList =  new ArrayList<Container>();
 		this.MusicTrackList = new ArrayList<Item>();
@@ -142,7 +143,7 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 		CategoryList.add("AGS PlayList");
 		
 		//分類MRList
-		List<DeviceDisplay> MSList = ((MainFragmentActivity)context).GETDeviceDisplayList().getMediaServerList();
+		List<DeviceDisplay> MSList = ((MainFragmentActivity)context).getDeviceDisplayList().getMediaServerList();
 		if(MSList!=null){
 			for(int i =0;i<MSList.size();i++){
 				DeviceList.add(MSList.get(i));
@@ -172,7 +173,7 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 			}
 			
 		};
-		((MainFragmentActivity)context).GETDeviceDisplayList().setMusicListner(FMLBAListner);
+		((MainFragmentActivity)context).getDeviceDisplayList().setMusicListner(FMLBAListner);
 	}
 	public FM_Music_ListView_BaseAdapter_Listner GetListner(){
 		return this.FMLBAListner;
@@ -223,7 +224,7 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 		ViewHandler viewHandler = null;
 		if(convertView==null){			
 			convertView = LayoutInflater.from(context).inflate(R.layout.fm_music_listview_cell_pad, null);
-			convertView.setLayoutParams(new ListView.LayoutParams(LayoutParams.MATCH_PARENT, Tool.getHeight(43)));
+			convertView.setLayoutParams(new ListView.LayoutParams(LayoutParams.MATCH_PARENT, TKBTool.getHeight(43)));
 			viewHandler = new ViewHandler(convertView);
 			basicSetView(viewHandler);
 			convertView.setTag(viewHandler);
@@ -307,18 +308,18 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 	}
 	private void basicSetView(ViewHandler viewHandler) {
 		//cellBG RLayout
-		new ThreadReadStateListInAssets(context, "pad/Playlist/playlist_btn.png", "pad/Playlist/playlist_btn_n.png", viewHandler.cell_RLayout, 3);
+		new TKBThreadReadStateListInAssets(context, "pad/Playlist/playlist_btn.png", "pad/Playlist/playlist_btn_n.png", viewHandler.cell_RLayout, 3);
 		//cell_RLayout_Name_TextView
-		Tool.fitsViewTopMargin(5, viewHandler.cell_RLayout_Name_TextView);		
-		Tool.fitsViewHeight(30, viewHandler.cell_RLayout_Name_TextView);
-		Tool.fitsViewLeftMargin(30, viewHandler.cell_RLayout_Name_TextView);
-		Tool.fitsViewTextSize(8, viewHandler.cell_RLayout_Name_TextView);
+		TKBTool.fitsViewTopMargin(5, viewHandler.cell_RLayout_Name_TextView);		
+		TKBTool.fitsViewHeight(30, viewHandler.cell_RLayout_Name_TextView);
+		TKBTool.fitsViewLeftMargin(30, viewHandler.cell_RLayout_Name_TextView);
+		TKBTool.fitsViewTextSize(8, viewHandler.cell_RLayout_Name_TextView);
 		//cell_RLayout_Image_ImageView
-		Tool.fitsViewHeight(13, viewHandler.cell_RLayout_Image_ImageView);
-		viewHandler.cell_RLayout_Image_ImageView.getLayoutParams().width = Tool.getHeight(7);
-		Tool.fitsViewTopMargin(13, viewHandler.cell_RLayout_Image_ImageView);
-		Tool.fitsViewRightMargin(10, viewHandler.cell_RLayout_Image_ImageView);
-		new ThreadReadStateListInAssets(context, "pad/Playlist/playlist_arrow_f.png", "pad/Playlist/playlist_arrow_n.png", viewHandler.cell_RLayout_Image_ImageView, 1);
+		TKBTool.fitsViewHeight(13, viewHandler.cell_RLayout_Image_ImageView);
+		viewHandler.cell_RLayout_Image_ImageView.getLayoutParams().width = TKBTool.getHeight(7);
+		TKBTool.fitsViewTopMargin(13, viewHandler.cell_RLayout_Image_ImageView);
+		TKBTool.fitsViewRightMargin(10, viewHandler.cell_RLayout_Image_ImageView);
+		new TKBThreadReadStateListInAssets(context, "pad/Playlist/playlist_arrow_f.png", "pad/Playlist/playlist_arrow_n.png", viewHandler.cell_RLayout_Image_ImageView, 1);
 	}
 	//內容取得
 	//類別選擇
@@ -362,7 +363,7 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 		this.LocalNameList = new ArrayList<String>();
 		SharedPreferences sharedPreferences = context.getSharedPreferences("LocalMusicList", Context.MODE_PRIVATE);
 		String strLocalMusicListName = sharedPreferences.getString("LocalMusicList", "{}");
-		JSONObject MusicList = Tool.StringToJSONObject(strLocalMusicListName);
+		JSONObject MusicList = TKBTool.StringToJSONObject(strLocalMusicListName);
 		Iterator Names = MusicList.keys();
 		while(Names.hasNext()){
 			String name = (String)Names.next();
@@ -380,17 +381,17 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 		List<TrackDO> list = new ArrayList<TrackDO>();
 		SharedPreferences sharedPreferences = context.getSharedPreferences("LocalMusicList", Context.MODE_PRIVATE);
 		String strLocalMusicListName = sharedPreferences.getString("LocalMusicList", "{}");
-		JSONObject MusicList = Tool.StringToJSONObject(strLocalMusicListName);		
-		JSONArray trackArray = Tool.AnalysisJSONArray(MusicList, Name);
+		JSONObject MusicList = TKBTool.StringToJSONObject(strLocalMusicListName);		
+		JSONArray trackArray = TKBTool.AnalysisJSONArray(MusicList, Name);
 		
 		if(trackArray!=null){
 			for(int i=0;i<trackArray.length();i++){
-				JSONObject track = Tool.GetJSONObjectFromJSONArray(trackArray, i);
+				JSONObject track = TKBTool.GetJSONObjectFromJSONArray(trackArray, i);
 				if(track!=null){
 					TrackDO trackDO = new TrackDO();
-					trackDO.setId(Tool.AnalysisJSONObjectToString(track, "Track_Id"));
-					trackDO.setTitle(Tool.AnalysisJSONObjectToString(track, "Track_Title"));
-					trackDO.setMetaData(Tool.AnalysisJSONObjectToString(track, "Track_MetaData"));
+					trackDO.setId(TKBTool.AnalysisJSONObjectToString(track, "Track_Id"));
+					trackDO.setTitle(TKBTool.AnalysisJSONObjectToString(track, "Track_Title"));
+					trackDO.setMetaData(TKBTool.AnalysisJSONObjectToString(track, "Track_MetaData"));
 					list.add(trackDO);
 				}
 			}
@@ -433,7 +434,7 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 		}
 	}
 	private void ShowPrivousFile(final Button MusicBack_Button){
-		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
+		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).getUPnPService();
 		SortCriterion[] sortCriterion = new SortCriterion[]{new SortCriterion("+cd:title")};
 		Browse browse = new Browse(chooseDevice.findService(new UDAServiceType("ContentDirectory")), this.ParentID.get(ParentID.size()-1), BrowseFlag.DIRECT_CHILDREN, "", 0, 0l, null){
 			@Override

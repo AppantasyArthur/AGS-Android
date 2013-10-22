@@ -79,12 +79,12 @@
 		        	android:layout_height="match_parent"
 		        	android:layout_weight="1"		        	
 	                />
-	            <NumberPicker
+	            <!-- <NumberPicker
 	                android:id="@+id/FSAL_PopupWindow_Content_RLayout_LLayout_APPicker_NumberPicker"
 	                android:layout_width="0dp"
 		        	android:layout_height="match_parent"
 		        	android:layout_weight="1"		        	
-	                />
+	                /> -->
 	        </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>

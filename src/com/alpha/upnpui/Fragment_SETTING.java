@@ -1,11 +1,5 @@
 package com.alpha.upnpui;
 
-import com.FAS.SETTING.FAS_VIEW_LISTNER;
-import com.FAS.SETTING.FAS_VIEW_SETTING;
-import com.alpha.fragments.Fragment_SMenu;
-import com.alpha.upnpui.R;
-import com.tkb.tool.MLog;
-import com.tkb.tool.Tool;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -17,6 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ViewFlipper;
+
+import com.FAS.SETTING.FAS_VIEW_LISTNER;
+import com.FAS.SETTING.FAS_VIEW_SETTING;
+import com.alpha.fragments.SettingMenuFragment;
+import com.alpha.util.DeviceProperty;
+import com.tkb.tool.TKBLog;
+import com.tkb.tool.TKBTool;
 
 public class Fragment_SETTING extends Fragment {
 	//VIEWS
@@ -32,7 +33,7 @@ public class Fragment_SETTING extends Fragment {
 	private FAS_VIEW_LISTNER VIEW_LISTNER;
 	
 	private static String TAG = "Fragment_SETTING";
-	private MLog mlog = new MLog();
+	private TKBLog mlog = new TKBLog();
 	private Context context;
 	private int device_size = 0;
 	@Override
@@ -43,8 +44,8 @@ public class Fragment_SETTING extends Fragment {
 	}	
 	private void CreateProcess() {
 		this.context = this.getActivity();
-		this.mlog.LogSwitch = true;		
-		device_size = ((MainFragmentActivity)context).getDevice_Size();
+		this.mlog.switchLog = true;		
+		device_size = ((MainFragmentActivity)context).getDeviceScreenSize();
 		fragmentManager = this.getChildFragmentManager();
 		//取得View_SETTING
         this.VIEW_SETTING = new FAS_VIEW_SETTING(this.context,this.device_size);
@@ -53,7 +54,7 @@ public class Fragment_SETTING extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
-		if(device_size==6){
+		if(DeviceProperty.isPhone()){
 			Fragment_MainView = (ViewGroup)inflater.inflate(R.layout.fragmentactivity_setting_phone, null);
 			Fragment_MainView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 			Phone_findView();
@@ -78,8 +79,8 @@ public class Fragment_SETTING extends Fragment {
 
 	}
 	private void set_Phone_First_Fragment() {		
-		fragment_SMenu = new Fragment_SMenu();		
-		Tool.FragmentActivity_MainAddFragment(fragmentManager.beginTransaction(), fragment_SMenu, "Fragment_SMenu", R.id.pFAS_RLayout_ViewFlipper_Left_FLayout, R.animator.alpha_in, R.animator.alpha_out);
+		fragment_SMenu = new SettingMenuFragment();		
+		TKBTool.animationAddFragment(fragmentManager.beginTransaction(), fragment_SMenu, "Fragment_SMenu", R.id.pFAS_RLayout_ViewFlipper_Left_FLayout, R.animator.alpha_in, R.animator.alpha_out);
 	}
 	private void PAD_findView() {
 		//設定PAD介面
@@ -94,8 +95,8 @@ public class Fragment_SETTING extends Fragment {
 		
 	}
 	private void set_PAD_First_Fragment() {		
-		fragment_SMenu = new Fragment_SMenu();		
-		Tool.FragmentActivity_MainAddFragment(fragmentManager.beginTransaction(), fragment_SMenu, "Fragment_SMenu", R.id.FAS_RLayout_Left_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+		fragment_SMenu = new SettingMenuFragment();		
+		TKBTool.animationAddFragment(fragmentManager.beginTransaction(), fragment_SMenu, "Fragment_SMenu", R.id.FAS_RLayout_Left_RLayout, R.animator.alpha_in, R.animator.alpha_out);
 	}
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {

@@ -58,7 +58,7 @@ public class DownLoadUrlBitmap {
 						HttpURLConnection connection = (HttpURLConnection)imageURL.openConnection();
 						connection.connect();
 						InputStream is = connection.getInputStream();
-						bitmap = BitmapFactory.decodeStream(is,null,Tool.opt()); 
+						bitmap = BitmapFactory.decodeStream(is,null,TKBTool.opt()); 
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

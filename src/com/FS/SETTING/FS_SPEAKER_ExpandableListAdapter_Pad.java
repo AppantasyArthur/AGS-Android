@@ -29,14 +29,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.alpha.UPNP.DeviceDisplay;
+import com.alpha.upnp.DeviceDisplay;
+import com.alpha.upnp.parser.GroupVO;
+import com.alpha.upnp.parser.GroupVO.Group;
 import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
-import com.appantasy.androidapptemplate.event.lastchange.GroupVO;
-import com.appantasy.androidapptemplate.event.lastchange.GroupVO.Group;
-import com.tkb.tool.MLog;
-import com.tkb.tool.ThreadReadBitMapInAssets;
-import com.tkb.tool.Tool;
+import com.tkb.tool.TKBLog;
+import com.tkb.tool.TKBThreadReadBitMapInAssets;
+import com.tkb.tool.TKBTool;
 
 public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdapter {
 	
@@ -58,7 +58,7 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 	private List<DeviceDisplay> GroupList;	
 	
 	private static String TAG = "FS_SPEAKER_ExpandableListAdapter_Pad";
-	private MLog mlog = new MLog();
+	private TKBLog mlog = new TKBLog();
 	
 	public Handler handler = new Handler(){
 		public void handleMessage (Message msg) {
@@ -73,7 +73,7 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 	};
 	
 	public FS_SPEAKER_ExpandableListAdapter_Pad(Context context,ExpandableListView EListView){
-		this.mlog.LogSwitch = true;
+		this.mlog.switchLog = true;
 		this.context = context;
 		this.EListView = EListView;
 		this.GroupList = GetGroupList();	
@@ -84,14 +84,14 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 	}
 	private List<DeviceDisplay> GetGroupList(){
 		List<DeviceDisplay> list = new ArrayList<DeviceDisplay>();
-		for(DeviceDisplay deviceDisplay:((MainFragmentActivity)context).GETDeviceDisplayList().getGroupList()){
+		for(DeviceDisplay deviceDisplay:((MainFragmentActivity)context).getDeviceDisplayList().getGroupList()){
 			list.add(deviceDisplay);
 		}
 		return list;		
 	}
 	private void SetList(){
 		//分類MRList
-		List<DeviceDisplay> MRList = ((MainFragmentActivity)context).GETDeviceDisplayList().getMediaRendererList();
+		List<DeviceDisplay> MRList = ((MainFragmentActivity)context).getDeviceDisplayList().getMediaRendererList();
 		if(MRList==null||MRList.size()==0){
 			return;
 		}
@@ -104,18 +104,18 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 				mlog.info(TAG, "SetPositionChange");
 			}
 		};
-		((MainFragmentActivity)context).GETDeviceDisplayList().setSpeakerListner(FSELAListner);
+		((MainFragmentActivity)context).getDeviceDisplayList().setSpeakerListner(FSELAListner);
 	}
 	private void LoadBitmap(){
-		this.arrow_f = Tool.readBitMapInAssets(context, "pad/Speakermanagement/arrow_f.png");
-		this.arrow_n = Tool.readBitMapInAssets(context, "pad/Speakermanagement/arrow_n.png");
-		this.play_Span = new ImageSpan(context, Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "pad/Speakermanagement/status_play.png"), Tool.getHeight(15), Tool.getHeight(18), false),ImageSpan.ALIGN_BASELINE);
-		this.stop_Span = new ImageSpan(context, Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "pad/Speakermanagement/status_stop.png"), Tool.getHeight(15), Tool.getHeight(18), false),ImageSpan.ALIGN_BASELINE);
-		this.pause_Span = new ImageSpan(context, Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "pad/Speakermanagement/status_pause.png"), Tool.getHeight(15), Tool.getHeight(18), false),ImageSpan.ALIGN_BASELINE);
+		this.arrow_f = TKBTool.readBitMapInAssets(context, "pad/Speakermanagement/arrow_f.png");
+		this.arrow_n = TKBTool.readBitMapInAssets(context, "pad/Speakermanagement/arrow_n.png");
+		this.play_Span = new ImageSpan(context, Bitmap.createScaledBitmap(TKBTool.readBitMapInAssets(context, "pad/Speakermanagement/status_play.png"), TKBTool.getHeight(15), TKBTool.getHeight(18), false),ImageSpan.ALIGN_BASELINE);
+		this.stop_Span = new ImageSpan(context, Bitmap.createScaledBitmap(TKBTool.readBitMapInAssets(context, "pad/Speakermanagement/status_stop.png"), TKBTool.getHeight(15), TKBTool.getHeight(18), false),ImageSpan.ALIGN_BASELINE);
+		this.pause_Span = new ImageSpan(context, Bitmap.createScaledBitmap(TKBTool.readBitMapInAssets(context, "pad/Speakermanagement/status_pause.png"), TKBTool.getHeight(15), TKBTool.getHeight(18), false),ImageSpan.ALIGN_BASELINE);
 		
-		this.menu1 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "pad/Speakermanagement/menu_01.png"));
-		this.menu2 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "pad/Speakermanagement/menu_02.png"));
-		this.menu3 = new BitmapDrawable(context.getResources(),Tool.readBitMapInAssets(context, "pad/Speakermanagement/menu_03.png"));
+		this.menu1 = new BitmapDrawable(context.getResources(),TKBTool.readBitMapInAssets(context, "pad/Speakermanagement/menu_01.png"));
+		this.menu2 = new BitmapDrawable(context.getResources(),TKBTool.readBitMapInAssets(context, "pad/Speakermanagement/menu_02.png"));
+		this.menu3 = new BitmapDrawable(context.getResources(),TKBTool.readBitMapInAssets(context, "pad/Speakermanagement/menu_03.png"));
 	
 		
 	}
@@ -149,15 +149,15 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 		
 		if(childPosition==0&&!isLastChild){
 			//第一個
-			Tool.fitsViewHeight(36,viewHandler.CCell_RLayout);			
+			TKBTool.fitsViewHeight(36,viewHandler.CCell_RLayout);			
 			viewHandler.CCell_RLayout.setBackgroundDrawable(this.menu1);
 		}else if(isLastChild){
 			//最後一個
-			Tool.fitsViewHeight(40,viewHandler.CCell_RLayout);	
+			TKBTool.fitsViewHeight(40,viewHandler.CCell_RLayout);	
 			viewHandler.CCell_RLayout.setBackgroundDrawable(this.menu3);			
 		}else{
 			//其他
-			Tool.fitsViewHeight(37,viewHandler.CCell_RLayout);	
+			TKBTool.fitsViewHeight(37,viewHandler.CCell_RLayout);	
 			viewHandler.CCell_RLayout.setBackgroundDrawable(this.menu2);			
 		}
 		
@@ -179,9 +179,9 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 	}
 	private void basicSetChildView(CViewHandler viewHandler){
 		//EListView_GCell_RLayout		
-		Tool.fitsViewWidth(228, viewHandler.CCell_RLayout);
+		TKBTool.fitsViewWidth(228, viewHandler.CCell_RLayout);
 		//Name_TextView
-		Tool.fitsViewTextSize(8, viewHandler.Name_TextView);
+		TKBTool.fitsViewTextSize(8, viewHandler.Name_TextView);
 	}
 	private class CViewHandler{
 		private int Gposition;
@@ -248,18 +248,18 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 		if(ChildrenCount>0){
 			//Group
 			if(convertView.getLayoutParams().height!=118){
-				convertView.getLayoutParams().height = Tool.getHeight(118);
+				convertView.getLayoutParams().height = TKBTool.getHeight(118);
 			}			
-			Tool.fitsViewHeight(95, viewHandler.GCell_RLayout);
+			TKBTool.fitsViewHeight(95, viewHandler.GCell_RLayout);
 			if(viewHandler.Indicator_ImageView.getVisibility()!=View.VISIBLE){
 				viewHandler.Indicator_ImageView.setVisibility(View.VISIBLE);
 			}
 		}else{
 			//Single
 			if(convertView.getLayoutParams().height!=97){
-				convertView.getLayoutParams().height = Tool.getHeight(97);
+				convertView.getLayoutParams().height = TKBTool.getHeight(97);
 			}				
-			Tool.fitsViewHeight(74, viewHandler.GCell_RLayout);
+			TKBTool.fitsViewHeight(74, viewHandler.GCell_RLayout);
 			if(viewHandler.Indicator_ImageView.getVisibility()!=View.GONE){
 				viewHandler.Indicator_ImageView.setVisibility(View.GONE);
 			}
@@ -274,19 +274,19 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 		}
 		
 		//設定selected
-		DeviceDisplay chooDeviceDisplay = ((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer();
+		DeviceDisplay chooDeviceDisplay = ((MainFragmentActivity)context).getDeviceDisplayList().getChooseMediaRenderer();
 		
-		if(((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer()!=null&&chooDeviceDisplay.equals(GroupList.get(groupPosition))){
+		if(((MainFragmentActivity)context).getDeviceDisplayList().getChooseMediaRenderer()!=null&&chooDeviceDisplay.equals(GroupList.get(groupPosition))){
 			if(ChildrenCount>0){
-				new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/group_f.png", viewHandler.GCell_RLayout, 3);
+				new TKBThreadReadBitMapInAssets(context, "pad/Speakermanagement/group_f.png", viewHandler.GCell_RLayout, 3);
 			}else{
-				new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/single_f.png", viewHandler.GCell_RLayout, 3);
+				new TKBThreadReadBitMapInAssets(context, "pad/Speakermanagement/single_f.png", viewHandler.GCell_RLayout, 3);
 			}
 		}else{
 			if(ChildrenCount>0){
-				new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/group_n.png", viewHandler.GCell_RLayout, 3);
+				new TKBThreadReadBitMapInAssets(context, "pad/Speakermanagement/group_n.png", viewHandler.GCell_RLayout, 3);
 			}else{
-				new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/single_n.png", viewHandler.GCell_RLayout, 3);
+				new TKBThreadReadBitMapInAssets(context, "pad/Speakermanagement/single_n.png", viewHandler.GCell_RLayout, 3);
 			}	
 		}		
 		//設定Indicator 圖片
@@ -329,27 +329,27 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 	}
 	private void basicSetGroupView(GViewHandler viewHandler){
 		//EListView_GCell_RLayout
-		Tool.fitsViewWidth(231, viewHandler.GCell_RLayout);
+		TKBTool.fitsViewWidth(231, viewHandler.GCell_RLayout);
 		//Name_TextView
-		Tool.fitsViewTextSize(10, viewHandler.Name_TextView);
-		Tool.fitsViewHeight(32, viewHandler.Name_TextView);
-		Tool.fitsViewLeftMargin(10, viewHandler.Name_TextView);
-		Tool.fitsViewTopMargin(15,viewHandler.Name_TextView);
+		TKBTool.fitsViewTextSize(10, viewHandler.Name_TextView);
+		TKBTool.fitsViewHeight(32, viewHandler.Name_TextView);
+		TKBTool.fitsViewLeftMargin(10, viewHandler.Name_TextView);
+		TKBTool.fitsViewTopMargin(15,viewHandler.Name_TextView);
 		//AddChildItem ImageView
-		viewHandler.AddChildItem_ImageButton.getLayoutParams().width = Tool.getHeight(33);
-		Tool.fitsViewHeight(32, viewHandler.AddChildItem_ImageButton);
-		Tool.fitsViewRightMargin(5, viewHandler.AddChildItem_ImageButton);
-		Tool.fitsViewTopMargin(15, viewHandler.AddChildItem_ImageButton);
-		new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/add_btn_n.png", viewHandler.AddChildItem_ImageButton, 2);
+		viewHandler.AddChildItem_ImageButton.getLayoutParams().width = TKBTool.getHeight(33);
+		TKBTool.fitsViewHeight(32, viewHandler.AddChildItem_ImageButton);
+		TKBTool.fitsViewRightMargin(5, viewHandler.AddChildItem_ImageButton);
+		TKBTool.fitsViewTopMargin(15, viewHandler.AddChildItem_ImageButton);
+		new TKBThreadReadBitMapInAssets(context, "pad/Speakermanagement/add_btn_n.png", viewHandler.AddChildItem_ImageButton, 2);
 		//Indicator TextView
-		viewHandler.Indicator_ImageView.getLayoutParams().width = Tool.getHeight(33);
-		Tool.fitsViewHeight(32, viewHandler.Indicator_ImageView);
-		Tool.fitsViewTopMargin(15, viewHandler.Indicator_ImageView);
-		Tool.fitsViewRightMargin(5, viewHandler.Indicator_ImageView);
+		viewHandler.Indicator_ImageView.getLayoutParams().width = TKBTool.getHeight(33);
+		TKBTool.fitsViewHeight(32, viewHandler.Indicator_ImageView);
+		TKBTool.fitsViewTopMargin(15, viewHandler.Indicator_ImageView);
+		TKBTool.fitsViewRightMargin(5, viewHandler.Indicator_ImageView);
 		//RunState TextView
-		Tool.fitsViewHeight(23, viewHandler.RunState_TextView);
-		Tool.fitsViewWidth(220, viewHandler.RunState_TextView);
-		Tool.fitsViewTextSize(6, viewHandler.RunState_TextView);	
+		TKBTool.fitsViewHeight(23, viewHandler.RunState_TextView);
+		TKBTool.fitsViewWidth(220, viewHandler.RunState_TextView);
+		TKBTool.fitsViewTextSize(6, viewHandler.RunState_TextView);	
 	}
 	private class GViewHandler{
 		private int position;
@@ -395,13 +395,13 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 				public boolean onTouch(View v, MotionEvent event) {
 					switch(event.getAction()){
 					case MotionEvent.ACTION_DOWN:
-						new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/add_btn_f.png", v, 1);
+						new TKBThreadReadBitMapInAssets(context, "pad/Speakermanagement/add_btn_f.png", v, 1);
 						break;
 					case MotionEvent.ACTION_UP:
-						new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/add_btn_n.png", v, 1);
+						new TKBThreadReadBitMapInAssets(context, "pad/Speakermanagement/add_btn_n.png", v, 1);
 						break;
 					case MotionEvent.ACTION_CANCEL:
-						new ThreadReadBitMapInAssets(context, "pad/Speakermanagement/add_btn_n.png", v, 1);
+						new TKBThreadReadBitMapInAssets(context, "pad/Speakermanagement/add_btn_n.png", v, 1);
 						break;
 					}
 					return false;
@@ -458,13 +458,13 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 	}
 	
 	public void SET_GView_SELECTED(int position){
-		if(((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer()!=this.GroupList.get(position)){
-			((MainFragmentActivity)context).GETDeviceDisplayList().setChooseMediaRenderer(this.GroupList.get(position));
+		if(((MainFragmentActivity)context).getDeviceDisplayList().getChooseMediaRenderer()!=this.GroupList.get(position)){
+			((MainFragmentActivity)context).getDeviceDisplayList().setChooseMediaRenderer(this.GroupList.get(position));
 		}
 	}
 	public void SET_CVIEW_SELECTED(int Gposition, int Cposition){
-		if(((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer()!=this.GroupList.get(Gposition)){
-			((MainFragmentActivity)context).GETDeviceDisplayList().setChooseMediaRenderer(this.GroupList.get(Gposition));
+		if(((MainFragmentActivity)context).getDeviceDisplayList().getChooseMediaRenderer()!=this.GroupList.get(Gposition)){
+			((MainFragmentActivity)context).getDeviceDisplayList().setChooseMediaRenderer(this.GroupList.get(Gposition));
 		}		
 	}
 }

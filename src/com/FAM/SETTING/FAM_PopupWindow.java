@@ -28,15 +28,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
-import com.alpha.UPNP.DeviceDisplay;
-import com.alpha.upnpui.MainFragmentActivity;
-import com.alpha.upnpui.R;
-import com.appantasy.androidapptemplate.event.lastchange.GroupVO.Group;
-import com.appantasy.androidapptemplate.event.lastchange.SoundLastChangeDO;
-import com.appantasy.androidapptemplate.event.lastchange.SoundLastChangeHandler;
-import com.tkb.tool.MLog;
-import com.tkb.tool.ThreadReadBitMapInAssets;
-import com.tkb.tool.Tool;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -53,6 +44,17 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
+import com.alpha.upnp.DeviceDisplay;
+import com.alpha.upnp.parser.GroupVO.Group;
+import com.alpha.upnp.parser.SoundLastChangeDO;
+import com.alpha.upnp.parser.SoundLastChangeHandler;
+import com.alpha.upnpui.MainFragmentActivity;
+import com.alpha.upnpui.R;
+import com.alpha.util.DeviceProperty;
+import com.tkb.tool.TKBLog;
+import com.tkb.tool.TKBThreadReadBitMapInAssets;
+import com.tkb.tool.TKBTool;
+
 public class FAM_PopupWindow extends PopupWindow {
 	
 	private View contentView;
@@ -63,25 +65,25 @@ public class FAM_PopupWindow extends PopupWindow {
 	
 	private int device_size = 0;
 	private Context context;
-	private MLog mlog = new MLog();
+	private TKBLog mlog = new TKBLog();
 	private static final String TAG = "FAM_PopupWindow";
 	public FAM_PopupWindow(Context context){
 		super(context);
-		this.mlog.LogSwitch = true;
+		this.mlog.switchLog = true;
 		this.context = context;
-		this.device_size = ((MainFragmentActivity)context).getDevice_Size();
-		if(device_size==6){
+		this.device_size = ((MainFragmentActivity)context).getDeviceScreenSize();
+		if(DeviceProperty.isPhone()){
 			Phone_CreateContentView();
 			//設定內容
 			this.setContentView(contentView);
-			this.setWidth(Tool.getWidth(150));
-			this.setHeight(Tool.getWidth(140));
+			this.setWidth(TKBTool.getWidth(150));
+			this.setHeight(TKBTool.getWidth(140));
 		}else{
 			PAD_CreateContentView();
 			//設定內容
 			this.setContentView(contentView);
-			this.setWidth(Tool.getHeight(200));
-			this.setHeight(Tool.getHeight(250));
+			this.setWidth(TKBTool.getHeight(200));
+			this.setHeight(TKBTool.getHeight(250));
 		}	
 		
 		//設定back鍵  dismiss
@@ -96,8 +98,8 @@ public class FAM_PopupWindow extends PopupWindow {
 	private void Phone_CreateContentView() {
 		this.contentView = LayoutInflater.from(context).inflate(R.layout.fam_popupwindow_context, null,true);
 		//Content RLayout
-		Tool.fitsViewWidth(130, this.contentView.findViewById(R.id.FM_PopupWindow_Content_RLayout));
-		this.contentView.findViewById(R.id.FM_PopupWindow_Content_RLayout).getLayoutParams().height = Tool.getWidth(120);
+		TKBTool.fitsViewWidth(130, this.contentView.findViewById(R.id.FM_PopupWindow_Content_RLayout));
+		this.contentView.findViewById(R.id.FM_PopupWindow_Content_RLayout).getLayoutParams().height = TKBTool.getWidth(120);
 		//OPTION_LLayout
 		OPTION_LLayout = (LinearLayout)this.contentView.findViewById(R.id.FAM_PopupWindow_RLayout_OPTION_LLayout);	
 		mlog.info(TAG, "CreateContentView");
@@ -106,8 +108,8 @@ public class FAM_PopupWindow extends PopupWindow {
 	private void PAD_CreateContentView() {
 		this.contentView = LayoutInflater.from(context).inflate(R.layout.fam_popupwindow_context, null,true);
 		//Content RLayout
-		Tool.fitsViewHeight(220, this.contentView.findViewById(R.id.FM_PopupWindow_Content_RLayout));
-		this.contentView.findViewById(R.id.FM_PopupWindow_Content_RLayout).getLayoutParams().width = Tool.getHeight(180);
+		TKBTool.fitsViewHeight(220, this.contentView.findViewById(R.id.FM_PopupWindow_Content_RLayout));
+		this.contentView.findViewById(R.id.FM_PopupWindow_Content_RLayout).getLayoutParams().width = TKBTool.getHeight(180);
 		//OPTION_LLayout
 		OPTION_LLayout = (LinearLayout)this.contentView.findViewById(R.id.FAM_PopupWindow_RLayout_OPTION_LLayout);	
 		mlog.info(TAG, "CreateContentView");
@@ -135,7 +137,7 @@ public class FAM_PopupWindow extends PopupWindow {
 			viewHandler.SoundCell_RLayout = (RelativeLayout)sound_View.findViewById(R.id.FAM_PopupWindow_SoundCell_RLayout);
 			viewHandler.sound_IView = (ImageView)sound_View.findViewById(R.id.FAM_PopupWindow_SoundCell_RLayout_SOUND_IView);
 			viewHandler.sound_SeekBar = (SeekBar)sound_View.findViewById(R.id.FAM_PopupWindow_SoundCell_RLayout_SOUND_SeekBar);
-			if(device_size==6){
+			if(DeviceProperty.isPhone()){
 				Phone_VIEW_SETTING(viewHandler);		
 			}else{
 				PAD_VIEW_SETTING(viewHandler);		
@@ -149,34 +151,34 @@ public class FAM_PopupWindow extends PopupWindow {
 	
 	private void Phone_VIEW_SETTING(ViewHandler viewHandler) {
 		//SoundCell RLayout
-		viewHandler.SoundCell_RLayout.setLayoutParams(new LayoutParams(Tool.getWidth(180),Tool.getWidth(28)));
+		viewHandler.SoundCell_RLayout.setLayoutParams(new LayoutParams(TKBTool.getWidth(180),TKBTool.getWidth(28)));
 		//Sound ImageView
-		Tool.fitsViewWidth(23,viewHandler.sound_IView);
-		viewHandler.sound_IView.getLayoutParams().height = Tool.getWidth(23);
-		Tool.fitsViewLeftMargin(7, viewHandler.sound_IView);		
+		TKBTool.fitsViewWidth(23,viewHandler.sound_IView);
+		viewHandler.sound_IView.getLayoutParams().height = TKBTool.getWidth(23);
+		TKBTool.fitsViewLeftMargin(7, viewHandler.sound_IView);		
 		//Sound SeekBar
-		Tool.fitsViewWidth(90, viewHandler.sound_SeekBar);
-		viewHandler.sound_SeekBar.getLayoutParams().height = Tool.getWidth(23);		
-		Tool.fitsViewLeftMargin(4, viewHandler.sound_SeekBar);
-		viewHandler.sound_SeekBar.setPadding(Tool.getWidth(6), Tool.getWidth(6), Tool.getWidth(6), Tool.getWidth(6));
-		Bitmap myThumbO = Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "phone/play_volume/base_icon.png"), Tool.getWidth(14), Tool.getWidth(16), false);
+		TKBTool.fitsViewWidth(90, viewHandler.sound_SeekBar);
+		viewHandler.sound_SeekBar.getLayoutParams().height = TKBTool.getWidth(23);		
+		TKBTool.fitsViewLeftMargin(4, viewHandler.sound_SeekBar);
+		viewHandler.sound_SeekBar.setPadding(TKBTool.getWidth(6), TKBTool.getWidth(6), TKBTool.getWidth(6), TKBTool.getWidth(6));
+		Bitmap myThumbO = Bitmap.createScaledBitmap(TKBTool.readBitMapInAssets(context, "phone/play_volume/base_icon.png"), TKBTool.getWidth(14), TKBTool.getWidth(16), false);
 		Drawable myThumb = new BitmapDrawable(context.getResources(),myThumbO);
 		viewHandler.sound_SeekBar.setThumb(myThumb);		
 	}
 
 	private void PAD_VIEW_SETTING(ViewHandler viewHandler) {
 		//SoundCell RLayout
-		viewHandler.SoundCell_RLayout.setLayoutParams(new LayoutParams(Tool.getHeight(180),Tool.getHeight(50)));
+		viewHandler.SoundCell_RLayout.setLayoutParams(new LayoutParams(TKBTool.getHeight(180),TKBTool.getHeight(50)));
 		//Sound ImageView
-		Tool.fitsViewHeight(37,viewHandler.sound_IView);
-		viewHandler.sound_IView.getLayoutParams().width = Tool.getHeight(42);
-		Tool.fitsViewLeftMargin(5, viewHandler.sound_IView);
+		TKBTool.fitsViewHeight(37,viewHandler.sound_IView);
+		viewHandler.sound_IView.getLayoutParams().width = TKBTool.getHeight(42);
+		TKBTool.fitsViewLeftMargin(5, viewHandler.sound_IView);
 		//Sound SeekBar
-		Tool.fitsViewHeight(36, viewHandler.sound_SeekBar);
-		viewHandler.sound_SeekBar.getLayoutParams().width = Tool.getHeight(110);		
-		Tool.fitsViewLeftMargin(10, viewHandler.sound_SeekBar);
-		viewHandler.sound_SeekBar.setPadding(Tool.getHeight(15), Tool.getHeight(8), Tool.getHeight(15), Tool.getHeight(8));
-		Bitmap myThumbO = Bitmap.createScaledBitmap(Tool.readBitMapInAssets(context, "pad/PlayBack/volumn_control.png"), Tool.getHeight(23), Tool.getHeight(27), false);
+		TKBTool.fitsViewHeight(36, viewHandler.sound_SeekBar);
+		viewHandler.sound_SeekBar.getLayoutParams().width = TKBTool.getHeight(110);		
+		TKBTool.fitsViewLeftMargin(10, viewHandler.sound_SeekBar);
+		viewHandler.sound_SeekBar.setPadding(TKBTool.getHeight(15), TKBTool.getHeight(8), TKBTool.getHeight(15), TKBTool.getHeight(8));
+		Bitmap myThumbO = Bitmap.createScaledBitmap(TKBTool.readBitMapInAssets(context, "pad/PlayBack/volumn_control.png"), TKBTool.getHeight(23), TKBTool.getHeight(27), false);
 		Drawable myThumb = new BitmapDrawable(context.getResources(),myThumbO);
 		viewHandler.sound_SeekBar.setThumb(myThumb);
 	}
@@ -188,7 +190,7 @@ public class FAM_PopupWindow extends PopupWindow {
 		
 		private AndroidUpnpService upnpServer;	
 		public SoundHandler(ViewHandler viewHandler,DeviceDisplay deviceDisplay){
-			this.upnpServer = ((MainFragmentActivity)context).GETUPnPService();		
+			this.upnpServer = ((MainFragmentActivity)context).getUPnPService();		
 			this.viewHandler = viewHandler;
 			this.deviceDisplay = deviceDisplay;
 			CreateSoundCallBack();
@@ -289,31 +291,31 @@ public class FAM_PopupWindow extends PopupWindow {
 			});
 		}
 		private void setSound_Image(int Vol){
-			if(device_size==6){
+			if(DeviceProperty.isPhone()){
 				if(Vol ==0){
-					new ThreadReadBitMapInAssets(context, "phone/play_volume/volume_no.png",viewHandler.sound_IView, 1);
+					new TKBThreadReadBitMapInAssets(context, "phone/play_volume/volume_no.png",viewHandler.sound_IView, 1);
 				}else if(Vol>=1&&Vol<=50){
-					new ThreadReadBitMapInAssets(context, "phone/play_volume/volume_02.png",viewHandler.sound_IView, 1);
+					new TKBThreadReadBitMapInAssets(context, "phone/play_volume/volume_02.png",viewHandler.sound_IView, 1);
 				}else if(Vol>=51&&Vol<=99){
-					new ThreadReadBitMapInAssets(context, "phone/play_volume/volume_01.png",viewHandler.sound_IView, 1);
+					new TKBThreadReadBitMapInAssets(context, "phone/play_volume/volume_01.png",viewHandler.sound_IView, 1);
 				}else{
-					new ThreadReadBitMapInAssets(context, "phone/play_volume/volume.png",viewHandler.sound_IView, 1);
+					new TKBThreadReadBitMapInAssets(context, "phone/play_volume/volume.png",viewHandler.sound_IView, 1);
 				}
 			}else{
 				if(Vol ==0){
-					new ThreadReadBitMapInAssets(context, "pad/PlayBack/volumn_mute.png",viewHandler.sound_IView, 1);
+					new TKBThreadReadBitMapInAssets(context, "pad/PlayBack/volumn_mute.png",viewHandler.sound_IView, 1);
 				}else if(Vol>=1&&Vol<=50){
-					new ThreadReadBitMapInAssets(context, "pad/PlayBack/volumn_01.png",viewHandler.sound_IView, 1);
+					new TKBThreadReadBitMapInAssets(context, "pad/PlayBack/volumn_01.png",viewHandler.sound_IView, 1);
 				}else if(Vol>=51&&Vol<=99){
-					new ThreadReadBitMapInAssets(context, "pad/PlayBack/volumn_02.png",viewHandler.sound_IView, 1);
+					new TKBThreadReadBitMapInAssets(context, "pad/PlayBack/volumn_02.png",viewHandler.sound_IView, 1);
 				}else{
-					new ThreadReadBitMapInAssets(context, "pad/PlayBack/volumn_03.png",viewHandler.sound_IView, 1);
+					new TKBThreadReadBitMapInAssets(context, "pad/PlayBack/volumn_03.png",viewHandler.sound_IView, 1);
 				}
 			}			
 		}
 	}
 	private void SetSoundPosition(Device device,int position){
-		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
+		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).getUPnPService();
 		if(device!=null){
 			Service RenderingControlService = device.findService(new UDAServiceId("RenderingControl"));
 			if(RenderingControlService!=null){
@@ -360,7 +362,7 @@ public class FAM_PopupWindow extends PopupWindow {
 	@Override
 	public void showAsDropDown(View anchor) {
 		
-		DeviceDisplay ChooseMediaRenderer = ((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer();
+		DeviceDisplay ChooseMediaRenderer = ((MainFragmentActivity)context).getDeviceDisplayList().getChooseMediaRenderer();
 		if(ChooseMediaRenderer==null){
 			//沒有選取
 		}else{
@@ -373,7 +375,7 @@ public class FAM_PopupWindow extends PopupWindow {
 			//add Slave的DeviceDisplay
 			Group groups =ChooseMediaRenderer.getGroupVO().getGroup();
 			for(int j=1;j<groups.getMembers().size();j++){
-				DeviceDisplay searchDeviceDisplay = ((MainFragmentActivity)context).GETDeviceDisplayList().GetDeviceDisplayByUDN(groups.getMembers().get(j).getUdn());
+				DeviceDisplay searchDeviceDisplay = ((MainFragmentActivity)context).getDeviceDisplayList().GetDeviceDisplayByUDN(groups.getMembers().get(j).getUdn());
 				soundDevicesList.add(searchDeviceDisplay);
 			}			
 			CreateOptionButtons(OPTION_LLayout, soundDevicesList);

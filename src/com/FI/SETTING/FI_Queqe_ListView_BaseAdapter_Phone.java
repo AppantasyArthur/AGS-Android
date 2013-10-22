@@ -15,13 +15,13 @@ import org.teleal.cling.model.types.ServiceId;
 import org.teleal.cling.model.types.UDAServiceId;
 import org.teleal.cling.support.model.item.Item;
 
-import com.alpha.UPNP.DeviceDisplay;
+import com.alpha.upnp.DeviceDisplay;
+import com.alpha.upnp.parser.TrackDO;
 import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
-import com.appantasy.androidapptemplate.event.lastchange.TrackDO;
-import com.tkb.tool.MLog;
-import com.tkb.tool.ThreadReadBitMapInAssets;
-import com.tkb.tool.Tool;
+import com.tkb.tool.TKBLog;
+import com.tkb.tool.TKBThreadReadBitMapInAssets;
+import com.tkb.tool.TKBTool;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
@@ -42,7 +42,7 @@ import android.widget.TextView;
 public class FI_Queqe_ListView_BaseAdapter_Phone extends BaseAdapter {
 	
 	private Context context;
-	private MLog mlog = new MLog();
+	private TKBLog mlog = new TKBLog();
 	private static final String TAG = "FM_Queue_ListView_BaseAdapter";
 		
 	private boolean isEdit = false;
@@ -83,7 +83,7 @@ public class FI_Queqe_ListView_BaseAdapter_Phone extends BaseAdapter {
 	};
 	public FI_Queqe_ListView_BaseAdapter_Phone(Context context){
 		this.context = context;		
-		this.mlog.LogSwitch = true;
+		this.mlog.switchLog = true;
 		
 		FI_Queqe_ListView_BaseAdapter_Queqe_Listner queqe_listner = new FI_Queqe_ListView_BaseAdapter_Queqe_Listner(){
 			@Override
@@ -96,7 +96,7 @@ public class FI_Queqe_ListView_BaseAdapter_Phone extends BaseAdapter {
 				mlog.info(TAG, "AddQueqeList");	
 			}			
 		};
-		((MainFragmentActivity)context).GETDeviceDisplayList().setQueqe_Listner(queqe_listner);
+		((MainFragmentActivity)context).getDeviceDisplayList().setQueqe_Listner(queqe_listner);
 		dataList.clear();	
 	}
 	@Override
@@ -125,7 +125,7 @@ public class FI_Queqe_ListView_BaseAdapter_Phone extends BaseAdapter {
 		ViewHandler viewHandler = null;
 		if(convertView==null){			
 			convertView = LayoutInflater.from(context).inflate(R.layout.fi_queue_listview_cell_pad, null);
-			convertView.setLayoutParams(new ListView.LayoutParams(LayoutParams.MATCH_PARENT, Tool.getHeight(50)));
+			convertView.setLayoutParams(new ListView.LayoutParams(LayoutParams.MATCH_PARENT, TKBTool.getHeight(50)));
 			viewHandler = new ViewHandler(convertView);
 			basicSetView(viewHandler);
 			convertView.setTag(viewHandler);
@@ -148,13 +148,13 @@ public class FI_Queqe_ListView_BaseAdapter_Phone extends BaseAdapter {
 		//排序設定
 		if(position==startDragPosition&&startDragPosition==holdDragPosition){
 			viewHandler.cell_RLayout.setVisibility(View.INVISIBLE);
-			new ThreadReadBitMapInAssets(context, "phone/queue/edit__select_bg.PNG", viewHandler.cellBG_RLayout, 3);
+			new TKBThreadReadBitMapInAssets(context, "phone/queue/edit__select_bg.PNG", viewHandler.cellBG_RLayout, 3);
 		}else if(position == holdDragPosition){			
 			viewHandler.cell_RLayout.setVisibility(View.INVISIBLE);
-			new ThreadReadBitMapInAssets(context, "phone/queue/edit__select_bg.PNG", viewHandler.cellBG_RLayout, 3);
+			new TKBThreadReadBitMapInAssets(context, "phone/queue/edit__select_bg.PNG", viewHandler.cellBG_RLayout, 3);
 		}else{
 			viewHandler.cell_RLayout.setVisibility(View.VISIBLE);
-			new ThreadReadBitMapInAssets(context, "phone/queue/playlist_btn_n.png", viewHandler.cellBG_RLayout, 3);
+			new TKBThreadReadBitMapInAssets(context, "phone/queue/playlist_btn_n.png", viewHandler.cellBG_RLayout, 3);
 		}		
 		
 		if(startDragPosition>holdDragPosition&&position>holdDragPosition&&position<=startDragPosition){
@@ -175,14 +175,14 @@ public class FI_Queqe_ListView_BaseAdapter_Phone extends BaseAdapter {
 		if(InsertPosition!=-1){
 			if(position ==InsertPosition){
 				viewHandler.cell_RLayout.setVisibility(View.INVISIBLE);
-				new ThreadReadBitMapInAssets(context, "pad/Queqe/drag_bar.png", viewHandler.cellBG_RLayout, 3);
+				new TKBThreadReadBitMapInAssets(context, "pad/Queqe/drag_bar.png", viewHandler.cellBG_RLayout, 3);
 			}else if(position>InsertPosition){
 				viewHandler.NameUP_TextView.setText("position = "+dataList.get(position-1).getTitle());			
 				viewHandler.cell_RLayout.setVisibility(View.VISIBLE);
-				new ThreadReadBitMapInAssets(context, "pad/Playlist/playlist_btn_n.png", viewHandler.cellBG_RLayout, 3);
+				new TKBThreadReadBitMapInAssets(context, "pad/Playlist/playlist_btn_n.png", viewHandler.cellBG_RLayout, 3);
 			}else{
 				viewHandler.NameUP_TextView.setText("position = "+dataList.get(position).getTitle());
-				new ThreadReadBitMapInAssets(context, "pad/Playlist/playlist_btn_n.png", viewHandler.cellBG_RLayout, 3);
+				new TKBThreadReadBitMapInAssets(context, "pad/Playlist/playlist_btn_n.png", viewHandler.cellBG_RLayout, 3);
 			}
 		}
 		
@@ -217,9 +217,9 @@ public class FI_Queqe_ListView_BaseAdapter_Phone extends BaseAdapter {
 				public void onClick(View v) {
 					Log.i(TAG, "delete = "+position);
 					//取得upnpServer
-					AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
+					AndroidUpnpService upnpServer = ((MainFragmentActivity)context).getUPnPService();
 					//取得MR Device
-					DeviceDisplay MR_Device = ((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer();
+					DeviceDisplay MR_Device = ((MainFragmentActivity)context).getDeviceDisplayList().getChooseMediaRenderer();
 					
 					ServiceId serviceId = new UDAServiceId("AVTransport");
 					Service AVTransportService = null;
@@ -258,31 +258,31 @@ public class FI_Queqe_ListView_BaseAdapter_Phone extends BaseAdapter {
 	}
 	private void basicSetView(ViewHandler viewHandler) {		
 		//Delete ImageView
-		Tool.fitsViewLeftMargin(7, viewHandler.Delete_ImageView);
-		viewHandler.Delete_ImageView.getLayoutParams().height = Tool.getWidth(27);
-		Tool.fitsViewWidth(53, viewHandler.Delete_ImageView);
-		new ThreadReadBitMapInAssets(context, "phone/queue/delete.png", viewHandler.Delete_ImageView, 1);
+		TKBTool.fitsViewLeftMargin(7, viewHandler.Delete_ImageView);
+		viewHandler.Delete_ImageView.getLayoutParams().height = TKBTool.getWidth(27);
+		TKBTool.fitsViewWidth(53, viewHandler.Delete_ImageView);
+		new TKBThreadReadBitMapInAssets(context, "phone/queue/delete.png", viewHandler.Delete_ImageView, 1);
 		//Content RLayout
-		Tool.fitsViewLeftMargin(7, viewHandler.Content_RLayout);
-		Tool.fitsViewRightMargin(7, viewHandler.Content_RLayout);
-		Tool.fitsViewHeight(30, viewHandler.Content_RLayout);
+		TKBTool.fitsViewLeftMargin(7, viewHandler.Content_RLayout);
+		TKBTool.fitsViewRightMargin(7, viewHandler.Content_RLayout);
+		TKBTool.fitsViewHeight(30, viewHandler.Content_RLayout);
 		//Image ImageView
-		viewHandler.Image_ImageView.getLayoutParams().height = Tool.getWidth(36);
-		Tool.fitsViewWidth(36, viewHandler.Image_ImageView);
-		new ThreadReadBitMapInAssets(context, "phone/queue/music_nophoto.png", viewHandler.Image_ImageView, 1);
+		viewHandler.Image_ImageView.getLayoutParams().height = TKBTool.getWidth(36);
+		TKBTool.fitsViewWidth(36, viewHandler.Image_ImageView);
+		new TKBThreadReadBitMapInAssets(context, "phone/queue/music_nophoto.png", viewHandler.Image_ImageView, 1);
 		//NameUP TextView
-		Tool.fitsViewHeight(18, viewHandler.NameUP_TextView);
-		Tool.fitsViewTextSize(10, viewHandler.NameUP_TextView);
-		Tool.fitsViewLeftMargin(5, viewHandler.NameUP_TextView);
+		TKBTool.fitsViewHeight(18, viewHandler.NameUP_TextView);
+		TKBTool.fitsViewTextSize(10, viewHandler.NameUP_TextView);
+		TKBTool.fitsViewLeftMargin(5, viewHandler.NameUP_TextView);
 		//NameDown TextView
-		Tool.fitsViewHeight(12, viewHandler.NameDown_TextView);
-		Tool.fitsViewTextSize(8, viewHandler.NameDown_TextView);
-		Tool.fitsViewLeftMargin(5, viewHandler.NameDown_TextView);
+		TKBTool.fitsViewHeight(12, viewHandler.NameDown_TextView);
+		TKBTool.fitsViewTextSize(8, viewHandler.NameDown_TextView);
+		TKBTool.fitsViewLeftMargin(5, viewHandler.NameDown_TextView);
 		//Drag_ImageView
-		viewHandler.Drag_ImageView.getLayoutParams().height = Tool.getWidth(20);
-		Tool.fitsViewWidth(17, viewHandler.Drag_ImageView);
-		Tool.fitsViewRightMargin(15, viewHandler.Drag_ImageView);
-		new ThreadReadBitMapInAssets(context, "phone/queue/music_icon.png", viewHandler.Drag_ImageView, 1);
+		viewHandler.Drag_ImageView.getLayoutParams().height = TKBTool.getWidth(20);
+		TKBTool.fitsViewWidth(17, viewHandler.Drag_ImageView);
+		TKBTool.fitsViewRightMargin(15, viewHandler.Drag_ImageView);
+		new TKBThreadReadBitMapInAssets(context, "phone/queue/music_icon.png", viewHandler.Drag_ImageView, 1);
 	}
 	public void SET_Edite(boolean isEdit){
 		if(this.isEdit == isEdit ){

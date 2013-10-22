@@ -3,18 +3,6 @@ package com.alpha.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.FAM.SETTING.FAM_ViewFlipper;
-import com.FI.SETTING.FI_ListView;
-import com.FI.SETTING.FI_PointLiLayout;
-import com.FI.SETTING.FI_Queqe_ListView_BaseAdapter_PAD;
-import com.FI.SETTING.FI_Queqe_ListView_BaseAdapter_Phone;
-import com.FI.SETTING.FI_VIEW_LISTNER;
-import com.FI.SETTING.FI_VIEW_SETTING;
-import com.FI.SETTING.FI_ViewFlipper;
-import com.alpha.upnpui.MainFragmentActivity;
-import com.alpha.upnpui.R;
-import com.appantasy.androidapptemplate.event.lastchange.TrackDO;
-import com.tkb.tool.MLog;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -35,6 +23,20 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.FAM.SETTING.FAM_ViewFlipper;
+import com.FI.SETTING.FI_ListView;
+import com.FI.SETTING.FI_PointLiLayout;
+import com.FI.SETTING.FI_Queqe_ListView_BaseAdapter_PAD;
+import com.FI.SETTING.FI_Queqe_ListView_BaseAdapter_Phone;
+import com.FI.SETTING.FI_VIEW_LISTNER;
+import com.FI.SETTING.FI_VIEW_SETTING;
+import com.FI.SETTING.FI_ViewFlipper;
+import com.alpha.upnp.parser.TrackDO;
+import com.alpha.upnpui.MainFragmentActivity;
+import com.alpha.upnpui.R;
+import com.alpha.util.DeviceProperty;
+import com.tkb.tool.TKBLog;
+
 public class Fragment_Information extends Fragment {
 	
 	//VIEWS
@@ -50,7 +52,7 @@ public class Fragment_Information extends Fragment {
 	private FI_VIEW_SETTING VIEW_SETTING;
 	private FI_VIEW_LISTNER VIEW_LISTNER;
 	private static String TAG = "Fragment_Information";
-	private MLog mlog = new MLog();
+	private TKBLog mlog = new TKBLog();
 	private Context context;
 	private int device_size = 0;
 	@Override
@@ -61,8 +63,8 @@ public class Fragment_Information extends Fragment {
 	}	
 	private void CreateProcess() {
 		this.context = this.getActivity();
-		this.mlog.LogSwitch = true;		
-		device_size = ((MainFragmentActivity)context).getDevice_Size();
+		this.mlog.switchLog = true;		
+		device_size = ((MainFragmentActivity)context).getDeviceScreenSize();
 		fragmentManager = ((MainFragmentActivity)context).getSupportFragmentManager();
 		//介面設定取得
         this.VIEW_SETTING = new FI_VIEW_SETTING(this.context,this.device_size);
@@ -72,7 +74,7 @@ public class Fragment_Information extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
-		if(device_size==6){
+		if(DeviceProperty.isPhone()){
 			//手機
 			Fragment_MainView = (ViewGroup)inflater.inflate(R.layout.fragment_information_phone, null);
 			Fragment_MainView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
@@ -267,19 +269,19 @@ public class Fragment_Information extends Fragment {
 	//編輯模式
 	public boolean SET_FI_ListView_Edite(boolean isEdit){
 		if(!isEdit){
-			if(device_size==6){
+			if(DeviceProperty.isPhone()){
 				((FI_Queqe_ListView_BaseAdapter_Phone)this.fi_Queue_ListView.getAdapter()).SET_Edite(false);
 			}else{
 				((FI_Queqe_ListView_BaseAdapter_PAD)this.fi_Queue_ListView.getAdapter()).SET_Edite(false);
 			}
 		}else{
-			if(device_size==6){
+			if(DeviceProperty.isPhone()){
 				((FI_Queqe_ListView_BaseAdapter_Phone)this.fi_Queue_ListView.getAdapter()).SET_Edite(true);
 			}else{
 				((FI_Queqe_ListView_BaseAdapter_PAD)this.fi_Queue_ListView.getAdapter()).SET_Edite(true);
 			}
 		}
-		if(device_size==6){
+		if(DeviceProperty.isPhone()){
 			return ((FI_Queqe_ListView_BaseAdapter_Phone)this.fi_Queue_ListView.getAdapter()).GET_Edite();
 		}else{
 			return ((FI_Queqe_ListView_BaseAdapter_PAD)this.fi_Queue_ListView.getAdapter()).GET_Edite();

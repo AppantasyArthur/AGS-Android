@@ -2,13 +2,7 @@ package com.FI.SETTING;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.alpha.UPNP.DeviceDisplay;
-import com.alpha.upnpui.MainFragmentActivity;
-import com.alpha.upnpui.R;
-import com.tkb.tool.DownLoadUrlBitmap;
-import com.tkb.tool.MLog;
-import com.tkb.tool.ThreadReadBitMapInAssets;
-import com.tkb.tool.Tool;
+
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
@@ -24,6 +18,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.alpha.upnp.DeviceDisplay;
+import com.alpha.upnpui.MainFragmentActivity;
+import com.alpha.upnpui.R;
+import com.alpha.util.DeviceProperty;
+import com.tkb.tool.DownLoadUrlBitmap;
+import com.tkb.tool.TKBLog;
+import com.tkb.tool.TKBThreadReadBitMapInAssets;
+import com.tkb.tool.TKBTool;
+
 public class FI_ViewFlipper extends ViewFlipper {
 	
 	private View new_View;
@@ -37,7 +40,7 @@ public class FI_ViewFlipper extends ViewFlipper {
 	private GestureDetector ViewGestureDetector;
 	
 	private static final String TAG = "FI_ViewFlipper";
-	private MLog mlog = new MLog();	
+	private TKBLog mlog = new TKBLog();	
 	private Context context;
 	
 	private boolean isTouchDownHere = false;//是不是在這個VIEW上Touch Down
@@ -93,7 +96,7 @@ public class FI_ViewFlipper extends ViewFlipper {
 				Log.i(TAG, "bbbbbbbbb = 4"+str);
 				ImageView Image_ImageView = (ImageView)new_View.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_RLayout_Image_ImageView);
 				if(str.equals("")||str==null){
-					Image_ImageView.setImageBitmap(Tool.readBitMapInAssets(context, "pad/Nowplaying/NoCover.png"));
+					Image_ImageView.setImageBitmap(TKBTool.readBitMapInAssets(context, "pad/Nowplaying/NoCover.png"));
 				}else{
 					new DownLoadUrlBitmap(Image_ImageView,str);					
 				}
@@ -105,7 +108,7 @@ public class FI_ViewFlipper extends ViewFlipper {
 				break;
 			case 6:
 				if(context!=null&&FI_ViewFlipper.this.Point_LLayout!=null){				
-					FI_ViewFlipper.this.CurrentPage = GroupList.indexOf(((MainFragmentActivity)context).GETDeviceDisplayList().getChooseMediaRenderer());
+					FI_ViewFlipper.this.CurrentPage = GroupList.indexOf(((MainFragmentActivity)context).getDeviceDisplayList().getChooseMediaRenderer());
 					FI_ViewFlipper.this.Point_LLayout.setPointCurrent(CurrentPage);
 				}
 				break;
@@ -147,15 +150,15 @@ public class FI_ViewFlipper extends ViewFlipper {
 		}
 	}
 	private void CreateProcess(){
-		this.mlog.LogSwitch = true;
+		this.mlog.switchLog = true;
 		this.GroupList = GetGroupList();
 		ViewGestureDetector = new GestureDetector(context,new MyGestureListener());
-		device_size = ((MainFragmentActivity)context).getDevice_Size();
+		device_size = ((MainFragmentActivity)context).getDeviceScreenSize();
 		CreateMusicInfor_Listner();
 	}
 	private List<DeviceDisplay> GetGroupList(){
 		List<DeviceDisplay> list = new ArrayList<DeviceDisplay>();
-		for(DeviceDisplay deviceDisplay:((MainFragmentActivity)context).GETDeviceDisplayList().getGroupList()){
+		for(DeviceDisplay deviceDisplay:((MainFragmentActivity)context).getDeviceDisplayList().getGroupList()){
 			list.add(deviceDisplay);
 		}
 		return list;		
@@ -200,7 +203,7 @@ public class FI_ViewFlipper extends ViewFlipper {
 			}
 				
 		};
-		((MainFragmentActivity)context).GETDeviceDisplayList().setMusicInfo_Listner(musicInfo);
+		((MainFragmentActivity)context).getDeviceDisplayList().setMusicInfo_Listner(musicInfo);
 	}
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
@@ -264,7 +267,7 @@ public class FI_ViewFlipper extends ViewFlipper {
 					e.printStackTrace();
 				}
 				if(CurrentPage>=0){
-					((MainFragmentActivity)context).GETDeviceDisplayList().setChooseMediaRenderer(GroupList.get(CurrentPage));
+					((MainFragmentActivity)context).getDeviceDisplayList().setChooseMediaRenderer(GroupList.get(CurrentPage));
 				}	
 			}			
 		}).start();
@@ -290,7 +293,7 @@ public class FI_ViewFlipper extends ViewFlipper {
 		new_View = LayoutInflater.from(context).inflate(R.layout.fi_infor_viewflipper_cell_pad, null);
 		new_View.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
-		if(device_size==6){
+		if(DeviceProperty.isPhone()){
 			Phone_SetView(new_View);
 		}else{
 			PAD_SetView(new_View);
@@ -301,102 +304,102 @@ public class FI_ViewFlipper extends ViewFlipper {
 	//設定介面
 	private void Phone_SetView(View view) {
 		//Cell RLayout
-		new ThreadReadBitMapInAssets(context, "phone/nowplaying/now playing_bg.PNG", view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout), 3);
+		new TKBThreadReadBitMapInAssets(context, "phone/nowplaying/now playing_bg.PNG", view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout), 3);
 		//MusicName TextView
-		Tool.fitsViewWidth(270, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView));
-		Tool.fitsViewHeight(19, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView));
-		Tool.fitsViewTopMargin(212, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView));
-		Tool.fitsViewLeftMargin(65, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView));
-		Tool.fitsViewTextSize(12, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView));
+		TKBTool.fitsViewWidth(270, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView));
+		TKBTool.fitsViewHeight(19, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView));
+		TKBTool.fitsViewTopMargin(212, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView));
+		TKBTool.fitsViewLeftMargin(65, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView));
+		TKBTool.fitsViewTextSize(12, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView));
 		//MusicCount TextView
-		Tool.fitsViewWidth(183, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicCount_TextView));
-		Tool.fitsViewHeight(8, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicCount_TextView));
-		Tool.fitsViewTopMargin(3, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicCount_TextView));
-		Tool.fitsViewLeftMargin(65, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicCount_TextView));
-		Tool.fitsViewTextSize(5, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicCount_TextView));
+		TKBTool.fitsViewWidth(183, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicCount_TextView));
+		TKBTool.fitsViewHeight(8, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicCount_TextView));
+		TKBTool.fitsViewTopMargin(3, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicCount_TextView));
+		TKBTool.fitsViewLeftMargin(65, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicCount_TextView));
+		TKBTool.fitsViewTextSize(5, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicCount_TextView));
 		//MusicArtist TextView
-		Tool.fitsViewWidth(255, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView));
-		Tool.fitsViewHeight(14, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView));
-		Tool.fitsViewTopMargin(250, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView));
-		Tool.fitsViewLeftMargin(65, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView));
-		Tool.fitsViewTextSize(8, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView));
+		TKBTool.fitsViewWidth(255, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView));
+		TKBTool.fitsViewHeight(14, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView));
+		TKBTool.fitsViewTopMargin(250, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView));
+		TKBTool.fitsViewLeftMargin(65, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView));
+		TKBTool.fitsViewTextSize(8, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView));
 		//MusicAlbum TextView
-		Tool.fitsViewWidth(255, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicAlbum_TextView));
-		Tool.fitsViewHeight(14, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicAlbum_TextView));
-		Tool.fitsViewTopMargin(3, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicAlbum_TextView));
-		Tool.fitsViewLeftMargin(65, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicAlbum_TextView));
-		Tool.fitsViewTextSize(8, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicAlbum_TextView));
+		TKBTool.fitsViewWidth(255, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicAlbum_TextView));
+		TKBTool.fitsViewHeight(14, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicAlbum_TextView));
+		TKBTool.fitsViewTopMargin(3, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicAlbum_TextView));
+		TKBTool.fitsViewLeftMargin(65, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicAlbum_TextView));
+		TKBTool.fitsViewTextSize(8, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicAlbum_TextView));
 		//MusicGenre TextView
-		Tool.fitsViewWidth(255, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView));
-		Tool.fitsViewHeight(14, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView));
-		Tool.fitsViewTopMargin(3, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView));
-		Tool.fitsViewLeftMargin(65, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView));
-		Tool.fitsViewTextSize(8, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView));
+		TKBTool.fitsViewWidth(255, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView));
+		TKBTool.fitsViewHeight(14, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView));
+		TKBTool.fitsViewTopMargin(3, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView));
+		TKBTool.fitsViewLeftMargin(65, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView));
+		TKBTool.fitsViewTextSize(8, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView));
 		//MusicNext TextView
-		Tool.fitsViewWidth(212, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicNext_TextView));
-		Tool.fitsViewHeight(13, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicNext_TextView));
-		Tool.fitsViewBottomMargin(35, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicNext_TextView));
-		Tool.fitsViewLeftMargin(65, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicNext_TextView));
-		Tool.fitsViewTextSize(8, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicNext_TextView));
+		TKBTool.fitsViewWidth(212, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicNext_TextView));
+		TKBTool.fitsViewHeight(13, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicNext_TextView));
+		TKBTool.fitsViewBottomMargin(35, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicNext_TextView));
+		TKBTool.fitsViewLeftMargin(65, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicNext_TextView));
+		TKBTool.fitsViewTextSize(8, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicNext_TextView));
 		//Image_RLayout
-		view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_Image_RLayout).getLayoutParams().height = Tool.getWidth(160);
-		Tool.fitsViewWidth(158, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_Image_RLayout));
-		Tool.fitsViewTopMargin(40, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_Image_RLayout));
-		Tool.fitsViewRightMargin(80, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_Image_RLayout));
+		view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_Image_RLayout).getLayoutParams().height = TKBTool.getWidth(160);
+		TKBTool.fitsViewWidth(158, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_Image_RLayout));
+		TKBTool.fitsViewTopMargin(40, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_Image_RLayout));
+		TKBTool.fitsViewRightMargin(80, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_Image_RLayout));
 		//Image_ImageView
-		view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_RLayout_Image_ImageView).getLayoutParams().height = Tool.getWidth(160);
-		Tool.fitsViewWidth(158, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_RLayout_Image_ImageView));
-		new ThreadReadBitMapInAssets(context, "pad/Nowplaying/NoCover.png", view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_RLayout_Image_ImageView), 1);
+		view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_RLayout_Image_ImageView).getLayoutParams().height = TKBTool.getWidth(160);
+		TKBTool.fitsViewWidth(158, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_RLayout_Image_ImageView));
+		new TKBThreadReadBitMapInAssets(context, "pad/Nowplaying/NoCover.png", view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_RLayout_Image_ImageView), 1);
 	}	
 	//設定介面
 	private void PAD_SetView(View view) {
 		//Cell RLayout
-		new ThreadReadBitMapInAssets(context, "pad/Nowplaying/nowplaying_bg_f.png", view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout), 3);
+		new TKBThreadReadBitMapInAssets(context, "pad/Nowplaying/nowplaying_bg_f.png", view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout), 3);
 		//MusicName TextView
-		Tool.fitsViewWidth(212, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView));
-		Tool.fitsViewHeight(30, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView));
-		Tool.fitsViewTopMargin(55, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView));
-		Tool.fitsViewLeftMargin(20, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView));
-		Tool.fitsViewTextSize(10, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView));
+		TKBTool.fitsViewWidth(212, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView));
+		TKBTool.fitsViewHeight(30, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView));
+		TKBTool.fitsViewTopMargin(55, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView));
+		TKBTool.fitsViewLeftMargin(20, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView));
+		TKBTool.fitsViewTextSize(10, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicName_TextView));
 		//MusicCount TextView
-		Tool.fitsViewWidth(77, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicCount_TextView));
-		Tool.fitsViewHeight(20, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicCount_TextView));
-		Tool.fitsViewTopMargin(10, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicCount_TextView));
-		Tool.fitsViewLeftMargin(20, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicCount_TextView));
-		Tool.fitsViewTextSize(5, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicCount_TextView));
+		TKBTool.fitsViewWidth(77, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicCount_TextView));
+		TKBTool.fitsViewHeight(20, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicCount_TextView));
+		TKBTool.fitsViewTopMargin(10, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicCount_TextView));
+		TKBTool.fitsViewLeftMargin(20, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicCount_TextView));
+		TKBTool.fitsViewTextSize(5, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicCount_TextView));
 		//MusicArtist TextView
-		Tool.fitsViewWidth(212, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView));
-		Tool.fitsViewHeight(23, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView));
-		Tool.fitsViewTopMargin(120, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView));
-		Tool.fitsViewLeftMargin(20, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView));
-		Tool.fitsViewTextSize(6, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView));
+		TKBTool.fitsViewWidth(212, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView));
+		TKBTool.fitsViewHeight(23, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView));
+		TKBTool.fitsViewTopMargin(120, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView));
+		TKBTool.fitsViewLeftMargin(20, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView));
+		TKBTool.fitsViewTextSize(6, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicArtist_TextView));
 		//MusicAlbum TextView
-		Tool.fitsViewWidth(212, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicAlbum_TextView));
-		Tool.fitsViewHeight(23, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicAlbum_TextView));
-		Tool.fitsViewTopMargin(10, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicAlbum_TextView));
-		Tool.fitsViewLeftMargin(20, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicAlbum_TextView));
-		Tool.fitsViewTextSize(6, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicAlbum_TextView));
+		TKBTool.fitsViewWidth(212, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicAlbum_TextView));
+		TKBTool.fitsViewHeight(23, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicAlbum_TextView));
+		TKBTool.fitsViewTopMargin(10, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicAlbum_TextView));
+		TKBTool.fitsViewLeftMargin(20, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicAlbum_TextView));
+		TKBTool.fitsViewTextSize(6, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicAlbum_TextView));
 		//MusicGenre TextView
-		Tool.fitsViewWidth(212, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView));
-		Tool.fitsViewHeight(23, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView));
-		Tool.fitsViewTopMargin(10, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView));
-		Tool.fitsViewLeftMargin(20, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView));
-		Tool.fitsViewTextSize(6, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView));
+		TKBTool.fitsViewWidth(212, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView));
+		TKBTool.fitsViewHeight(23, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView));
+		TKBTool.fitsViewTopMargin(10, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView));
+		TKBTool.fitsViewLeftMargin(20, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView));
+		TKBTool.fitsViewTextSize(6, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicGenre_TextView));
 		//MusicNext TextView
-		Tool.fitsViewWidth(212, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicNext_TextView));
-		Tool.fitsViewHeight(23, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicNext_TextView));
-		Tool.fitsViewBottomMargin(50, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicNext_TextView));
-		Tool.fitsViewLeftMargin(20, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicNext_TextView));
-		Tool.fitsViewTextSize(6, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicNext_TextView));
+		TKBTool.fitsViewWidth(212, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicNext_TextView));
+		TKBTool.fitsViewHeight(23, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicNext_TextView));
+		TKBTool.fitsViewBottomMargin(50, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicNext_TextView));
+		TKBTool.fitsViewLeftMargin(20, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicNext_TextView));
+		TKBTool.fitsViewTextSize(6, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_MusicNext_TextView));
 		//Image_RLayout
-		view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_Image_RLayout).getLayoutParams().width = Tool.getHeight(150);
-		Tool.fitsViewHeight(150, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_Image_RLayout));
-		Tool.fitsViewTopMargin(55, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_Image_RLayout));
-		Tool.fitsViewRightMargin(20, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_Image_RLayout));
+		view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_Image_RLayout).getLayoutParams().width = TKBTool.getHeight(150);
+		TKBTool.fitsViewHeight(150, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_Image_RLayout));
+		TKBTool.fitsViewTopMargin(55, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_Image_RLayout));
+		TKBTool.fitsViewRightMargin(20, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_Image_RLayout));
 		//Image_ImageView
-		view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_RLayout_Image_ImageView).getLayoutParams().width = Tool.getHeight(135);
-		Tool.fitsViewHeight(135, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_RLayout_Image_ImageView));
-		new ThreadReadBitMapInAssets(context, "pad/Nowplaying/NoCover.png", view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_RLayout_Image_ImageView), 1);
+		view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_RLayout_Image_ImageView).getLayoutParams().width = TKBTool.getHeight(135);
+		TKBTool.fitsViewHeight(135, view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_RLayout_Image_ImageView));
+		new TKBThreadReadBitMapInAssets(context, "pad/Nowplaying/NoCover.png", view.findViewById(R.id.FI_INFOR_ViewFlipper_Cell_RLayout_RLayout_Image_ImageView), 1);
 	}
 	private class MyGestureListener extends SimpleOnGestureListener{
 		@Override

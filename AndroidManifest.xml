@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.alpha.upnpui"
     android:versionCode="1"
-    android:versionName="0.0.1-201309051610" >
+    android:versionName="0.0.3-201309251612" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -30,10 +30,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.alpha.upnpui.FragmentActivity_Setting"
+            android:name="com.alpha.upnpui.Fragment_Setting"
             android:launchMode="singleTask"
             android:configChanges="orientation|screenSize"
-            ></activity>
+            >
+           
+        </activity>
         <service android:name="com.tkb.UpnpOverride.AndroidUpnpServiceImpl"/>
     </application>
 

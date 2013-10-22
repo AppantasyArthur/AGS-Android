@@ -2,34 +2,33 @@ package com.FI.SETTING;
 
 import java.util.List;
 
-import com.alpha.upnpui.MainFragmentActivity;
-import com.alpha.upnpui.R;
-import com.appantasy.androidapptemplate.event.lastchange.TrackDO;
-import com.tkb.tool.MLog;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.alpha.upnp.parser.TrackDO;
+import com.alpha.upnpui.MainFragmentActivity;
+import com.alpha.upnpui.R;
+import com.alpha.util.DeviceProperty;
+import com.tkb.tool.TKBLog;
+
 public class FI_ListView extends ListView {
 	
 	private Context context;
-	private MLog mlog = new MLog();
+	private TKBLog mlog = new TKBLog();
 	private static final String TAG = "FI_ListView";
 	//拖移
 	private WindowManager windowManager;
@@ -52,7 +51,7 @@ public class FI_ListView extends ListView {
 				check = FI_ListView.this.getFirstVisiblePosition()-1;
 				if(check>=0){
 					holdPosition = check;
-					if(device_size==6){
+					if(DeviceProperty.isPhone()){
 						((FI_Queqe_ListView_BaseAdapter_Phone)FI_ListView.this.getAdapter()).SET_DRAG_HOLD_POSITION(holdPosition);
 					}else{
 						((FI_Queqe_ListView_BaseAdapter_PAD)FI_ListView.this.getAdapter()).SET_DRAG_HOLD_POSITION(holdPosition);
@@ -66,7 +65,7 @@ public class FI_ListView extends ListView {
 				check = FI_ListView.this.getLastVisiblePosition()+1;
 				if(check<=FI_ListView.this.getCount()){					
 					holdPosition = check-1;		
-					if(device_size==6){
+					if(DeviceProperty.isPhone()){
 						((FI_Queqe_ListView_BaseAdapter_Phone)FI_ListView.this.getAdapter()).SET_DRAG_HOLD_POSITION(holdPosition);
 					}else{
 						((FI_Queqe_ListView_BaseAdapter_PAD)FI_ListView.this.getAdapter()).SET_DRAG_HOLD_POSITION(holdPosition);
@@ -96,7 +95,7 @@ public class FI_ListView extends ListView {
 		CreateProcess();
 	}
 	public List<TrackDO>GetQueue(){
-		if(device_size==6){
+		if(DeviceProperty.isPhone()){
 			return ((FI_Queqe_ListView_BaseAdapter_Phone)this.getAdapter()).GetQueue();
 		}else{
 			return ((FI_Queqe_ListView_BaseAdapter_PAD)this.getAdapter()).GetQueue();
@@ -104,8 +103,8 @@ public class FI_ListView extends ListView {
 	}
 	private void CreateProcess(){
 		this.context = this.getContext();
-		this.mlog.LogSwitch = true;
-		this.device_size = ((MainFragmentActivity)context).getDevice_Size();
+		this.mlog.switchLog = true;
+		this.device_size = ((MainFragmentActivity)context).getDeviceScreenSize();
 		this.windowManager = (WindowManager)this.context.getSystemService(Context.WINDOW_SERVICE);
 		this.ScrollSlop = 10;//自動上下一個的範圍
 		mlog.info(TAG, "CreateProcess");
@@ -137,7 +136,7 @@ public class FI_ListView extends ListView {
 									Animation.RELATIVE_TO_SELF, 1, Animation.RELATIVE_TO_SELF, 0);
 						}
 						this.holdPosition = check; 
-						if(device_size==6){
+						if(DeviceProperty.isPhone()){
 							((FI_Queqe_ListView_BaseAdapter_Phone)FI_ListView.this.getAdapter()).SET_DRAG_HOLD_POSITION(holdPosition);
 						}else{
 							((FI_Queqe_ListView_BaseAdapter_PAD)FI_ListView.this.getAdapter()).SET_DRAG_HOLD_POSITION(holdPosition);
@@ -184,7 +183,7 @@ public class FI_ListView extends ListView {
 				if(check!=AdapterView.INVALID_POSITION){
 					this.holdPosition = check;
 				}
-				if(device_size==6){
+				if(DeviceProperty.isPhone()){
 					((FI_Queqe_ListView_BaseAdapter_Phone)this.getAdapter()).SET_SORT(this.holdPosition);//設定排序位置
 					((FI_Queqe_ListView_BaseAdapter_Phone)this.getAdapter()).SET_DRAG_START_POSITION(-1);//還原Start Hold position
 				}else{
@@ -239,7 +238,7 @@ public class FI_ListView extends ListView {
 			ScrollSlop = itemView.getHeight()/2;
 			
 			StartDrag(bm,location[0],location[1]);
-			if(device_size==6){
+			if(DeviceProperty.isPhone()){
 				((FI_Queqe_ListView_BaseAdapter_Phone)this.getAdapter()).SET_DRAG_START_POSITION(this.StarPosition);
 			}else{
 				((FI_Queqe_ListView_BaseAdapter_PAD)this.getAdapter()).SET_DRAG_START_POSITION(this.StarPosition);

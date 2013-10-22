@@ -14,7 +14,7 @@ public class RoomSize {
 		
 		DisplayMetrics displayMetrics = new DisplayMetrics();
 		display.getMetrics(displayMetrics);//取得DisplayMetrics
-		if(deviceInformation.getDevice()==6){
+		if(deviceInformation.getDeviceScreenSize()==6){
 			//手機
 			if(displayMetrics.heightPixels>displayMetrics.widthPixels){
 				//直向比例

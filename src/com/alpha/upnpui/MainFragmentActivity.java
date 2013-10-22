@@ -1,25 +1,16 @@
 package com.alpha.upnpui;
 
+import java.io.IOException;
+
 import org.teleal.cling.android.AndroidUpnpService;
-import com.tkb.UpnpOverride.AndroidUpnpServiceImpl;
-import com.FAM.SETTING.FAM_VIEW_LISTNER;
-import com.FAM.SETTING.FAM_VIEW_SETTING;
-import com.alpha.UPNP.BrowseRegistryListener;
-import com.alpha.UPNP.DeviceDisplayList;
-import com.alpha.UPNP.UpnpServiceConnection;
-import com.alpha.fragments.Fragment_Information;
-import com.alpha.fragments.Fragment_Music;
-import com.alpha.fragments.Fragment_Speaker;
-import com.tkb.tool.DeviceInformation;
-import com.tkb.tool.MLog;
-import com.tkb.tool.RoomSize;
-import com.tkb.tool.Tool;
-import android.os.Bundle;
-import android.os.StrictMode;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.net.wifi.WifiManager;
+import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -38,8 +29,28 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.FAM.SETTING.FAM_VIEW_LISTNER;
+import com.FAM.SETTING.FAM_VIEW_SETTING;
+import com.alpha.fragments.Fragment_Information;
+import com.alpha.fragments.Fragment_Music;
+import com.alpha.fragments.Fragment_Speaker;
+import com.alpha.upnp.BrowseRegistryListener;
+import com.alpha.upnp.DeviceDisplayList;
+import com.alpha.upnp.UpnpServiceConnection;
+import com.alpha.upnp.device.AGSMediaServerDemand;
+import com.alpha.util.DeviceProperty;
+import com.tkb.UpnpOverride.AndroidUpnpServiceImpl;
+import com.tkb.tool.DeviceInformation;
+import com.tkb.tool.RoomSize;
+import com.tkb.tool.TKBLog;
+import com.tkb.tool.TKBTool;
+
 // FragmentActivity_Main
 public class MainFragmentActivity extends FragmentActivity {
+	
+	private AGSMediaServerDemand msDemand = null;
+	public static int port = 55688;
+	public static String formatedIpAddress;
 	
 	//VIEWS
 	private View MainView;
@@ -58,23 +69,38 @@ public class MainFragmentActivity extends FragmentActivity {
 	//Upnp
 	private BrowseRegistryListener browseRegistryListener;
 	private UpnpServiceConnection upnpServiceConnection;
+	
+	private static AndroidUpnpService serviceAndroidUPnP;
+	public static AndroidUpnpService getServiceAndroidUPnP() {
+		return serviceAndroidUPnP;
+	}
+	public static void setServiceAndroidUPnP(AndroidUpnpService serviceAndroidUPnP) {
+		MainFragmentActivity.serviceAndroidUPnP = serviceAndroidUPnP;
+	}
+	
+	
 	//Device List
-	private DeviceDisplayList deviceDisplayList;
+	private static DeviceDisplayList deviceDisplayList;
 	
 	private static String TAG = "FragmentActivity_Main";
-	private MLog mlog = new MLog();
-	private Context context;
+	private TKBLog mlog = new TKBLog();
+	private static Context context;
+	public static Context getContext(){
+		return context;
+	}
 	private Display display;
 	private DeviceInformation deviceImformation;
 	private int device_size = 0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
 		.detectDiskReads()
 		.detectDiskWrites()
 		.detectNetwork() 
 		.penaltyLog()
 		.build());
+		
 		StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
 		.detectLeakedSqlLiteObjects() 
 	    .penaltyLog() 
@@ -82,14 +108,17 @@ public class MainFragmentActivity extends FragmentActivity {
 		.build()); 
 		super.onCreate(savedInstanceState);
 		Log.v(TAG,"onCreate");
+		
+		this.context = this;
+		
 		CreateProcess();
 		
 		//6、手機 7、平板
-	    if(this.device_size==6){
+	    if(DeviceProperty.isPhone()){
 	    	//PHONE介面
 	    	this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 	    	setContentView(R.layout.fragmentactivity_main_phone);
-	    	Tool.roomSize = new RoomSize(this.display,this.deviceImformation);
+	    	TKBTool.roomSize = new RoomSize(this.display,this.deviceImformation);
 	    	//取得最底層的VIEW
 	    	this.MainView = this.getWindow().getDecorView().findViewById(R.id.pFAM_RLayout);
 	    	//設定PAD介面
@@ -100,7 +129,7 @@ public class MainFragmentActivity extends FragmentActivity {
 	    	//PAD介面
 	    	this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 	    	setContentView(R.layout.fragmentactivity_main_pad);
-	    	Tool.roomSize = new RoomSize(this.display,this.deviceImformation);
+	    	TKBTool.roomSize = new RoomSize(this.display,this.deviceImformation);
 	    	//取得最底層的VIEW
 	    	this.MainView = this.getWindow().getDecorView().findViewById(R.id.FAM_RLayout);
 	    	//設定PAD介面
@@ -114,6 +143,24 @@ public class MainFragmentActivity extends FragmentActivity {
 	    CreateUpnpService();
 	    StartUpnpService();
 	    
+	    if(msDemand == null){
+	    	
+	    	//TextView textIpaddr = (TextView) findViewById(R.id.ipaddr);
+	        WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
+	        int ipAddress = wifiManager.getConnectionInfo().getIpAddress();
+	        formatedIpAddress = String.format("%d.%d.%d.%d", (ipAddress & 0xff), (ipAddress >> 8 & 0xff),
+	            (ipAddress >> 16 & 0xff), (ipAddress >> 24 & 0xff));
+	    	msDemand = new AGSMediaServerDemand(formatedIpAddress, port);
+	    	try {
+				msDemand.start();
+				Log.i(TAG, "MediaServerDemand start success! - http://" + formatedIpAddress + ":" + port );
+			} catch (IOException e) {
+				Log.d(TAG, "MediaServerDemand start faild!");
+				e.printStackTrace();
+			}
+	    	
+	    }
+	    
 	}
 
 	private void CreateProcess(){
@@ -121,11 +168,11 @@ public class MainFragmentActivity extends FragmentActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams. FLAG_FULLSCREEN , WindowManager.LayoutParams. FLAG_FULLSCREEN); 
 		//取得基本資訊
-	    this.context = this;
-	    this.mlog.LogSwitch = true;//顯示LOG
+	    
+	    this.mlog.switchLog = true;//顯示LOG
 	    this.display = this.getWindowManager().getDefaultDisplay();	   
 	    this.deviceImformation = new DeviceInformation(this.context);
-	    this.device_size = deviceImformation.getDevice();
+	    this.device_size = deviceImformation.getDeviceScreenSize();
 	    //取得fragmentManager
 	    this.fragmentManager = this.getSupportFragmentManager();         
         //取得View_SETTING
@@ -140,11 +187,11 @@ public class MainFragmentActivity extends FragmentActivity {
 	}
 	private void set_Phone_First_Fragment() {	
 		fragment_Speaker = new Fragment_Speaker();		
-		Tool.FragmentActivity_MainAddFragment(fragmentManager.beginTransaction(), fragment_Speaker, "Fragment_Speaker", R.id.pFAM_RLayout_ViewFlipper_Speaker_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+		TKBTool.animationAddFragment(fragmentManager.beginTransaction(), fragment_Speaker, "Fragment_Speaker", R.id.pFAM_RLayout_ViewFlipper_Speaker_RLayout, R.animator.alpha_in, R.animator.alpha_out);
 		fragment_Infor = new Fragment_Information();
-		Tool.FragmentActivity_MainAddFragment(fragmentManager.beginTransaction(), fragment_Infor, "Fragment_Infor", R.id.pFAM_RLayout_ViewFlipper_Information_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+		TKBTool.animationAddFragment(fragmentManager.beginTransaction(), fragment_Infor, "Fragment_Infor", R.id.pFAM_RLayout_ViewFlipper_Information_RLayout, R.animator.alpha_in, R.animator.alpha_out);
 		fragment_Music = new Fragment_Music();
-		Tool.FragmentActivity_MainAddFragment(fragmentManager.beginTransaction(), fragment_Music, "Fragment_Music", R.id.pFAM_RLayout_ViewFlipper_Music_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+		TKBTool.animationAddFragment(fragmentManager.beginTransaction(), fragment_Music, "Fragment_Music", R.id.pFAM_RLayout_ViewFlipper_Music_RLayout, R.animator.alpha_in, R.animator.alpha_out);
 	}
 	private void PAD_findVIEW() {
 		//設定PAD介面
@@ -189,11 +236,11 @@ public class MainFragmentActivity extends FragmentActivity {
 	}
 	private void set_PAD_First_Fragment() {		
 		fragment_Speaker = new Fragment_Speaker();		
-		Tool.FragmentActivity_MainAddFragment(fragmentManager.beginTransaction(), fragment_Speaker, "Fragment_Speaker", R.id.FAM_RLayout_LEFT_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+		TKBTool.animationAddFragment(fragmentManager.beginTransaction(), fragment_Speaker, "Fragment_Speaker", R.id.FAM_RLayout_LEFT_RLayout, R.animator.alpha_in, R.animator.alpha_out);
 		fragment_Infor = new Fragment_Information();
-		Tool.FragmentActivity_MainAddFragment(fragmentManager.beginTransaction(), fragment_Infor, "Fragment_Infor", R.id.FAM_RLayout_CENTER_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+		TKBTool.animationAddFragment(fragmentManager.beginTransaction(), fragment_Infor, "Fragment_Infor", R.id.FAM_RLayout_CENTER_RLayout, R.animator.alpha_in, R.animator.alpha_out);
 		fragment_Music = new Fragment_Music();
-		Tool.FragmentActivity_MainAddFragment(fragmentManager.beginTransaction(), fragment_Music, "Fragment_Music", R.id.FAM_RLayout_RIGHT_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+		TKBTool.animationAddFragment(fragmentManager.beginTransaction(), fragment_Music, "Fragment_Music", R.id.FAM_RLayout_RIGHT_RLayout, R.animator.alpha_in, R.animator.alpha_out);
 	}
 	
 	private void CreateUpnpService() {		
@@ -204,10 +251,10 @@ public class MainFragmentActivity extends FragmentActivity {
 		Intent intent = new Intent(context,AndroidUpnpServiceImpl.class);
     	this.bindService(intent, upnpServiceConnection, Context.BIND_AUTO_CREATE);
 	}
-	public DeviceDisplayList GETDeviceDisplayList(){
-		return this.deviceDisplayList;
+	public static DeviceDisplayList getDeviceDisplayList(){
+		return deviceDisplayList;
 	}
-	public AndroidUpnpService GETUPnPService(){
+	public AndroidUpnpService getUPnPService(){
 		return upnpServiceConnection.getUPnPService();
 	}
 	@Override
@@ -254,7 +301,7 @@ public class MainFragmentActivity extends FragmentActivity {
 	public void onConfigurationChanged(Configuration newConfig) {		
 		super.onConfigurationChanged(newConfig);
 	}
-	public int getDevice_Size(){
+	public int getDeviceScreenSize(){
 		return device_size;
 	}
 	
@@ -264,7 +311,7 @@ public class MainFragmentActivity extends FragmentActivity {
 		}
 	}
 	public void ShowDoneButton(){
-		if(device_size==6){
+		if(DeviceProperty.isPhone()){
 			MainView.findViewById(R.id.pFI_RLayout_RLayout_Clear_Button).setVisibility(View.GONE);
 			MainView.findViewById(R.id.pFI_RLayout_RLayout_Save_Button).setVisibility(View.GONE);
 			MainView.findViewById(R.id.pFI_RLayout_RLayout_Done_Button).setVisibility(View.VISIBLE);
@@ -314,4 +361,8 @@ public class MainFragmentActivity extends FragmentActivity {
 	public Fragment_Music GETFragment_Music(){
 		return (Fragment_Music)this.fragment_Music;
 	}
+
+	
+
+	
 }

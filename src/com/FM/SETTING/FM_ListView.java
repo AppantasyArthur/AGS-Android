@@ -1,8 +1,8 @@
 package com.FM.SETTING;
 
 import com.alpha.upnpui.MainFragmentActivity;
-import com.tkb.tool.MLog;
-import com.tkb.tool.Tool;
+import com.tkb.tool.TKBLog;
+import com.tkb.tool.TKBTool;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
@@ -15,7 +15,7 @@ import android.widget.ImageView.ScaleType;
 import android.widget.ListView;
 public class FM_ListView extends ListView {
 	private Context context;
-	private MLog mlog = new MLog();
+	private TKBLog mlog = new TKBLog();
 	private static final String TAG = "FI_ListView";
 	
 	private WindowManager windowManager;
@@ -43,9 +43,9 @@ public class FM_ListView extends ListView {
 	}
 	private void CreateProcess() {
 		this.context = this.getContext();
-		this.mlog.LogSwitch = true;
+		this.mlog.switchLog = true;
 		this.windowManager = (WindowManager)this.context.getSystemService(Context.WINDOW_SERVICE);
-		this.bm = Tool.readBitMapInAssets(context, "pad/Playlist/song_icon.png");
+		this.bm = TKBTool.readBitMapInAssets(context, "pad/Playlist/song_icon.png");
 	}
 	public void setItemLongClickState(boolean State){
 		this.isItemLongClick = State;		
@@ -66,7 +66,7 @@ public class FM_ListView extends ListView {
 			break;
 		case MotionEvent.ACTION_MOVE:
 			if(dragImageView!=null){
-				OnDrag(ev_RX-Tool.getHeight(100),ev_RY-Tool.getHeight(100));
+				OnDrag(ev_RX-TKBTool.getHeight(100),ev_RY-TKBTool.getHeight(100));
 			}
 			break;
 		case MotionEvent.ACTION_UP:
@@ -91,10 +91,10 @@ public class FM_ListView extends ListView {
 		StopDrag();
 		windowLayoutParam = new WindowManager.LayoutParams();
 		windowLayoutParam.gravity = Gravity.TOP|Gravity.LEFT;
-		windowLayoutParam.x = ev_X-Tool.getHeight(107);
-		windowLayoutParam.y = ev_Y-Tool.getHeight(111);
-		windowLayoutParam.width = Tool.getHeight(107);
-		windowLayoutParam.height = Tool.getHeight(111);
+		windowLayoutParam.x = ev_X-TKBTool.getHeight(107);
+		windowLayoutParam.y = ev_Y-TKBTool.getHeight(111);
+		windowLayoutParam.width = TKBTool.getHeight(107);
+		windowLayoutParam.height = TKBTool.getHeight(111);
 		windowLayoutParam.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                 | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                 | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON

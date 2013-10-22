@@ -3,6 +3,7 @@ package com.alpha.fragments;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.teleal.cling.android.AndroidUpnpService;
 import org.teleal.cling.controlpoint.ActionCallback;
 import org.teleal.cling.model.action.ActionArgumentValue;
@@ -13,16 +14,7 @@ import org.teleal.cling.model.meta.ActionArgument;
 import org.teleal.cling.model.meta.Device;
 import org.teleal.cling.model.meta.Service;
 import org.teleal.cling.model.types.UDAServiceId;
-import com.FAM.SETTING.FAM_ViewFlipper;
-import com.FS.SETTING.FS_VIEW_LISTNER;
-import com.FS.SETTING.FS_VIEW_SETTING;
-import com.FS.SETTING.OptionButton;
-import com.alpha.UPNP.DeviceDisplay;
-import com.alpha.upnpui.MainFragmentActivity;
-import com.alpha.upnpui.R;
-import com.appantasy.androidapptemplate.event.lastchange.GroupVO;
-import com.tkb.tool.MLog;
-import com.tkb.tool.ThreadReadBitMapInAssets;
+
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -42,6 +34,18 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.FAM.SETTING.FAM_ViewFlipper;
+import com.FS.SETTING.FS_VIEW_LISTNER;
+import com.FS.SETTING.FS_VIEW_SETTING;
+import com.FS.SETTING.OptionButton;
+import com.alpha.upnp.DeviceDisplay;
+import com.alpha.upnp.parser.GroupVO;
+import com.alpha.upnpui.MainFragmentActivity;
+import com.alpha.upnpui.R;
+import com.alpha.util.DeviceProperty;
+import com.tkb.tool.TKBLog;
+import com.tkb.tool.TKBThreadReadBitMapInAssets;
+
 public class Fragment_Speaker extends Fragment {
 	//VIEWS
 	private View Fragment_MainView;	
@@ -54,7 +58,7 @@ public class Fragment_Speaker extends Fragment {
 	private FS_VIEW_LISTNER VIEW_LISTNER;	
 
 	private static String TAG = "Fragment_Speaker";
-	private MLog mlog = new MLog();
+	private TKBLog mlog = new TKBLog();
 	private Context context;
 	private int device_size = 0;
 	@Override
@@ -65,8 +69,8 @@ public class Fragment_Speaker extends Fragment {
 	}	
 	private void CreateProcess() {
 		this.context = this.getActivity();
-		this.mlog.LogSwitch = true;		
-		device_size = ((MainFragmentActivity)context).getDevice_Size();
+		this.mlog.switchLog = true;		
+		device_size = ((MainFragmentActivity)context).getDeviceScreenSize();
 		fragmentManager = ((MainFragmentActivity)context).getSupportFragmentManager();
 		
 		//介面設定取得
@@ -77,7 +81,7 @@ public class Fragment_Speaker extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
-		if(device_size==6){
+		if(DeviceProperty.isPhone()){
 			//手機
 			Fragment_MainView = (ViewGroup)inflater.inflate(R.layout.fragment_speaker_phone, null);
 			Fragment_MainView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
@@ -305,17 +309,17 @@ public class Fragment_Speaker extends Fragment {
 		if(OptionButtonsList!=null){
 			for(OptionButton optionButton:OptionButtonsList){
 				optionButton.isSelected = true;
-				new ThreadReadBitMapInAssets(context, "phone/grouprooms/select_icon.PNG", optionButton.Radio_ImageButton, 2);
+				new TKBThreadReadBitMapInAssets(context, "phone/grouprooms/select_icon.PNG", optionButton.Radio_ImageButton, 2);
 			}
 		}
 	}	
 	//Phone Master Slave 設定
 	private void SetRelationWithMaster(String SUDN,boolean isAdd){
 		//取得upnpServer
-		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).GETUPnPService();
+		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).getUPnPService();
 		Device mMMDevice = addDeviceDisplay.getMMDevice();
 		String MUDN = mMMDevice.getIdentity().getUdn().toString();
-		Device MMDevice = ((MainFragmentActivity)context).GETDeviceDisplayList().GetMMDevice(SUDN);
+		Device MMDevice = ((MainFragmentActivity)context).getDeviceDisplayList().GetMMDevice(SUDN);
 		if(MMDevice==null){
 			return;
 		}

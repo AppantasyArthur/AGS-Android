@@ -1,6 +1,6 @@
 package com.FM.SETTING;
 
-import com.alpha.UPNP.DeviceDisplay;
+import com.alpha.upnp.DeviceDisplay;
 
 public interface FM_Music_ListView_BaseAdapter_Listner {
 	public void AddMediaServer(DeviceDisplay deviceDisplay);

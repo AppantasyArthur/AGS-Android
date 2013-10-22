@@ -7,12 +7,14 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.alpha.upnp.parser.GroupVO;
 import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
-import com.appantasy.androidapptemplate.event.lastchange.GroupVO;
-import com.tkb.tool.MLog;
-import com.tkb.tool.ThreadReadBitMapInAssets;
-import com.tkb.tool.Tool;
+import com.alpha.util.DeviceProperty;
+import com.tkb.tool.TKBLog;
+import com.tkb.tool.TKBThreadReadBitMapInAssets;
+import com.tkb.tool.TKBTool;
 
 public class OptionButton{
 	public View cellView;
@@ -23,20 +25,20 @@ public class OptionButton{
 	private int position;
 	public GroupVO groupVO;
 	private Context context;
-	private MLog mlog = new MLog();
+	private TKBLog mlog = new TKBLog();
 	private static final String TAG = "OptionButton";
 	private int device_size = 0;
 	
 	public OptionButton(Context context,int position,GroupVO groupVO){
-		this.mlog.LogSwitch = true;
+		this.mlog.switchLog = true;
 		this.context = context;
 		this.position = position;
 		this.groupVO = groupVO;
-		this.device_size = ((MainFragmentActivity)context).getDevice_Size();
+		this.device_size = ((MainFragmentActivity)context).getDeviceScreenSize();
 		cellView = LayoutInflater.from(context).inflate(R.layout.fs_popupwindow_choosescroll_cell, null);
 		cellView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
 		findView(cellView);
-		if(device_size==6){
+		if(DeviceProperty.isPhone()){
 			Phone_basicSetView();
 		}else{
 			PAD_basicSetView();
@@ -50,11 +52,11 @@ public class OptionButton{
 		this.Name_TextView = (TextView)cellView.findViewById(R.id.FS_PopupWindow_ChooseScroll_RLayout_Name_TextView);
 	}
 	private void Phone_basicSetView() {
-		Tool.fitsViewHeight(40, cellView);
+		TKBTool.fitsViewHeight(40, cellView);
 		//Radio ImageButton
-		Tool.fitsViewWidth(20, this.Radio_ImageButton);
-		this.Radio_ImageButton.getLayoutParams().height = Tool.getWidth(20);
-		Tool.fitsViewLeftMargin(7, this.Radio_ImageButton);
+		TKBTool.fitsViewWidth(20, this.Radio_ImageButton);
+		this.Radio_ImageButton.getLayoutParams().height = TKBTool.getWidth(20);
+		TKBTool.fitsViewLeftMargin(7, this.Radio_ImageButton);
 		if(groupVO.isSlave()){
 			//¤w¿ï¨ú
 			isSelected = true;
@@ -65,21 +67,21 @@ public class OptionButton{
 		
 		if(isSelected){
 			//¤w¿ï¨ú
-			new ThreadReadBitMapInAssets(context, "phone/grouprooms/select_icon.PNG", this.Radio_ImageButton, 2);
+			new TKBThreadReadBitMapInAssets(context, "phone/grouprooms/select_icon.PNG", this.Radio_ImageButton, 2);
 		}else{
 			//¥¼¿ï¨ú
-			new ThreadReadBitMapInAssets(context, "phone/grouprooms/unselect_icon.png", this.Radio_ImageButton, 2);
+			new TKBThreadReadBitMapInAssets(context, "phone/grouprooms/unselect_icon.png", this.Radio_ImageButton, 2);
 		}
 		//Name TextView
-		Tool.fitsViewLeftMargin(7, this.Name_TextView);
-		Tool.fitsViewTextSize(14, this.Name_TextView);
+		TKBTool.fitsViewLeftMargin(7, this.Name_TextView);
+		TKBTool.fitsViewTextSize(14, this.Name_TextView);
 		this.Name_TextView.setText(groupVO.getName());
 	}
 	private void PAD_basicSetView() {
-		Tool.fitsViewHeight(50, cellView);
+		TKBTool.fitsViewHeight(50, cellView);
 		//Radio ImageButton
-		Tool.fitsViewHeight(30, this.Radio_ImageButton);
-		this.Radio_ImageButton.getLayoutParams().width = Tool.getHeight(29);
+		TKBTool.fitsViewHeight(30, this.Radio_ImageButton);
+		this.Radio_ImageButton.getLayoutParams().width = TKBTool.getHeight(29);
 		if(groupVO.isSlave()){
 			//¤w¿ï¨ú
 			isSelected = true;
@@ -89,14 +91,14 @@ public class OptionButton{
 		}			
 		if(isSelected){
 			//¤w¿ï¨ú
-			new ThreadReadBitMapInAssets(context, "pad/pop/btn_f.png", this.Radio_ImageButton, 2);
+			new TKBThreadReadBitMapInAssets(context, "pad/pop/btn_f.png", this.Radio_ImageButton, 2);
 		}else{
 			//¥¼¿ï¨ú
-			new ThreadReadBitMapInAssets(context, "pad/pop/btn_n.png", this.Radio_ImageButton, 2);
+			new TKBThreadReadBitMapInAssets(context, "pad/pop/btn_n.png", this.Radio_ImageButton, 2);
 		}
 		//Name TextView
-		Tool.fitsViewLeftMargin(8, this.Name_TextView);
-		Tool.fitsViewTextSize(6, this.Name_TextView);
+		TKBTool.fitsViewLeftMargin(8, this.Name_TextView);
+		TKBTool.fitsViewTextSize(6, this.Name_TextView);
 		this.Name_TextView.setText(groupVO.getName());
 	}
 	private void ClickListener(){
@@ -104,27 +106,27 @@ public class OptionButton{
 			@Override
 			public void onClick(View v) {				
 				if(isSelected){
-					if(device_size==6){
+					if(DeviceProperty.isPhone()){
 						//Phone §ï¦¨¥¼¿ï
 						isSelected = false;
-						new ThreadReadBitMapInAssets(context, "phone/grouprooms/unselect_icon.png", v, 2);
+						new TKBThreadReadBitMapInAssets(context, "phone/grouprooms/unselect_icon.png", v, 2);
 						mlog.info(TAG, "isSelected = "+isSelected);
 					}else{
 						//PAD §ï¦¨¥¼¿ï
 						isSelected = false;
-						new ThreadReadBitMapInAssets(context, "pad/pop/btn_n.png", v, 2);
+						new TKBThreadReadBitMapInAssets(context, "pad/pop/btn_n.png", v, 2);
 						mlog.info(TAG, "isSelected = "+isSelected);
 					}					
 				}else{
-					if(device_size==6){
+					if(DeviceProperty.isPhone()){
 						//Phone §ï¦¨¤w¿ï
 						isSelected = true;
-						new ThreadReadBitMapInAssets(context, "phone/grouprooms/select_icon.PNG", v, 2);
+						new TKBThreadReadBitMapInAssets(context, "phone/grouprooms/select_icon.PNG", v, 2);
 						mlog.info(TAG, "isSelected = "+isSelected);
 					}else{
 						//PAD §ï¦¨¤w¿ï
 						isSelected = true;
-						new ThreadReadBitMapInAssets(context, "pad/pop/btn_f.png", v, 2);
+						new TKBThreadReadBitMapInAssets(context, "pad/pop/btn_f.png", v, 2);
 						mlog.info(TAG, "isSelected = "+isSelected);
 					}					
 				}
