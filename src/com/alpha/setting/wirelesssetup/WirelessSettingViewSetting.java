@@ -15,12 +15,12 @@ public class WirelessSettingViewSetting {
 	private Context context;
 	private TKBLog mlog = new TKBLog();
 	private static final String TAG = "WirelessSettingViewSetting";
-	private int device_size = 0;
+//	private int device_size = 0;
 	
-	public WirelessSettingViewSetting(Context context,int device_size){
+	public WirelessSettingViewSetting(Context context){
 		this.context = context;
 		this.mlog.switchLog = true;
-		this.device_size = device_size;
+//		this.device_size = device_size;
 	}
 	public void VIEWSET(View view){
 		if(DeviceProperty.isPhone()){

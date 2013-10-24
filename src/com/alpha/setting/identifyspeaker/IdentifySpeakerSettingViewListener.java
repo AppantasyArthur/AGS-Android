@@ -15,7 +15,7 @@ import com.alpha.fragments.Fragment_SRenderers;
 import com.alpha.fragments.settings.IdentifySpeakerSettingFragment;
 import com.alpha.upnp.DeviceDisplay;
 import com.alpha.upnp.service.AGSActionSuccessCaller;
-import com.alpha.upnp.service.AGSSsytemService;
+import com.alpha.upnp.service.AGSSytemService;
 import com.alpha.upnp.value.SystemServiceValues;
 import com.alpha.upnpui.R;
 import com.alpha.util.DeviceProperty;
@@ -76,7 +76,7 @@ public class IdentifySpeakerSettingViewListener {
 	
 	private void identifySpeaker(DeviceDisplay devicedisplay){
 		
-		AGSSsytemService s = new AGSSsytemService(devicedisplay.getDevice(), IdentifySpeakerSettingFragment.getMessageHandler());
+		AGSSytemService s = new AGSSytemService(devicedisplay.getDevice(), IdentifySpeakerSettingFragment.getMessageHandler());
 		s.actIdentifySpeaker(null, new IdentifySpeakerSuccessCaller());
 		
 	}

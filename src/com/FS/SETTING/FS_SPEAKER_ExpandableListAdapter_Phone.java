@@ -28,7 +28,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.alpha.fragments.Fragment_Speaker;
+import com.alpha.fragments.MediaRendererListFragement;
 import com.alpha.upnp.DeviceDisplay;
 import com.alpha.upnp.parser.GroupVO;
 import com.alpha.upnp.parser.GroupVO.Group;
@@ -405,7 +405,7 @@ public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAd
 			viewHandler.AddChildItem_ImageButton.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {	
-					Fragment_Speaker fragment_Speaker = ((MainFragmentActivity)context).GETFragment_Speaker();
+					MediaRendererListFragement fragment_Speaker = ((MainFragmentActivity)context).GETFragment_Speaker();
 					if(fragment_Speaker!=null&&!fragment_Speaker.CheckTITLE2_1_RLayoutIsShown()){
 						List<GroupVO> groupVOList = new ArrayList<GroupVO>();
 						for(int i =0;i<GroupList.size();i++){

@@ -45,7 +45,7 @@
             	android:layout_centerVertical="true"
             	android:scaleType="fitXY"
                 />
-            <com.FM.SETTING.FM_EditText 
+            <com.alpha.musicsource.FM_EditText 
                 android:id="@+id/FM_RLayout_RLayout_LLayout_SearchMusic_EText"
                 android:layout_width="match_parent"
             	android:layout_height="match_parent"
@@ -173,13 +173,13 @@
 	    android:layout_below="@+id/FM_RLayout_TITLE2_RLayout"
 	    android:layout_alignParentRight="true"
         >
-	    <com.FM.SETTING.FM_ListView 
+	    <com.alpha.musicsource.MusicSourceListView 
 	        android:id="@+id/FM_RLayout_Music_ListView"
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"	       
 	        android:background="#00000000"
 	        android:listSelector="@android:color/transparent"
 	        android:divider="#000000"
-	        ></com.FM.SETTING.FM_ListView >
+	        ></com.alpha.musicsource.MusicSourceListView >
     </RelativeLayout>   
 </RelativeLayout>

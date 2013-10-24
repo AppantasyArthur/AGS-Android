@@ -17,10 +17,10 @@ import com.alpha.upnp.value.ServiceValues;
 import com.alpha.upnp.value.SystemServiceValues;
 import com.alpha.upnpui.MainFragmentActivity;
 
-@SuppressWarnings("rawtypes")
-public class AGSSsytemService {
+@SuppressWarnings({"rawtypes", "unchecked"})
+public class AGSSytemService {
 	
-	private final String tag = "AGSSsytemService";
+	private final String tag = "AGSSytemService";
 
 	// service
 	private final Service serviceSystem;
@@ -28,12 +28,66 @@ public class AGSSsytemService {
 	// action
 	private Action actionSystemInfo;
 	private Action actionIdentifySpeaker;
+	
+	private Action actionSetupWireless;
+	public Action getActionSetupWireless() {
+		
+		if(actionSetupWireless == null){
+			
+			actionSetupWireless = serviceSystem.getAction(SystemServiceValues.ACTION_WIRELESS_SETUP);
+			if(actionSetupWireless == null){
+				
+				String msgWarn = "setup wireless action is null.";
+				
+				// warning
+				Log.i(tag, msgWarn);
+				
+				Message msg = handlerMessage.obtainMessage(AGSHandlerMessages.SHOW_MESSAGE);
+				msg.obj = msgWarn;
+				handlerMessage.sendMessage(msg);
+				
+				return null;
+				
+			}
+			
+		}
+		
+		return actionSetupWireless;
+		
+	}
+
+	private Action actionGetCurrentSSID;
+	public Action getActionGetCurrentSSID() {
+		
+		if(actionGetCurrentSSID == null){
+			
+			actionGetCurrentSSID = serviceSystem.getAction(SystemServiceValues.ACTION_GET_CURRENT_SSID);
+			if(actionGetCurrentSSID == null){
+				
+				String msgWarn = "get current ssid action is null.";
+				
+				// warning
+				Log.i(tag, msgWarn);
+				
+				Message msg = handlerMessage.obtainMessage(AGSHandlerMessages.SHOW_MESSAGE);
+				msg.obj = msgWarn;
+				handlerMessage.sendMessage(msg);
+				
+				return null;
+				
+			}
+			
+		}
+		
+		return actionGetCurrentSSID;
+		
+	}
 
 	// controlled device
 	//private final RemoteDevice device;
 	private final Handler handlerMessage;
 	
-	public AGSSsytemService(Device device, Handler handlerMessage){
+	public AGSSytemService(Device device, Handler handlerMessage){
 			
 		this.handlerMessage = handlerMessage;
 		
@@ -55,13 +109,6 @@ public class AGSSsytemService {
 			
 		}
 		
-	}
-
-	public void actIdentifySpeaker(ActionArgumentValue[] values, final AGSActionSuccessCaller callerSuccessFunction){
-		
-		if(serviceSystem == null)
-			return;
-		
 		if(actionIdentifySpeaker == null){
 			
 			actionIdentifySpeaker = serviceSystem.getAction(SystemServiceValues.ACTION_IDENTIFY_SPEAKER);
@@ -82,6 +129,72 @@ public class AGSSsytemService {
 			
 		}
 		
+	}
+	
+	public void actGetCurrentSSID(ActionArgumentValue[] values, final AGSActionSuccessCaller callerSuccessFunction){
+		
+		if(serviceSystem == null)
+			return;
+		
+		if(getActionGetCurrentSSID() == null){
+			return;
+		}
+		
+		ActionInvocation invocation = new ActionInvocation(actionGetCurrentSSID , values);
+		AGSActionCallback callback = new AGSActionCallback(invocation, tag, handlerMessage){
+
+			@Override
+			public void success(ActionInvocation ai) {
+				try {
+					callerSuccessFunction.setActionInvocation(ai); // 
+					callerSuccessFunction.call();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			
+		};
+		
+		MainFragmentActivity.getServiceAndroidUPnP().getControlPoint().execute(callback);
+		
+	}
+	
+	public void actSetupWireless(ActionArgumentValue[] values, final AGSActionSuccessCaller callerSuccessFunction){
+		
+		if(serviceSystem == null)
+			return;
+		
+		if(getActionSetupWireless() == null){
+			return;
+		}
+		
+		ActionInvocation invocation = new ActionInvocation(getActionSetupWireless() , values);
+		AGSActionCallback callback = new AGSActionCallback(invocation, tag, handlerMessage){
+
+			@Override
+			public void success(ActionInvocation ai) {
+				try {
+					callerSuccessFunction.setActionInvocation(ai); // 
+					callerSuccessFunction.call();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			
+		};
+		MainFragmentActivity.getServiceAndroidUPnP().getControlPoint().execute(callback);
+		
+	}
+
+	public void actIdentifySpeaker(ActionArgumentValue[] values, final AGSActionSuccessCaller callerSuccessFunction){
+		
+		if(serviceSystem == null)
+			return;
+		
+		if(actionIdentifySpeaker == null){
+			return;
+		}
+		
 		ActionInvocation invocation = new ActionInvocation(actionIdentifySpeaker , values);
 		AGSActionCallback callback = new AGSActionCallback(invocation, tag, handlerMessage){
 
@@ -99,8 +212,7 @@ public class AGSSsytemService {
 		MainFragmentActivity.getServiceAndroidUPnP().getControlPoint().execute(callback);
 		
 	}
-	
-	@SuppressWarnings( "unchecked" )
+
 	public void actGetSystemInfo(ActionArgumentValue[] values, final AGSActionSuccessCaller callerSuccessFunction){
 		
 		if(serviceSystem == null)
@@ -140,6 +252,7 @@ public class AGSSsytemService {
 			}
 			
 		};
+		
 		MainFragmentActivity.getServiceAndroidUPnP().getControlPoint().execute(callbackSystemInfo);
 		
 	}

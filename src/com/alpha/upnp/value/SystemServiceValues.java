@@ -7,6 +7,10 @@ public class SystemServiceValues extends ServiceValues {
 	public static final String ACTION_WIRELESS_SETUP = "SetupWireless";
 	public static final String ACTION_WIRELESS_SETUP_INPUT_SSID = "AP_SSID";
 	public static final String ACTION_WIRELESS_SETUP_INPUT_PWD = "AP_Password";
+	public static final String ACTION_WIRELESS_SETUP_OUTPUT_RESULT = DEFAULT_OUTPUT_RESULT;
+	
+	public static final String ACTION_GET_CURRENT_SSID = "GetCurrentSSID";
+	public static final String ACTION_GET_CURRENT_SSID_OUTPUT_RESULT = DEFAULT_OUTPUT_RESULT;
 	
 	public static final String ACTION_SYSTEM_INFO = "GetSystemInfo";
 	public static final String ACTION_SYSTEM_INFO_OUTPUT = "SystemInfo";
@@ -18,6 +22,8 @@ public class SystemServiceValues extends ServiceValues {
 	public static final String ACTION_SLEEP_TIMER_SET = "SetAutoSleepTimer";
 
 	public static final String ACTION_SLEEP_TIMER_INPUT_SLEEPTIMEROPTION = "SleepTimerOption";
+
+//	public static final String WirelessStstus = null;
 	
 	public static enum SleepTimerOptions{
 		
@@ -39,6 +45,12 @@ public class SystemServiceValues extends ServiceValues {
 //		SleepTimerOptions(String text){
 //			this.text = text;
 //		}
+		
+	}
+
+	public class WirelessStstus{
+
+		public static final String DISCONNECT = "disconnect";
 		
 	}
 
@@ -95,8 +107,7 @@ public class SystemServiceValues extends ServiceValues {
 		}
 		
 	}
+
 	
-	
-	//public static String EVENT_
 	
 }

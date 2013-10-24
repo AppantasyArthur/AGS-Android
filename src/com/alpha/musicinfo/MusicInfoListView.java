@@ -1,4 +1,4 @@
-package com.FI.SETTING;
+package com.alpha.musicinfo;
 
 import java.util.List;
 
@@ -25,21 +25,22 @@ import com.alpha.upnpui.R;
 import com.alpha.util.DeviceProperty;
 import com.tkb.tool.TKBLog;
 
-public class FI_ListView extends ListView {
+// FI_ListView
+public class MusicInfoListView extends ListView {
 	
 	private Context context;
 	private TKBLog mlog = new TKBLog();
-	private static final String TAG = "FI_ListView";
+	private static final String tag = "MusicInfoListView";
 	//拖移
 	private WindowManager windowManager;
 	private WindowManager.LayoutParams windowLayoutParam;
 	private ImageView dragImageView;
-	private int StarPosition = -1;
-	private int holdPosition = -1;
+	private int positionStart = -1;
+	private int positionStop = -1;
 	private int[] QUEUE_ListView_Location = new int[2];
 	private int TouchSlop;
-	private int ScrollSlop;
-	private int device_size = 0;
+	private int offsetScrollSlot;
+//	private int device_size = 0;
 	
 	private Handler handler = new Handler (){
 		@Override
@@ -48,66 +49,67 @@ public class FI_ListView extends ListView {
 			switch (msg.what){
 			case 0:		
 				//顯示上一個
-				check = FI_ListView.this.getFirstVisiblePosition()-1;
+				check = MusicInfoListView.this.getFirstVisiblePosition()-1;
 				if(check>=0){
-					holdPosition = check;
+					positionStop = check;
 					if(DeviceProperty.isPhone()){
-						((FI_Queqe_ListView_BaseAdapter_Phone)FI_ListView.this.getAdapter()).SET_DRAG_HOLD_POSITION(holdPosition);
+						((MusicInfoListPhoneViewAdapter)MusicInfoListView.this.getAdapter()).setDragNHoldPosition(positionStop);
 					}else{
-						((FI_Queqe_ListView_BaseAdapter_PAD)FI_ListView.this.getAdapter()).SET_DRAG_HOLD_POSITION(holdPosition);
+						((MusicInfoListPadViewAdapter)MusicInfoListView.this.getAdapter()).setDragStopPosition(positionStop);
 					}					
-					FI_ListView.this.setSelection(holdPosition);
-					mlog.info(TAG, "handler previous");
+					MusicInfoListView.this.setSelection(positionStop);
+					mlog.info(tag, "handler previous");
 				}									
 				break;
 			case 1:
 				//顯示下一個
-				check = FI_ListView.this.getLastVisiblePosition()+1;
-				if(check<=FI_ListView.this.getCount()){					
-					holdPosition = check-1;		
+				check = MusicInfoListView.this.getLastVisiblePosition()+1;
+				if(check<=MusicInfoListView.this.getCount()){					
+					positionStop = check-1;		
 					if(DeviceProperty.isPhone()){
-						((FI_Queqe_ListView_BaseAdapter_Phone)FI_ListView.this.getAdapter()).SET_DRAG_HOLD_POSITION(holdPosition);
+						((MusicInfoListPhoneViewAdapter)MusicInfoListView.this.getAdapter()).setDragNHoldPosition(positionStop);
 					}else{
-						((FI_Queqe_ListView_BaseAdapter_PAD)FI_ListView.this.getAdapter()).SET_DRAG_HOLD_POSITION(holdPosition);
+						((MusicInfoListPadViewAdapter)MusicInfoListView.this.getAdapter()).setDragStopPosition(positionStop);
 					}
 					
-					FI_ListView.this.setSelection(FI_ListView.this.getFirstVisiblePosition()+1);
-					mlog.info(TAG, "handler next");
+					MusicInfoListView.this.setSelection(MusicInfoListView.this.getFirstVisiblePosition()+1);
+					mlog.info(tag, "handler next");
 				}				
 				break;
 			}
 			super.handleMessage(msg);
 		}
 	};
-	private SHOW_PREVIOUS_THREAD show_Previous_Thread;
-	private SHOW_NEXT_THREAD show_Next_Thread;
 	
-	public FI_ListView(Context context) {
+	private BackwardThread threadBackward;
+	private ForwardThread threadForward;
+	
+	public MusicInfoListView(Context context) {
 		super(context);
 		CreateProcess();
 	}
-	public FI_ListView(Context context, AttributeSet attrs) {
+	public MusicInfoListView(Context context, AttributeSet attrs) {
 		super(context, attrs);	
 		CreateProcess();
 	}
-	public FI_ListView(Context context, AttributeSet attrs, int defStyle) {
+	public MusicInfoListView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);	
 		CreateProcess();
 	}
 	public List<TrackDO>GetQueue(){
 		if(DeviceProperty.isPhone()){
-			return ((FI_Queqe_ListView_BaseAdapter_Phone)this.getAdapter()).GetQueue();
+			return ((MusicInfoListPhoneViewAdapter)this.getAdapter()).GetQueue();
 		}else{
-			return ((FI_Queqe_ListView_BaseAdapter_PAD)this.getAdapter()).GetQueue();
+			return ((MusicInfoListPadViewAdapter)this.getAdapter()).getQueue();
 		}
 	}
 	private void CreateProcess(){
 		this.context = this.getContext();
 		this.mlog.switchLog = true;
-		this.device_size = ((MainFragmentActivity)context).getDeviceScreenSize();
+//		this.device_size = ((MainFragmentActivity)context).getDeviceScreenSize();
 		this.windowManager = (WindowManager)this.context.getSystemService(Context.WINDOW_SERVICE);
-		this.ScrollSlop = 10;//自動上下一個的範圍
-		mlog.info(TAG, "CreateProcess");
+		this.offsetScrollSlot = 10;//自動上下一個的範圍
+		mlog.info(tag, "CreateProcess");
 	}
 	
 	@Override
@@ -121,25 +123,25 @@ public class FI_ListView extends ListView {
 					OnDrag((int)ev.getRawY()-TouchSlop);
 				}	
 				check = this.pointToPosition((int)ev.getX(), (int)ev.getY());//取得position
-				if(check!= AdapterView.INVALID_POSITION&&(ev.getRawY()>(QUEUE_ListView_Location[1]+ScrollSlop))&&(ev.getRawY()<(QUEUE_ListView_Location[1]+this.getHeight()-ScrollSlop))){
-					if(this.holdPosition!=check){
+				if(check!= AdapterView.INVALID_POSITION&&(ev.getRawY()>(QUEUE_ListView_Location[1]+offsetScrollSlot))&&(ev.getRawY()<(QUEUE_ListView_Location[1]+this.getHeight()-offsetScrollSlot))){
+					if(this.positionStop!=check){
 						
-						ViewGroup itemView = (ViewGroup)this.getChildAt(holdPosition-this.getFirstVisiblePosition());
+						ViewGroup itemView = (ViewGroup)this.getChildAt(positionStop-this.getFirstVisiblePosition());
 					
 						TranslateAnimation move;
 						
-						if(this.holdPosition>check){
+						if(this.positionStop>check){
 							move = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0, 
 									Animation.RELATIVE_TO_SELF, -1, Animation.RELATIVE_TO_SELF, 0);
 						}else {
 							move = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0, 
 									Animation.RELATIVE_TO_SELF, 1, Animation.RELATIVE_TO_SELF, 0);
 						}
-						this.holdPosition = check; 
+						this.positionStop = check; 
 						if(DeviceProperty.isPhone()){
-							((FI_Queqe_ListView_BaseAdapter_Phone)FI_ListView.this.getAdapter()).SET_DRAG_HOLD_POSITION(holdPosition);
+							((MusicInfoListPhoneViewAdapter)MusicInfoListView.this.getAdapter()).setDragNHoldPosition(positionStop);
 						}else{
-							((FI_Queqe_ListView_BaseAdapter_PAD)FI_ListView.this.getAdapter()).SET_DRAG_HOLD_POSITION(holdPosition);
+							((MusicInfoListPadViewAdapter)MusicInfoListView.this.getAdapter()).setDragStopPosition(positionStop);
 						}						
 						move.setDuration(200);						
 						move.setFillBefore(true);
@@ -150,48 +152,48 @@ public class FI_ListView extends ListView {
 					}					
 				}				
 				//自動顯示上一個
-				if(ev.getRawY()>=(QUEUE_ListView_Location[1])&&ev.getRawY()<=(QUEUE_ListView_Location[1]+ScrollSlop)){
-					if(show_Previous_Thread==null||!show_Previous_Thread.isStart){
-						show_Previous_Thread = new SHOW_PREVIOUS_THREAD();
+				if(ev.getRawY()>=(QUEUE_ListView_Location[1])&&ev.getRawY()<=(QUEUE_ListView_Location[1]+offsetScrollSlot)){
+					if(threadBackward==null||!threadBackward.isStart){
+						threadBackward = new BackwardThread();
 					}
 				}else{
-					if(show_Previous_Thread!=null&&show_Previous_Thread.isStart){
-						show_Previous_Thread.STOP();
+					if(threadBackward!=null&&threadBackward.isStart){
+						threadBackward.STOP();
 					}
 				}
 				//自動顯示下一個
-				if(ev.getRawY()>=(QUEUE_ListView_Location[1]+this.getHeight()-ScrollSlop)&&ev.getRawY()<=(QUEUE_ListView_Location[1]+this.getHeight())){
-					if(show_Next_Thread==null||!show_Next_Thread.isStart){
-						show_Next_Thread = new SHOW_NEXT_THREAD();
+				if(ev.getRawY()>=(QUEUE_ListView_Location[1]+this.getHeight()-offsetScrollSlot)&&ev.getRawY()<=(QUEUE_ListView_Location[1]+this.getHeight())){
+					if(threadForward==null||!threadForward.isStart){
+						threadForward = new ForwardThread();
 					}
 				}else{
-					if(show_Next_Thread!=null&&show_Next_Thread.isStart){
-						show_Next_Thread.STOP();
+					if(threadForward!=null&&threadForward.isStart){
+						threadForward.STOP();
 					}
 				}
 				break;
 			case MotionEvent.ACTION_UP:
 				StopDrag();	//移除拖移畫面
 				//移除上下個 Thread
-				if(show_Previous_Thread!=null){
-					show_Previous_Thread.STOP();
+				if(threadBackward!=null){
+					threadBackward.STOP();
 				}
-				if(show_Next_Thread!=null){
-					show_Next_Thread.STOP();
+				if(threadForward!=null){
+					threadForward.STOP();
 				}
 				check =this.pointToPosition((int)ev.getX(), (int)ev.getY());//取得position
 				if(check!=AdapterView.INVALID_POSITION){
-					this.holdPosition = check;
+					this.positionStop = check;
 				}
 				if(DeviceProperty.isPhone()){
-					((FI_Queqe_ListView_BaseAdapter_Phone)this.getAdapter()).SET_SORT(this.holdPosition);//設定排序位置
-					((FI_Queqe_ListView_BaseAdapter_Phone)this.getAdapter()).SET_DRAG_START_POSITION(-1);//還原Start Hold position
+					((MusicInfoListPhoneViewAdapter)this.getAdapter()).SET_SORT(this.positionStop);//設定排序位置
+					((MusicInfoListPhoneViewAdapter)this.getAdapter()).SET_DRAG_START_POSITION(-1);//還原Start Hold position
 				}else{
-					((FI_Queqe_ListView_BaseAdapter_PAD)this.getAdapter()).SET_SORT(this.holdPosition);//設定排序位置
-					((FI_Queqe_ListView_BaseAdapter_PAD)this.getAdapter()).SET_DRAG_START_POSITION(-1);//還原Start Hold position
+					((MusicInfoListPadViewAdapter)this.getAdapter()).setSort(this.positionStop);//設定排序位置
+					((MusicInfoListPadViewAdapter)this.getAdapter()).setDragStartPosition(-1);//還原Start Hold position
 				}
 				
-				mlog.info(TAG, "holdPosition = "+holdPosition+",StarPosition = "+this.StarPosition);
+				mlog.info(tag, "holdPosition = "+positionStop+",StarPosition = "+this.positionStart);
 				break;
 			}
 			return true;
@@ -206,13 +208,13 @@ public class FI_ListView extends ListView {
 			//取得QUEUE_ListView_Location
 			this.getLocationOnScreen(QUEUE_ListView_Location);
 			//設定Start、Hold的Position
-			this.holdPosition = this.StarPosition = this.pointToPosition((int)ev.getX(), (int)ev.getY());//取得position
+			this.positionStop = this.positionStart = this.pointToPosition((int)ev.getX(), (int)ev.getY());//取得position
 			//是否點到Item有效位置
-			if(StarPosition==AdapterView.INVALID_POSITION){
+			if(positionStart==AdapterView.INVALID_POSITION){
 	            return super.onInterceptTouchEvent(ev);
 	        }
 			//取得顯示的ItemView
-			ViewGroup itemView = (ViewGroup)this.getChildAt(StarPosition-this.getFirstVisiblePosition());		
+			ViewGroup itemView = (ViewGroup)this.getChildAt(positionStart-this.getFirstVisiblePosition());		
 			//取得Drag ImageView
 			View dragImageView = itemView.findViewById(R.id.FI_QUEUE_ListView_Cell_RLayout_Drag_ImageView);
 			//取得Drag ImageView位置
@@ -235,13 +237,13 @@ public class FI_ListView extends ListView {
 			int[] location = new int[2];
 			itemView.getLocationOnScreen(location);
 			TouchSlop = ev_RY-location[1];//設定手指 跟Cell距離
-			ScrollSlop = itemView.getHeight()/2;
+			offsetScrollSlot = itemView.getHeight()/2;
 			
 			StartDrag(bm,location[0],location[1]);
 			if(DeviceProperty.isPhone()){
-				((FI_Queqe_ListView_BaseAdapter_Phone)this.getAdapter()).SET_DRAG_START_POSITION(this.StarPosition);
+				((MusicInfoListPhoneViewAdapter)this.getAdapter()).SET_DRAG_START_POSITION(this.positionStart);
 			}else{
-				((FI_Queqe_ListView_BaseAdapter_PAD)this.getAdapter()).SET_DRAG_START_POSITION(this.StarPosition);
+				((MusicInfoListPadViewAdapter)this.getAdapter()).setDragStartPosition(this.positionStart);
 			}
 			
 			return false;
@@ -270,7 +272,7 @@ public class FI_ListView extends ListView {
 		dragImageView = new ImageView (this.context);
 		dragImageView.setImageBitmap(bm);
 		windowManager.addView(dragImageView, windowLayoutParam);
-		mlog.info(TAG, "StartDrag");
+		mlog.info(tag, "StartDrag");
 	}
 	public void StopDrag(){
 		//刪除dragImageView
@@ -278,7 +280,7 @@ public class FI_ListView extends ListView {
 			windowManager.removeView(this.dragImageView);
 			this.dragImageView = null;
 		}
-		mlog.info(TAG, "StopDrag");
+		mlog.info(tag, "StopDrag");
 	}
 	
 	public void OnDrag(int ev_Y){
@@ -288,12 +290,12 @@ public class FI_ListView extends ListView {
 			windowLayoutParam.y = ev_Y;
 	        windowManager.updateViewLayout(dragImageView, windowLayoutParam);
 	    }
-		mlog.info(TAG, "OnDrag");
+		mlog.info(tag, "OnDrag");
 	}
-	private class SHOW_NEXT_THREAD{
+	private class ForwardThread{
 		public boolean isStart = false;
 		private Thread thread;
-		public SHOW_NEXT_THREAD(){
+		public ForwardThread(){
 			isStart = true;
 			thread = new Thread(new Runnable(){
 				@Override
@@ -314,10 +316,10 @@ public class FI_ListView extends ListView {
 			isStart = false;
 		}
 	}
-	private class SHOW_PREVIOUS_THREAD{
+	private class BackwardThread{
 		public boolean isStart = false;
 		private Thread thread;
-		public SHOW_PREVIOUS_THREAD(){
+		public BackwardThread(){
 			isStart = true;
 			thread = new Thread(new Runnable(){
 				@Override

@@ -1,4 +1,4 @@
-package com.FM.SETTING;
+package com.alpha.musicsource;
 
 import com.alpha.upnpui.MainFragmentActivity;
 import com.tkb.tool.TKBLog;
@@ -13,7 +13,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.ListView;
-public class FM_ListView extends ListView {
+public class MusicSourceListView extends ListView {
 	private Context context;
 	private TKBLog mlog = new TKBLog();
 	private static final String TAG = "FI_ListView";
@@ -28,16 +28,16 @@ public class FM_ListView extends ListView {
 	private int ev_RX = -1;
 	private int ev_RY = -1;
 	
-	public FM_ListView(Context context) {
+	public MusicSourceListView(Context context) {
 		super(context);
 		CreateProcess();
 	}
 	
-	public FM_ListView(Context context, AttributeSet attrs) {
+	public MusicSourceListView(Context context, AttributeSet attrs) {
 		super(context, attrs);	
 		CreateProcess();
 	}
-	public FM_ListView(Context context, AttributeSet attrs, int defStyle) {
+	public MusicSourceListView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);	
 		CreateProcess();
 	}

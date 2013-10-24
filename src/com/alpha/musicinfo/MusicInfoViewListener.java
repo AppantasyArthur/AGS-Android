@@ -1,4 +1,4 @@
-package com.FI.SETTING;
+package com.alpha.musicinfo;
 
 import org.teleal.cling.android.AndroidUpnpService;
 import org.teleal.cling.controlpoint.ActionCallback;
@@ -35,12 +35,12 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.FAM.SETTING.FAM_PopupWindow;
-import com.FAM.SETTING.FAM_Save_PopupWindow;
+import com.FAM.SETTING.SaveQueueListPopupWindow;
 import com.FAM.SETTING.Music_SeekBar_Listner;
 import com.FAM.SETTING.PlayMode_IButton_Listner;
 import com.FAM.SETTING.Play_IButton_Listner;
 import com.FAM.SETTING.Sound_SeekBar_Listner;
-import com.alpha.fragments.Fragment_Information;
+import com.alpha.fragments.MediaRendererMusicInfoFragement;
 import com.alpha.upnp.DeviceDisplay;
 import com.alpha.upnp.parser.TrackDO;
 import com.alpha.upnpui.Fragment_SETTING;
@@ -52,20 +52,23 @@ import com.tkb.tool.TKBThreadReadBitMapInAssets;
 import com.tkb.tool.TKBThreadReadStateListInAssets;
 import com.tkb.tool.TKBTool;
 
-public class FI_VIEW_LISTNER {
+// FI_VIEW_LISTNER
+public class MusicInfoViewListener {
+	
 	private Context context;
 	private TKBLog mlog = new TKBLog();
-	private static final String TAG = "FI_VIEW_LISTNER";
-	private int device_size = 0;
+	private static final String tag = "MusicInfoViewListener";
+//	private int device_size = 0;
 	private FragmentManager fragmentManager;
-	private FAM_Save_PopupWindow popupWindow;
-	public FI_VIEW_LISTNER(Context context,int device_size,FragmentManager fragmentManager){
+	private SaveQueueListPopupWindow popupSaveQueueWindow;
+	public MusicInfoViewListener(Context context,int device_size,FragmentManager fragmentManager){
 		this.context = context;
 		this.mlog.switchLog = true;
-		this.device_size = device_size;
+//		this.device_size = device_size;
 		this.fragmentManager =fragmentManager;
 	}
-	public void SET_QUEUE_Button_Listner(Button QUEUE_Button,final RelativeLayout TITLE2_1_RLayout,final RelativeLayout Bottom2_RLayout,final ViewFlipper ViewContent_ViewFlipper) {
+	
+	public void setShowQueueListButtonListener(Button QUEUE_Button,final RelativeLayout TITLE2_1_RLayout,final RelativeLayout Bottom2_RLayout,final ViewFlipper ViewContent_ViewFlipper) {
 		QUEUE_Button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -78,7 +81,7 @@ public class FI_VIEW_LISTNER {
 		});
 		
 	}
-	public void SET_Close_Button_Listner(Button Close_Button,final RelativeLayout TITLE2_1_RLayout,final RelativeLayout Bottom2_RLayout,final ViewFlipper ViewContent_ViewFlipper) {
+	public void setCloseQueueListButtonListener(Button Close_Button,final RelativeLayout TITLE2_1_RLayout,final RelativeLayout Bottom2_RLayout,final ViewFlipper ViewContent_ViewFlipper) {
 		Close_Button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -105,11 +108,11 @@ public class FI_VIEW_LISTNER {
 			}
 		});
 	}
-	public void Clear_Button_LISTNER(Button Clear_Button,final ImageView ButtonsBG_ImageView){
+	public void setClearQueueButtonListener(Button Clear_Button,final ImageView ButtonsBG_ImageView){
 		Clear_Button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Log.i(TAG, "Clear_Button On Click");
+				Log.i(tag, "Clear_Button On Click");
 				//取得upnpServer
 				AndroidUpnpService upnpServer = ((MainFragmentActivity)context).getUPnPService();
 				//取得MR Device
@@ -136,11 +139,11 @@ public class FI_VIEW_LISTNER {
 						ActionCallback RemoveAllTracksInQueueActionCallBack = new ActionCallback(ai){
 							@Override
 							public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
-								mlog.info(TAG, "RemoveAllTracksInQueueActionCallBack failure = "+arg2);
+								mlog.info(tag, "RemoveAllTracksInQueueActionCallBack failure = "+arg2);
 							}
 							@Override
 							public void success(ActionInvocation arg0) {									
-								mlog.info(TAG, "RemoveAllTracksInQueueActionCallBack success");
+								mlog.info(tag, "RemoveAllTracksInQueueActionCallBack success");
 							}											
 						};
 						upnpServer.getControlPoint().execute(RemoveAllTracksInQueueActionCallBack);
@@ -176,37 +179,40 @@ public class FI_VIEW_LISTNER {
 			}
 		});					
 	}
-	public void Save_Button_LISTNER(Button Save_Button,final ImageView ButtonsBG_ImageView){
-		Save_Button.setOnClickListener(new View.OnClickListener() {
+	
+	public void setSaveQueueButtonListener(Button buttonSave, final ImageView view){
+		
+		buttonSave.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(popupWindow==null){
-					popupWindow = new FAM_Save_PopupWindow(context);
+				if(popupSaveQueueWindow == null){
+					popupSaveQueueWindow = new SaveQueueListPopupWindow(context);
 				}
-				popupWindow.ShowPopupWindow(v.getRootView(), Gravity.CENTER, 0, 0);
+				popupSaveQueueWindow.showPopupWindow(v.getRootView(), Gravity.CENTER, 0, 0);
 			}
-		});		
-		Save_Button.setOnTouchListener(new View.OnTouchListener() {
+		});
+		
+		buttonSave.setOnTouchListener(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				int Tag = (Integer)ButtonsBG_ImageView.getTag();
+				int Tag = (Integer)view.getTag();
 				switch(event.getAction()){
 				case MotionEvent.ACTION_DOWN:
 					if(Tag==0){
-						new TKBThreadReadBitMapInAssets(context, "phone/queue/bottom_button_f_02.PNG",ButtonsBG_ImageView, 1);
-						ButtonsBG_ImageView.setTag(2);
+						new TKBThreadReadBitMapInAssets(context, "phone/queue/bottom_button_f_02.PNG",view, 1);
+						view.setTag(2);
 					}
 					break;
 				case MotionEvent.ACTION_UP:
 					if(Tag==2){
-						new TKBThreadReadBitMapInAssets(context, "pad/Settingsbar/clear&save_00.png",ButtonsBG_ImageView, 1);
-						ButtonsBG_ImageView.setTag(0);
+						new TKBThreadReadBitMapInAssets(context, "pad/Settingsbar/clear&save_00.png",view, 1);
+						view.setTag(0);
 					}
 					break;
 				case MotionEvent.ACTION_CANCEL:
 					if(Tag==2){
-						new TKBThreadReadBitMapInAssets(context, "pad/Settingsbar/clear&save_00.png",ButtonsBG_ImageView, 1);
-						ButtonsBG_ImageView.setTag(0);
+						new TKBThreadReadBitMapInAssets(context, "pad/Settingsbar/clear&save_00.png",view, 1);
+						view.setTag(0);
 					}
 					break;
 				}
@@ -214,7 +220,7 @@ public class FI_VIEW_LISTNER {
 			}
 		});		
 	}
-	public void Done_Button_LISTNER(Button Done_Button,final Button Clear_Button,final Button Save_Button,final Fragment_Information fragment_Infor){
+	public void Done_Button_LISTNER(Button Done_Button,final Button Clear_Button,final Button Save_Button,final MediaRendererMusicInfoFragement fragment_Infor){
 		Done_Button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -291,12 +297,12 @@ public class FI_VIEW_LISTNER {
 						ActionCallback PreviousCallBack = new ActionCallback(ai){
 							@Override
 							public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
-								mlog.info(TAG, "PreviousCallBack failure = "+arg2);
+								mlog.info(tag, "PreviousCallBack failure = "+arg2);
 								PlayMusic();
 							}
 							@Override
 							public void success(ActionInvocation arg0) {									
-								mlog.info(TAG, "PreviousCallBack success");
+								mlog.info(tag, "PreviousCallBack success");
 								PlayMusic();
 							}											
 						};
@@ -341,12 +347,12 @@ public class FI_VIEW_LISTNER {
 						ActionCallback NextCallBack = new ActionCallback(ai){
 							@Override
 							public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
-								mlog.info(TAG, "NextCallBack failure = "+arg2);
+								mlog.info(tag, "NextCallBack failure = "+arg2);
 								PlayMusic();
 							}
 							@Override
 							public void success(ActionInvocation arg0) {									
-								mlog.info(TAG, "NextCallBack success");
+								mlog.info(tag, "NextCallBack success");
 								PlayMusic();
 							}											
 						};
@@ -393,7 +399,7 @@ public class FI_VIEW_LISTNER {
 						}
 					});
 				}
-				mlog.info(TAG, "SetPlay_IButton_State = "+MR_State);
+				mlog.info(tag, "SetPlay_IButton_State = "+MR_State);
 			}
 		};
 		//注測Play EVEN
@@ -420,11 +426,11 @@ public class FI_VIEW_LISTNER {
 			Stop ActionCallback = new Stop(instanceId,StopService){
 				@Override
 			    public void success(ActionInvocation invocation) {
-					mlog.info(TAG, "Stop success");
+					mlog.info(tag, "Stop success");
 				}
 				@Override
 				public void failure(ActionInvocation arg0,UpnpResponse arg1, String arg2) {
-					mlog.info(TAG, "Stop failure");							
+					mlog.info(tag, "Stop failure");							
 				}
 			};
 			upnpServer.getControlPoint().execute(ActionCallback);
@@ -451,11 +457,11 @@ public class FI_VIEW_LISTNER {
 			Play ActionCallback = new Play(instanceId,PlayService){
 				@Override
 			    public void success(ActionInvocation invocation) {
-					mlog.info(TAG, "Play success");
+					mlog.info(tag, "Play success");
 				}
 				@Override
 				public void failure(ActionInvocation arg0,UpnpResponse arg1, String arg2) {
-					mlog.info(TAG, "Play failure");							
+					mlog.info(tag, "Play failure");							
 				}
 			};
 			upnpServer.getControlPoint().execute(ActionCallback);
@@ -466,7 +472,7 @@ public class FI_VIEW_LISTNER {
 			@Override
 			public void onClick(View v) {
 				int Tag = (Integer)v.getTag();
-				Log.i(TAG, "Tag = "+Tag);
+				Log.i(tag, "Tag = "+Tag);
 				switch(Tag){
 				case 0:
 					SetPlayMode(1);
@@ -506,7 +512,7 @@ public class FI_VIEW_LISTNER {
 							new TKBThreadReadBitMapInAssets(context, "phone/play_volume/shuffle_f.png", Random_IButton, 2);
 							Cycle_IButton.setTag(3);
 						}
-						mlog.info(TAG, "SetPlay_IButton_State = "+MR_PlayMode);
+						mlog.info(tag, "SetPlay_IButton_State = "+MR_PlayMode);
 					}
 				});
 				
@@ -558,11 +564,11 @@ public class FI_VIEW_LISTNER {
 				ActionCallback SetPlayModeActionCallBack = new ActionCallback(ai){
 					@Override
 					public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
-						mlog.info(TAG, "SetPlayModeActionCallBack failure = "+arg2);
+						mlog.info(tag, "SetPlayModeActionCallBack failure = "+arg2);
 					}
 					@Override
 					public void success(ActionInvocation arg0) {									
-						mlog.info(TAG, "SetPlayModeActionCallBack success");
+						mlog.info(tag, "SetPlayModeActionCallBack success");
 					}											
 				};
 				upnpServer.getControlPoint().execute(SetPlayModeActionCallBack);	
@@ -657,10 +663,11 @@ public class FI_VIEW_LISTNER {
 //			
 //		}	
 	}
-	public void SET_QUEUE_ListView_Listner(FI_ListView QUEUE_ListView){
+	public void setQueueListViewListener(MusicInfoListView viewQueueList){
+		
 		if(DeviceProperty.isPhone()){
 			//***************************PHONE*********************************
-			QUEUE_ListView.setOnItemClickListener(new OnItemClickListener(){
+			viewQueueList.setOnItemClickListener(new OnItemClickListener(){
 				@Override
 				public void onItemClick(AdapterView<?> arg0, View arg1,	int arg2, long arg3) {
 					//取得Queue TrackDO 
@@ -669,11 +676,11 @@ public class FI_VIEW_LISTNER {
 					PlayInQueue(trackDO.getId());
 				}				
 			});
-			QUEUE_ListView.setOnItemLongClickListener(new OnItemLongClickListener(){
+			viewQueueList.setOnItemLongClickListener(new OnItemLongClickListener(){
 				@Override
 				public boolean onItemLongClick(AdapterView<?> arg0, View arg1,int arg2, long arg3) {
-					if(!((FI_Queqe_ListView_BaseAdapter_Phone)arg0.getAdapter()).GET_Edite()){
-						((FI_Queqe_ListView_BaseAdapter_Phone)arg0.getAdapter()).SET_Edite(true);
+					if(!((MusicInfoListPhoneViewAdapter)arg0.getAdapter()).GET_Edite()){
+						((MusicInfoListPhoneViewAdapter)arg0.getAdapter()).SET_Edite(true);
 						((MainFragmentActivity)context).ShowDoneButton();
 					}
 					return true;
@@ -682,7 +689,7 @@ public class FI_VIEW_LISTNER {
 			//***************************PHONE*********************************	
 		}else{
 			//***************************PAD*********************************
-			QUEUE_ListView.setOnItemClickListener(new OnItemClickListener(){
+			viewQueueList.setOnItemClickListener(new OnItemClickListener(){
 				@Override
 				public void onItemClick(AdapterView<?> arg0, View arg1,	int arg2, long arg3) {
 					//取得Queue TrackDO 
@@ -691,11 +698,11 @@ public class FI_VIEW_LISTNER {
 					PlayInQueue(trackDO.getId());			
 				}				
 			});
-			QUEUE_ListView.setOnItemLongClickListener(new OnItemLongClickListener(){
+			viewQueueList.setOnItemLongClickListener(new OnItemLongClickListener(){
 				@Override
 				public boolean onItemLongClick(AdapterView<?> arg0, View arg1,int arg2, long arg3) {
-					if(!((FI_Queqe_ListView_BaseAdapter_PAD)arg0.getAdapter()).GET_Edite()){
-						((FI_Queqe_ListView_BaseAdapter_PAD)arg0.getAdapter()).SET_Edite(true);
+					if(!((MusicInfoListPadViewAdapter)arg0.getAdapter()).isEditting()){
+						((MusicInfoListPadViewAdapter)arg0.getAdapter()).setIsEditting(true);
 						((MainFragmentActivity)context).ShowDoneButton();
 					}
 					return true;
@@ -705,9 +712,10 @@ public class FI_VIEW_LISTNER {
 			//***************************PAD*********************************
 		}
 	}
+	
 	private void PlayInQueue(String trackIdValue){
 		if(trackIdValue==null||trackIdValue.equals("")){
-			mlog.info(TAG, "trackIdValue = null");
+			mlog.info(tag, "trackIdValue = null");
 			return;
 		}
 		//取得upnpServer
@@ -725,7 +733,7 @@ public class FI_VIEW_LISTNER {
 		}else{
 			return;
 		}
-		mlog.info(TAG, "AVTransportService = "+AVTransportService);
+		mlog.info(tag, "AVTransportService = "+AVTransportService);
 		//檢查AVTransportService
 		if(AVTransportService!=null){			
 			Action action = AVTransportService.getAction("SetPlayingTrackInQueue");
@@ -748,13 +756,13 @@ public class FI_VIEW_LISTNER {
 					ActionCallback PlayInQueueCallBack = new ActionCallback(ai){
 						@Override
 						public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
-							mlog.info(TAG, "PlayInQueueCallBack failure = "+arg2);
+							mlog.info(tag, "PlayInQueueCallBack failure = "+arg2);
 						}
 						@Override
 						public void success(ActionInvocation arg0) {									
-							mlog.info(TAG, "PlayInQueueCallBack success");												
+							mlog.info(tag, "PlayInQueueCallBack success");												
 							for(ActionArgumentValue aav :arg0.getOutput()){
-								mlog.info(TAG, "aav ="+aav.toString());
+								mlog.info(tag, "aav ="+aav.toString());
 							}
 						}											
 					};

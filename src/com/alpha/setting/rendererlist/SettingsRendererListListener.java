@@ -8,7 +8,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.alpha.fragments.Fragment_SWireless;
+import com.alpha.fragments.WirelessSettingFragment;
 import com.alpha.fragments.SettingMenuFragment;
 import com.alpha.fragments.settings.AboutSettingFragment;
 import com.alpha.fragments.settings.AlarmSettingFragment;
@@ -67,7 +67,7 @@ public class SettingsRendererListListener {
 							TKBTool.animationReplaceFragment(fragmentManager.beginTransaction(), new FirmwareUpdateSettingFragment(deviceDisplay), "Fragment_SFirmrware", R.id.pFAS_RLayout_ViewFlipper_Right_FLayout, R.animator.translate_bottom_in, R.animator.translate_top_out);
 							break;
 						case 2:
-							TKBTool.animationReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SWireless(deviceDisplay), "Fragment_SWireless", R.id.pFAS_RLayout_ViewFlipper_Right_FLayout, R.animator.translate_bottom_in, R.animator.translate_top_out);
+							TKBTool.animationReplaceFragment(fragmentManager.beginTransaction(), new WirelessSettingFragment(deviceDisplay), "Fragment_SWireless", R.id.pFAS_RLayout_ViewFlipper_Right_FLayout, R.animator.translate_bottom_in, R.animator.translate_top_out);
 							break;
 						case 3:
 							TKBTool.animationReplaceFragment(fragmentManager.beginTransaction(), new IdentifySpeakerSettingFragment(deviceDisplay), "Fragment_SIdenrify", R.id.pFAS_RLayout_ViewFlipper_Right_FLayout, R.animator.translate_bottom_in, R.animator.translate_top_out);
@@ -104,7 +104,7 @@ public class SettingsRendererListListener {
 							TKBTool.animationReplaceFragment(fragmentManager.beginTransaction(), new FirmwareUpdateSettingFragment(deviceDisplay), "Fragment_SFirmrware", R.id.FAS_RLayout_Right_RLayout, R.animator.alpha_in, R.animator.alpha_out);
 							break;
 						case 2:
-							TKBTool.animationReplaceFragment(fragmentManager.beginTransaction(), new Fragment_SWireless(deviceDisplay), "Fragment_SWireless", R.id.FAS_RLayout_Right_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+							TKBTool.animationReplaceFragment(fragmentManager.beginTransaction(), new WirelessSettingFragment(deviceDisplay), "Fragment_SWireless", R.id.FAS_RLayout_Right_RLayout, R.animator.alpha_in, R.animator.alpha_out);
 							break;
 						case 3:
 							TKBTool.animationReplaceFragment(fragmentManager.beginTransaction(), new IdentifySpeakerSettingFragment(deviceDisplay), "Fragment_SIdenrify", R.id.FAS_RLayout_Right_RLayout, R.animator.alpha_in, R.animator.alpha_out);

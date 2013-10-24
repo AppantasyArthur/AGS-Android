@@ -1,6 +1,7 @@
 package com.alpha.setting.wirelesssetup;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import com.alpha.fragments.Fragment_SRenderers;
 import com.alpha.upnp.DeviceDisplay;
 import com.alpha.upnp.value.AGSHandlerMessages;
+import com.alpha.upnp.value.AGSHandlerMessages.AGSMessageBody;
 import com.alpha.upnpui.R;
 import com.alpha.util.DeviceProperty;
 import com.tkb.tool.TKBLog;
@@ -34,10 +36,10 @@ public class WirelessSettingViewListener {
 	private static final String tag = "WirelessSettingViewListener";
 	private int sizeDeviceScreen = 0;
 	
-	public WirelessSettingViewListener(Context context, int device_size) {
+	public WirelessSettingViewListener(Context context) {
 		this.context = context;
 		this.mlog.switchLog = true;
-		this.sizeDeviceScreen = device_size;
+//		this.sizeDeviceScreen = device_size;
 	}
 	
 	public void setBackButtonListener(Button backButton, final FragmentManager fragmentManager){
@@ -121,11 +123,14 @@ public class WirelessSettingViewListener {
 		}
 	}
 	
-	//public static int CLOSE_POPUPWINDOW = 1;
+	private static ProgressDialog pd; 
 	private static Handler handlerWirelessSetupPopupWindow = new Handler(){
 
 		@Override
 		public void handleMessage(Message msg) {
+			
+			if(popupWindow != null)
+				popupWindow.dismiss();
 			
 			if(msg.what == AGSHandlerMessages.SHOW_MESSAGE){
 	
@@ -135,12 +140,26 @@ public class WirelessSettingViewListener {
 					t.show();
 				}
 				
-				if(popupWindow != null)
-					popupWindow.dismiss();
+			}else if(msg.what == AGSHandlerMessages.SHOW_GENERAL_PROGRESS){
+				
+				AGSMessageBody body = (AGSMessageBody)msg.obj;
+				pd = ProgressDialog.show(context, body.getTitle(), body.getContent());
+				pd.setCancelable(false);
+				pd.setCanceledOnTouchOutside(false);
+				
+			}else if(msg.what == AGSHandlerMessages.CLOSE_GENERAL_PROGRESS){
+				
+				pd.dismiss();
+				
+				if(msg.obj != null){ // there is message, Arthur
+					Message msgShow = handlerWirelessSetupPopupWindow.obtainMessage(AGSHandlerMessages.SHOW_MESSAGE, msg.obj);
+					handlerWirelessSetupPopupWindow.sendMessage(msgShow);
+				}
 				
 			}
 			
 		}
 		
 	};
+	
 }

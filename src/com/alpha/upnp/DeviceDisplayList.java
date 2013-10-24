@@ -43,11 +43,11 @@ import com.FAM.SETTING.Music_SeekBar_Listner;
 import com.FAM.SETTING.PlayMode_IButton_Listner;
 import com.FAM.SETTING.Play_IButton_Listner;
 import com.FAM.SETTING.Sound_SeekBar_Listner;
-import com.FI.SETTING.FI_Queqe_ListView_BaseAdapter_Queqe_Listner;
-import com.FI.SETTING.MusicInfo_Listner;
-import com.FM.SETTING.FM_Music_ListView_BaseAdapter_Listner;
 import com.FS.SETTING.FS_SPEAKER_ExpandableListAdapter_Listner;
 import com.FS.SETTING.RunState_TextView_Listner2;
+import com.alpha.musicinfo.MusicInfoQueueListViewBaseAdapterListener;
+import com.alpha.musicinfo.MusicInfo_Listner;
+import com.alpha.musicsource.FM_Music_ListView_BaseAdapter_Listner;
 import com.alpha.setting.about.AboutSettingSystemInfo;
 import com.alpha.setting.alarm.musicbrowsing.AlarmSettingMusicBrowsingAdapterListener;
 import com.alpha.setting.rendererlist.FSR_Renderers_ListView_BaseAdapter_Renderer_Listner;
@@ -58,21 +58,26 @@ import com.alpha.upnp.parser.ItemHandler;
 import com.alpha.upnp.parser.LastChangeDO;
 import com.alpha.upnp.parser.LastChangeHandler;
 import com.alpha.upnp.parser.TrackDO;
-import com.alpha.upnp.parser.TrackHanlder;
 import com.alpha.upnp.value.FirmwareUpdateServiceValues;
 import com.alpha.upnp.value.ServiceValues;
 import com.alpha.upnp.value.SystemServiceValues;
 import com.alpha.upnpui.MainFragmentActivity;
+import com.alpha.util.AGSParser;
 import com.tkb.UpnpOverride.ProcessBarListner;
 import com.tkb.tool.TKBLog;
 
 public class DeviceDisplayList implements Parcelable  {
 	
 	private Context context;
-	private static String TAG = "DeviceDisplayList";
+	private static String tag = "DeviceDisplayList";
 	private TKBLog mlog = new TKBLog();
 	
-	private DeviceDisplay ChooseMediaRenderer;
+	private static DeviceDisplay mrChoosed;
+	private static String positionCurrentTrack;
+	public static String getPositionCurrentTrack() {
+		return positionCurrentTrack;
+	}
+
 	//SeekBar Timer
 	private Timer timeSeekBarTimer;
 	
@@ -93,7 +98,7 @@ public class DeviceDisplayList implements Parcelable  {
 	private PlayMode_IButton_Listner PMIListner;//PlayMode按鈕
 	private PlayMode_IButton_Listner Info_PMIListner;//PlayMode按鈕
 	private MusicInfo_Listner MIListner;//Info
-	private FI_Queqe_ListView_BaseAdapter_Queqe_Listner queqe_listner;//Queue
+	private MusicInfoQueueListViewBaseAdapterListener listenerQueue;//Queue
 	private ProcessBarListner processBarListner;
 	//Setting Listners
 	private FSR_Renderers_ListView_BaseAdapter_Renderer_Listner FSRRRLBListner;
@@ -102,18 +107,19 @@ public class DeviceDisplayList implements Parcelable  {
 	public DeviceDisplayList(Context context){
 		this.context = context;
 		this.mlog.switchLog = true;
-		ChooseMediaRenderer = null;
+		mrChoosed = null;
 		DDList = new ArrayList<DeviceDisplay>();
 		MRList = new ArrayList<DeviceDisplay>();
 		MSList = new ArrayList<DeviceDisplay>();
 		groupList = new GroupList();
 	}
+	
 	public void addDeviceDisplay(DeviceDisplay dd) {
 		
 		DeviceType deviceType = dd.getDevice().getType();
 		
 		if(MRList.indexOf(dd)!=-1||MSList.indexOf(dd)!=-1||DDList.indexOf(dd)!=-1){
-			mlog.info(TAG, "addDeviceDisplay = return");
+			mlog.info(tag, "addDeviceDisplay = return");
 			return;
 		}
 		
@@ -136,17 +142,17 @@ public class DeviceDisplayList implements Parcelable  {
 			if(devices!=null&&devices.length>0){				
 				//有Group
 				Device MMDevice = devices[0];
-				mlog.info(TAG, "===================================");
-				mlog.info(TAG, "Name = "+dd.getDevice().getDetails().getFriendlyName());
-				mlog.info(TAG, "Namespace = "+dd.getDevice().getType().getType());
-				mlog.info(TAG, "UDN = "+dd.getDevice().getIdentity().getUdn());
+				mlog.info(tag, "===================================");
+				mlog.info(tag, "Name = "+dd.getDevice().getDetails().getFriendlyName());
+				mlog.info(tag, "Namespace = "+dd.getDevice().getType().getType());
+				mlog.info(tag, "UDN = "+dd.getDevice().getIdentity().getUdn());
 				
-				mlog.info(TAG, "Name = "+MMDevice.getDetails().getFriendlyName());				
-				mlog.info(TAG, "Namespace = "+MMDevice.getType().getType());
-				mlog.info(TAG, "UDN = "+MMDevice.getIdentity().getUdn());
-				mlog.info(TAG, "===================================");
-				mlog.info(TAG, "Type = "+MMDevice.getType().getType());
-				mlog.info(TAG, "Version = "+MMDevice.getType().getVersion());
+				mlog.info(tag, "Name = "+MMDevice.getDetails().getFriendlyName());				
+				mlog.info(tag, "Namespace = "+MMDevice.getType().getType());
+				mlog.info(tag, "UDN = "+MMDevice.getIdentity().getUdn());
+				mlog.info(tag, "===================================");
+				mlog.info(tag, "Type = "+MMDevice.getType().getType());
+				mlog.info(tag, "Version = "+MMDevice.getType().getVersion());
 				dd.setMMDevice(MMDevice);	
 				//註冊Group Listner	
 				eventHandler.subscribeGroupServiceEvent();
@@ -184,7 +190,7 @@ public class DeviceDisplayList implements Parcelable  {
 			DDList.add(dd);
 		}
 		//==================Device 分類====================
-		mlog.info(TAG, "addDeviceDisplay = "+dd.getDevice().getDetails().getFriendlyName());
+		mlog.info(tag, "addDeviceDisplay = "+dd.getDevice().getDetails().getFriendlyName());
 	}
 	public void removeDeviceDisplay(DeviceDisplay dd) {
 		DeviceType deviceType = dd.getDevice().getType();
@@ -199,7 +205,7 @@ public class DeviceDisplayList implements Parcelable  {
 					MIListner.MediaRendererCountChange();
 				}
 			}
-			if(dd.equals(ChooseMediaRenderer)){
+			if(dd.equals(mrChoosed)){
 				DeviceDisplayList.this.setChooseMediaRenderer(null);
 			}			
 			MRList.remove(dd);
@@ -207,7 +213,7 @@ public class DeviceDisplayList implements Parcelable  {
 			if(FSRRRLBListner!=null){
 				FSRRRLBListner.RenderersChange();
 			}
-			mlog.info(TAG, "removeDeviceDisplay = MR");
+			mlog.info(tag, "removeDeviceDisplay = MR");
 		}else if(deviceType.getType().toString().equals("MediaServer")){
 			if(FMLBAListner!=null){
 				FMLBAListner.RemoveMediaServer(dd);
@@ -215,19 +221,19 @@ public class DeviceDisplayList implements Parcelable  {
 			if(FSALMLBListner!=null){
 				FSALMLBListner.removeMediaServer(dd);
 			}
-			mlog.info(TAG, "removeDeviceDisplay = MS");
+			mlog.info(tag, "removeDeviceDisplay = MS");
 			MSList.remove(dd);
 		}else{
 			DDList.remove(dd);
-			mlog.info(TAG, "removeDeviceDisplay = DD");
+			mlog.info(tag, "removeDeviceDisplay = DD");
 		}
 	}
 	//設定所選取的 Renderer
 	public void setChooseMediaRenderer(DeviceDisplay mediaRenderer){
-		if(this.ChooseMediaRenderer==mediaRenderer){
+		if(this.mrChoosed==mediaRenderer){
 			return;			
 		}
-		this.ChooseMediaRenderer = mediaRenderer;
+		this.mrChoosed = mediaRenderer;
 		
 		//timeSeekBarTimer 歸零
 		if(timeSeekBarTimer!=null){
@@ -250,8 +256,8 @@ public class DeviceDisplayList implements Parcelable  {
 		
 		//設定QueqeCallBack
 		//Queqe 歸零
-		if(queqe_listner!=null){
-			queqe_listner.ClearQueqeList();
+		if(listenerQueue!=null){
+			listenerQueue.cleanQueueList();
 		}		
 		if(MIListner!=null){
 			MIListner.ClearMusicInfo_State();
@@ -345,8 +351,8 @@ public class DeviceDisplayList implements Parcelable  {
 //	}
 	//=====================Device 取得=============================
 	//取得選取Device
-	public DeviceDisplay getChooseMediaRenderer(){
-		return this.ChooseMediaRenderer;
+	public static DeviceDisplay getChooseMediaRenderer(){
+		return mrChoosed;
 	}
 	//取得 非MediaRenderer、MediaServer 的所有 Device 清單
 	public List<DeviceDisplay> getDeviceDisplayList(){
@@ -368,9 +374,9 @@ public class DeviceDisplayList implements Parcelable  {
 	public Device GetMMDevice(String MMDeviceUDN){
 		for(DeviceDisplay deviceDisplay :MRList){
 			Device MMDevice = deviceDisplay.getMMDevice();
-			mlog.info(TAG, "MMDeviceUDN = "+MMDeviceUDN);
+			mlog.info(tag, "MMDeviceUDN = "+MMDeviceUDN);
 			if(MMDevice!=null){
-				mlog.info(TAG, "MMDeviceUDN2 = "+MMDevice.getIdentity().getUdn());
+				mlog.info(tag, "MMDeviceUDN2 = "+MMDevice.getIdentity().getUdn());
 			}
 			if(MMDevice!=null&&MMDevice.getIdentity().getUdn().toString().equals(MMDeviceUDN)){
 				return MMDevice;
@@ -382,9 +388,9 @@ public class DeviceDisplayList implements Parcelable  {
 	public DeviceDisplay GetDeviceDisplayByUDN(String MMDeviceUDN){
 		for(DeviceDisplay deviceDisplay :MRList){
 			Device device = deviceDisplay.getMMDevice();
-			mlog.info(TAG, "MMDeviceUDN = "+MMDeviceUDN);
+			mlog.info(tag, "MMDeviceUDN = "+MMDeviceUDN);
 			if(device!=null){
-				mlog.info(TAG, "MMDeviceUDN2 = "+device.getIdentity().getUdn());
+				mlog.info(tag, "MMDeviceUDN2 = "+device.getIdentity().getUdn());
 			}
 			
 			if(device!=null&&device.getIdentity().getUdn().toString().equals(MMDeviceUDN)){
@@ -432,8 +438,8 @@ public class DeviceDisplayList implements Parcelable  {
 	public void setMusicInfo_Listner(MusicInfo_Listner MIListner){
 		this.MIListner = MIListner;
 	}
-	public void setQueqe_Listner(FI_Queqe_ListView_BaseAdapter_Queqe_Listner queqe_listner) {
-		this.queqe_listner = queqe_listner;
+	public void setQueqe_Listner(MusicInfoQueueListViewBaseAdapterListener queqe_listner) {
+		this.listenerQueue = queqe_listner;
 	}
 	public void setProcessBarListner(ProcessBarListner processBarListner){
 		this.processBarListner = processBarListner;
@@ -467,7 +473,7 @@ public class DeviceDisplayList implements Parcelable  {
 		PMIListner = null;
 		Info_PMIListner = null;
 		MIListner = null;
-		queqe_listner = null;
+		listenerQueue = null;
 		
 		FSRRRLBListner = null;
 		FSALMLBListner = null;
@@ -510,11 +516,11 @@ public class DeviceDisplayList implements Parcelable  {
 							ActionArgument DisplayInfo = arg0.getAction().getOutputArgument("DisplayInfo");
 							ActionArgumentValue actionArgumentValue = arg0.getOutput(DisplayInfo);
 							GroupVO groupVO = _parseGroup(actionArgumentValue.toString());							
-							mlog.info(TAG, "GetDisplayInfoActionCallBack  = "+actionArgumentValue.toString());
-							mlog.info(TAG, "Device Name  = "+groupVO.getName());
-							mlog.info(TAG, "Device UDN  = "+deviceDisplay.getDevice().getIdentity().getUdn());
-							mlog.info(TAG, "DeviceManager UDN  = "+groupVO.getUdn());							
-							mlog.info(TAG, "GetDisplayInfoActionCallBack success");
+							mlog.info(tag, "GetDisplayInfoActionCallBack  = "+actionArgumentValue.toString());
+							mlog.info(tag, "Device Name  = "+groupVO.getName());
+							mlog.info(tag, "Device UDN  = "+deviceDisplay.getDevice().getIdentity().getUdn());
+							mlog.info(tag, "DeviceManager UDN  = "+groupVO.getUdn());							
+							mlog.info(tag, "GetDisplayInfoActionCallBack success");
 							deviceDisplay.setGroupVO(groupVO);
 							if(!groupVO.isSlave()){
 								//不是Slave 加入陣列
@@ -579,7 +585,7 @@ public class DeviceDisplayList implements Parcelable  {
 						Map<String, StateVariableValue> values = subscription.getCurrentValues();
 						if(	values != null ){
 							
-							Log.d(TAG, values.toString());
+							Log.d(tag, values.toString());
 							
 							Message msg = new Message();
 							msg.what = 0;
@@ -742,19 +748,19 @@ public class DeviceDisplayList implements Parcelable  {
 					protected void eventReceived(GENASubscription arg0) {	
 						Map<String, StateVariableValue> values = arg0.getCurrentValues();
 						StateVariableValue status = values.get("DisplayInfo");
-						mlog.info(TAG,"FriendlyName = "+EventHandler.this.deviceDisplay.getDevice().getDetails().getFriendlyName());
+						mlog.info(tag,"FriendlyName = "+EventHandler.this.deviceDisplay.getDevice().getDetails().getFriendlyName());
 						for(Map.Entry<String, StateVariableValue>value:values.entrySet()){
 //							mlog.info(TAG, "even = "+value.getKey()+"  value = "+value.getValue().toString());
 						}
 						if(status!=null){
 							GroupVO groupVO = _parseGroup(status.toString());
-							mlog.info(TAG, "groupVO = "+groupVO.getGroup());
+							mlog.info(tag, "groupVO = "+groupVO.getGroup());
 							if(groupVO.isSlave()){
 								//even 通知  isSlave
 								//移除Slave
 								groupList.RemoveDeviceDisplay(EventHandler.this.deviceDisplay);
 								//檢查是否為當前選擇
-								if(EventHandler.this.deviceDisplay.equals(ChooseMediaRenderer)){
+								if(EventHandler.this.deviceDisplay.equals(mrChoosed)){
 									DeviceDisplayList.this.setChooseMediaRenderer(null);
 								}	
 								//通知 FS 刷新
@@ -795,72 +801,73 @@ public class DeviceDisplayList implements Parcelable  {
 		}
 		
 		//===============Event 刷新 View ==================
-		private String MR_State;
-		private String MR_PlayMode;	
-		private String metaData_Title;
-		private ItemDO item_DO;
+		private String mrPlayStatus;
+		private String mtPlayMode;	
+		private String metadataTitle;
+		private ItemDO doMetaData;
 		//======SeekBar======
 		private Long secondTotal =0l;
 		private Long secondRun =0l;		
 		private String stringTotal = null;
 		private String stringRun = null;
 		//===================
-		private List<TrackDO> trackList;
+		private List<TrackDO> listQueue;
 		 //Play狀態
-		private void UpdataPlayMode(){
-			if(MR_State!=null&&!MR_State.equals("")&&PIListner!=null){
+		
+		private void updataPlayMode(){
+			if(mrPlayStatus!=null&&!mrPlayStatus.equals("")&&PIListner!=null){
 				//Phone Speaker Play_IButton_Listner&& PAD MAIN Play_IButton_Listner
-				 PIListner.SetPlay_IButton_State(MR_State);
-				 mlog.info(TAG, "==========EVEN STAR==========");
-				 mlog.info(TAG, "lastChangeDO MR_State= "+MR_State);
-				 mlog.info(TAG, "============End=============");
+				 PIListner.SetPlay_IButton_State(mrPlayStatus);
+				 mlog.info(tag, "==========EVEN STAR==========");
+				 mlog.info(tag, "lastChangeDO MR_State= "+mrPlayStatus);
+				 mlog.info(tag, "============End=============");
 				 //Phone Info Play_IButton_Listner
 				 if(Info_PIListner!=null){
-					 Info_PIListner.SetPlay_IButton_State(MR_State);
+					 Info_PIListner.SetPlay_IButton_State(mrPlayStatus);
 				 }							
 			 } 				 			 
 		}
 		 //CurrentPlayMode
-		private void UpdataCurrentPlayMode(){
-			if(MR_PlayMode!=null&&!MR_PlayMode.equals("")&&PMIListner!=null){
+		private void updataCurrentPlayMode(){
+			if(mtPlayMode!=null&&!mtPlayMode.equals("")&&PMIListner!=null){
 				//Phone Speaker PlayMode_IButton_Listner&& PAD MAIN PlayMode_IButton_Listner
-				 PMIListner.SetPlayMode_IButton_State(MR_PlayMode);
-				 mlog.info(TAG, "==========EVEN STAR==========");
-				 mlog.info(TAG, "lastChangeDO MR_PlayMode= "+MR_PlayMode);
-				 mlog.info(TAG, "============End=============");
+				 PMIListner.SetPlayMode_IButton_State(mtPlayMode);
+				 mlog.info(tag, "==========EVEN STAR==========");
+				 mlog.info(tag, "lastChangeDO MR_PlayMode= "+mtPlayMode);
+				 mlog.info(tag, "============End=============");
 				//Phone Info PlayMode_IButton_Listner
 				 if(Info_PMIListner!=null){
-					 Info_PMIListner.SetPlayMode_IButton_State(MR_PlayMode);
+					 Info_PMIListner.SetPlayMode_IButton_State(mtPlayMode);
 				 }
 			 }				 		
 		}
 		//MI_Info
-		private void UpdataItem_MetaData(){			
+		private void updataItemMetaData(){			
 			//info
-			if(item_DO!=null){				
-				MIListner.SetMusicInfo_State(item_DO.getTitle(), item_DO.getArtist(), item_DO.getAlbum(), item_DO.getGenre(),item_DO.getAlbumURI());
-				mlog.info(TAG, "============Start=============");
-			 	mlog.info(TAG, "Title = "+item_DO.getTitle());							
-				mlog.info(TAG, "Artist = "+item_DO.getArtist());
-				mlog.info(TAG, "Album = "+item_DO.getAlbum());
-				mlog.info(TAG, "Genre = "+item_DO.getGenre());	
-				mlog.info(TAG, "AlbumURI = "+item_DO.getAlbumURI());										
-				mlog.info(TAG, "============End=============");
+			if(doMetaData!=null){				
+				MIListner.SetMusicInfo_State(doMetaData.getTitle(), doMetaData.getArtist(), doMetaData.getAlbum(), doMetaData.getGenre(),doMetaData.getAlbumURI());
+				mlog.info(tag, "============Start=============");
+			 	mlog.info(tag, "Title = "+doMetaData.getTitle());							
+				mlog.info(tag, "Artist = "+doMetaData.getArtist());
+				mlog.info(tag, "Album = "+doMetaData.getAlbum());
+				mlog.info(tag, "Genre = "+doMetaData.getGenre());	
+				mlog.info(tag, "AlbumURI = "+doMetaData.getAlbumURI());										
+				mlog.info(tag, "============End=============");
 			}			 		 
 		}	
 		//QueueList
-		private void UpdataQueueList(){
-			if(trackList!=null&&queqe_listner!=null){
-				 mlog.info(TAG, "trackList size = "+trackList.size());	
-				 queqe_listner.AddQueqeList(trackList);
+		private void updataQueueList(){
+			if(listQueue != null && listenerQueue != null){
+				 mlog.info(tag, "trackList size = "+listQueue.size());	
+				 listenerQueue.setQueueList(listQueue);
 			}
 		}
 		private void UpdateRunState_TextView(){			
 			if(runState_TextView_Listner2!=null){
-				runState_TextView_Listner2.SetRunState_TextView_State(MR_State, metaData_Title,EventHandler.this.deviceDisplay);
+				runState_TextView_Listner2.SetRunState_TextView_State(mrPlayStatus, metadataTitle,EventHandler.this.deviceDisplay);
 			}
 		}
-		private void UpdataSeekBar(){
+		private void updataSeekBar(){
 			
 			if(stringTotal==null||stringTotal.equals("")||stringTotal.split(":").length<=1){
 				stringTotal = "00:00:00";
@@ -878,26 +885,26 @@ public class DeviceDisplayList implements Parcelable  {
 			if(Info_Music_SeekBar_Listner!=null){
 				Info_Music_SeekBar_Listner.SetSeek(secondTotal, secondRun, stringTotal, stringRun);
 			}
-			mlog.info(TAG, "getTrackDurationSeconds = "+secondTotal);//秒數總時間
-			mlog.info(TAG, "getTrackElapsedSeconds = "+secondRun);//秒數播放時間
-			mlog.info(TAG, "getTrackDuration = "+stringTotal);//字串總時間
-			mlog.info(TAG, "getAbsTime = "+stringRun);//字串播放時間	
+			mlog.info(tag, "getTrackDurationSeconds = "+secondTotal);//秒數總時間
+			mlog.info(tag, "getTrackElapsedSeconds = "+secondRun);//秒數播放時間
+			mlog.info(tag, "getTrackDuration = "+stringTotal);//字串總時間
+			mlog.info(tag, "getAbsTime = "+stringRun);//字串播放時間	
 		}
 		
 		public void UpdataALL(){
-			UpdataPlayMode();
-			UpdataCurrentPlayMode();
-			UpdataItem_MetaData();
-			UpdataQueueList(); 
-			UpdataSeekBar();
+			updataPlayMode();
+			updataCurrentPlayMode();
+			updataItemMetaData();
+			updataQueueList(); 
+			updataSeekBar();
 		}
 		
 		public String GetTransportState(){
-			return MR_State;
+			return mrPlayStatus;
 		}
 		public String GetMetaDataTitle(){			
-			if(metaData_Title!=null){		
-				return metaData_Title;
+			if(metadataTitle!=null){		
+				return metadataTitle;
 			}else{
 				return "";
 			}
@@ -905,7 +912,8 @@ public class DeviceDisplayList implements Parcelable  {
 		//===============Event 刷新 View ==================
 		
 		//註冊 AVTransport Event
-		public void RegistInfoEvent(){		
+		public void RegistInfoEvent(){	
+			
 			if(Device_DisplayInfoCallBack!=null){
 				Device_DisplayInfoCallBack.end();
 			}			
@@ -913,85 +921,109 @@ public class DeviceDisplayList implements Parcelable  {
 			//取得 AVTransportService
 			Service AVTransportService = device.findService(new UDAServiceId("AVTransport"));
 			for(int i=0;i<device.findServices().length;i++){
-				mlog.info(TAG,"status ="+device.findServices()[i].toString());				
+				mlog.info(tag,"status ="+device.findServices()[i].toString());				
 			}
 			
 			if(AVTransportService!=null){
 				//設定StateCallBack
 				Device_DisplayInfoCallBack = new SubscriptionCallback(AVTransportService){
+					@SuppressWarnings("rawtypes")
 					@Override
 					protected void ended(GENASubscription arg0, CancelReason arg1, UpnpResponse arg2) {
-						mlog.info(TAG,"status end ="+arg2);
+						mlog.info(tag,"status end ="+arg2);
 					}
+					@SuppressWarnings({ "rawtypes", "unchecked" })
 					@Override
 					protected void established(GENASubscription arg0) {
-						mlog.info(TAG,"status = established");
+						
+						mlog.info(tag,"status = established");
 						Map<String, StateVariableValue> values = arg0.getCurrentValues();
 						StateVariableValue status = values.get("LastChange");
 						 
 						for(Map.Entry<String, StateVariableValue>value:values.entrySet()){
-							mlog.info(TAG, "even = "+value.getKey()+"  value = "+value.getValue().toString());
+							mlog.info(tag, "even = "+value.getKey()+"  value = "+value.getValue().toString());
 						}
+						
 					}
+					@SuppressWarnings({ "rawtypes", "static-access" })
 					@Override
-					protected void eventReceived(GENASubscription arg0) {						
+					protected void eventReceived(GENASubscription arg0) {		
+						
 						 Map<String, StateVariableValue> values = arg0.getCurrentValues();
 						 for(Map.Entry<String, StateVariableValue> value:values.entrySet()){
-							 mlog.info(TAG, "==========EVEN STAR==========");
-							 mlog.info(TAG, "key= "+value.getKey().toString());
-							 mlog.info(TAG, "==========EVEN END==========");
-						 }
-						 StateVariableValue status = values.get("LastChange");
-						 if(processBarListner!=null){
-							 processBarListner.SetProcessBarNotDispaly();
+							 mlog.info(tag, "==========EVEN STAR==========");
+							 mlog.info(tag, "key= "+value.getKey().toString());
+							 mlog.info(tag, "==========EVEN END==========");
 						 }
 						 
-						 if(status!=null){				 
-							 mlog.info(TAG, "==========EVEN STAR==========");
-							 mlog.info(TAG, "LastChange valeu= "+status.toString());
-							 mlog.info(TAG, "==========EVEN END==========");
-							 //儲存資料
-							 LastChangeDO lastChangeDO = _parseLastChangeEvent(status.toString());
+						 
+						 StateVariableValue vvLastChange = values.get("LastChange");
+						 if(processBarListner != null){
+							 processBarListner.setProcessBarHidden();
+						 }
+						 
+						 if(vvLastChange != null){	
 							 
-							 if(lastChangeDO.getTransportState()!=null){
-								 MR_State = lastChangeDO.getTransportState();
-								 if(EventHandler.this.deviceDisplay.equals(ChooseMediaRenderer)){
-									 UpdataPlayMode();
+							 mlog.info(tag, "==========EVEN STAR==========");
+							 mlog.info(tag, "LastChange valeu= "+vvLastChange.toString());
+							 mlog.info(tag, "==========EVEN END==========");
+							 
+							 //儲存資料
+							 LastChangeDO doLastChange = _parseLastChangeEvent(vvLastChange.toString());
+							 
+							 if(doLastChange.getTransportState()!=null){
+								 
+								 mrPlayStatus = doLastChange.getTransportState();
+								 if(EventHandler.this.deviceDisplay.equals(mrChoosed)){
+									 updataPlayMode();
 								 }
+								 
 							 }
-							 if(lastChangeDO.getCurrentPlayMode()!=null){								 
-								 MR_PlayMode = lastChangeDO.getCurrentPlayMode();
-								 if(EventHandler.this.deviceDisplay.equals(ChooseMediaRenderer)){
-									 UpdataCurrentPlayMode();
+							 
+							 if(doLastChange.getCurrentPlayMode() != null){
+								 
+								 mtPlayMode = doLastChange.getCurrentPlayMode();
+								 if(EventHandler.this.deviceDisplay.equals(mrChoosed)){
+									 updataCurrentPlayMode();
 								 }
-							 }						 
-							 if(lastChangeDO.getAVTransportURIMetaData()!=null){								 
-								 String Item_MetaData = lastChangeDO.getAVTransportURIMetaData();
-								 if(Item_MetaData!=null&&!Item_MetaData.equals("")){
-										mlog.info(TAG, "============Start=============");					 
-										mlog.info(TAG, "Item_MetaData = "+Item_MetaData);
-										item_DO =  _parseItem(Item_MetaData);
-										if(item_DO != null){
+								 
+							 }		
+							 
+							 if(doLastChange.getAVTransportURIMetaData() != null){
+								 
+								 String metadataItem = doLastChange.getAVTransportURIMetaData();
+								 if(metadataItem != null && !metadataItem.equals("")){
+									 
+										mlog.info(tag, "============Start=============");					 
+										mlog.info(tag, "Item_MetaData = "+metadataItem);
+									
+										doMetaData =  _parseItem(metadataItem);
+										if(doMetaData != null){
 										
-											metaData_Title = item_DO.getTitle();
-											mlog.info(TAG, "============End=============");
-											mlog.info(TAG, "============Start=============");	
-											mlog.info(TAG, "==item_MetaData=="+item_DO.getTitle());
-											mlog.info(TAG, "==item_MetaData=="+item_DO.getGenre());	
-											mlog.info(TAG, "==item_MetaData=="+item_DO.getAlbum());	
-											mlog.info(TAG, "==item_MetaData=="+item_DO.getAlbumURI());	
-											mlog.info(TAG, "============End=============");
+											metadataTitle = doMetaData.getTitle();
+											
+											mlog.info(tag, "============End=============");
+											mlog.info(tag, "============Start=============");	
+											mlog.info(tag, "==item_MetaData Title=="+doMetaData.getTitle());
+											mlog.info(tag, "==item_MetaData Genre=="+doMetaData.getGenre());	
+											mlog.info(tag, "==item_MetaData Album=="+doMetaData.getAlbum());	
+											mlog.info(tag, "==item_MetaData AlbumURI=="+doMetaData.getAlbumURI());	
+											mlog.info(tag, "============End=============");
 											
 										}
 										
-									}								 
-								 if(EventHandler.this.deviceDisplay.equals(ChooseMediaRenderer)){
-									 UpdataItem_MetaData();
+								 }								 
+								 if(EventHandler.this.deviceDisplay.equals(mrChoosed)){
+									 updataItemMetaData();
 								 }
-							 }								 
-							 if(lastChangeDO.getTransportState()!=null||lastChangeDO.getAVTransportURIMetaData()!=null){
+								 
+							 }		
+							 
+							 if(	doLastChange.getTransportState() != null
+								||	doLastChange.getAVTransportURIMetaData() != null){
 								 UpdateRunState_TextView();
 							 }
+							 
 							 //SeekBar
 							 if(true){
 								 
@@ -1002,31 +1034,40 @@ public class DeviceDisplayList implements Parcelable  {
 //								 stringRun//String 00:00:00
 								 //*****************
 								 //判斷是否為選擇的Renderer
-								 if(EventHandler.this.deviceDisplay.equals(ChooseMediaRenderer)){
-									 UpdataSeekBar();//刷新
+								 if(EventHandler.this.deviceDisplay.equals(mrChoosed)){
+									 updataSeekBar();//刷新
 								 } 
 							 }
 						 }
+						 
 						 //Queue
-						 StateVariableValue q_Status = values.get("TracksInQueue");
-						 if(q_Status!=null){
-							 mlog.info(TAG, "==========EVEN STAR==========");
-							 mlog.info(TAG, "Queue valeu= "+q_Status.toString());
-							 mlog.info(TAG, "==========EVEN END==========");
+						 StateVariableValue queueMsuicInfo = values.get("TracksInQueue");
+						 if(queueMsuicInfo != null){
 							 
-							 trackList = _parseTrack(q_Status.toString());
-							 if(EventHandler.this.deviceDisplay.equals(ChooseMediaRenderer)){
-								 UpdataQueueList(); 
-							 }							
-						 }				
+//							 mlog.info(TAG, "==========EVEN STAR==========");
+//							 mlog.info(TAG, "Queue valeu= "+queueMsuicInfo.toString());
+//							 mlog.info(TAG, "==========EVEN END==========");
+							 
+							 listQueue = AGSParser._parseTrack(queueMsuicInfo.toString());
+							 if(EventHandler.this.deviceDisplay.equals(mrChoosed)){
+								 updataQueueList(); 
+							 }
+							 
+						 }	
+						 
+						 // CurrentTrack, Start with 1
+						 StateVariableValue positionCurrentTrack = values.get("CurrentTrack");
+						 if(positionCurrentTrack != null)
+							 DeviceDisplayList.this.positionCurrentTrack = positionCurrentTrack.toString();
+						 
 					}					
 					@Override
 					protected void eventsMissed(GENASubscription arg0, int arg1) {				
-						mlog.info(TAG,"status = eventsMissed");
+						mlog.info(tag,"status = eventsMissed");
 					}
 					@Override
 					protected void failed(GENASubscription arg0, UpnpResponse arg1,	Exception arg2, String arg3) {
-						mlog.info(TAG,"status failed="+arg3);
+						mlog.info(tag,"status failed="+arg3);
 					}
 				};		
 				upnpServer.getControlPoint().execute(Device_DisplayInfoCallBack);
@@ -1034,6 +1075,7 @@ public class DeviceDisplayList implements Parcelable  {
 			
 		}
 	}
+	
 	private GroupVO _parseGroup(String xml){
 		GroupVO data = null;   
 
@@ -1124,33 +1166,7 @@ public class DeviceDisplayList implements Parcelable  {
 		  }  
 		  return data;   
 	}
-	private List<TrackDO> _parseTrack(String xml){
-		List<TrackDO> data = null;  
-		  // sax stuff   
-		  try { 			  
-			SAXParserFactory spf = SAXParserFactory.newInstance();   
-		    SAXParser sp = spf.newSAXParser();   
-		    XMLReader xr = sp.getXMLReader();  
-
-		    TrackHanlder dataHandler = new TrackHanlder();   
-		    xr.setContentHandler(dataHandler);   
-		    
-		    if(true){		
-//		    	xml = StringEscapeUtils.unescapeHtml4(xml);
-		    	xr.parse(new InputSource(new StringReader(xml))); 
-			    data = dataHandler.getData();  
-		    } 
-		  } catch(ParserConfigurationException pce) {   
-		    Log.e("SAX XML", "sax parse error", pce);   
-		  } catch(SAXException se) {   
-		    Log.e("SAX XML", "sax error", se);   
-		  } catch(IOException ioe) {   
-		    Log.e("SAX XML", "sax parse io error", ioe);   
-		  } catch(Exception e) {
-			  e.printStackTrace();
-		  }  
-		  return data;   
-	}
+	
 	@Override
 	public int describeContents() {
 		// TODO Auto-generated method stub

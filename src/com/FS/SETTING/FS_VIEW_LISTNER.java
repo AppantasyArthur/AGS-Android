@@ -37,7 +37,7 @@ import com.FAM.SETTING.Music_SeekBar_Listner;
 import com.FAM.SETTING.PlayMode_IButton_Listner;
 import com.FAM.SETTING.Play_IButton_Listner;
 import com.FAM.SETTING.Sound_SeekBar_Listner;
-import com.alpha.fragments.Fragment_Speaker;
+import com.alpha.fragments.MediaRendererListFragement;
 import com.alpha.upnp.DeviceDisplay;
 import com.alpha.upnpui.Fragment_SETTING;
 import com.alpha.upnpui.MainFragmentActivity;
@@ -91,7 +91,7 @@ public class FS_VIEW_LISTNER {
 			}
 		});
 	}
-	public void Close_Button_LISTNER(Button Close_Button,final Fragment_Speaker fragment_Speaker) {
+	public void Close_Button_LISTNER(Button Close_Button,final MediaRendererListFragement fragment_Speaker) {
 		Close_Button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {				
@@ -99,7 +99,7 @@ public class FS_VIEW_LISTNER {
 			}
 		});
 	}
-	public void Done_Button_LISTNER(Button Done_Button, final Fragment_Speaker fragment_Speaker) {
+	public void Done_Button_LISTNER(Button Done_Button, final MediaRendererListFragement fragment_Speaker) {
 		Done_Button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {				
@@ -678,7 +678,7 @@ public class FS_VIEW_LISTNER {
 			}
 		});		
 	}
-	public void SELECT_Button_LISTNER(Button SELECT_Button, final Fragment_Speaker fragment_Speaker) {
+	public void SELECT_Button_LISTNER(Button SELECT_Button, final MediaRendererListFragement fragment_Speaker) {
 		SELECT_Button.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(View v) {

@@ -1,4 +1,4 @@
-package com.FI.SETTING;
+package com.alpha.musicinfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ import com.tkb.tool.TKBLog;
 import com.tkb.tool.TKBThreadReadBitMapInAssets;
 import com.tkb.tool.TKBTool;
 
-public class FI_ViewFlipper extends ViewFlipper {
+public class MusicInfoFlipperView extends ViewFlipper {
 	
 	private View new_View;
 	private View old_View;
@@ -102,26 +102,26 @@ public class FI_ViewFlipper extends ViewFlipper {
 				}
 				break;
 			case 5:					
-				FI_ViewFlipper.this.GroupList.clear();
-				FI_ViewFlipper.this.GroupList = GetGroupList();				
-				FI_ViewFlipper.this.setFI_PointLiLayoutCount(GroupList.size());
+				MusicInfoFlipperView.this.GroupList.clear();
+				MusicInfoFlipperView.this.GroupList = GetGroupList();				
+				MusicInfoFlipperView.this.setFI_PointLiLayoutCount(GroupList.size());
 				break;
 			case 6:
-				if(context!=null&&FI_ViewFlipper.this.Point_LLayout!=null){				
-					FI_ViewFlipper.this.CurrentPage = GroupList.indexOf(((MainFragmentActivity)context).getDeviceDisplayList().getChooseMediaRenderer());
-					FI_ViewFlipper.this.Point_LLayout.setPointCurrent(CurrentPage);
+				if(context!=null&&MusicInfoFlipperView.this.Point_LLayout!=null){				
+					MusicInfoFlipperView.this.CurrentPage = GroupList.indexOf(((MainFragmentActivity)context).getDeviceDisplayList().getChooseMediaRenderer());
+					MusicInfoFlipperView.this.Point_LLayout.setPointCurrent(CurrentPage);
 				}
 				break;
 			}
 		}
 	};
-	public FI_ViewFlipper(Context context) {
+	public MusicInfoFlipperView(Context context) {
 		super(context);	
 		this.context = context;
 		CreateProcess();
 		ADD_NEW_VIEW(0);
 	}
-	public FI_ViewFlipper(Context context, AttributeSet attrs) {
+	public MusicInfoFlipperView(Context context, AttributeSet attrs) {
 		super(context, attrs);	
 		this.context = context;
 		CreateProcess();

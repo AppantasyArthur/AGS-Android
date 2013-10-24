@@ -1,5 +1,6 @@
-package com.FM.SETTING;
+package com.alpha.musicsource;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.teleal.cling.android.AndroidUpnpService;
@@ -36,8 +37,16 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
+import com.alpha.fragments.MusicSourceFragement;
 import com.alpha.upnp.DeviceDisplay;
+import com.alpha.upnp.DeviceDisplayList;
 import com.alpha.upnp.parser.TrackDO;
+import com.alpha.upnp.service.AGSAVTransportService;
+import com.alpha.upnp.service.AGSActionSuccessCaller;
+import com.alpha.upnp.service.AGSContentDirectoryService;
+import com.alpha.upnp.value.AVTransportServiceValues;
+import com.alpha.upnp.value.ContentDirectoryServiceValues;
+import com.alpha.upnp.value.FirmwareUpdateServiceValues;
 import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
 import com.alpha.util.DeviceProperty;
@@ -47,13 +56,13 @@ import com.tkb.tool.TKBThreadReadStateListInAssets;
 import com.tkb.tool.TKBTool;
 
 // FM_PopupWindwo
-public class MusicBrowsingControlOptionPopupWindow extends PopupWindow {
+public class MusicSourceOptionsPopupWindow extends PopupWindow {
 	
 	private View contentView;
 	
 	private Context context;
 	private TKBLog mlog = new TKBLog();
-	private static final String tag = "MusicBrowsingControlOptionPopupWindow";
+	private static final String tag = "MusicSourceOptionsPopupWindow";
 	
 	//Item
 	private Item item;
@@ -63,17 +72,19 @@ public class MusicBrowsingControlOptionPopupWindow extends PopupWindow {
 	//TrackDoList
 	private List<TrackDO> trackDOList;
 	
-	private int device_size = 0;
+//	private int device_size = 0;
+	
 	private int ContentFlag =0;//1 = Item ,2 = TrackDO ,3 = TrackDoList
-	public MusicBrowsingControlOptionPopupWindow(Context context){
+	public MusicSourceOptionsPopupWindow(Context context){
 		super(context);
 		this.mlog.switchLog = true;
 		this.context = context;
-		this.device_size = ((MainFragmentActivity)context).getDeviceScreenSize();
+		
+//		this.device_size = ((MainFragmentActivity)context).getDeviceScreenSize();
 		if(DeviceProperty.isPhone()){
-			Phone_CreateContentView();
+			createPhoneViewContent();
 		}else{
-			PAD_CreateContentView();
+			createPadViewContent();
 		}
 		
 		ContentViewListner();
@@ -90,7 +101,7 @@ public class MusicBrowsingControlOptionPopupWindow extends PopupWindow {
 		
 		
 	}
-	private void Phone_CreateContentView() {
+	private void createPhoneViewContent() {
 		this.contentView = LayoutInflater.from(context).inflate(R.layout.fm_popupwindow_context, null,true);		
 		//Content RLayout
 		TKBTool.fitsViewHeight(250, this.contentView.findViewById(R.id.FM_PopupWindow_Content_RLayout));
@@ -117,7 +128,7 @@ public class MusicBrowsingControlOptionPopupWindow extends PopupWindow {
 		new TKBThreadReadBitMapInAssets(context, "phone/pop/cancer_button.png", this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_CANCEL_Button), 3);
 		mlog.info(tag, "CreateContentView");
 	}
-	private void PAD_CreateContentView() {
+	private void createPadViewContent() {
 		this.contentView = LayoutInflater.from(context).inflate(R.layout.fm_popupwindow_context, null,true);
 		//Content RLayout
 		TKBTool.fitsViewHeight(294, this.contentView.findViewById(R.id.FM_PopupWindow_Content_RLayout));
@@ -145,6 +156,7 @@ public class MusicBrowsingControlOptionPopupWindow extends PopupWindow {
 		mlog.info(tag, "CreateContentView");
 	}
 	private void CreateOptionButtons(LinearLayout OPTION_LLayout){		
+		
 		Button OPTION_Button_1 = new Button(context);		
 		Button OPTION_Button_2 = new Button(context);		
 		Button OPTION_Button_3 = new Button(context);		
@@ -153,47 +165,51 @@ public class MusicBrowsingControlOptionPopupWindow extends PopupWindow {
 		OPTION_LLayout.addView(OPTION_Button_2);
 		OPTION_LLayout.addView(OPTION_Button_3);
 		OPTION_LLayout.addView(OPTION_Button_4);
+		
 		//設定 OPTION_Button 介面
-		SetOptionButtonView(OPTION_Button_1,"Play Now",0);
-		SetOptionButtonView(OPTION_Button_2,"Play Next",1);
-		SetOptionButtonView(OPTION_Button_3,"Replace Queue",1);
-		SetOptionButtonView(OPTION_Button_4,"Add To Queue",2);
+		setOptionButtonViewSetting(OPTION_Button_1,"Play Now",0);
+		setOptionButtonViewSetting(OPTION_Button_2,"Play Next",1);
+		setOptionButtonViewSetting(OPTION_Button_3,"Replace Queue",1);
+		setOptionButtonViewSetting(OPTION_Button_4,"Add To Queue",2);
+		
 		//設定LISTNER
-		SetOPTION_Button_1_LISTNER(OPTION_Button_1);
-		SetOPTION_Button_2_LISTNER(OPTION_Button_2);
-		SetOPTION_Button_3_LISTNER(OPTION_Button_3);
-		SetOPTION_Button_4_LISTNER(OPTION_Button_4);
+		setPlayNowButtonListener(OPTION_Button_1);
+		
+		setPlayNextButtonListener(OPTION_Button_2);
+		setReplaceQueueButtonListener(OPTION_Button_3);
+		setAdd2QueueButtonListener(OPTION_Button_4);
 	}
 	
-	private void SetOptionButtonView(Button OPTION_Button,String str,int number){
+	private void setOptionButtonViewSetting(Button btnOption,String str,int number){
 		
 		if(DeviceProperty.isPhone()){
-			OPTION_Button.setBackgroundColor(Color.parseColor("#00000000"));
-			TKBTool.fitsViewHeight(39, OPTION_Button);
-			TKBTool.fitsViewTextSize(10, OPTION_Button);
-			new TKBThreadReadStateListInAssets(context, "phone/pop/selecet_center_f.png", "phone/playlist/playlist_btn_n.png", OPTION_Button, 4);
+			btnOption.setBackgroundColor(Color.parseColor("#00000000"));
+			TKBTool.fitsViewHeight(39, btnOption);
+			TKBTool.fitsViewTextSize(10, btnOption);
+			new TKBThreadReadStateListInAssets(context, "phone/pop/selecet_center_f.png", "phone/playlist/playlist_btn_n.png", btnOption, 4);
 		}else{
 			switch(number){
 			case 0:
-				TKBTool.fitsViewHeight(45, OPTION_Button);	
-				new TKBThreadReadStateListInAssets(context, "pad/Playlist/pls_pop_bt_01.png", "phone/playlist/playlist_btn_n.png", OPTION_Button, 4);
+				TKBTool.fitsViewHeight(45, btnOption);	
+				new TKBThreadReadStateListInAssets(context, "pad/Playlist/pls_pop_bt_01.png", "phone/playlist/playlist_btn_n.png", btnOption, 4);
 				break;
 			case 1:
-				TKBTool.fitsViewHeight(43, OPTION_Button);		
-				new TKBThreadReadStateListInAssets(context, "pad/Playlist/pls_pop_bt_02.png", "phone/playlist/playlist_btn_n.png", OPTION_Button, 4);
+				TKBTool.fitsViewHeight(43, btnOption);		
+				new TKBThreadReadStateListInAssets(context, "pad/Playlist/pls_pop_bt_02.png", "phone/playlist/playlist_btn_n.png", btnOption, 4);
 				break;
 			case 2:
-				TKBTool.fitsViewHeight(46, OPTION_Button);		
-				new TKBThreadReadStateListInAssets(context, "pad/Playlist/pls_pop_bt_03.png", "phone/playlist/playlist_btn_n.png", OPTION_Button, 4);
+				TKBTool.fitsViewHeight(46, btnOption);		
+				new TKBThreadReadStateListInAssets(context, "pad/Playlist/pls_pop_bt_03.png", "phone/playlist/playlist_btn_n.png", btnOption, 4);
 				break;
 			}	
-			TKBTool.fitsViewTextSize(8, OPTION_Button);
+			TKBTool.fitsViewTextSize(8, btnOption);
 		}
 		
-		OPTION_Button.setText(str);
-		OPTION_Button.setPadding(0, 0, 0, 0);
-		OPTION_Button.setGravity(Gravity.CENTER);
-		OPTION_Button.setTextColor(Color.WHITE);
+		btnOption.setText(str);
+		btnOption.setPadding(0, 0, 0, 0);
+		btnOption.setGravity(Gravity.CENTER);
+		btnOption.setTextColor(Color.WHITE);
+		
 	}
 	private void ContentViewListner(){
 		//setDismiss 
@@ -201,20 +217,21 @@ public class MusicBrowsingControlOptionPopupWindow extends PopupWindow {
 		this.contentView.findViewById(R.id.FM_PopupWindow_BackGround_RLayout).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				MusicBrowsingControlOptionPopupWindow.this.dismiss();	
+				MusicSourceOptionsPopupWindow.this.dismiss();	
 			}
 		});
 		//CANCEL Button Click Dismiss 
 		this.contentView.findViewById(R.id.FM_PopupWindow_RLayout_CANCEL_Button).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				MusicBrowsingControlOptionPopupWindow.this.dismiss();					
+				MusicSourceOptionsPopupWindow.this.dismiss();					
 			}
 		});		
 	}
 	
-	private void SetOPTION_Button_1_LISTNER(Button OPTION_Button_1){
-		OPTION_Button_1.setOnClickListener(new View.OnClickListener() {
+	private void setPlayNowButtonListener(Button btnPlayNow){
+		
+		btnPlayNow.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {				
 				switch(ContentFlag){
@@ -229,9 +246,10 @@ public class MusicBrowsingControlOptionPopupWindow extends PopupWindow {
 					break;
 				}
 				
-				MusicBrowsingControlOptionPopupWindow.this.dismiss();	
+				MusicSourceOptionsPopupWindow.this.dismiss();	
 			}
 		});
+		
 	}
 	
 	private void ItemPlayNow(){
@@ -239,8 +257,8 @@ public class MusicBrowsingControlOptionPopupWindow extends PopupWindow {
 		SortCriterion[] sortCriterion = new SortCriterion[]{new SortCriterion("+dc:title")};
 		Browse browse = new Browse(MS_Device.findService(new UDAServiceType("ContentDirectory")), item.getId(), BrowseFlag.METADATA, "*", 0, 1l, sortCriterion){
 			@Override
-			public void received(ActionInvocation arg0, DIDLContent arg1) {
-				if(arg0.getOutput().length<=0||arg1.getItems().size()<=0){
+			public void received(ActionInvocation ai, DIDLContent didl) {
+				if(ai.getOutput().length<=0||didl.getItems().size()<=0){
 					return;
 				}
 				//取得upnpServer
@@ -249,7 +267,7 @@ public class MusicBrowsingControlOptionPopupWindow extends PopupWindow {
 				DeviceDisplay MR_Device = ((MainFragmentActivity)context).getDeviceDisplayList().getChooseMediaRenderer();
 				mlog.info(tag, "MR_Device = "+MR_Device);
 				//取得MetaData								
-				String MetaData = arg0.getOutput()[0].toString();	
+				String MetaData = ai.getOutput()[0].toString();	
 				mlog.info(tag, "MetaData = "+MetaData);
 				//取得item res
 				Res res = item.getFirstResource();
@@ -371,7 +389,7 @@ public class MusicBrowsingControlOptionPopupWindow extends PopupWindow {
 			upnpServer.getControlPoint().execute(ActionCallback);
 		}
 	}
-	private void SetOPTION_Button_2_LISTNER(Button OPTION_Button_2){
+	private void setPlayNextButtonListener(Button OPTION_Button_2){
 		OPTION_Button_2.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -386,13 +404,90 @@ public class MusicBrowsingControlOptionPopupWindow extends PopupWindow {
 					TrackListPlayNext();
 					break;
 				}
-				MusicBrowsingControlOptionPopupWindow.this.dismiss();	
+				MusicSourceOptionsPopupWindow.this.dismiss();	
 			}
 		});
 	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void ItemPlayNext(){
+	
+		AGSContentDirectoryService serviceContentDirectory = new AGSContentDirectoryService(DeviceDisplayList.getChooseMediaRenderer().getDevice(), MusicSourceFragement.getMessageHandler());
+		Action actionBrowse = serviceContentDirectory.getActionBrowse();
+		
+		ArrayList<ActionArgumentValue> values = new ArrayList<ActionArgumentValue>();
+		
+		ActionArgument argObjID = actionBrowse.getInputArgument(ContentDirectoryServiceValues.ACTION_BROWSE_INPUT_OBJECT_ID);
+		ActionArgumentValue valObjID = new ActionArgumentValue(argObjID, item.getId());
+		values.add(valObjID);
+		
+		ActionArgument argBrsFlag = actionBrowse.getInputArgument(ContentDirectoryServiceValues.ACTION_BROWSE_INPUT_BROWSE_FLAG);
+		ActionArgumentValue valBrsFlag = new ActionArgumentValue(argBrsFlag, BrowseFlag.METADATA);
+		values.add(valBrsFlag);
+		
+		ActionArgument argStrIndex = actionBrowse.getInputArgument(ContentDirectoryServiceValues.ACTION_BROWSE_INPUT_STARTING_INDEX);
+		ActionArgumentValue valStrIndex = new ActionArgumentValue(argStrIndex, 0);
+		values.add(valStrIndex);
+		
+		ActionArgument argReqCount = actionBrowse.getInputArgument(ContentDirectoryServiceValues.ACTION_BROWSE_INPUT_REQUESTED_COUNT);
+		ActionArgumentValue valReqCount = new ActionArgumentValue(argReqCount, 1l);
+		values.add(valReqCount);
+		
+		SortCriterion[] sortCriterion = new SortCriterion[]{new SortCriterion("+dc:title")};
+		ActionArgument argSrtCriteria = actionBrowse.getInputArgument(ContentDirectoryServiceValues.ACTION_BROWSE_INPUT_SORT_CRITERIA);
+		ActionArgumentValue valSrtCriteria = new ActionArgumentValue(argSrtCriteria, sortCriterion);
+		values.add(valSrtCriteria);
+		
+		ActionArgument argFilter = actionBrowse.getInputArgument(ContentDirectoryServiceValues.ACTION_BROWSE_INPUT_FILTER);
+		ActionArgumentValue valFilter = new ActionArgumentValue(argFilter, "*");
+		values.add(valFilter);
+		
+		serviceContentDirectory.actBrowse(values.toArray(new ActionArgumentValue[values.size()]), new  BrowseMetaDataScuuessCaller());
 		
 	}
+	
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	private class BrowseMetaDataScuuessCaller extends AGSActionSuccessCaller<Object>{
+	
+		@Override
+		public Object call() throws Exception {
+	
+			AGSAVTransportService serviceAVTransport = new AGSAVTransportService(DeviceDisplayList.getChooseMediaRenderer().getDevice(), MusicSourceFragement.getMessageHandler());
+			Action actionDoFirmwareUpgrade = serviceAVTransport.getActionAddTrackToQueue();
+			
+			ArrayList<ActionArgumentValue> values = new ArrayList<ActionArgumentValue>();
+			
+			ActionArgument argInstanceID = actionDoFirmwareUpgrade.getInputArgument(AVTransportServiceValues.ACTION_ADD_TRACK_TO_QUEUE_INPUT_INSTANCE_ID);
+			ActionArgumentValue valInstanceID = new ActionArgumentValue(argInstanceID, "0");
+			values.add(valInstanceID);
+			
+			ActionArgument argTrackURI = actionDoFirmwareUpgrade.getInputArgument(AVTransportServiceValues.ACTION_ADD_TRACK_TO_QUEUE_INPUT_TRACK_URI);
+			ActionArgumentValue valTrackURI = new ActionArgumentValue(argTrackURI, item.getFirstResource().getValue().toString());
+			values.add(valTrackURI);
+			
+			String MetaData = ai.getOutput()[0].toString();
+			ActionArgument argTrackURIMetaData = actionDoFirmwareUpgrade.getInputArgument(AVTransportServiceValues.ACTION_ADD_TRACK_TO_QUEUE_INPUT_TRACK_URI_META_DATA);
+			ActionArgumentValue valType = new ActionArgumentValue(argTrackURIMetaData, MetaData);
+			values.add(valType);
+			
+			ActionArgument argTrackNumber = actionDoFirmwareUpgrade.getInputArgument(AVTransportServiceValues.ACTION_ADD_TRACK_TO_QUEUE_INPUT_TRACK_NUMBER);
+			String position = DeviceDisplayList.getPositionCurrentTrack();
+			Integer posInsert = Integer.parseInt(position) - 1;
+			ActionArgumentValue valTrackNumber = new ActionArgumentValue(argTrackNumber, posInsert);
+			values.add(valTrackNumber);
+			
+			ActionArgument argPlayNow = actionDoFirmwareUpgrade.getInputArgument(AVTransportServiceValues.ACTION_ADD_TRACK_TO_QUEUE_INPUT_PLAY_NOW);
+			ActionArgumentValue valPlayNow = new ActionArgumentValue(argPlayNow, false);
+			values.add(valPlayNow);
+			
+			serviceAVTransport.actAddTrackToQueue(values.toArray(new ActionArgumentValue[values.size()]), null);
+			
+			return null;
+			
+		}
+
+	}
+	
 	private void TrackPlayNext(){
 		
 	}
@@ -400,7 +495,7 @@ public class MusicBrowsingControlOptionPopupWindow extends PopupWindow {
 		
 	}
 	
-	private void SetOPTION_Button_3_LISTNER(Button OPTION_Button_3){
+	private void setReplaceQueueButtonListener(Button OPTION_Button_3){
 		OPTION_Button_3.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -415,7 +510,7 @@ public class MusicBrowsingControlOptionPopupWindow extends PopupWindow {
 					TrackListReplayQueue();
 					break;
 				}
-				MusicBrowsingControlOptionPopupWindow.this.dismiss();	
+				MusicSourceOptionsPopupWindow.this.dismiss();	
 			}
 		});
 	}
@@ -428,7 +523,7 @@ public class MusicBrowsingControlOptionPopupWindow extends PopupWindow {
 	private void TrackListReplayQueue(){
 		
 	}
-	private void SetOPTION_Button_4_LISTNER(Button OPTION_Button_4){
+	private void setAdd2QueueButtonListener(Button OPTION_Button_4){
 		OPTION_Button_4.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -447,7 +542,7 @@ public class MusicBrowsingControlOptionPopupWindow extends PopupWindow {
 				
 			
 				//關閉FM_PopupWindow
-				MusicBrowsingControlOptionPopupWindow.this.dismiss();	
+				MusicSourceOptionsPopupWindow.this.dismiss();	
 			}
 		});
 	}

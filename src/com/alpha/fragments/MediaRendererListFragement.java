@@ -46,7 +46,7 @@ import com.alpha.util.DeviceProperty;
 import com.tkb.tool.TKBLog;
 import com.tkb.tool.TKBThreadReadBitMapInAssets;
 
-public class Fragment_Speaker extends Fragment {
+public class MediaRendererListFragement extends Fragment {
 	//VIEWS
 	private View Fragment_MainView;	
 	private ExpandableListView FS_SPEAKER_EListView;

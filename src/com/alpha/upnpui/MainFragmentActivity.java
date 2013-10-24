@@ -31,9 +31,9 @@ import android.widget.ViewFlipper;
 
 import com.FAM.SETTING.FAM_VIEW_LISTNER;
 import com.FAM.SETTING.FAM_VIEW_SETTING;
-import com.alpha.fragments.Fragment_Information;
-import com.alpha.fragments.Fragment_Music;
-import com.alpha.fragments.Fragment_Speaker;
+import com.alpha.fragments.MediaRendererMusicInfoFragement;
+import com.alpha.fragments.MusicSourceFragement;
+import com.alpha.fragments.MediaRendererListFragement;
 import com.alpha.upnp.BrowseRegistryListener;
 import com.alpha.upnp.DeviceDisplayList;
 import com.alpha.upnp.UpnpServiceConnection;
@@ -56,9 +56,9 @@ public class MainFragmentActivity extends FragmentActivity {
 	private View MainView;
 
 	//Fragments
-	private Fragment fragment_Speaker;
-	private Fragment fragment_Infor;
-	private Fragment fragment_Music;
+	private Fragment fragmentMediaRendererList;
+	private Fragment fragmentMRMusicInfo;
+	private Fragment fragmentMusicSource;
 	//SETTING
 	private FAM_VIEW_SETTING VIEW_SETTING;
 	public FAM_VIEW_LISTNER VIEW_LISTNER;
@@ -82,7 +82,7 @@ public class MainFragmentActivity extends FragmentActivity {
 	//Device List
 	private static DeviceDisplayList deviceDisplayList;
 	
-	private static String TAG = "FragmentActivity_Main";
+	private static String TAG = "MainFragmentActivity";
 	private TKBLog mlog = new TKBLog();
 	private static Context context;
 	public static Context getContext(){
@@ -135,7 +135,7 @@ public class MainFragmentActivity extends FragmentActivity {
 	    	//設定PAD介面
 	    	PAD_findVIEW();
 	    	//加入Fragment
-	    	set_PAD_First_Fragment();
+	    	setPadViewFragment();
 	    	//設定LISTNER
 	    	PAD_findLISTNER();	
 	    }
@@ -186,12 +186,12 @@ public class MainFragmentActivity extends FragmentActivity {
 		
 	}
 	private void set_Phone_First_Fragment() {	
-		fragment_Speaker = new Fragment_Speaker();		
-		TKBTool.animationAddFragment(fragmentManager.beginTransaction(), fragment_Speaker, "Fragment_Speaker", R.id.pFAM_RLayout_ViewFlipper_Speaker_RLayout, R.animator.alpha_in, R.animator.alpha_out);
-		fragment_Infor = new Fragment_Information();
-		TKBTool.animationAddFragment(fragmentManager.beginTransaction(), fragment_Infor, "Fragment_Infor", R.id.pFAM_RLayout_ViewFlipper_Information_RLayout, R.animator.alpha_in, R.animator.alpha_out);
-		fragment_Music = new Fragment_Music();
-		TKBTool.animationAddFragment(fragmentManager.beginTransaction(), fragment_Music, "Fragment_Music", R.id.pFAM_RLayout_ViewFlipper_Music_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+		fragmentMediaRendererList = new MediaRendererListFragement();		
+		TKBTool.animationAddFragment(fragmentManager.beginTransaction(), fragmentMediaRendererList, "Fragment_Speaker", R.id.pFAM_RLayout_ViewFlipper_Speaker_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+		fragmentMRMusicInfo = new MediaRendererMusicInfoFragement();
+		TKBTool.animationAddFragment(fragmentManager.beginTransaction(), fragmentMRMusicInfo, "Fragment_Infor", R.id.pFAM_RLayout_ViewFlipper_Information_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+		fragmentMusicSource = new MusicSourceFragement();
+		TKBTool.animationAddFragment(fragmentManager.beginTransaction(), fragmentMusicSource, "Fragment_Music", R.id.pFAM_RLayout_ViewFlipper_Music_RLayout, R.animator.alpha_in, R.animator.alpha_out);
 	}
 	private void PAD_findVIEW() {
 		//設定PAD介面
@@ -225,7 +225,7 @@ public class MainFragmentActivity extends FragmentActivity {
 		this.VIEW_LISTNER.Done_Button_LISTNER((Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Done_Button),
 											(Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Clear_Button),
 											(Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Save_Button),
-											(Fragment_Information)fragment_Infor);
+											(MediaRendererMusicInfoFragement)fragmentMRMusicInfo);
 		this.VIEW_LISTNER.CycleRandom_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Cycle_IButton),
 													(ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Random_IButton));
 //		this.VIEW_LISTNER.Random_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Random_IButton));
@@ -234,13 +234,15 @@ public class MainFragmentActivity extends FragmentActivity {
 		this.VIEW_LISTNER.Next_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Next_IButton));
 		this.VIEW_LISTNER.Play_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Play_IButton));
 	}
-	private void set_PAD_First_Fragment() {		
-		fragment_Speaker = new Fragment_Speaker();		
-		TKBTool.animationAddFragment(fragmentManager.beginTransaction(), fragment_Speaker, "Fragment_Speaker", R.id.FAM_RLayout_LEFT_RLayout, R.animator.alpha_in, R.animator.alpha_out);
-		fragment_Infor = new Fragment_Information();
-		TKBTool.animationAddFragment(fragmentManager.beginTransaction(), fragment_Infor, "Fragment_Infor", R.id.FAM_RLayout_CENTER_RLayout, R.animator.alpha_in, R.animator.alpha_out);
-		fragment_Music = new Fragment_Music();
-		TKBTool.animationAddFragment(fragmentManager.beginTransaction(), fragment_Music, "Fragment_Music", R.id.FAM_RLayout_RIGHT_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+	private void setPadViewFragment() {	
+		
+		fragmentMediaRendererList = new MediaRendererListFragement();		
+		TKBTool.animationAddFragment(fragmentManager.beginTransaction(), fragmentMediaRendererList, "Fragment_Speaker", R.id.FAM_RLayout_LEFT_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+		fragmentMRMusicInfo = new MediaRendererMusicInfoFragement();
+		TKBTool.animationAddFragment(fragmentManager.beginTransaction(), fragmentMRMusicInfo, "Fragment_Infor", R.id.FAM_RLayout_CENTER_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+		fragmentMusicSource = new MusicSourceFragement();
+		TKBTool.animationAddFragment(fragmentManager.beginTransaction(), fragmentMusicSource, "Fragment_Music", R.id.FAM_RLayout_RIGHT_RLayout, R.animator.alpha_in, R.animator.alpha_out);
+	
 	}
 	
 	private void CreateUpnpService() {		
@@ -306,8 +308,8 @@ public class MainFragmentActivity extends FragmentActivity {
 	}
 	
 	public void FMTransformTouchToFI(MotionEvent FM_Event){
-		if(fragment_Infor!=null){			
-			((Fragment_Information)fragment_Infor).GET_TRANSFROM_FROM_FM(FM_Event);
+		if(fragmentMRMusicInfo!=null){			
+			((MediaRendererMusicInfoFragement)fragmentMRMusicInfo).GET_TRANSFROM_FROM_FM(FM_Event);
 		}
 	}
 	public void ShowDoneButton(){
@@ -352,14 +354,14 @@ public class MainFragmentActivity extends FragmentActivity {
 			break;
 		}
 	}
-	public Fragment_Speaker GETFragment_Speaker(){
-		return (Fragment_Speaker)this.fragment_Speaker;
+	public MediaRendererListFragement GETFragment_Speaker(){
+		return (MediaRendererListFragement)this.fragmentMediaRendererList;
 	}
-	public Fragment_Information GETFragment_Infor(){
-		return (Fragment_Information)this.fragment_Infor;
+	public MediaRendererMusicInfoFragement GETFragment_Infor(){
+		return (MediaRendererMusicInfoFragement)this.fragmentMRMusicInfo;
 	}
-	public Fragment_Music GETFragment_Music(){
-		return (Fragment_Music)this.fragment_Music;
+	public MusicSourceFragement GETFragment_Music(){
+		return (MusicSourceFragement)this.fragmentMusicSource;
 	}
 
 	

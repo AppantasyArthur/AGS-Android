@@ -31,7 +31,7 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-import com.alpha.fragments.Fragment_Information;
+import com.alpha.fragments.MediaRendererMusicInfoFragement;
 import com.alpha.upnp.DeviceDisplay;
 import com.alpha.upnpui.Fragment_SETTING;
 import com.alpha.upnpui.MainFragmentActivity;
@@ -50,7 +50,7 @@ public class FAM_VIEW_LISTNER {
 	private int device_size = 0;
 	private FragmentManager fragmentManager;
 	
-	private FAM_Save_PopupWindow popupWindow;	
+	private SaveQueueListPopupWindow popupWindow;	
 	
 	private ProcessBarListner processBarListner;
 	public FAM_VIEW_LISTNER(Context context, int device_size,FragmentManager fragmentManager) {
@@ -71,7 +71,7 @@ public class FAM_VIEW_LISTNER {
 				});
 			}
 			@Override
-			public void SetProcessBarNotDispaly() {
+			public void setProcessBarHidden() {
 				processBar.post(new Runnable() {
 					@Override
 					public void run() {
@@ -83,7 +83,7 @@ public class FAM_VIEW_LISTNER {
 		};
 		((MainFragmentActivity)context).getDeviceDisplayList().setProcessBarListner(processBarListner);
 	}
-	public ProcessBarListner GetProcessBarListner(){
+	public ProcessBarListner getProcessBarListner(){
 		return processBarListner;
 	}
 	public void ShowCloseMediaC2_IButton_LISTNER(ImageButton ShowCloseMediaC2_IButton,final RelativeLayout MediaC2_RLayout) {
@@ -197,9 +197,9 @@ public class FAM_VIEW_LISTNER {
 				@Override
 				public void onClick(View v) {
 					if(popupWindow==null){
-						popupWindow = new FAM_Save_PopupWindow(context);
+						popupWindow = new SaveQueueListPopupWindow(context);
 					}
-					popupWindow.ShowPopupWindow(v.getRootView(), Gravity.CENTER, 0, 0);
+					popupWindow.showPopupWindow(v.getRootView(), Gravity.CENTER, 0, 0);
 				}
 			});
 			Save_Button.setOnTouchListener(new View.OnTouchListener() {
@@ -232,7 +232,7 @@ public class FAM_VIEW_LISTNER {
 			//***************************PAD*********************************
 		}
 	}
-	public void Done_Button_LISTNER(Button Done_Button,final Button Edit_Button,final Button Clear_Button,final Fragment_Information fragment_Infor){
+	public void Done_Button_LISTNER(Button Done_Button,final Button Edit_Button,final Button Clear_Button,final MediaRendererMusicInfoFragement fragment_Infor){
 		if(DeviceProperty.isPhone()){
 			//***************************PHONE*********************************	
 			//***************************PHONE*********************************	

@@ -184,11 +184,13 @@ public class FAM_PopupWindow extends PopupWindow {
 	}
 	
 	private class SoundHandler{
+		
 		private ViewHandler viewHandler;
 		private DeviceDisplay deviceDisplay;
 		private SubscriptionCallback Device_SoundCallBack;
 		
 		private AndroidUpnpService upnpServer;	
+		
 		public SoundHandler(ViewHandler viewHandler,DeviceDisplay deviceDisplay){
 			this.upnpServer = ((MainFragmentActivity)context).getUPnPService();		
 			this.viewHandler = viewHandler;

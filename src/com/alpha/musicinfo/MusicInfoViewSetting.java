@@ -1,4 +1,4 @@
-package com.FI.SETTING;
+package com.alpha.musicinfo;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -14,16 +14,19 @@ import com.tkb.tool.TKBThreadReadBitMapInAssets;
 import com.tkb.tool.TKBThreadReadStateListInAssets;
 import com.tkb.tool.TKBTool;
 
-public class FI_VIEW_SETTING {
+// FI_VIEW_SETTING
+public class MusicInfoViewSetting {
+	
 	private Context context;
 	private TKBLog mlog = new TKBLog();
-	private static final String TAG = "FI_VIEW_SETTING";
-	private int device_size = 0;
+	private static final String tag = "MusicInfoViewSetting";
 	
-	public FI_VIEW_SETTING(Context context,int device_size){
+//	private int device_size = 0;
+	
+	public MusicInfoViewSetting(Context context,int device_size){
 		this.context = context;
 		this.mlog.switchLog = true;
-		this.device_size = device_size;
+//		this.device_size = device_size;
 	}
 	public void VIEWSET(View view){
 		if(DeviceProperty.isPhone()){
@@ -188,8 +191,8 @@ public class FI_VIEW_SETTING {
 	private void pFI_RLayout_DOWN_RLayout(View view){
 //		new ThreadReadBitMapInAssets(context, "pad/Queqe/queqe_bg.png", view, 3);		
 		//INFOR ListView
-		FI_ListView fi_ListView = (FI_ListView)view.findViewById(R.id.pFI_RLayout_RLayout_QUEUE_ListView);
-		fi_ListView.setAdapter(new FI_Queqe_ListView_BaseAdapter_Phone(context));
+		MusicInfoListView fi_ListView = (MusicInfoListView)view.findViewById(R.id.pFI_RLayout_RLayout_QUEUE_ListView);
+		fi_ListView.setAdapter(new MusicInfoListPhoneViewAdapter(context));
 	}
 	private void pFI_RLayout_Bottom_RLayout(View view) {
 		TKBTool.fitsViewHeight(30, view);			
@@ -261,8 +264,8 @@ public class FI_VIEW_SETTING {
 		TKBTool.fitsViewLeftMargin(30, view.findViewById(R.id.FI_RLayout_RLayout_RLayout_QUEUE_TextView));
 		TKBTool.fitsViewTextSize(8, view.findViewById(R.id.FI_RLayout_RLayout_RLayout_QUEUE_TextView));
 		//INFOR ListView
-		FI_ListView fi_ListView = (FI_ListView)view.findViewById(R.id.FI_RLayout_RLayout_QUEUE_ListView);
-		fi_ListView.setAdapter(new FI_Queqe_ListView_BaseAdapter_PAD(context));
+		MusicInfoListView fi_ListView = (MusicInfoListView)view.findViewById(R.id.FI_RLayout_RLayout_QUEUE_ListView);
+		fi_ListView.setAdapter(new MusicInfoListPadViewAdapter(context));
 	}
 //***************************PAD*********************************
 	

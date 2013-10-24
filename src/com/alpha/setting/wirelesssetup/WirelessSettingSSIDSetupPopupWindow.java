@@ -1,32 +1,27 @@
 package com.alpha.setting.wirelesssetup;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import org.teleal.cling.android.AndroidUpnpService;
 import org.teleal.cling.model.action.ActionArgumentValue;
-import org.teleal.cling.model.action.ActionInvocation;
 import org.teleal.cling.model.meta.Action;
 import org.teleal.cling.model.meta.ActionArgument;
-import org.teleal.cling.model.meta.Device;
-import org.teleal.cling.model.meta.Service;
-import org.teleal.cling.model.types.ServiceType;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 
-import com.alpha.upnp.AGSActionCallback;
+import com.alpha.fragments.WirelessSettingFragment;
 import com.alpha.upnp.DeviceDisplay;
+import com.alpha.upnp.service.AGSActionSuccessCaller;
+import com.alpha.upnp.service.AGSSytemService;
 import com.alpha.upnp.value.AGSHandlerMessages;
-import com.alpha.upnp.value.ServiceValues;
+import com.alpha.upnp.value.AGSHandlerMessages.AGSMessageBody;
 import com.alpha.upnp.value.SystemServiceValues;
 import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
@@ -36,6 +31,7 @@ import com.tkb.tool.TKBThreadReadBitMapInAssets;
 import com.tkb.tool.TKBThreadReadStateListInAssets;
 import com.tkb.tool.TKBTool;
 
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class WirelessSettingSSIDSetupPopupWindow extends PopupWindow {
 	
 	private View contentView;
@@ -162,11 +158,30 @@ public class WirelessSettingSSIDSetupPopupWindow extends PopupWindow {
 		mlog.info(tag, "CreateContentView");
 	}
 	
-	
-	
+	private class SetupWirelessSuccessCaller extends AGSActionSuccessCaller<Object>{
+
+		@Override
+		public Object call() throws Exception {
+			
+			String result = ai.getOutput(SystemServiceValues.ACTION_WIRELESS_SETUP_OUTPUT_RESULT).getValue().toString();
+			
+			// close loading 
+			Message msg = handlerWirelessSetupPopupWindow.obtainMessage(AGSHandlerMessages.CLOSE_GENERAL_PROGRESS, result);
+			handlerWirelessSetupPopupWindow.sendMessage(msg);
+			
+			// show message
+//			handlerWirelessSetupPopupWindow.obtainMessage(AGSHandlerMessages.SHOW_MESSAGE, result);
+			
+			return super.call();
+			
+		}
+		
+	}
 		
 	private void ContentViewListner(){
+		
 		//setDismiss 
+		
 		//Outside Click Dismiss 
 		this.contentView.findViewById(R.id.FSW_PopupWindow_BackGround_RLayout).setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -175,6 +190,7 @@ public class WirelessSettingSSIDSetupPopupWindow extends PopupWindow {
 				handlerWirelessSetupPopupWindow.sendEmptyMessage(AGSHandlerMessages.SHOW_MESSAGE);
 			}
 		});
+		
 		//CANCEL Button Click Dismiss 
 		this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_Close_Button).setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -183,70 +199,36 @@ public class WirelessSettingSSIDSetupPopupWindow extends PopupWindow {
 				handlerWirelessSetupPopupWindow.sendEmptyMessage(AGSHandlerMessages.SHOW_MESSAGE);
 			}
 		});
+		
 		//Join Button Click Dismiss 
 		this.contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_Join_Button).setOnClickListener(new View.OnClickListener() {
-			@SuppressWarnings({ "rawtypes", "unchecked" })
+			
 			@Override
 			public void onClick(View v) {
 				
-				AndroidUpnpService upnpServer = MainFragmentActivity.getServiceAndroidUPnP(); // ((MainFragmentActivity)context).getUPnPService();
-				DeviceDisplay mediaRenderDisplay = deviceDisplay;
+				Message msg = handlerWirelessSetupPopupWindow.obtainMessage(AGSHandlerMessages.SHOW_GENERAL_PROGRESS);
+				AGSMessageBody body = new AGSMessageBody();
+				body.setTitle("Wireless Setting");
+				body.setContent("Communicating ... ");
+				msg.obj = body;
+				handlerWirelessSetupPopupWindow.sendMessage(msg);
 				
-				Device mediaRenderer = mediaRenderDisplay.getDevice();
+				AGSSytemService service = new AGSSytemService(deviceDisplay.getDevice(), WirelessSettingFragment.getMessageHandler());
+				Action action = service.getActionGetCurrentSSID();
 				
-				String systemserviceNamespace = ServiceValues.DEFAULT_NAMESPACE;
-				String systemserviceType = SystemServiceValues.SERVICE_NAME;
-				ServiceType typeSystemService = new ServiceType(systemserviceNamespace, systemserviceType);
+				ArrayList<ActionArgumentValue> values = new ArrayList<ActionArgumentValue>();
 				
-				Service serviceSystem = mediaRenderer.findService(typeSystemService);
-				if(serviceSystem != null){
-					
-					Action actionSystemInfo = serviceSystem.getAction(SystemServiceValues.ACTION_WIRELESS_SETUP);
-					if(actionSystemInfo != null){
-						
-						List<ActionArgumentValue> values = new ArrayList<ActionArgumentValue>();
-						
-						EditText textName = (EditText)contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_Name_EditText);
-						ActionArgument argSSID = actionSystemInfo.getInputArgument(SystemServiceValues.ACTION_WIRELESS_SETUP_INPUT_SSID);
-						ActionArgumentValue valSSID = new ActionArgumentValue(argSSID, textName.getText().toString());
-						values.add(valSSID);
-						
-						EditText textPassword = (EditText)contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_Securty_EditText);
-						ActionArgument argPassword = actionSystemInfo.getInputArgument(SystemServiceValues.ACTION_WIRELESS_SETUP_INPUT_PWD);
-						ActionArgumentValue valPassword = new ActionArgumentValue(argPassword, textPassword.getText().toString());
-						values.add(valPassword);
-			
-						ActionInvocation invocationSystemInfo = new ActionInvocation(actionSystemInfo , values.toArray(new ActionArgumentValue[values.size()]));
-						AGSActionCallback callbackWirelessSetup = new AGSActionCallback(invocationSystemInfo, tag, handlerWirelessSetupPopupWindow){
-
-							@Override
-							public void success(ActionInvocation ai) {
-								
-								Log.d(tag, "callbackWirelessSetup success - ");
-								Log.d(tag, "ActionInvocation : " + ai);
-								
-								ActionArgumentValue result = ai.getOutput(SystemServiceValues.DEFAULT_OUTPUT_RESULT);
-								String resultText = (String)result.getValue();
-								Log.d(tag, resultText);
-								
-								Message msg = handlerWirelessSetupPopupWindow.obtainMessage(AGSHandlerMessages.SHOW_MESSAGE);
-								msg.obj = resultText;
-								handlerWirelessSetupPopupWindow.sendMessage(msg);
-								
-							}
-							
-						};
-						upnpServer.getControlPoint().execute(callbackWirelessSetup);
-						
-					}else{
-						// error log
-						// show message
-					}
-					
-				}else{
-					// error log
-					// show message
-				}
+				EditText textName = (EditText)contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_Name_EditText);
+				ActionArgument argSSID = action.getInputArgument(SystemServiceValues.ACTION_WIRELESS_SETUP_INPUT_SSID);
+				ActionArgumentValue valSSID = new ActionArgumentValue(argSSID, textName.getText().toString());
+				values.add(valSSID);
+				
+				EditText textPassword = (EditText)contentView.findViewById(R.id.FSW_PopupWindow_Content_RLayout_RLayout_ScrollView_RLayout_Securty_EditText);
+				ActionArgument argPwd = action.getInputArgument(SystemServiceValues.ACTION_WIRELESS_SETUP_INPUT_PWD);
+				ActionArgumentValue valPwd = new ActionArgumentValue(argPwd, textPassword.getText().toString());
+				values.add(valPwd);
+				
+				service.actSetupWireless(values.toArray(new ActionArgumentValue[values.size()]), new SetupWirelessSuccessCaller());
 				
 			}
 			

@@ -23,7 +23,7 @@ import com.alpha.upnp.DeviceDisplay;
 import com.alpha.upnp.parser.SystemInfoParser;
 import com.alpha.upnp.parser.SystemInfoVO;
 import com.alpha.upnp.service.AGSActionSuccessCaller;
-import com.alpha.upnp.service.AGSSsytemService;
+import com.alpha.upnp.service.AGSSytemService;
 import com.alpha.upnp.value.SystemServiceValues;
 import com.alpha.upnpui.R;
 import com.tkb.tool.TKBLog;
@@ -57,7 +57,7 @@ public class AboutSettingPhoneViewAdapter extends BaseAdapter {
 	
 	private void updateAboutInfo(DeviceDisplay chooseDeviceDisplay) {
 		
-		AGSSsytemService service = new AGSSsytemService(chooseDeviceDisplay.getDevice(), AboutSettingFragment.getMessageHandler());
+		AGSSytemService service = new AGSSytemService(chooseDeviceDisplay.getDevice(), AboutSettingFragment.getMessageHandler());
 		service.actGetSystemInfo(null, new AboutSettingUpdateSuccessCaller());
 		
 	}

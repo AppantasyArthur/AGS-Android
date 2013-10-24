@@ -1,15 +1,9 @@
 package com.alpha.setting.wirelesssetup;
 
-import com.alpha.upnpui.R;
-import com.tkb.tool.TKBLog;
-import com.tkb.tool.TKBThreadReadBitMapInAssets;
-import com.tkb.tool.TKBThreadReadStateListInAssets;
-import com.tkb.tool.TKBTool;
+import java.util.LinkedList;
+import java.util.List;
+
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.StateListDrawable;
-import android.util.StateSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +14,17 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alpha.fragments.WirelessSettingFragment;
+import com.alpha.upnp.DeviceDisplay;
+import com.alpha.upnp.service.AGSActionSuccessCaller;
+import com.alpha.upnp.service.AGSSytemService;
+import com.alpha.upnp.value.SystemServiceValues;
+import com.alpha.upnpui.R;
+import com.tkb.tool.TKBLog;
+import com.tkb.tool.TKBThreadReadBitMapInAssets;
+import com.tkb.tool.TKBThreadReadStateListInAssets;
+import com.tkb.tool.TKBTool;
+
 // FSI_IdSpeaker_ListView_BaseAdapter
 public class WirelessSettingPadViewAdapter extends BaseAdapter {
 	
@@ -27,9 +32,77 @@ public class WirelessSettingPadViewAdapter extends BaseAdapter {
 	private TKBLog mlog = new TKBLog();
 	private static final String tag = "WirelessSettingPadViewAdapter";
 	
-	public WirelessSettingPadViewAdapter(Context context){
+	private List<WSSite> sites = new LinkedList<WSSite>();
+	
+	@SuppressWarnings("unused")
+	private class WSSite{
+		
+		private boolean isUse = false;
+		private String SSID = "N/A";
+		private boolean isLocked = false;
+		
+		private Integer strength; // need getter/setter
+		
+		public boolean isUse() {
+			return isUse;
+		}
+		public void setUse(boolean isUse) {
+			this.isUse = isUse;
+		}
+		public String getSSID() {
+			return SSID;
+		}
+		public void setSSID(String sSID) {
+			SSID = sSID;
+		}
+		public boolean isLocked() {
+			return isLocked;
+		}
+		public void setLocked(boolean isLocked) {
+			this.isLocked = isLocked;
+		}
+		
+	}
+	
+	private DeviceDisplay deviceDisplay;
+	public WirelessSettingPadViewAdapter(Context context, DeviceDisplay deviceDisplay){
+		
 		this.context = context;		
-		this.mlog.switchLog = true;		
+		this.mlog.switchLog = true;
+		
+		this.deviceDisplay = deviceDisplay;
+		
+		AGSSytemService service = new AGSSytemService(deviceDisplay.getDevice(), WirelessSettingFragment.getMessageHandler());
+		service.actGetCurrentSSID(null, new GetCurrentSSIDSuccessCaller());
+		
+	}
+	
+	// temp, need site survey, Arthur
+	private class GetCurrentSSIDSuccessCaller extends AGSActionSuccessCaller<Object>{
+
+		@Override
+		public Object call() throws Exception {
+			
+			String result = ai.getOutput(SystemServiceValues.ACTION_GET_CURRENT_SSID_OUTPUT_RESULT).getValue().toString();
+			
+			if(!result.equalsIgnoreCase(SystemServiceValues.WirelessStstus.DISCONNECT)){
+				
+				WSSite site = new WSSite();
+				site.setUse(true);
+				site.setLocked(false);
+				site.setSSID(result);
+				sites.add(site);
+				
+			}
+			
+			WSSite siteManual = new WSSite();
+			siteManual.setSSID("Other");
+			sites.add(siteManual);
+			
+			return super.call();
+			
+		}
+		
 	}
 	
 //	private StateListDrawable CreateStateListDrawable(Bitmap bitmapA,Bitmap bitmapB){
@@ -42,13 +115,13 @@ public class WirelessSettingPadViewAdapter extends BaseAdapter {
 	
 	@Override
 	public int getCount() {
-		//return 4+1;
-		return 1; // currently, Arthur
+//		return sites.size() + 1;
+		return sites.size(); // +1 move to GetCurrentSSIDSuccessCaller::call()
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return null;
+		return sites.get(position);
 	}
 
 	@Override
@@ -58,6 +131,8 @@ public class WirelessSettingPadViewAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {	
+		
+		WSSite dataCurrentSite = sites.get(position);
 		
 		ViewHandler viewHandler = null;
 		if(convertView == null){
@@ -92,7 +167,7 @@ public class WirelessSettingPadViewAdapter extends BaseAdapter {
 		}
 		
 		// 最後一個
-		if(position == this.getCount()-1){
+		if(position == this.getCount() - 1){
 			
 			//最後一個 other network
 			if(viewHandler.imageTick.getVisibility()==View.VISIBLE){
@@ -108,21 +183,21 @@ public class WirelessSettingPadViewAdapter extends BaseAdapter {
 		}else{
 			
 			//判斷是否要顯示Tick
-			if(true){
-				if(viewHandler.imageTick.getVisibility()!=View.VISIBLE){
+			if(dataCurrentSite.isUse){
+				if(viewHandler.imageTick.getVisibility() != View.VISIBLE){
 					viewHandler.imageTick.setVisibility(View.VISIBLE);
 				}
 			}
 			
 			//判斷是否要顯示Lock
-			if(true){
-				if(viewHandler.imageLocker.getVisibility()!=View.VISIBLE){
+			if(dataCurrentSite.isLocked){
+				if(viewHandler.imageLocker.getVisibility() != View.VISIBLE){
 					viewHandler.imageLocker.setVisibility(View.VISIBLE);
 				}
 			}
 			
 			// 顯示 Name
-			viewHandler.textAPName.setText("name");
+			viewHandler.textAPName.setText(dataCurrentSite.getSSID());
 			
 			// 顯示 strength
 			switch(1){
@@ -142,7 +217,7 @@ public class WirelessSettingPadViewAdapter extends BaseAdapter {
 			
 		}
 		
-		mlog.info(tag, "position = "+position);
+		mlog.info(tag, "updaet data  at position = " + position);
 		
 		return convertView;
 		

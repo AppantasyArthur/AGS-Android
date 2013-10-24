@@ -161,14 +161,15 @@
 	        android:background="#ff0000"
 	        >  	   
 	        
-	        <com.FI.SETTING.FI_ViewFlipper
+	        <com.alpha.musicinfo.MusicInfoFlipperView
 	            android:id="@+id/pFI_RLayout_RLayout_INFOR_ViewFlipper"
 	            android:layout_width="match_parent"
 	            android:layout_height="match_parent" 	            
 	            android:background="#00000000"
 	            >
-	        </com.FI.SETTING.FI_ViewFlipper>	         
-	        <com.FI.SETTING.FI_PointLiLayout
+	            </com.alpha.musicinfo.MusicInfoFlipperView>
+	        <!-- </com.alpha.musicinfo.FI_ViewFlipper> -->  
+	        <com.alpha.musicinfo.FI_PointLiLayout
 	            android:id="@+id/pFI_RLayout_RLayout_Point_LLayout"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content" 
@@ -176,7 +177,8 @@
 	            android:layout_centerHorizontal="true"
 	            android:background="#00000000"
 	            >         
-	        </com.FI.SETTING.FI_PointLiLayout>		              
+	            </com.alpha.musicinfo.FI_PointLiLayout>
+	        <!-- </com.FI.SETTING.FI_PointLiLayout>		    -->           
 	    </RelativeLayout>
 		<RelativeLayout 
 	        android:id="@+id/pFI_RLayout_DOWN_RLayout"
@@ -184,7 +186,7 @@
 	        android:layout_height="match_parent"	        
 	        android:background="#00000000"
 	        >       
-	        <com.FI.SETTING.FI_ListView
+	        <com.alpha.musicinfo.MusicInfoListView
 	            android:id="@+id/pFI_RLayout_RLayout_QUEUE_ListView"
 	            android:layout_width="match_parent"
 	            android:layout_height="match_parent"
@@ -192,7 +194,7 @@
 	            android:listSelector="@android:color/transparent"
 	            android:divider="#00000000"
 	            >
-	        </com.FI.SETTING.FI_ListView>	
+	        </com.alpha.musicinfo.MusicInfoListView>	
 	     </RelativeLayout>		    
     </com.FAM.SETTING.FAM_ViewFlipper>
     <RelativeLayout 

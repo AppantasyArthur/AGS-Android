@@ -44,7 +44,7 @@ public class UpnpServiceConnection implements ServiceConnection{
 		if(DeviceProperty.isPhone()){
 			
 		}else{			
-			controlPointProcessBar.SetProcessBarListner(((MainFragmentActivity)context).VIEW_LISTNER.GetProcessBarListner());
+			controlPointProcessBar.SetProcessBarListner(((MainFragmentActivity)context).VIEW_LISTNER.getProcessBarListner());
 		}
 		
 		//±½´y¤@¦¸

@@ -26,7 +26,8 @@ import com.alpha.upnpui.R;
 import com.alpha.util.DeviceProperty;
 import com.tkb.tool.TKBLog;
 
-public class Fragment_SWireless extends Fragment {
+// Fragment_SWireless
+public class WirelessSettingFragment extends AGSFragment {
 	//VIEWS
 	private View Fragment_MainView;	
 	private BaseAdapter WIFIAP_ListView_BaseAdapter;
@@ -36,28 +37,28 @@ public class Fragment_SWireless extends Fragment {
 	private WirelessSettingViewSetting VIEW_SETTING;
 	private WirelessSettingViewListener VIEW_LISTNER;
 	
-	private static String TAG = "Fragment_SWireless";
+	private static String tag = "WirelessSettingFragment";
 	private TKBLog mlog = new TKBLog();
 	private Context context;
-	private int device_size = 0;
+//	private int device_size = 0;
 	private DeviceDisplay chooseDeviceDisplay;
-	public Fragment_SWireless(DeviceDisplay deviceDisplay){
+	public WirelessSettingFragment(DeviceDisplay deviceDisplay){
 		this.chooseDeviceDisplay = deviceDisplay;
 	}
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		CreateProcess();		
-		Log.v(TAG, "onCreate");
+		Log.v(tag, "onCreate");
 	}	
 	private void CreateProcess() {
 		this.context = this.getActivity();
 		this.mlog.switchLog = true;		
-		device_size = ((MainFragmentActivity)context).getDeviceScreenSize();
+//		device_size = ((MainFragmentActivity)context).getDeviceScreenSize();
 		fragmentManager = this.getFragmentManager();
 		//¨ú±oView_SETTING
-        this.VIEW_SETTING = new WirelessSettingViewSetting(this.context,this.device_size);
-        this.VIEW_LISTNER = new WirelessSettingViewListener(this.getActivity(),this.device_size);
+        this.VIEW_SETTING = new WirelessSettingViewSetting(this.context/*, this.device_size*/);
+        this.VIEW_LISTNER = new WirelessSettingViewListener(this.getActivity()/*, this.device_size*/);
 	}
 
 	@Override
@@ -84,7 +85,7 @@ public class Fragment_SWireless extends Fragment {
 		ListView WIFIAP_ListView = (ListView)Fragment_MainView.findViewById(R.id.pFSW_RLayout_RLayout_RLayout_WIFIAP_ListView);
 		WIFIAP_ListView_BaseAdapter = new WirelessSettingPhoneViewAdapter(context);
 		WIFIAP_ListView.setAdapter(WIFIAP_ListView_BaseAdapter);
-		mlog.info(TAG, "findView OK");		
+		mlog.info(tag, "findView OK");		
 	}
 	private void Phone_findViewListner() {		
 		this.VIEW_LISTNER.setBackButtonListener((Button)Fragment_MainView.findViewById(R.id.pFSW_RLayout_RLayout_Back_Button),
@@ -99,9 +100,9 @@ public class Fragment_SWireless extends Fragment {
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FSW_RLayout_BODY_RLayout));
 		//WIFIAP_ListView
 		ListView WIFIAP_ListView = (ListView)Fragment_MainView.findViewById(R.id.FSW_RLayout_RLayout_RLayout_WIFIAP_ListView);
-		WIFIAP_ListView_BaseAdapter = new WirelessSettingPadViewAdapter(context);
+		WIFIAP_ListView_BaseAdapter = new WirelessSettingPadViewAdapter(context, chooseDeviceDisplay);
 		WIFIAP_ListView.setAdapter(WIFIAP_ListView_BaseAdapter);
-		mlog.info(TAG, "findView OK");
+		mlog.info(tag, "findView OK");
 	}	
 	private void PAD_findViewListner() {
 		this.VIEW_LISTNER.setBackButtonListener((Button)Fragment_MainView.findViewById(R.id.FSW_RLayout_RLayout_Back_Button),
@@ -115,50 +116,50 @@ public class Fragment_SWireless extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		Log.v(TAG, "onActivityCreated");
+		Log.v(tag, "onActivityCreated");
 	}
 	
 	@Override
 	public void onStart() {
 		super.onStart();
-		Log.v(TAG, "onStart");
+		Log.v(tag, "onStart");
 	}
 	
 	@Override
 	public void onResume() {
 		super.onResume();
-		Log.v(TAG, "onResume");
+		Log.v(tag, "onResume");
 		
 	}
 	
 	@Override
 	public void onPause() {
 		super.onPause();
-		Log.v(TAG, "onPause");
+		Log.v(tag, "onPause");
 	}
 	
 	@Override
 	public void onStop() {
 		super.onStop();
-		Log.v(TAG, "onStop");
+		Log.v(tag, "onStop");
 	}
 	
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
-		Log.v(TAG, "onDestroyView");
+		Log.v(tag, "onDestroyView");
 	}
 	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		Log.v(TAG, "onDestroy");
+		Log.v(tag, "onDestroy");
 	}
 	
 	@Override
 	public void onDetach() {
 		super.onDetach();
-		Log.v(TAG, "onDetach");
+		Log.v(tag, "onDetach");
 	}
 
 	@Override

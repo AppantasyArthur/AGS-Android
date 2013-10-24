@@ -1,4 +1,4 @@
-package com.FM.SETTING;
+package com.alpha.musicsource;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -41,11 +41,12 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class FM_Music_ListView_BaseAdapter_Phone extends BaseAdapter {
+public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 	
 	private Context context;
 	private TKBLog mlog = new TKBLog();
-	private static final String TAG = "FM_Music_ListView_BaseAdapter";	
+	private static final String TAG = "FM_Music_ListView_BaseAdapter_PAD";	
+
 	//==============類別清單================
 	private List<String> CategoryList;
 	//====================================
@@ -67,49 +68,48 @@ public class FM_Music_ListView_BaseAdapter_Phone extends BaseAdapter {
 			case 0:
 				if(DeviceList!=null){
 					DeviceList.add((DeviceDisplay)msg.obj);
-					if(ParentID.size()>=1&&ParentID.get(0).equals("0")){						
-						FM_Music_ListView_BaseAdapter_Phone.this.notifyDataSetChanged();
+					if(ParentID.size()==1&&ParentID.get(0).equals("0")){
+						FM_Music_ListView_BaseAdapter_PAD.this.notifyDataSetChanged();
 					}					
 				}
 				break;
 			case 1:
 				if(DeviceList!=null){
 					DeviceList.remove((DeviceDisplay)msg.obj);
-					if(ParentID.size()>=1&&ParentID.get(0).equals("0")){
-						FM_Music_ListView_BaseAdapter_Phone.this.notifyDataSetChanged();
+					if(ParentID.size()==1&&ParentID.get(0).equals("0")){
+						FM_Music_ListView_BaseAdapter_PAD.this.notifyDataSetChanged();
 					}	
 				}
 				break;	
 			case 2:
 				if(ParentID.size()==1&&ParentID.get(0).equals("1")){
-					FM_Music_ListView_BaseAdapter_Phone.this.notifyDataSetChanged();
+					FM_Music_ListView_BaseAdapter_PAD.this.notifyDataSetChanged();
 				}
 				break;
-			case 10:
-				
-				FM_Music_ListView_BaseAdapter_Phone.this.notifyDataSetChanged();
+			case 10:				
+				FM_Music_ListView_BaseAdapter_PAD.this.notifyDataSetChanged();
 				break;
 			case 11:
 				FileContent fileContent = (FileContent)msg.obj;
 				if(fileContent.ParentID!=null){
-					FM_Music_ListView_BaseAdapter_Phone.this.ParentID.add(fileContent.ParentID);
+					FM_Music_ListView_BaseAdapter_PAD.this.ParentID.add(fileContent.ParentID);
 				}		
-				FM_Music_ListView_BaseAdapter_Phone.this.ContainerList.clear();
-				FM_Music_ListView_BaseAdapter_Phone.this.MusicTrackList.clear();
+				FM_Music_ListView_BaseAdapter_PAD.this.ContainerList.clear();
+				FM_Music_ListView_BaseAdapter_PAD.this.MusicTrackList.clear();
 				if(fileContent.ContainerList!=null){
 					for(int i=0;i<fileContent.ContainerList.size();i++){
-						FM_Music_ListView_BaseAdapter_Phone.this.ContainerList.add(fileContent.ContainerList.get(i));
+						FM_Music_ListView_BaseAdapter_PAD.this.ContainerList.add(fileContent.ContainerList.get(i));
 					}
 				}
 				if(fileContent.Itemlist!=null){
 					for(int i=0;i<fileContent.Itemlist.size();i++){
 						Item item = fileContent.Itemlist.get(i);
 						if(item.getClass().getName().equals("org.teleal.cling.support.model.item.MusicTrack")||item.getClass().getName().equals("org.teleal.cling.support.model.item.AudioItem")){
-							FM_Music_ListView_BaseAdapter_Phone.this.MusicTrackList.add(item);
+							FM_Music_ListView_BaseAdapter_PAD.this.MusicTrackList.add(item);
 						}
 					}
 				}	
-				FM_Music_ListView_BaseAdapter_Phone.this.notifyDataSetChanged();
+				FM_Music_ListView_BaseAdapter_PAD.this.notifyDataSetChanged();
 				break;
 			case 13:
 				View view = (View)msg.obj;				
@@ -124,9 +124,10 @@ public class FM_Music_ListView_BaseAdapter_Phone extends BaseAdapter {
 				}
 				break;
 			}
+			
 		}
 	};
-	public FM_Music_ListView_BaseAdapter_Phone(Context context){
+	public FM_Music_ListView_BaseAdapter_PAD(Context context){
 		this.context = context;		
 		this.mlog.switchLog = true;
 		this.DeviceList = new ArrayList<DeviceDisplay>();
@@ -136,12 +137,12 @@ public class FM_Music_ListView_BaseAdapter_Phone extends BaseAdapter {
 		SetListner();		
 	}
 	private void SetList(){
-		//新增分類 順序有差
+		//?��??��? ?��??�差
 		CategoryList = new ArrayList<String>();		
 		CategoryList.add("Media Server");
 		CategoryList.add("AGS PlayList");
 		
-		//分類MRList
+		//?��?MRList
 		List<DeviceDisplay> MSList = ((MainFragmentActivity)context).getDeviceDisplayList().getMediaServerList();
 		if(MSList!=null){
 			for(int i =0;i<MSList.size();i++){
@@ -163,12 +164,14 @@ public class FM_Music_ListView_BaseAdapter_Phone extends BaseAdapter {
 				handler.obtainMessage(1, deviceDisplay).sendToTarget();
 				mlog.info(TAG, "RemoveMediaServer");
 			}
+
 			@Override
 			public void LocalNameListChange() {
 				GetLocalNameList();
 				handler.obtainMessage(2).sendToTarget();
 				mlog.info(TAG, "LocalNameListChange");
 			}
+			
 		};
 		((MainFragmentActivity)context).getDeviceDisplayList().setMusicListner(FMLBAListner);
 	}
@@ -196,7 +199,7 @@ public class FM_Music_ListView_BaseAdapter_Phone extends BaseAdapter {
 				//Media Server
 				return this.DeviceList.size();					
 			case 1:
-				//AGS PlayList
+				//AGS PlayList				
 				return LocalNameList.size();					
 			}			
 		}else if(ParentID.size()==0){
@@ -212,7 +215,7 @@ public class FM_Music_ListView_BaseAdapter_Phone extends BaseAdapter {
 
 	@Override
 	public long getItemId(int position) {
-		
+		// TODO Auto-generated method stub
 		return 0;
 	}
 	
@@ -221,15 +224,13 @@ public class FM_Music_ListView_BaseAdapter_Phone extends BaseAdapter {
 		ViewHandler viewHandler = null;
 		if(convertView==null){			
 			convertView = LayoutInflater.from(context).inflate(R.layout.fm_music_listview_cell_pad, null);
-			convertView.setLayoutParams(new ListView.LayoutParams(LayoutParams.MATCH_PARENT, TKBTool.getHeight(32)));
+			convertView.setLayoutParams(new ListView.LayoutParams(LayoutParams.MATCH_PARENT, TKBTool.getHeight(43)));
 			viewHandler = new ViewHandler(convertView);
 			basicSetView(viewHandler);
 			convertView.setTag(viewHandler);
 		}else{
 			viewHandler = (ViewHandler)convertView.getTag();
-		}
-		
-		
+		}		
 		if(ParentID.size()>1){
 			int categoryNumber = Integer.valueOf(ParentID.get(0));
 			switch(categoryNumber){
@@ -259,7 +260,7 @@ public class FM_Music_ListView_BaseAdapter_Phone extends BaseAdapter {
 				break;		
 			}	
 		}else if(ParentID.size()==1){
-			//第一層顯示
+			//第�?層顯�?			
 			int categoryNumber = Integer.valueOf(ParentID.get(0));
 			switch(categoryNumber){
 			case 0:
@@ -278,12 +279,12 @@ public class FM_Music_ListView_BaseAdapter_Phone extends BaseAdapter {
 				break;					
 			}					
 		}else{
-			//第 0 層顯示
-			viewHandler.cell_RLayout_Name_TextView.setText(CategoryList.get(position));
+			//�?0 層顯�?			viewHandler.cell_RLayout_Name_TextView.setText(CategoryList.get(position));
 			viewHandler.kindOfItme = 0;	
 			viewHandler.object = position;
 			viewHandler.cell_RLayout_Image_ImageView.setVisibility(View.VISIBLE);
 		}
+		
 		mlog.info(TAG, "position = "+position);
 		return convertView;
 	}
@@ -306,27 +307,28 @@ public class FM_Music_ListView_BaseAdapter_Phone extends BaseAdapter {
 	}
 	private void basicSetView(ViewHandler viewHandler) {
 		//cellBG RLayout
-		new TKBThreadReadStateListInAssets(context, "phone/playlist/playlist_f.png", "phone/playlist/playlist_btn_n.png", viewHandler.cell_RLayout, 3);
+		new TKBThreadReadStateListInAssets(context, "pad/Playlist/playlist_btn.png", "pad/Playlist/playlist_btn_n.png", viewHandler.cell_RLayout, 3);
 		//cell_RLayout_Name_TextView
 		TKBTool.fitsViewTopMargin(5, viewHandler.cell_RLayout_Name_TextView);		
-		TKBTool.fitsViewHeight(18, viewHandler.cell_RLayout_Name_TextView);
-		TKBTool.fitsViewLeftMargin(19, viewHandler.cell_RLayout_Name_TextView);
-		TKBTool.fitsViewTextSize(10, viewHandler.cell_RLayout_Name_TextView);
+		TKBTool.fitsViewHeight(30, viewHandler.cell_RLayout_Name_TextView);
+		TKBTool.fitsViewLeftMargin(30, viewHandler.cell_RLayout_Name_TextView);
+		TKBTool.fitsViewTextSize(8, viewHandler.cell_RLayout_Name_TextView);
 		//cell_RLayout_Image_ImageView
-		TKBTool.fitsViewWidth(9, viewHandler.cell_RLayout_Image_ImageView);
-		viewHandler.cell_RLayout_Image_ImageView.getLayoutParams().height = TKBTool.getWidth(16);
-		TKBTool.fitsViewTopMargin(8, viewHandler.cell_RLayout_Image_ImageView);
-		TKBTool.fitsViewRightMargin(19, viewHandler.cell_RLayout_Image_ImageView);
-		new TKBThreadReadStateListInAssets(context, "phone/playlist/down_f.png", "phone/playlist/down_n.png", viewHandler.cell_RLayout_Image_ImageView, 1);
+		TKBTool.fitsViewHeight(13, viewHandler.cell_RLayout_Image_ImageView);
+		viewHandler.cell_RLayout_Image_ImageView.getLayoutParams().width = TKBTool.getHeight(7);
+		TKBTool.fitsViewTopMargin(13, viewHandler.cell_RLayout_Image_ImageView);
+		TKBTool.fitsViewRightMargin(10, viewHandler.cell_RLayout_Image_ImageView);
+		new TKBThreadReadStateListInAssets(context, "pad/Playlist/playlist_arrow_f.png", "pad/Playlist/playlist_arrow_n.png", viewHandler.cell_RLayout_Image_ImageView, 1);
 	}
-	//內容取得
-	//類別選擇
+	//?�容?��?
+	//類別?��?
 	public void ShowLevelOne(Button MusicBack_Button ,int ParentID){
 		this.ParentID.add(""+ParentID);
 		handler.obtainMessage(10).sendToTarget();
 		handler.obtainMessage(13, MusicBack_Button).sendToTarget();
 	}
-	//Media Server => kind=1、kind=2
+	
+	//Media Server => kind=1?�kind=2
 	public void ShowFile(final Button MusicBack_Button,String ParentID,List<Container> ContainerList,List<Item> Itemlist){
 		if(ContainerList!=null){
 			for(int i =0;i<ContainerList.size();i++){
@@ -351,6 +353,7 @@ public class FM_Music_ListView_BaseAdapter_Phone extends BaseAdapter {
 		handler.obtainMessage(11,new FileContent(ParentID,ContainerList,Itemlist)).sendToTarget();
 		handler.obtainMessage(13, MusicBack_Button).sendToTarget();
 	}
+	
 	//AGS PlayList
 	public void GetLocalNameList(){	
 		if(this.LocalNameList!=null){
@@ -394,6 +397,7 @@ public class FM_Music_ListView_BaseAdapter_Phone extends BaseAdapter {
 		}
 		return list;
 	}
+
 	private class FileContent{
 		private String ParentID;
 		private List<Container> ContainerList;
@@ -404,14 +408,13 @@ public class FM_Music_ListView_BaseAdapter_Phone extends BaseAdapter {
 			this.Itemlist = Itemlist;
 		}
 	}
-	
-	//回最上層
+	//?��?上層
 	public void ShowTopDevice(Button MusicBack_Button){
 		this.ParentID.clear();
 		handler.obtainMessage(10).sendToTarget();
 		handler.obtainMessage(14, MusicBack_Button).sendToTarget();
 	}
-	//回上一層	
+	//?��?�?��	
 	public void ShowPrivous(Button MusicBack_Button){		
 		if(ParentID.size()>1){
 			int categoryNumber = Integer.valueOf(ParentID.get(0));
@@ -429,17 +432,16 @@ public class FM_Music_ListView_BaseAdapter_Phone extends BaseAdapter {
 			ShowTopDevice(MusicBack_Button);
 		}
 	}
-	//Media Server 回上一頁
 	private void ShowPrivousFile(final Button MusicBack_Button){
 		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).getUPnPService();
 		SortCriterion[] sortCriterion = new SortCriterion[]{new SortCriterion("+cd:title")};
 		Browse browse = new Browse(chooseDevice.findService(new UDAServiceType("ContentDirectory")), this.ParentID.get(ParentID.size()-1), BrowseFlag.DIRECT_CHILDREN, "", 0, 0l, null){
 			@Override
 			public void received(ActionInvocation arg0,	DIDLContent arg1) {
-				FM_Music_ListView_BaseAdapter_Phone.this.ParentID.remove(FM_Music_ListView_BaseAdapter_Phone.this.ParentID.size()-1);
+				FM_Music_ListView_BaseAdapter_PAD.this.ParentID.remove(FM_Music_ListView_BaseAdapter_PAD.this.ParentID.size()-1);
 				List<Container> listC = arg1.getContainers();
 				List<Item> listI = arg1.getItems();
-				FM_Music_ListView_BaseAdapter_Phone.this.ShowFile(MusicBack_Button,null, listC,listI);
+				FM_Music_ListView_BaseAdapter_PAD.this.ShowFile(MusicBack_Button,null, listC,listI);
 				for(int i =0;i<listC.size();i++){
 					Container container = listC.get(i);
 					mlog.info(TAG, "PID="+container.getParentID());
@@ -465,16 +467,14 @@ public class FM_Music_ListView_BaseAdapter_Phone extends BaseAdapter {
 				Log.i(TAG, "Container failure = "+arg2);
 			}							
 		};			
-		upnpServer.getControlPoint().execute(browse);
+		upnpServer.getControlPoint().execute(browse);			
 	}
-	//AGS PlayList 回上一頁
+	//AGS PlayList ?��?�??
 	private void ShowLocalPrivousFile(Button MusicBack_Button){
 		this.ParentID.remove(this.ParentID.size()-1);
 		handler.obtainMessage(10).sendToTarget();
 		handler.obtainMessage(13, MusicBack_Button).sendToTarget();
 	}
-	
-	
 	public void setChooseDevice(Device chooseDevice){
 		this.chooseDevice = chooseDevice;
 	}

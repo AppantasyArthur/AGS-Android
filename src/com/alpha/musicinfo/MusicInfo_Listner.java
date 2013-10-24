@@ -1,4 +1,4 @@
-package com.FI.SETTING;
+package com.alpha.musicinfo;
 
 public interface MusicInfo_Listner {
 	public void ClearMusicInfo_State();

@@ -1,4 +1,4 @@
-package com.FI.SETTING;
+package com.alpha.musicinfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,7 @@ import org.teleal.cling.model.meta.ActionArgument;
 import org.teleal.cling.model.meta.Service;
 import org.teleal.cling.model.types.ServiceId;
 import org.teleal.cling.model.types.UDAServiceId;
+import org.teleal.cling.support.model.item.Item;
 
 import com.alpha.upnp.DeviceDisplay;
 import com.alpha.upnp.parser.TrackDO;
@@ -22,6 +23,7 @@ import com.tkb.tool.TKBLog;
 import com.tkb.tool.TKBThreadReadBitMapInAssets;
 import com.tkb.tool.TKBTool;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -29,13 +31,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class FI_Queqe_ListView_BaseAdapter_PAD extends BaseAdapter {
+public class MusicInfoListPhoneViewAdapter extends BaseAdapter {
 	
 	private Context context;
 	private TKBLog mlog = new TKBLog();
@@ -53,16 +57,16 @@ public class FI_Queqe_ListView_BaseAdapter_PAD extends BaseAdapter {
 		public void handleMessage(Message msg) {
 			switch(msg.what){
 			case 0:
-				if(FI_Queqe_ListView_BaseAdapter_PAD.this.dataList!=null){
-					FI_Queqe_ListView_BaseAdapter_PAD.this.dataList.clear();
-					FI_Queqe_ListView_BaseAdapter_PAD.this.notifyDataSetChanged();
+				if(MusicInfoListPhoneViewAdapter.this.dataList!=null){
+					MusicInfoListPhoneViewAdapter.this.dataList.clear();
+					MusicInfoListPhoneViewAdapter.this.notifyDataSetChanged();
 				}				
 				break;
 			case 1:
-				if(FI_Queqe_ListView_BaseAdapter_PAD.this.dataList!=null){
-					FI_Queqe_ListView_BaseAdapter_PAD.this.dataList.clear();
+				if(MusicInfoListPhoneViewAdapter.this.dataList!=null){
+					MusicInfoListPhoneViewAdapter.this.dataList.clear();
 				}else{
-					FI_Queqe_ListView_BaseAdapter_PAD.this.dataList = new ArrayList<TrackDO>();
+					MusicInfoListPhoneViewAdapter.this.dataList = new ArrayList<TrackDO>();
 				}
 				List<TrackDO> queueList = (List<TrackDO>)msg.obj;
 				for(int i = 0;i< queueList.size();i++){
@@ -70,30 +74,30 @@ public class FI_Queqe_ListView_BaseAdapter_PAD extends BaseAdapter {
 					mlog.info(TAG, "Track ID valeu= "+queueList.get(i).getId());
 					mlog.info(TAG, "Track Title valeu= "+queueList.get(i).getTitle());
 					mlog.info(TAG, "==========EVEN END==========");
-					FI_Queqe_ListView_BaseAdapter_PAD.this.dataList.add(queueList.get(i));
+					MusicInfoListPhoneViewAdapter.this.dataList.add(queueList.get(i));
 				}
-				FI_Queqe_ListView_BaseAdapter_PAD.this.notifyDataSetChanged();	
+				MusicInfoListPhoneViewAdapter.this.notifyDataSetChanged();	
 				break;
 			}
 		}
 	};
-	public FI_Queqe_ListView_BaseAdapter_PAD(Context context){
+	public MusicInfoListPhoneViewAdapter(Context context){
 		this.context = context;		
 		this.mlog.switchLog = true;
 		
-		FI_Queqe_ListView_BaseAdapter_Queqe_Listner queqe_listner = new FI_Queqe_ListView_BaseAdapter_Queqe_Listner(){
+		MusicInfoQueueListViewBaseAdapterListener queqe_listner = new MusicInfoQueueListViewBaseAdapterListener(){
 			@Override
-			public void ClearQueqeList() {				
+			public void cleanQueueList() {				
 				handler.obtainMessage(0).sendToTarget();
 			}
 			@Override
-			public void AddQueqeList(List<TrackDO> trackList) {
+			public void setQueueList(List<TrackDO> trackList) {
 				handler.obtainMessage(1,trackList).sendToTarget();
 				mlog.info(TAG, "AddQueqeList");	
 			}			
 		};
 		((MainFragmentActivity)context).getDeviceDisplayList().setQueqe_Listner(queqe_listner);
-		dataList.clear();
+		dataList.clear();	
 	}
 	@Override
 	public int getCount() {
@@ -121,7 +125,7 @@ public class FI_Queqe_ListView_BaseAdapter_PAD extends BaseAdapter {
 		ViewHandler viewHandler = null;
 		if(convertView==null){			
 			convertView = LayoutInflater.from(context).inflate(R.layout.fi_queue_listview_cell_pad, null);
-			convertView.setLayoutParams(new ListView.LayoutParams(LayoutParams.MATCH_PARENT, TKBTool.getHeight(58)));
+			convertView.setLayoutParams(new ListView.LayoutParams(LayoutParams.MATCH_PARENT, TKBTool.getHeight(50)));
 			viewHandler = new ViewHandler(convertView);
 			basicSetView(viewHandler);
 			convertView.setTag(viewHandler);
@@ -141,16 +145,16 @@ public class FI_Queqe_ListView_BaseAdapter_PAD extends BaseAdapter {
 				viewHandler.Drag_ImageView.setVisibility(View.GONE);				
 			}		
 		}
-		//排序設定
+		//?��?設�?
 		if(position==startDragPosition&&startDragPosition==holdDragPosition){
 			viewHandler.cell_RLayout.setVisibility(View.INVISIBLE);
-			new TKBThreadReadBitMapInAssets(context, "pad/Queqe/drag_bar.png", viewHandler.cellBG_RLayout, 3);
+			new TKBThreadReadBitMapInAssets(context, "phone/queue/edit__select_bg.PNG", viewHandler.cellBG_RLayout, 3);
 		}else if(position == holdDragPosition){			
 			viewHandler.cell_RLayout.setVisibility(View.INVISIBLE);
-			new TKBThreadReadBitMapInAssets(context, "pad/Queqe/drag_bar.png", viewHandler.cellBG_RLayout, 3);
+			new TKBThreadReadBitMapInAssets(context, "phone/queue/edit__select_bg.PNG", viewHandler.cellBG_RLayout, 3);
 		}else{
 			viewHandler.cell_RLayout.setVisibility(View.VISIBLE);
-			new TKBThreadReadBitMapInAssets(context, "pad/Playlist/playlist_btn_n.png", viewHandler.cellBG_RLayout, 3);
+			new TKBThreadReadBitMapInAssets(context, "phone/queue/playlist_btn_n.png", viewHandler.cellBG_RLayout, 3);
 		}		
 		
 		if(startDragPosition>holdDragPosition&&position>holdDragPosition&&position<=startDragPosition){
@@ -167,7 +171,7 @@ public class FI_Queqe_ListView_BaseAdapter_PAD extends BaseAdapter {
 				viewHandler.NameUP_TextView.setText(""+dataList.get(position).getTitle());
 			}
 		}
-		//Insert設定
+		//Insert設�?
 		if(InsertPosition!=-1){
 			if(position ==InsertPosition){
 				viewHandler.cell_RLayout.setVisibility(View.INVISIBLE);
@@ -181,7 +185,7 @@ public class FI_Queqe_ListView_BaseAdapter_PAD extends BaseAdapter {
 				new TKBThreadReadBitMapInAssets(context, "pad/Playlist/playlist_btn_n.png", viewHandler.cellBG_RLayout, 3);
 			}
 		}
-		mlog.info(TAG, "position = "+position);
+		
 		return convertView;
 	}
 	
@@ -212,16 +216,16 @@ public class FI_Queqe_ListView_BaseAdapter_PAD extends BaseAdapter {
 				@Override
 				public void onClick(View v) {
 					Log.i(TAG, "delete = "+position);
-					//取得upnpServer
+					//?��?upnpServer
 					AndroidUpnpService upnpServer = ((MainFragmentActivity)context).getUPnPService();
-					//取得MR Device
+					//?��?MR Device
 					DeviceDisplay MR_Device = ((MainFragmentActivity)context).getDeviceDisplayList().getChooseMediaRenderer();
 					
 					ServiceId serviceId = new UDAServiceId("AVTransport");
 					Service AVTransportService = null;
-					//檢查Device 跟 res
+					//檢查Device �?res
 					if(MR_Device!=null){
-						//取得device 的 "AVTransport" service
+						//?��?device ??"AVTransport" service
 						AVTransportService = MR_Device.getDevice().findService(serviceId);
 					}else{
 						return;
@@ -254,30 +258,31 @@ public class FI_Queqe_ListView_BaseAdapter_PAD extends BaseAdapter {
 	}
 	private void basicSetView(ViewHandler viewHandler) {		
 		//Delete ImageView
-		TKBTool.fitsViewLeftMargin(10, viewHandler.Delete_ImageView);
-		viewHandler.Delete_ImageView.getLayoutParams().width = TKBTool.getHeight(58);
-		TKBTool.fitsViewHeight(36, viewHandler.Delete_ImageView);
-		new TKBThreadReadBitMapInAssets(context, "pad/Queqe/delete.png", viewHandler.Delete_ImageView, 1);
+		TKBTool.fitsViewLeftMargin(7, viewHandler.Delete_ImageView);
+		viewHandler.Delete_ImageView.getLayoutParams().height = TKBTool.getWidth(27);
+		TKBTool.fitsViewWidth(53, viewHandler.Delete_ImageView);
+		new TKBThreadReadBitMapInAssets(context, "phone/queue/delete.png", viewHandler.Delete_ImageView, 1);
 		//Content RLayout
-		TKBTool.fitsViewLeftMargin(10, viewHandler.Content_RLayout);
-		TKBTool.fitsViewRightMargin(10, viewHandler.Content_RLayout);
+		TKBTool.fitsViewLeftMargin(7, viewHandler.Content_RLayout);
+		TKBTool.fitsViewRightMargin(7, viewHandler.Content_RLayout);
+		TKBTool.fitsViewHeight(30, viewHandler.Content_RLayout);
 		//Image ImageView
-		viewHandler.Image_ImageView.getLayoutParams().width = TKBTool.getHeight(40);
-		TKBTool.fitsViewHeight(40, viewHandler.Image_ImageView);
-		new TKBThreadReadBitMapInAssets(context, "pad/Queqe/queqe_nocover.png", viewHandler.Image_ImageView, 1);
+		viewHandler.Image_ImageView.getLayoutParams().height = TKBTool.getWidth(36);
+		TKBTool.fitsViewWidth(36, viewHandler.Image_ImageView);
+		new TKBThreadReadBitMapInAssets(context, "phone/queue/music_nophoto.png", viewHandler.Image_ImageView, 1);
 		//NameUP TextView
-		TKBTool.fitsViewHeight(34, viewHandler.NameUP_TextView);
-		TKBTool.fitsViewTextSize(8, viewHandler.NameUP_TextView);
+		TKBTool.fitsViewHeight(18, viewHandler.NameUP_TextView);
+		TKBTool.fitsViewTextSize(10, viewHandler.NameUP_TextView);
 		TKBTool.fitsViewLeftMargin(5, viewHandler.NameUP_TextView);
 		//NameDown TextView
-		TKBTool.fitsViewHeight(24, viewHandler.NameDown_TextView);
-		TKBTool.fitsViewTextSize(6, viewHandler.NameDown_TextView);
+		TKBTool.fitsViewHeight(12, viewHandler.NameDown_TextView);
+		TKBTool.fitsViewTextSize(8, viewHandler.NameDown_TextView);
 		TKBTool.fitsViewLeftMargin(5, viewHandler.NameDown_TextView);
 		//Drag_ImageView
-		viewHandler.Drag_ImageView.getLayoutParams().width = TKBTool.getHeight(22);
-		TKBTool.fitsViewHeight(18, viewHandler.Drag_ImageView);
+		viewHandler.Drag_ImageView.getLayoutParams().height = TKBTool.getWidth(20);
+		TKBTool.fitsViewWidth(17, viewHandler.Drag_ImageView);
 		TKBTool.fitsViewRightMargin(15, viewHandler.Drag_ImageView);
-		new TKBThreadReadBitMapInAssets(context, "pad/Queqe/queqe_exchange.png", viewHandler.Drag_ImageView, 1);
+		new TKBThreadReadBitMapInAssets(context, "phone/queue/music_icon.png", viewHandler.Drag_ImageView, 1);
 	}
 	public void SET_Edite(boolean isEdit){
 		if(this.isEdit == isEdit ){
@@ -296,7 +301,7 @@ public class FI_Queqe_ListView_BaseAdapter_PAD extends BaseAdapter {
 		this.SelectedPosition = -1;
 		this.notifyDataSetChanged();
 	}
-	public void SET_DRAG_HOLD_POSITION(int holdDragPosition){
+	public void setDragNHoldPosition(int holdDragPosition){
 		this.holdDragPosition = holdDragPosition;
 		this.notifyDataSetChanged();
 	}
@@ -326,5 +331,4 @@ public class FI_Queqe_ListView_BaseAdapter_PAD extends BaseAdapter {
 	public List<TrackDO> GetQueue(){
 		return this.dataList;
 	}
-	
 }

@@ -1,11 +1,12 @@
 eclipse.preferences.version=1
-encoding//src/com/FI/SETTING/FI_Queqe_ListView_BaseAdapter_PAD.java=UTF-8
-encoding//src/com/FI/SETTING/FI_Queqe_ListView_BaseAdapter_Phone.java=UTF-8
-encoding//src/com/FM/SETTING/FM_Music_ListView_BaseAdapter_PAD.java=UTF-8
-encoding//src/com/FM/SETTING/FM_Music_ListView_BaseAdapter_Phone.java=UTF-8
+encoding//src/com/alpha/musicinfo/MusicInfoListPadViewAdapter.java=UTF-8
+encoding//src/com/alpha/musicinfo/MusicInfoListPhoneViewAdapter.java=UTF-8
+encoding//src/com/alpha/musicsource/FM_Music_ListView_BaseAdapter_PAD.java=UTF-8
+encoding//src/com/alpha/musicsource/FM_Music_ListView_BaseAdapter_Phone.java=UTF-8
 encoding//src/com/alpha/setting/alarm/musicbrowsing/AlarmSettingMusicBrowsingListViewPadAdapter.java=UTF-8
 encoding//src/com/alpha/setting/alarm/musicbrowsing/AlarmSettingMusicBrowsingListViewPhoneAdapter.java=UTF-8
 encoding//src/com/alpha/setting/firmwareupdate/FirmwareUpdateSettingViewListener.java=UTF-8
+encoding//src/com/alpha/setting/wirelesssetup/WirelessSettingViewListener.java=UTF-8
 encoding//src/com/alpha/upnp/device/AGSMediaServerDemand.java=UTF-8
 encoding//src/com/alpha/upnp/parser/GroupHandler.java=UTF-8
 encoding//src/com/alpha/upnp/parser/ItemHandler.java=UTF-8

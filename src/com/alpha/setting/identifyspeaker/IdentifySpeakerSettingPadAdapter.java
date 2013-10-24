@@ -34,7 +34,7 @@ public class IdentifySpeakerSettingPadAdapter extends BaseAdapter {
 	private Drawable menu2;
 	private Drawable menu3;
 	private Drawable menu4;
-	public IdentifySpeakerSettingPadAdapter(Context context,DeviceDisplay deviceDisplay){
+	public IdentifySpeakerSettingPadAdapter(Context context, DeviceDisplay deviceDisplay){
 		this.context = context;		
 		this.mlog.switchLog = true;
 		LoadBitmap();

@@ -5,6 +5,8 @@ public class TrackDO {
 	private String title;
 	private String id;
 	private String MetaData;
+	private String uri;
+	
 	public String getTitle() {
 		return title;
 	}
@@ -22,6 +24,12 @@ public class TrackDO {
 	}
 	public void setMetaData(String metaData) {
 		MetaData = metaData;
+	}
+	public String getUri() {
+		return uri;
+	}
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 	
 }

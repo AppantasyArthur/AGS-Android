@@ -15,46 +15,48 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.FM.SETTING.FM_ListView;
-import com.FM.SETTING.FM_Music_ListView_BaseAdapter_PAD;
-import com.FM.SETTING.FM_Music_ListView_BaseAdapter_Phone;
-import com.FM.SETTING.FM_VIEW_LISTNER;
-import com.FM.SETTING.FM_VIEW_SETTING;
+import com.alpha.musicsource.FM_Music_ListView_BaseAdapter_PAD;
+import com.alpha.musicsource.FM_Music_ListView_BaseAdapter_Phone;
+import com.alpha.musicsource.MusicSourceListView;
+import com.alpha.musicsource.MusicSourceViewListener;
+import com.alpha.musicsource.MusicSourceViewSetting;
 import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
 import com.alpha.util.DeviceProperty;
 import com.tkb.tool.TKBLog;
 
-public class Fragment_Music extends Fragment {
+// Fragment_Music
+public class MusicSourceFragement extends AGSFragment {
+	
 	//VIEWS
 	private View Fragment_MainView;	
 	
-	private FM_ListView musicListView;
+	private MusicSourceListView viewMusicSourceList;
 	
 	//Fragment Manager
 	private FragmentManager fragmentManager = null;
 	//SETTING
-	private FM_VIEW_SETTING VIEW_SETTING;
-	private FM_VIEW_LISTNER VIEW_LISTNER;
-	private static String TAG = "Fragment_Music";
+	private MusicSourceViewSetting VIEW_SETTING;
+	private MusicSourceViewListener VIEW_LISTNER;
+	private static String tag = "MusicSourceFragement";
 	private TKBLog mlog = new TKBLog();
 	private Context context;
-	private int device_size = 0;
+//	private int device_size = 0;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		CreateProcess();		
-		Log.v(TAG, "onCreate");
+		Log.v(tag, "onCreate");
 	}	
 	private void CreateProcess() {
 		this.context = this.getActivity();
 		this.mlog.switchLog = true;		
-		device_size = ((MainFragmentActivity)context).getDeviceScreenSize();
+//		device_size = ((MainFragmentActivity)context).getDeviceScreenSize();
 		fragmentManager = ((MainFragmentActivity)context).getSupportFragmentManager();
 		//介面設定取得
-        this.VIEW_SETTING = new FM_VIEW_SETTING(this.context,this.device_size);
+        this.VIEW_SETTING = new MusicSourceViewSetting(this.context/*,this.device_size*/);
         //動作設定取得
-        this.VIEW_LISTNER = new FM_VIEW_LISTNER(this.context,this.device_size,this.fragmentManager);
+        this.VIEW_LISTNER = new MusicSourceViewListener(this.context/*,this.device_size*/, this.fragmentManager);
 	}
 
 	@Override
@@ -80,8 +82,8 @@ public class Fragment_Music extends Fragment {
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFM_RLayout_TITLE3_RLayout));
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_TITLE4_RLayout));
 		//==========Msic List================
-		musicListView = (FM_ListView)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_RLayout_Music_ListView);
-		this.VIEW_SETTING.VIEWSET(musicListView);
+		viewMusicSourceList = (MusicSourceListView)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_RLayout_Music_ListView);
+		this.VIEW_SETTING.VIEWSET(viewMusicSourceList);
 		//==========Msic================
 		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFM_RLayout_Bottom_RLayout));
 	}
@@ -91,15 +93,15 @@ public class Fragment_Music extends Fragment {
 		//切換NowPlaying 按鈕
 		VIEW_LISTNER.NowPlaying_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_NowPlaying_Button));
 		//Music List
-		VIEW_LISTNER.SET_Music_ListView_Listner((FM_ListView)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_RLayout_Music_ListView),
+		VIEW_LISTNER.setMusicSourceListViewListener((MusicSourceListView)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_RLayout_Music_ListView),
 												(Button)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_MusicBack_Button));
 		//Back 按鈕
 		VIEW_LISTNER.SET_MusicBack_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_MusicBack_Button),
-												(FM_ListView)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_RLayout_Music_ListView));
+												(MusicSourceListView)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_RLayout_Music_ListView));
 		//BackTop 按鈕
 		VIEW_LISTNER.SET_MusicTop_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_MusicBack_Button),
 												(Button)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_MusicTop_Button),
-												(FM_ListView)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_RLayout_Music_ListView));
+												(MusicSourceListView)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_RLayout_Music_ListView));
 		
 		//===========搜尋條件 按鈕===============
 		VIEW_LISTNER.SET_SerchCondition1_Button_Listner((Button)Fragment_MainView.findViewById(R.id.pFM_RLayout_RLayout_RLayout_SerchCondition1_Button),
@@ -120,14 +122,14 @@ public class Fragment_Music extends Fragment {
 		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FM_RLayout_TITLE2_RLayout));
 		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FM_RLayout_TITLE3_RLayout));
 		//==========Msic List================
-		musicListView = (FM_ListView)Fragment_MainView.findViewById(R.id.FM_RLayout_Music_ListView);
+		viewMusicSourceList = (MusicSourceListView)Fragment_MainView.findViewById(R.id.FM_RLayout_Music_ListView);
 		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FM_RLayout_Music_RLayout));
 		//==========Msic================
-		mlog.info(TAG, "findView OK");
+		mlog.info(tag, "findView OK");
 	}	
 	private void PAD_findViewListner(){
 		//Music List
-		VIEW_LISTNER.SET_Music_ListView_Listner((FM_ListView)Fragment_MainView.findViewById(R.id.FM_RLayout_Music_ListView),
+		VIEW_LISTNER.setMusicSourceListViewListener((MusicSourceListView)Fragment_MainView.findViewById(R.id.FM_RLayout_Music_ListView),
 												(Button)Fragment_MainView.findViewById(R.id.FM_RLayout_RLayout_MusicBack_Button));
 		
 		//===========搜尋條件 按鈕===============
@@ -145,60 +147,60 @@ public class Fragment_Music extends Fragment {
 		//===========搜尋條件===============
 		//Back 按鈕
 		VIEW_LISTNER.SET_MusicBack_Button_Listner((Button)Fragment_MainView.findViewById(R.id.FM_RLayout_RLayout_MusicBack_Button),
-													(FM_ListView)Fragment_MainView.findViewById(R.id.FM_RLayout_Music_ListView));
+													(MusicSourceListView)Fragment_MainView.findViewById(R.id.FM_RLayout_Music_ListView));
 		//BackTop 按鈕
 		VIEW_LISTNER.SET_MusicTop_Button_Listner((Button)Fragment_MainView.findViewById(R.id.FM_RLayout_RLayout_MusicBack_Button),
 												(Button)Fragment_MainView.findViewById(R.id.FM_RLayout_RLayout_MusicTop_Button),
-													(FM_ListView)Fragment_MainView.findViewById(R.id.FM_RLayout_Music_ListView));
+													(MusicSourceListView)Fragment_MainView.findViewById(R.id.FM_RLayout_Music_ListView));
 	}
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		Log.v(TAG, "onActivityCreated");
+		Log.v(tag, "onActivityCreated");
 	}
 	
 	@Override
 	public void onStart() {
 		super.onStart();
-		Log.v(TAG, "onStart");
+		Log.v(tag, "onStart");
 	}
 	
 	@Override
 	public void onResume() {
 		super.onResume();
-		Log.v(TAG, "onResume");
+		Log.v(tag, "onResume");
 		
 	}
 	
 	@Override
 	public void onPause() {
 		super.onPause();
-		Log.v(TAG, "onPause");
+		Log.v(tag, "onPause");
 	}
 	
 	@Override
 	public void onStop() {
 		super.onStop();
-		Log.v(TAG, "onStop");
+		Log.v(tag, "onStop");
 	}
 	
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
-		Log.v(TAG, "onDestroyView");
+		Log.v(tag, "onDestroyView");
 	}
 	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		Log.v(TAG, "onDestroy");
+		Log.v(tag, "onDestroy");
 	}
 	
 	@Override
 	public void onDetach() {
 		super.onDetach();
-		Log.v(TAG, "onDetach");
+		Log.v(tag, "onDetach");
 	}
 	
 	@Override
@@ -206,11 +208,11 @@ public class Fragment_Music extends Fragment {
 		super.onConfigurationChanged(newConfig);
 	}
 	public void MusicListViewLocalNameListChange(){
-		if(this.musicListView!=null){
+		if(this.viewMusicSourceList!=null){
 			if(DeviceProperty.isPhone()){			
-				((FM_Music_ListView_BaseAdapter_Phone)musicListView.getAdapter()).GetListner().LocalNameListChange();
+				((FM_Music_ListView_BaseAdapter_Phone)viewMusicSourceList.getAdapter()).GetListner().LocalNameListChange();
 			}else{				
-				((FM_Music_ListView_BaseAdapter_PAD)musicListView.getAdapter()).GetListner().LocalNameListChange();
+				((FM_Music_ListView_BaseAdapter_PAD)viewMusicSourceList.getAdapter()).GetListner().LocalNameListChange();
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-package com.FM.SETTING;
+package com.alpha.musicsource;
 
 import android.content.Context;
 import android.view.View;
@@ -14,13 +14,13 @@ import com.tkb.tool.TKBThreadReadBitMapInAssets;
 import com.tkb.tool.TKBThreadReadStateListInAssets;
 import com.tkb.tool.TKBTool;
 
-public class FM_VIEW_SETTING {
+public class MusicSourceViewSetting {
 	private Context context;
 	private TKBLog mlog = new TKBLog();
 	private static final String TAG = "FM_VIEW_SETTING";
 	private int device_size = 0;
 	
-	public FM_VIEW_SETTING(Context context,int device_size){
+	public MusicSourceViewSetting(Context context){
 		this.context = context;
 		this.mlog.switchLog = true;
 		this.device_size = device_size;
