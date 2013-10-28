@@ -161,7 +161,7 @@ public class MusicSourceViewSetting {
 	private void pFM_RLayout_RLayout_RLayout_Music_ListView(View view) {		
 		//Music ListView
 		ListView listView = (ListView)view;
-		FM_Music_ListView_BaseAdapter_Phone baseAdapter = new FM_Music_ListView_BaseAdapter_Phone(context);
+		MusicSourcePhoneAdapter baseAdapter = new MusicSourcePhoneAdapter(context);
 		listView.setAdapter(baseAdapter);
 	}
 	private void pFM_RLayout_Bottom_RLayout(View view) {
@@ -261,7 +261,7 @@ public class MusicSourceViewSetting {
 		TKBTool.fitsViewWidth(344, view);
 		//Music ListView
 		ListView listView = (ListView)view.findViewById(R.id.FM_RLayout_Music_ListView);
-		FM_Music_ListView_BaseAdapter_PAD baseAdapter = new FM_Music_ListView_BaseAdapter_PAD(context);
+		MusicSourcePadAdapter baseAdapter = new MusicSourcePadAdapter(context);
 		listView.setAdapter(baseAdapter);
 	}
 //***************************PAD*********************************

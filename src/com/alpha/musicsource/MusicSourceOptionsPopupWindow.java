@@ -3,6 +3,7 @@ package com.alpha.musicsource;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
 import org.teleal.cling.android.AndroidUpnpService;
 import org.teleal.cling.controlpoint.ActionCallback;
 import org.teleal.cling.model.action.ActionArgumentValue;
@@ -75,6 +76,8 @@ public class MusicSourceOptionsPopupWindow extends PopupWindow {
 //	private int device_size = 0;
 	
 	private int ContentFlag =0;//1 = Item ,2 = TrackDO ,3 = TrackDoList
+
+	private JSONObject metadataTracks;
 	public MusicSourceOptionsPopupWindow(Context context){
 		super(context);
 		this.mlog.switchLog = true;
@@ -242,7 +245,7 @@ public class MusicSourceOptionsPopupWindow extends PopupWindow {
 					TrackPlayNow();
 					break;
 				case 3:
-					TrackListPlayNow();
+					TrackListPlayNow(); // AddDumpedTracksToQueue
 					break;
 				}
 				
@@ -352,12 +355,9 @@ public class MusicSourceOptionsPopupWindow extends PopupWindow {
 	
 	}
 	private void TrackListPlayNow(){
-		//取得upnpServer
-		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).getUPnPService();
-		//取得MR Device
-		DeviceDisplay MR_Device = ((MainFragmentActivity)context).getDeviceDisplayList().getChooseMediaRenderer();
-//		this.trackDOList// 當前的trackDOList
+		goAddDumpedTracksToQueue();
 	}
+	
 	private void PlayMusic(){
 		//取得upnpServer
 		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).getUPnPService();
@@ -507,7 +507,7 @@ public class MusicSourceOptionsPopupWindow extends PopupWindow {
 					TrackReplayQueue();
 					break;
 				case 3:
-					TrackListReplayQueue();
+					TrackListReplayQueue(); // AddDumpedTracksToQueue
 					break;
 				}
 				MusicSourceOptionsPopupWindow.this.dismiss();	
@@ -521,8 +521,43 @@ public class MusicSourceOptionsPopupWindow extends PopupWindow {
 		
 	}
 	private void TrackListReplayQueue(){
+		goAddDumpedTracksToQueue();
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void goAddDumpedTracksToQueue() {
+		
+		AGSAVTransportService service = new AGSAVTransportService(DeviceDisplayList.getChooseMediaRenderer().getDevice()
+													, MusicSourceFragement.getMessageHandler());
+		
+		Action action = service.getActionAddDumpedTracksToQueue();
+		ArrayList<ActionArgumentValue> values = new ArrayList<ActionArgumentValue>();
+		
+		ActionArgument argInstanceID = action.getInputArgument(AVTransportServiceValues.ACTION_ADD_DUMPED_TRACKS_TO_QUEUE_INPUT_INSTANCE_ID);
+		ActionArgumentValue valInstanceID = new ActionArgumentValue(argInstanceID, "0");
+		values.add(valInstanceID);
+		
+		ActionArgument argTracksDIDL = action.getInputArgument(AVTransportServiceValues.ACTION_ADD_DUMPED_TRACKS_TO_QUEUE_INPUT_ALL_TRACKS_DIDL);
+		ActionArgumentValue valTracksDIDL = new ActionArgumentValue(argTracksDIDL, metadataTracks.optString("MetaData"));
+		values.add(valTracksDIDL);
+		
+		ActionArgument argApdCurQueue = action.getInputArgument(AVTransportServiceValues.ACTION_ADD_DUMPED_TRACKS_TO_QUEUE_INPUT_APPEND_TO_CURRENT_QUEUE);
+		ActionArgumentValue valApdCurQueue = new ActionArgumentValue(argApdCurQueue, false);
+		values.add(valApdCurQueue);
+		
+		ActionArgument argTrkNumber = action.getInputArgument(AVTransportServiceValues.ACTION_ADD_DUMPED_TRACKS_TO_QUEUE_INPUT_TRACK_NUMBER);
+		ActionArgumentValue valTrkNumber = new ActionArgumentValue(argTrkNumber, -1);
+		values.add(valTrkNumber);
+		
+		service.actAddDumpedTracksToQueue(values.toArray(new ActionArgumentValue[values.size()]), new AddDumpedTracksToQueueScuuessCaller());
 		
 	}
+	private class AddDumpedTracksToQueueScuuessCaller extends AGSActionSuccessCaller<Object>{
+		
+		
+		
+	}
+	
 	private void setAdd2QueueButtonListener(Button OPTION_Button_4){
 		OPTION_Button_4.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -683,5 +718,9 @@ public class MusicSourceOptionsPopupWindow extends PopupWindow {
 		//設定
 		this.trackDOList = trackDOList;
 		
+	}
+	public void SetTrackMetaData(JSONObject o) {
+		ContentFlag = 3;
+		this.metadataTracks = o;
 	}
 }

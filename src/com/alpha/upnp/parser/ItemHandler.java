@@ -92,7 +92,7 @@ public class ItemHandler extends DefaultHandler {
 					  //_data.setCurrentTrackDuration(val);
 				  } else if(localName.equalsIgnoreCase("albumArtURI")){
 					  inAlbumURI = true;
-				  }
+				  } 
 				  
 			  }
 			  

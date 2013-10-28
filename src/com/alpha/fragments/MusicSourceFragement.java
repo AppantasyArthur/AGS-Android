@@ -15,8 +15,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.alpha.musicsource.FM_Music_ListView_BaseAdapter_PAD;
-import com.alpha.musicsource.FM_Music_ListView_BaseAdapter_Phone;
+import com.alpha.musicsource.MusicSourcePadAdapter;
+import com.alpha.musicsource.MusicSourcePhoneAdapter;
 import com.alpha.musicsource.MusicSourceListView;
 import com.alpha.musicsource.MusicSourceViewListener;
 import com.alpha.musicsource.MusicSourceViewSetting;
@@ -210,9 +210,9 @@ public class MusicSourceFragement extends AGSFragment {
 	public void MusicListViewLocalNameListChange(){
 		if(this.viewMusicSourceList!=null){
 			if(DeviceProperty.isPhone()){			
-				((FM_Music_ListView_BaseAdapter_Phone)viewMusicSourceList.getAdapter()).GetListner().LocalNameListChange();
+				((MusicSourcePhoneAdapter)viewMusicSourceList.getAdapter()).GetListner().LocalNameListChange();
 			}else{				
-				((FM_Music_ListView_BaseAdapter_PAD)viewMusicSourceList.getAdapter()).GetListner().LocalNameListChange();
+				((MusicSourcePadAdapter)viewMusicSourceList.getAdapter()).GetListner().LocalNameListChange();
 			}
 		}
 	}

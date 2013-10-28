@@ -14,6 +14,7 @@ import org.teleal.cling.model.types.UnsignedIntegerFourBytes;
 import org.teleal.cling.support.avtransport.callback.Play;
 import org.teleal.cling.support.avtransport.callback.Stop;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
@@ -30,19 +31,22 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.Toast;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.FAM.SETTING.FAM_PopupWindow;
-import com.FAM.SETTING.SaveQueueListPopupWindow;
-import com.FAM.SETTING.Music_SeekBar_Listner;
-import com.FAM.SETTING.PlayMode_IButton_Listner;
-import com.FAM.SETTING.Play_IButton_Listner;
-import com.FAM.SETTING.Sound_SeekBar_Listner;
 import com.alpha.fragments.MediaRendererMusicInfoFragement;
+import com.alpha.mainfragment.FAM_PopupWindow;
+import com.alpha.mainfragment.MusicPlaybackSeekBarListener;
+import com.alpha.mainfragment.PlayMode_IButton_Listner;
+import com.alpha.mainfragment.PlaybackButtonListener;
+import com.alpha.mainfragment.SaveQueueListPopupWindow;
+import com.alpha.mainfragment.Sound_SeekBar_Listner;
 import com.alpha.upnp.DeviceDisplay;
 import com.alpha.upnp.parser.TrackDO;
+import com.alpha.upnp.value.AGSHandlerMessages;
+import com.alpha.upnp.value.AGSHandlerMessages.AGSMessageBody;
 import com.alpha.upnpui.Fragment_SETTING;
 import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
@@ -61,6 +65,23 @@ public class MusicInfoViewListener {
 //	private int device_size = 0;
 	private FragmentManager fragmentManager;
 	private SaveQueueListPopupWindow popupSaveQueueWindow;
+	private Handler handlerMusicInfoViewListener = new Handler(){
+
+		@Override
+		public void handleMessage(Message msg) {
+			
+			if(msg.what == AGSHandlerMessages.CLOSE_GENERAL_PROGRESS){
+	
+				if(popupSaveQueueWindow != null)
+					popupSaveQueueWindow.dismiss();
+				
+			}
+			
+		}
+		
+	};
+	
+	
 	public MusicInfoViewListener(Context context,int device_size,FragmentManager fragmentManager){
 		this.context = context;
 		this.mlog.switchLog = true;
@@ -186,7 +207,7 @@ public class MusicInfoViewListener {
 			@Override
 			public void onClick(View v) {
 				if(popupSaveQueueWindow == null){
-					popupSaveQueueWindow = new SaveQueueListPopupWindow(context);
+					popupSaveQueueWindow = new SaveQueueListPopupWindow(context, handlerMusicInfoViewListener);
 				}
 				popupSaveQueueWindow.showPopupWindow(v.getRootView(), Gravity.CENTER, 0, 0);
 			}
@@ -263,7 +284,7 @@ public class MusicInfoViewListener {
 			}
 		});
 	}
-	public void Previous_IButton_LISTNER(ImageButton Previous_IButton){
+	public void setPreviousButtonListener(ImageButton Previous_IButton){
 		Previous_IButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -313,7 +334,7 @@ public class MusicInfoViewListener {
 		});			
 	}
 	
-	public void Next_IButton_LISTNER(ImageButton Next_IButton){
+	public void setNextButtonListener(ImageButton Next_IButton){
 		Next_IButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -362,7 +383,7 @@ public class MusicInfoViewListener {
 			}
 		});			
 	}
-	public void Play_IButton_LISTNER(final ImageButton Play_IButton) {
+	public void setPlaybackButtonListener(final ImageButton Play_IButton) {
 		Play_IButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -378,9 +399,9 @@ public class MusicInfoViewListener {
 				
 			}
 		});
-		Play_IButton_Listner Info_PI_Listner = new Play_IButton_Listner(){
+		PlaybackButtonListener Info_PI_Listner = new PlaybackButtonListener(){
 			@Override
-			public void SetPlay_IButton_State(String MR_State) {
+			public void setPlaybackState(String MR_State) {
 				if(MR_State.equals("STOPPED")){
 					Play_IButton.post(new Runnable(){
 						@Override
@@ -403,7 +424,7 @@ public class MusicInfoViewListener {
 			}
 		};
 		//注測Play EVEN
-		((MainFragmentActivity)context).getDeviceDisplayList().setInfo_Play_IButton_Listner(Info_PI_Listner);
+		((MainFragmentActivity)context).getDeviceDisplayList().setPlaybackButtonListener4Phone(Info_PI_Listner);
 	}
 	private void StopMusic(){
 		//取得upnpServer
@@ -436,6 +457,7 @@ public class MusicInfoViewListener {
 			upnpServer.getControlPoint().execute(ActionCallback);
 		}
 	}
+	@SuppressWarnings({ "static-access", "rawtypes" })
 	private void PlayMusic(){
 		//取得upnpServer
 		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).getUPnPService();
@@ -521,6 +543,7 @@ public class MusicInfoViewListener {
 		//注測PlayMode EVEN
 		((MainFragmentActivity)context).getDeviceDisplayList().setInfo_PlayMode_IButton_Listner(Info_PMI_Listner);					
 	}
+	@SuppressWarnings({ "static-access", "rawtypes", "unchecked" })
 	private void SetPlayMode(int Mode){
 		//取得upnpServer
 		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).getUPnPService();
@@ -556,7 +579,7 @@ public class MusicInfoViewListener {
 					values[1] =new ActionArgumentValue(NewPlayMode, "REPEAT_ONE");
 					break;
 				case 3:
-					values[1] =new ActionArgumentValue(NewPlayMode, "SHUFFLE");
+					values[1] = new ActionArgumentValue(NewPlayMode, "SHUFFLE");
 					break;
 				}
 				ActionInvocation ai = new ActionInvocation(SetPlayModeAction,values);
@@ -575,42 +598,65 @@ public class MusicInfoViewListener {
 			}
 		}
 	}	
-	public void SetTimeSeekLISTNER(final TextView Current_TextView,final SeekBar Music_SeekBar,final TextView Total_TextView){
+	
+	public void setTimeProgressListener(final TextView viewElapsedTimeText,final SeekBar seekbarPlayback,final TextView viewTotalTimeText){
+		
 		final Handler seekHandler = new Handler(){
 			public void handleMessage (Message msg) {
 				switch(msg.what){
 				case 0:
-					Current_TextView.setText((String)msg.obj);
+					viewElapsedTimeText.setText((String)msg.obj);
 					break;
 				case 1:
-					Total_TextView.setText((String)msg.obj);
+					viewTotalTimeText.setText((String)msg.obj);
 					break;
 				}
 			}
 		};
-		Music_SeekBar_Listner music_SeekBar_Listner = new Music_SeekBar_Listner(){
+		
+		MusicPlaybackSeekBarListener listenerPlaybackSeekBar = new MusicPlaybackSeekBarListener(){
+			
 			@Override
-			public void SetSeek(Long secondTotal, Long secondRun, String stringTotal, String stringRun) {
-				if(Music_SeekBar.getMax()!=secondTotal.intValue()){
-					Music_SeekBar.setMax(secondTotal.intValue());
-				}
-				if(Music_SeekBar.getProgress()!=secondRun.intValue()){
-					Music_SeekBar.setProgress(secondRun.intValue());
-				}
-				if(!stringRun.equals(Current_TextView.getText().toString())){
-					seekHandler.obtainMessage(0, stringRun).sendToTarget();
+			public void setSeekTime(Long secondTotal, Long secondCurrent, String stringTotal, String stringCurrent) {
+				
+				if(secondTotal != null
+				&& seekbarPlayback.getMax() != secondTotal.intValue()){
+					seekbarPlayback.setMax(secondTotal.intValue());
 				}
 				
-				if(stringTotal!=null&&!stringTotal.equals(Total_TextView.getText().toString())){
+				if(stringTotal != null
+				&&!stringTotal.equals(viewTotalTimeText.getText().toString())){
 					seekHandler.obtainMessage(1, stringTotal).sendToTarget();
 				}
 				
+				if(secondCurrent != null
+				&& seekbarPlayback.getProgress() != secondCurrent.intValue()){
+					seekbarPlayback.setProgress(secondCurrent.intValue());
+				}
+				
+				if(stringCurrent != null
+				&& !stringCurrent.equals(viewElapsedTimeText.getText().toString())){
+					seekHandler.obtainMessage(0, stringCurrent).sendToTarget();
+				}
 				
 			}
+
+			@Override
+			public int getElapsedTime() {
+				
+				if(seekbarPlayback != null)
+					return seekbarPlayback.getProgress();
+				else
+					return -1;
+				
+			}
+			
 		};
-		((MainFragmentActivity)context).getDeviceDisplayList().setInfo_Music_SeekBar_Listner(music_SeekBar_Listner);
+		
+		// setInfo_Music_SeekBar_Listner
+		MainFragmentActivity.getDeviceDisplayList().setMusicPlaybackSeekBarListener4Phone(listenerPlaybackSeekBar);
 	}
-	public void Sound_SeekBarLISTNER(final SeekBar Sound_SeekBar,final ImageView Sound_ImageButton){
+	public void setSoundSeekBarListener(final SeekBar Sound_SeekBar,final ImageView Sound_ImageButton){
 		Sound_SeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
 			int position = 0;
 			

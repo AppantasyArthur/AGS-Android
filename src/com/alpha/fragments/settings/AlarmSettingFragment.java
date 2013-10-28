@@ -1,7 +1,7 @@
 package com.alpha.fragments.settings;
 
-import com.FAM.SETTING.FAM_ViewFlipper;
 import com.FSAl.SETTING.AboutSettingViewSetting;
+import com.alpha.mainfragment.FAM_ViewFlipper;
 import com.alpha.setting.about.AboutSettingViewListener;
 import com.alpha.upnp.DeviceDisplay;
 import com.alpha.upnpui.MainFragmentActivity;

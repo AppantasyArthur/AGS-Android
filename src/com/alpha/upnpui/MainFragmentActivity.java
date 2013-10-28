@@ -29,11 +29,11 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.FAM.SETTING.FAM_VIEW_LISTNER;
-import com.FAM.SETTING.FAM_VIEW_SETTING;
 import com.alpha.fragments.MediaRendererMusicInfoFragement;
 import com.alpha.fragments.MusicSourceFragement;
 import com.alpha.fragments.MediaRendererListFragement;
+import com.alpha.mainfragment.MainFragementViewListener;
+import com.alpha.mainfragment.MainFragementViewSetting;
 import com.alpha.upnp.BrowseRegistryListener;
 import com.alpha.upnp.DeviceDisplayList;
 import com.alpha.upnp.UpnpServiceConnection;
@@ -60,8 +60,8 @@ public class MainFragmentActivity extends FragmentActivity {
 	private Fragment fragmentMRMusicInfo;
 	private Fragment fragmentMusicSource;
 	//SETTING
-	private FAM_VIEW_SETTING VIEW_SETTING;
-	public FAM_VIEW_LISTNER VIEW_LISTNER;
+	private MainFragementViewSetting settingView;
+	public MainFragementViewListener listenerView;
 	
 	//Fragment Manager
 	private FragmentManager fragmentManager = null;
@@ -133,11 +133,11 @@ public class MainFragmentActivity extends FragmentActivity {
 	    	//取得最底層的VIEW
 	    	this.MainView = this.getWindow().getDecorView().findViewById(R.id.FAM_RLayout);
 	    	//設定PAD介面
-	    	PAD_findVIEW();
+	    	initPadView();
 	    	//加入Fragment
 	    	setPadViewFragment();
 	    	//設定LISTNER
-	    	PAD_findLISTNER();	
+	    	initPadViewListener();	
 	    }
 	    //Create UPNP	
 	    CreateUpnpService();
@@ -176,8 +176,8 @@ public class MainFragmentActivity extends FragmentActivity {
 	    //取得fragmentManager
 	    this.fragmentManager = this.getSupportFragmentManager();         
         //取得View_SETTING
-        this.VIEW_SETTING = new FAM_VIEW_SETTING(this.context,this.device_size);
-        this.VIEW_LISTNER = new FAM_VIEW_LISTNER(this.context,this.device_size,this.fragmentManager);
+        this.settingView = new MainFragementViewSetting(this.context, this.device_size);
+        this.listenerView = new MainFragementViewListener(this.context, this.device_size, this.fragmentManager);
         //建立Device主要清單
         deviceDisplayList = new DeviceDisplayList(context);
 	}
@@ -193,46 +193,46 @@ public class MainFragmentActivity extends FragmentActivity {
 		fragmentMusicSource = new MusicSourceFragement();
 		TKBTool.animationAddFragment(fragmentManager.beginTransaction(), fragmentMusicSource, "Fragment_Music", R.id.pFAM_RLayout_ViewFlipper_Music_RLayout, R.animator.alpha_in, R.animator.alpha_out);
 	}
-	private void PAD_findVIEW() {
-		//設定PAD介面
-		this.VIEW_SETTING.VIEWSET(MainView.findViewById(R.id.FAM_RLayout_LLayout_MediaC1_RLayout));
-		this.VIEW_SETTING.VIEWSET(MainView.findViewById(R.id.FAM_RLayout_LLayout_MediaC2_RLayout));
-		this.VIEW_SETTING.VIEWSET(MainView.findViewById(R.id.FAM_RLayout_LEFT_RLayout));
-		this.VIEW_SETTING.VIEWSET(MainView.findViewById(R.id.FAM_RLayout_CENTER_RLayout));
-		this.VIEW_SETTING.VIEWSET(MainView.findViewById(R.id.FAM_RLayout_RIGHT_RLayout));
-		this.VIEW_SETTING.VIEWSET(MainView.findViewById(R.id.FAM_RLayout_BOTTOM_RLayout));
+	private void initPadView() {
+		//設定PAD畫面
+		this.settingView.VIEWSET(MainView.findViewById(R.id.FAM_RLayout_LLayout_MediaC1_RLayout));
+		this.settingView.VIEWSET(MainView.findViewById(R.id.FAM_RLayout_LLayout_MediaC2_RLayout));
+		this.settingView.VIEWSET(MainView.findViewById(R.id.FAM_RLayout_LEFT_RLayout));
+		this.settingView.VIEWSET(MainView.findViewById(R.id.FAM_RLayout_CENTER_RLayout));
+		this.settingView.VIEWSET(MainView.findViewById(R.id.FAM_RLayout_RIGHT_RLayout));
+		this.settingView.VIEWSET(MainView.findViewById(R.id.FAM_RLayout_BOTTOM_RLayout));
 	}
-	private void PAD_findLISTNER() {		
+	private void initPadViewListener() {		
 		//設定VIEW LISTNER
 		//ActionProgress_ProgressBar
-		this.VIEW_LISTNER.CreateProcessBarListner((ProgressBar)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_ActionProgress_ProgressBar));
+		this.listenerView.CreateProcessBarListner((ProgressBar)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_ActionProgress_ProgressBar));
 		//ShowCloseMediaC2 IButton LISTNER
-		this.VIEW_LISTNER.ShowCloseMediaC2_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_ShowCloseMediaC2_IButton),
+		this.listenerView.ShowCloseMediaC2_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_ShowCloseMediaC2_IButton),
 															(RelativeLayout)MainView.findViewById(R.id.FAM_RLayout_LLayout_MediaC2_RLayout));
 		//TimeSeekLISTNER
-		this.VIEW_LISTNER.SetTimeSeekLISTNER((TextView)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Current_TextView),
+		this.listenerView.setTimeProgressListener((TextView)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Current_TextView),
 											(SeekBar)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Music_SeekBar),
 											(TextView)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Total_TextView));
 		//Sound IButton LISTNER
-		this.VIEW_LISTNER.Sound_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Sound_IButton));
-		this.VIEW_LISTNER.Sound_SeekBarLISTNER((SeekBar)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Sound_SeekBar),
+		this.listenerView.Sound_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Sound_IButton));
+		this.listenerView.Sound_SeekBarLISTNER((SeekBar)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Sound_SeekBar),
 												(ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Sound_IButton));
 		//Edit Button BISTNER
-		this.VIEW_LISTNER.Clear_Button_LISTNER((Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Clear_Button),
+		this.listenerView.Clear_Button_LISTNER((Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Clear_Button),
 											(ImageView)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_ButtonsBG_ImageView));
-		this.VIEW_LISTNER.Save_Button_LISTNER((Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Save_Button),
+		this.listenerView.Save_Button_LISTNER((Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Save_Button),
 											(ImageView)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_ButtonsBG_ImageView));
-		this.VIEW_LISTNER.Done_Button_LISTNER((Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Done_Button),
+		this.listenerView.Done_Button_LISTNER((Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Done_Button),
 											(Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Clear_Button),
 											(Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Save_Button),
 											(MediaRendererMusicInfoFragement)fragmentMRMusicInfo);
-		this.VIEW_LISTNER.CycleRandom_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Cycle_IButton),
+		this.listenerView.CycleRandom_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Cycle_IButton),
 													(ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Random_IButton));
 //		this.VIEW_LISTNER.Random_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Random_IButton));
-		this.VIEW_LISTNER.Setting_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Setting_IButton));
-		this.VIEW_LISTNER.Previous_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Previous_IButton));
-		this.VIEW_LISTNER.Next_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Next_IButton));
-		this.VIEW_LISTNER.Play_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Play_IButton));
+		this.listenerView.Setting_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Setting_IButton));
+		this.listenerView.Previous_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Previous_IButton));
+		this.listenerView.Next_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Next_IButton));
+		this.listenerView.setPlaybackButtonListener((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Play_IButton));
 	}
 	private void setPadViewFragment() {	
 		

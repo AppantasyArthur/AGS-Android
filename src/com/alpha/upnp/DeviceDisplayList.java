@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -28,6 +29,8 @@ import org.teleal.cling.model.state.StateVariableValue;
 import org.teleal.cling.model.types.DeviceType;
 import org.teleal.cling.model.types.ServiceType;
 import org.teleal.cling.model.types.UDAServiceId;
+import org.teleal.cling.support.avtransport.callback.GetPositionInfo;
+import org.teleal.cling.support.model.PositionInfo;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -38,16 +41,17 @@ import android.os.Message;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
+import android.widget.SeekBar;
 
-import com.FAM.SETTING.Music_SeekBar_Listner;
-import com.FAM.SETTING.PlayMode_IButton_Listner;
-import com.FAM.SETTING.Play_IButton_Listner;
-import com.FAM.SETTING.Sound_SeekBar_Listner;
 import com.FS.SETTING.FS_SPEAKER_ExpandableListAdapter_Listner;
 import com.FS.SETTING.RunState_TextView_Listner2;
-import com.alpha.musicinfo.MusicInfoQueueListViewBaseAdapterListener;
+import com.alpha.mainfragment.MusicPlaybackSeekBarListener;
+import com.alpha.mainfragment.PlayMode_IButton_Listner;
+import com.alpha.mainfragment.PlaybackButtonListener;
+import com.alpha.mainfragment.Sound_SeekBar_Listner;
+import com.alpha.musicinfo.MusicInfoQueueListViewAdapterListener;
 import com.alpha.musicinfo.MusicInfo_Listner;
-import com.alpha.musicsource.FM_Music_ListView_BaseAdapter_Listner;
+import com.alpha.musicsource.MusicSourceAdapterListener;
 import com.alpha.setting.about.AboutSettingSystemInfo;
 import com.alpha.setting.alarm.musicbrowsing.AlarmSettingMusicBrowsingAdapterListener;
 import com.alpha.setting.rendererlist.FSR_Renderers_ListView_BaseAdapter_Renderer_Listner;
@@ -62,6 +66,7 @@ import com.alpha.upnp.value.FirmwareUpdateServiceValues;
 import com.alpha.upnp.value.ServiceValues;
 import com.alpha.upnp.value.SystemServiceValues;
 import com.alpha.upnpui.MainFragmentActivity;
+import com.alpha.upnpui.R;
 import com.alpha.util.AGSParser;
 import com.tkb.UpnpOverride.ProcessBarListner;
 import com.tkb.tool.TKBLog;
@@ -80,6 +85,7 @@ public class DeviceDisplayList implements Parcelable  {
 
 	//SeekBar Timer
 	private Timer timeSeekBarTimer;
+	private Timer timeUpdateSeekBarTimer;
 	
 	private List<DeviceDisplay> DDList;
 	private List<DeviceDisplay> MRList;//全部  MediaRenderer List
@@ -88,17 +94,17 @@ public class DeviceDisplayList implements Parcelable  {
 	//Listners
 	private FS_SPEAKER_ExpandableListAdapter_Listner FSELAListner;//Speaker
 	private RunState_TextView_Listner2 runState_TextView_Listner2;//Speaker 跑馬燈
-	private Music_SeekBar_Listner music_SeekBar_Listner;//TiemSeek
-	private Music_SeekBar_Listner Info_Music_SeekBar_Listner;//TiemSeek 
+	private MusicPlaybackSeekBarListener listenerPlaybackSeekBar4Pad;//TiemSeek
+	private MusicPlaybackSeekBarListener listenerPlaybackSeekBar4Phone;//TiemSeek 
 	private Sound_SeekBar_Listner sound_SeekBar_Listner;//GroupSoundSeek
 	private Sound_SeekBar_Listner Info_Sound_SeekBar_Listner;//GroupSoundSeek
-	private FM_Music_ListView_BaseAdapter_Listner FMLBAListner;//Music
-	private Play_IButton_Listner PIListner;//播放器 按鈕
-	private Play_IButton_Listner Info_PIListner;//播放器 按鈕
+	private MusicSourceAdapterListener FMLBAListner;//Music
+	private PlaybackButtonListener listenerPlaybackButton4Pad;//播放器 按鈕
+	private PlaybackButtonListener listenerPlaybackButton4Phone;//播放器 按鈕
 	private PlayMode_IButton_Listner PMIListner;//PlayMode按鈕
 	private PlayMode_IButton_Listner Info_PMIListner;//PlayMode按鈕
 	private MusicInfo_Listner MIListner;//Info
-	private MusicInfoQueueListViewBaseAdapterListener listenerQueue;//Queue
+	private MusicInfoQueueListViewAdapterListener listenerQueue;//Queue
 	private ProcessBarListner processBarListner;
 	//Setting Listners
 	private FSR_Renderers_ListView_BaseAdapter_Renderer_Listner FSRRRLBListner;
@@ -228,24 +234,30 @@ public class DeviceDisplayList implements Parcelable  {
 			mlog.info(tag, "removeDeviceDisplay = DD");
 		}
 	}
+	
 	//設定所選取的 Renderer
+	@SuppressWarnings("rawtypes")
 	public void setChooseMediaRenderer(DeviceDisplay mediaRenderer){
-		if(this.mrChoosed==mediaRenderer){
+		if(this.mrChoosed == mediaRenderer){
 			return;			
 		}
 		this.mrChoosed = mediaRenderer;
 		
 		//timeSeekBarTimer 歸零
-		if(timeSeekBarTimer!=null){
-			timeSeekBarTimer.cancel();			
+		if(timeSeekBarTimer != null){
+			
+			timeSeekBarTimer.cancel();	
+			timeUpdateSeekBarTimer.cancel();
+			
 			//畫面歸零
-			if(music_SeekBar_Listner!=null){
-				music_SeekBar_Listner.SetSeek(0l, 0l, "00:00:00", "00:00:00");
+			if(listenerPlaybackSeekBar4Pad != null){
+				listenerPlaybackSeekBar4Pad.setSeekTime(0l, 0l, "00:00:00", "00:00:00");
 			}
-			if(Info_Music_SeekBar_Listner!=null){
-				Info_Music_SeekBar_Listner.SetSeek(0l, 0l, "00:00:00", "00:00:00");
+			if(listenerPlaybackSeekBar4Phone != null){
+				listenerPlaybackSeekBar4Phone.setSeekTime(0l, 0l, "00:00:00", "00:00:00");
 			}
 		}
+		
 		//Group SoundSeekBar 歸零
 		if(sound_SeekBar_Listner!=null){
 			sound_SeekBar_Listner.SetSeek(0);
@@ -256,10 +268,10 @@ public class DeviceDisplayList implements Parcelable  {
 		
 		//設定QueqeCallBack
 		//Queqe 歸零
-		if(listenerQueue!=null){
+		if(listenerQueue != null){
 			listenerQueue.cleanQueueList();
 		}		
-		if(MIListner!=null){
+		if(MIListner != null){
 			MIListner.ClearMusicInfo_State();
 			MIListner.SetPositionChange();
 		}
@@ -279,68 +291,120 @@ public class DeviceDisplayList implements Parcelable  {
 			eventHandler.UpdataALL();
 		}
 		//==============設定 timeSeekBarTimer===========================
-		/*timeSeekBarTimer = new Timer();
+		timeSeekBarTimer = new Timer();
 		TimerTask timerTask = new TimerTask(){
 			private long systemTime;
 			@Override
 			public void run() {				
-				if(DeviceDisplayList.this.ChooseMediaRenderer==null){
+				if(DeviceDisplayList.this.mrChoosed == null){
 					return;
 				}
 				systemTime = System.currentTimeMillis();
 				
-				Service AVTransportService = ChooseMediaRenderer.getDevice().findService(new UDAServiceId("AVTransport"));
-				if(AVTransportService!=null){
+				Service AVTransportService = mrChoosed.getDevice().findService(new UDAServiceId("AVTransport"));
+				if(AVTransportService != null){
+					
 					GetPositionInfo getPositionInfoAction = new GetPositionInfo(AVTransportService){
+						
+						public void failure(ActionInvocation arg0,	UpnpResponse arg1, String arg2) {	
+							Log.i("PositionInfo", "failure = "+arg2);
+						}
+
 						@Override
-						public void received(ActionInvocation arg0,	PositionInfo arg1) {
+						public void received(ActionInvocation ai, PositionInfo infoPosition) {
+							
 							//防止CallBack Delay
-							mlog.info(TAG, "systemTime end = "+System.currentTimeMillis());
-							mlog.info(TAG, "systemTime star = "+systemTime);
-							if((System.currentTimeMillis()-systemTime)>850){
+							mlog.info(tag, "systemTime end = " + System.currentTimeMillis());
+							mlog.info(tag, "systemTime star = " + systemTime);
+							if((System.currentTimeMillis() - systemTime)>850){
 								return;
 							}
-							Long secondTotal = arg1.getTrackDurationSeconds();
-							Long secondRun = arg1.getTrackElapsedSeconds();	
 							
+							Long secondTotal = infoPosition.getTrackDurationSeconds();
+							Long secondCurrent = infoPosition.getTrackElapsedSeconds();	
 							
 							String stringTotal = null;
-							String stringRun = null;
+							String stringCurrent = null;
 							
-							if(arg1.getTrackDuration().split(":").length>1){
-								stringTotal = arg1.getTrackDuration();
+							if(infoPosition.getTrackDuration().split(":").length>1){
+								stringTotal = infoPosition.getTrackDuration();
 							}else{
 								stringTotal = "00:00:00";
 							}
 							
-							long hh = secondRun/60/60;
-							long mm = secondRun/60-hh*60;
-							long ss = secondRun%60;							
+							long hh = secondCurrent / 60 / 60;
+							long mm = secondCurrent / 60 - hh * 60;
+							long ss = secondCurrent % 60;							
 						
-							stringRun = String.format("%02d",hh)+":"+ String.format("%02d",mm)+":"+ String.format("%02d",ss);
+							stringCurrent = String.format("%02d",hh)+":"+ String.format("%02d",mm)+":"+ String.format("%02d",ss);
 							
-							if(music_SeekBar_Listner!=null){
-								music_SeekBar_Listner.SetSeek(secondTotal, secondRun, stringTotal, stringRun);
+							if(listenerPlaybackSeekBar4Pad != null){
+								listenerPlaybackSeekBar4Pad.setSeekTime(secondTotal, secondCurrent, stringTotal, stringCurrent);
 							}
-							if(Info_Music_SeekBar_Listner!=null){
-								Info_Music_SeekBar_Listner.SetSeek(secondTotal, secondRun, stringTotal, stringRun);
+							
+							if(listenerPlaybackSeekBar4Phone != null){
+								listenerPlaybackSeekBar4Phone.setSeekTime(secondTotal, secondCurrent, stringTotal, stringCurrent);
 							}
-							mlog.info(TAG, "getTrackDurationSeconds = "+arg1.getTrackDurationSeconds());//秒數總時間
-							mlog.info(TAG, "getTrackElapsedSeconds = "+arg1.getTrackElapsedSeconds());//秒數播放時間
-							mlog.info(TAG, "getTrackDuration = "+arg1.getTrackDuration());//字串總時間
-							mlog.info(TAG, "getAbsTime = "+arg1.getAbsTime());//字串播放時間					
-						}
-
-						@Override
-						public void failure(ActionInvocation arg0,	UpnpResponse arg1, String arg2) {	
-							Log.i("PositionInfo", "failure = "+arg2);
+							
+							mlog.info(tag, "getTrackDurationSeconds = " + infoPosition.getTrackDurationSeconds());//秒數總時間
+							mlog.info(tag, "getTrackElapsedSeconds = " + infoPosition.getTrackElapsedSeconds());//秒數播放時間
+							mlog.info(tag, "getTrackDuration = " + infoPosition.getTrackDuration());//字串總時間
+							mlog.info(tag, "getAbsTime = " + infoPosition.getAbsTime());//字串播放時間
+							
 						}					
 					};
-					((FragmentActivity_Main)context).GETUPnPService().getControlPoint().execute(getPositionInfoAction);
+					MainFragmentActivity.getServiceAndroidUPnP().getControlPoint().execute(getPositionInfoAction);
 				}
 			}			
 		};
-		timeSeekBarTimer.schedule(timerTask, 1000, 1000);//開始執行*/
+		timeSeekBarTimer.schedule(timerTask, 0, 5000);//開始執行
+		
+		// Auto Generate Time
+		timeUpdateSeekBarTimer = new Timer();
+		TimerTask timerUpdateTask = new TimerTask(){
+
+			@Override
+			public void run() {
+				
+				if(listenerPlaybackSeekBar4Pad != null){
+					
+					long secondCurrent = listenerPlaybackSeekBar4Pad.getElapsedTime() + 1;
+					if(secondCurrent != 1){
+						
+						long hh = secondCurrent / 60 / 60;
+						long mm = secondCurrent / 60 - hh * 60;
+						long ss = secondCurrent % 60;
+						
+						String stringCurrent = String.format("%02d",hh)+":"+ String.format("%02d",mm)+":"+ String.format("%02d",ss);
+						
+						listenerPlaybackSeekBar4Pad.setSeekTime(null, secondCurrent, null, stringCurrent);
+						
+					}
+						
+				}
+				
+				if(listenerPlaybackSeekBar4Phone != null){
+					
+					long secondCurrent = listenerPlaybackSeekBar4Phone.getElapsedTime() + 1;
+					if(secondCurrent != 1){
+						
+						long hh = secondCurrent / 60 / 60;
+						long mm = secondCurrent / 60 - hh * 60;
+						long ss = secondCurrent % 60;
+						
+						String stringCurrent = String.format("%02d",hh)+":"+ String.format("%02d",mm)+":"+ String.format("%02d",ss);
+						
+						listenerPlaybackSeekBar4Phone.setSeekTime(null, secondCurrent, null, stringCurrent);
+						
+					}
+					
+				}
+				
+			}
+		
+		};
+		timeUpdateSeekBarTimer.schedule(timerUpdateTask, 1000, 1000);//開始執行
+		
 		//==============timeSeekBarTimer===========================
 	}
 	
@@ -407,11 +471,11 @@ public class DeviceDisplayList implements Parcelable  {
 	public void setRunState_TextView_Listner2(RunState_TextView_Listner2 runState_TextView_Listner2){
 		this.runState_TextView_Listner2 = runState_TextView_Listner2;
 	}
-	public void setMusic_SeekBar_Listner(Music_SeekBar_Listner music_SeekBar_Listner) {
-		this.music_SeekBar_Listner = music_SeekBar_Listner;
+	public void setMusicPlaybackSeekBarListener4Pad(MusicPlaybackSeekBarListener listenerPlaybackSeekBar) {
+		this.listenerPlaybackSeekBar4Pad = listenerPlaybackSeekBar;
 	}
-	public void setInfo_Music_SeekBar_Listner(Music_SeekBar_Listner infoMusic_SeekBar_Listner) {
-		this.Info_Music_SeekBar_Listner = infoMusic_SeekBar_Listner;
+	public void setMusicPlaybackSeekBarListener4Phone(MusicPlaybackSeekBarListener listenerPlaybackSeekBar) {
+		this.listenerPlaybackSeekBar4Phone = listenerPlaybackSeekBar;
 	}
 	public void setSound_SeekBar_Listner(Sound_SeekBar_Listner sound_SeekBar_Listner) {
 		this.sound_SeekBar_Listner = sound_SeekBar_Listner;
@@ -419,14 +483,14 @@ public class DeviceDisplayList implements Parcelable  {
 	public void setInfo_Sound_SeekBar_Listner(Sound_SeekBar_Listner info_Sound_SeekBar_Listner) {
 		this.Info_Sound_SeekBar_Listner = info_Sound_SeekBar_Listner;
 	}
-	public void setMusicListner(FM_Music_ListView_BaseAdapter_Listner FMLBAListner){
+	public void setMusicListner(MusicSourceAdapterListener FMLBAListner){
 		this.FMLBAListner = FMLBAListner;
 	}
-	public void setPlay_IButton_Listner(Play_IButton_Listner PIListner){
-		this.PIListner = PIListner;
+	public void setPlaybackButtonListener4Pad(PlaybackButtonListener listenerPlaybackButton4Pad){
+		this.listenerPlaybackButton4Pad = listenerPlaybackButton4Pad;
 	}
-	public void setInfo_Play_IButton_Listner(Play_IButton_Listner Info_PIListner){
-		this.Info_PIListner = Info_PIListner;
+	public void setPlaybackButtonListener4Phone(PlaybackButtonListener Info_PIListner){
+		this.listenerPlaybackButton4Phone = Info_PIListner;
 	}
 	public void setPlayMode_IButton_Listner(PlayMode_IButton_Listner PMIListner){
 		this.PMIListner = PMIListner;
@@ -438,7 +502,7 @@ public class DeviceDisplayList implements Parcelable  {
 	public void setMusicInfo_Listner(MusicInfo_Listner MIListner){
 		this.MIListner = MIListner;
 	}
-	public void setQueqe_Listner(MusicInfoQueueListViewBaseAdapterListener queqe_listner) {
+	public void setQueqe_Listner(MusicInfoQueueListViewAdapterListener queqe_listner) {
 		this.listenerQueue = queqe_listner;
 	}
 	public void setProcessBarListner(ProcessBarListner processBarListner){
@@ -465,11 +529,11 @@ public class DeviceDisplayList implements Parcelable  {
 		
 		FSELAListner = null;
 		runState_TextView_Listner2 = null;
-		music_SeekBar_Listner = null;
-		Info_Music_SeekBar_Listner = null;
+		listenerPlaybackSeekBar4Pad = null;
+		listenerPlaybackSeekBar4Phone = null;
 		FMLBAListner = null;
-		PIListner = null;
-		Info_PIListner = null;
+		listenerPlaybackButton4Pad = null;
+		listenerPlaybackButton4Phone = null;
 		PMIListner = null;
 		Info_PMIListner = null;
 		MIListner = null;
@@ -815,17 +879,25 @@ public class DeviceDisplayList implements Parcelable  {
 		 //Play狀態
 		
 		private void updataPlayMode(){
-			if(mrPlayStatus!=null&&!mrPlayStatus.equals("")&&PIListner!=null){
-				//Phone Speaker Play_IButton_Listner&& PAD MAIN Play_IButton_Listner
-				 PIListner.SetPlay_IButton_State(mrPlayStatus);
+			
+			if(mrPlayStatus != null
+			&&!mrPlayStatus.equals("")
+			&&listenerPlaybackButton4Pad != null){
+				
 				 mlog.info(tag, "==========EVEN STAR==========");
-				 mlog.info(tag, "lastChangeDO MR_State= "+mrPlayStatus);
+				 mlog.info(tag, "lastChangeDO MR_State= " + mrPlayStatus);
 				 mlog.info(tag, "============End=============");
+				
+				//Phone Speaker Play_IButton_Listner && PAD MAIN Play_IButton_Listner
+				 if(listenerPlaybackButton4Pad != null)
+					 listenerPlaybackButton4Pad.setPlaybackState(mrPlayStatus);
+				 
 				 //Phone Info Play_IButton_Listner
-				 if(Info_PIListner!=null){
-					 Info_PIListner.SetPlay_IButton_State(mrPlayStatus);
-				 }							
-			 } 				 			 
+				 if(listenerPlaybackButton4Phone != null)
+					 listenerPlaybackButton4Phone.setPlaybackState(mrPlayStatus);
+				 
+			 } 	
+			
 		}
 		 //CurrentPlayMode
 		private void updataCurrentPlayMode(){
@@ -879,16 +951,18 @@ public class DeviceDisplayList implements Parcelable  {
 		
 			stringRun = String.format("%02d",hh)+":"+ String.format("%02d",mm)+":"+ String.format("%02d",ss);
 			
-			if(music_SeekBar_Listner!=null){
-				music_SeekBar_Listner.SetSeek(secondTotal, secondRun, stringTotal, stringRun);
+			if(listenerPlaybackSeekBar4Pad != null){
+				listenerPlaybackSeekBar4Pad.setSeekTime(secondTotal, secondRun, stringTotal, stringRun);
 			}
-			if(Info_Music_SeekBar_Listner!=null){
-				Info_Music_SeekBar_Listner.SetSeek(secondTotal, secondRun, stringTotal, stringRun);
+			if(listenerPlaybackSeekBar4Phone != null){
+				listenerPlaybackSeekBar4Phone.setSeekTime(secondTotal, secondRun, stringTotal, stringRun);
 			}
+			
 			mlog.info(tag, "getTrackDurationSeconds = "+secondTotal);//秒數總時間
 			mlog.info(tag, "getTrackElapsedSeconds = "+secondRun);//秒數播放時間
 			mlog.info(tag, "getTrackDuration = "+stringTotal);//字串總時間
 			mlog.info(tag, "getAbsTime = "+stringRun);//字串播放時間	
+			
 		}
 		
 		public void UpdataALL(){

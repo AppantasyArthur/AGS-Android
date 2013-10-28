@@ -1,4 +1,4 @@
-package com.FAM.SETTING;
+package com.alpha.mainfragment;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -16,13 +16,13 @@ import com.tkb.tool.TKBThreadReadBitMapInAssets;
 import com.tkb.tool.TKBThreadReadStateListInAssets;
 import com.tkb.tool.TKBTool;
 
-public class FAM_VIEW_SETTING {
+public class MainFragementViewSetting {
 	private Context context;
 	private TKBLog mlog = new TKBLog();
 	private static final String TAG = "FAM_VIEW_SETTING";
 	private int device_size = 0;
 	
-	public FAM_VIEW_SETTING(Context context,int device_size){
+	public MainFragementViewSetting(Context context,int device_size){
 		this.context = context;
 		this.mlog.switchLog = true;
 		this.device_size = device_size;

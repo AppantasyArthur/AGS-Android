@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.teleal.cling.android.AndroidUpnpService;
 import org.teleal.cling.model.action.ActionInvocation;
@@ -58,7 +59,7 @@ public class AlarmSettingMusicBrowsingListViewPhoneAdapter extends BaseAdapter {
 	private List<Item> MusicTrackList;
 	//====================================
 	//===========AGSPlayList==============
-	private List<String> LocalNameList;
+	private List<JSONObject> LocalNameList;
 	private List<TrackDO> LocalMusicTrackList;
 	//====================================
 	private AlarmSettingMusicBrowsingAdapterListener FSALMLBListner;	
@@ -279,7 +280,7 @@ public class AlarmSettingMusicBrowsingListViewPhoneAdapter extends BaseAdapter {
 				break;			
 			case 1:
 				//AGS PlayList
-				viewHandler.cell_RLayout_Name_TextView.setText(this.LocalNameList.get(position));
+				viewHandler.cell_RLayout_Name_TextView.setText(this.LocalNameList.get(position).optString("Name"));
 				viewHandler.kindOfItme = 4;	
 				viewHandler.object = this.LocalNameList.get(position);
 				viewHandler.cell_RLayout_Image_ImageView.setVisibility(View.VISIBLE);
@@ -388,15 +389,29 @@ public class AlarmSettingMusicBrowsingListViewPhoneAdapter extends BaseAdapter {
 		if(this.LocalNameList!=null){
 			LocalNameList.clear();
 		}
-		this.LocalNameList = new ArrayList<String>();
+		this.LocalNameList = new ArrayList<JSONObject>();
 		SharedPreferences sharedPreferences = context.getSharedPreferences("LocalMusicList", Context.MODE_PRIVATE);
-		String strLocalMusicListName = sharedPreferences.getString("LocalMusicList", "{}");
-		JSONObject MusicList = TKBTool.StringToJSONObject(strLocalMusicListName);
-		Iterator Names = MusicList.keys();
-		while(Names.hasNext()){
-			String name = (String)Names.next();
-			this.LocalNameList.add(name);
+		String strLocalMusicListName = sharedPreferences.getString("LocalMusicList", "[]");
+		try {
+			
+			JSONArray MusicList = new JSONArray(strLocalMusicListName);
+			for(int i = 0;i < MusicList.length();i++){
+								
+				JSONObject o = MusicList.optJSONObject(i); // MusicList.get(i);
+				mlog.debug(TAG, o.toString());
+				LocalNameList.add(o);
+				
+			}
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
 		}
+//		JSONObject MusicList = TKBTool.StringToJSONObject(strLocalMusicListName);
+//		Iterator Names = MusicList.keys();
+//		while(Names.hasNext()){
+//			String name = (String)Names.next();
+//			this.LocalNameList.add(name);
+//		}
 	}
 	public void ShowLocalFile(Button MusicBack_Button,String Name){
 		this.ParentID.add(""+Name);

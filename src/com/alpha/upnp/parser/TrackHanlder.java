@@ -60,10 +60,10 @@ public class TrackHanlder extends DefaultHandler  {
 	  @Override   
 	  public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {   
 	  
-		  String id = atts.getValue("id");
-		  String title = atts.getValue("title");
-		  
 		  if(localName.equalsIgnoreCase("Track")){
+			  
+			  String id = atts.getValue("id");
+			  String title = atts.getValue("title");
 			  
 			  TrackDO doTrack = new TrackDO();
 			  doTrack.setId(id);

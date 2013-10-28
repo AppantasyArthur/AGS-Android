@@ -1,4 +1,4 @@
-package com.FAM.SETTING;
+package com.alpha.mainfragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,7 @@ import org.teleal.cling.model.meta.ActionArgument;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -25,6 +26,7 @@ import com.alpha.upnp.DeviceDisplayList;
 import com.alpha.upnp.parser.TrackDO;
 import com.alpha.upnp.service.AGSAVTransportService;
 import com.alpha.upnp.service.AGSActionSuccessCaller;
+import com.alpha.upnp.value.AGSHandlerMessages;
 import com.alpha.upnp.value.AVTransportServiceValues;
 import com.alpha.upnp.value.ContentDirectoryServiceValues;
 import com.alpha.upnpui.MainFragmentActivity;
@@ -48,12 +50,15 @@ public class SaveQueueListPopupWindow extends PopupWindow {
 	private TKBLog mlog = new TKBLog();
 	private static final String tag = "SaveQueueListPopupWindow";
 	
-	public SaveQueueListPopupWindow(Context context){
+	private Handler handlerMusicInfoViewListener;
+	public SaveQueueListPopupWindow(Context context, Handler handlerMusicInfoViewListener){
 		
 		super(context);
 		this.mlog.switchLog = true;
 		this.context = context;
 //		this.device_size = ((MainFragmentActivity)context).getDeviceScreenSize();
+		
+		this.handlerMusicInfoViewListener = handlerMusicInfoViewListener;
 		
 		if(DeviceProperty.isPhone()){
 			initPhoneContentView();
@@ -233,17 +238,28 @@ public class SaveQueueListPopupWindow extends PopupWindow {
 			String didlAllTracks = (String)ai.getOutput(AVTransportServiceValues.ACTION_DUMP_ALL_TRACKS_IN_QUEUE_OUTPUT_ALL_TRACKS_DIDL).getValue();
 			
 			// parsing result
-			List<TrackDO> tracks = AGSParser._parseTrack(didlAllTracks);
+			//List<TrackDO> tracks = AGSParser._parseTrack(didlAllTracks);
+			
 			// store result
 			
 //			ai.getOutput().;
 //			ai.getOutput(argumentName)
 			
-//			String nameCustomList = editCustomQueueListName.getText().toString();
-//			
-//			//取得Queue 轉成 JSONArray
+			String nameCustomList = editCustomQueueListName.getText().toString();
+			
+			//取得Queue 轉成 JSONArray
 //			List<TrackDO> queueItems = ((MainFragmentActivity)context).GETFragment_Infor().GetQueueItems();
 //			JSONArray queueArray = new JSONArray();
+			
+			JSONObject jItme = new JSONObject();
+			jItme.put("Name", nameCustomList);
+			jItme.put("TracksMetaData", didlAllTracks);
+			
+//			JSONObject jContainer = new JSONObject();
+//			jContainer.put(name, value)
+			
+//			queueArray.put(jItme);
+	
 //			for(TrackDO item:queueItems){
 //				JSONObject jItme = new JSONObject();
 //				try {
@@ -267,26 +283,26 @@ public class SaveQueueListPopupWindow extends PopupWindow {
 //				}
 //				queueArray.put(jItme);
 //			}
-//			
-//			SharedPreferences sharedPreferences = context.getSharedPreferences("LocalMusicList", Context.MODE_PRIVATE);
-//			String strLocalMusicListName = sharedPreferences.getString("LocalMusicList", "{}");
-//			JSONObject MusicList = null;
-//			try {
-//				MusicList = new JSONObject(strLocalMusicListName);
-//			} catch (JSONException e) {
-//				e.printStackTrace();
-//			}
-//			//複寫 或 新增
-//			try {
-//				MusicList.put(nameCustomList, queueArray);
-//			} catch (JSONException e) {						
-//				e.printStackTrace();
-//			}
-//						
-//			sharedPreferences.edit().putString("LocalMusicList", MusicList.toString()).commit();
-//			//刷新MusicList
-//			((MainFragmentActivity)context).GETFragment_Music().MusicListViewLocalNameListChange();
-//			SaveQueueListPopupWindow.this.dismiss();
+			
+			SharedPreferences sharedPreferences = context.getSharedPreferences("LocalMusicList", Context.MODE_PRIVATE);
+			String strLocalMusicListName = sharedPreferences.getString("LocalMusicList", "[]");
+			JSONArray MusicList = null;
+			try {
+				MusicList = new JSONArray(strLocalMusicListName);
+//				MusicList = new JSONArray("[]");
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			//				MusicList.put(nameCustomList, jItme);
+			MusicList.put(jItme);
+						
+			//sharedPreferences.edit().putString("LocalMusicList", MusicList.toString()).commit();
+			sharedPreferences.edit().putString("LocalMusicList", MusicList.toString()).commit();
+			//刷新MusicList
+			((MainFragmentActivity)context).GETFragment_Music().MusicListViewLocalNameListChange();
+			
+			//SaveQueueListPopupWindow.this.dismiss();
+			handlerMusicInfoViewListener.sendEmptyMessage(AGSHandlerMessages.CLOSE_GENERAL_PROGRESS);
 			
 			return super.call();
 			

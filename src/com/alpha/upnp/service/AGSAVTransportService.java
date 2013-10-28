@@ -25,6 +25,30 @@ public class AGSAVTransportService {
 	private final Service serviceAVTransport;
 	
 	// action
+	private Action actionAddDumpedTracksToQueue;
+	public Action getActionAddDumpedTracksToQueue() {
+		
+		if(actionAddDumpedTracksToQueue == null){
+			
+			actionAddDumpedTracksToQueue = serviceAVTransport.getAction(AVTransportServiceValues.ACTION_ADD_DUMPED_TRACKS_TO_QUEUE);
+			if(actionDumpAllTracksInQueue == null){
+				
+				String msgWarn = "add dumped tracks to queue action is null.";
+				
+				// warning
+				Log.i(tag, msgWarn);
+				
+				Message msg = handlerMessage.obtainMessage(AGSHandlerMessages.SHOW_MESSAGE);
+				msg.obj = msgWarn;
+				handlerMessage.sendMessage(msg);
+				
+			}
+			
+		}
+		
+		return actionAddDumpedTracksToQueue;
+	}
+	
 	private Action actionAddTrackToQueue;
 	public Action getActionAddTrackToQueue() {
 		return actionAddTrackToQueue;
@@ -99,6 +123,39 @@ public class AGSAVTransportService {
 		
 	}
 	
+	public void actAddDumpedTracksToQueue(ActionArgumentValue[] values, final AGSActionSuccessCaller callerSuccessFunction){
+		
+		if(serviceAVTransport == null)
+			return;
+		
+		if(getActionAddDumpedTracksToQueue() == null)
+			return;
+		
+		ActionInvocation invocation = new ActionInvocation(getActionAddDumpedTracksToQueue() , values);
+		AGSActionCallback callback = new AGSActionCallback(invocation, tag, handlerMessage){
+
+			@Override
+			public void success(ActionInvocation ai) {
+				try {
+					
+					if(callerSuccessFunction != null){
+					
+						callerSuccessFunction.setActionInvocation(ai); // 
+						callerSuccessFunction.call();
+						
+					}
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			
+		};
+		
+		MainFragmentActivity.getServiceAndroidUPnP().getControlPoint().execute(callback);
+		
+	}
+	
 	public void actDumpAllTracksInQueue(ActionArgumentValue[] values, final AGSActionSuccessCaller callerSuccessFunction){
 		
 		if(serviceAVTransport == null)
@@ -164,5 +221,8 @@ public class AGSAVTransportService {
 		MainFragmentActivity.getServiceAndroidUPnP().getControlPoint().execute(callback);
 		
 	}
+
+	
+
 
 }

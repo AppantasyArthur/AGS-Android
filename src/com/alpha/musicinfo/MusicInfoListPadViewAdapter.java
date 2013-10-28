@@ -86,7 +86,7 @@ public class MusicInfoListPadViewAdapter extends BaseAdapter {
 		this.context = context;		
 		this.mlog.switchLog = true;
 		
-		MusicInfoQueueListViewBaseAdapterListener queqe_listner = new MusicInfoQueueListViewBaseAdapterListener(){
+		MusicInfoQueueListViewAdapterListener queqe_listner = new MusicInfoQueueListViewAdapterListener(){
 			@Override
 			public void cleanQueueList() {				
 				handler.obtainMessage(0).sendToTarget();

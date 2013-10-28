@@ -4,7 +4,7 @@ import org.teleal.cling.support.model.item.Item;
 
 import com.alpha.upnp.parser.TrackDO;
 
-public interface MusicInfoQueueListViewBaseAdapterListener {
+public interface MusicInfoQueueListViewAdapterListener {
 	public void cleanQueueList();
 	public void setQueueList(List<TrackDO> trackList);	
 }

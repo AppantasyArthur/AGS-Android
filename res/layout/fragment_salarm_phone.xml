@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#00000000"
     >
-	<com.FAM.SETTING.FAM_ViewFlipper 
+	<com.alpha.mainfragment.FAM_ViewFlipper 
 	    android:id="@+id/pFSAl_RLayout_Alarm_ViewFlipper"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
@@ -28,5 +28,5 @@
 		    android:layout_height="match_parent"
 	        >              
 	    </RelativeLayout>
-	</com.FAM.SETTING.FAM_ViewFlipper>
+	</com.alpha.mainfragment.FAM_ViewFlipper>
 </RelativeLayout>

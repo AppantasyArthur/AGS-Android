@@ -167,6 +167,7 @@ public class MusicInfoViewSetting {
 		view.findViewById(R.id.pFI_RLayout_RLayout_Current_TextView).getLayoutParams().height = TKBTool.getWidth(20);
 		TKBTool.fitsViewLeftMargin(90, view.findViewById(R.id.pFI_RLayout_RLayout_Current_TextView));
 		TKBTool.fitsViewTextSize(10, view.findViewById(R.id.pFI_RLayout_RLayout_Current_TextView));
+		
 		//Music_SeekBar
 		view.findViewById(R.id.pFI_RLayout_RLayout_Music_SeekBar).getLayoutParams().height = TKBTool.getWidth(23);	
 		TKBTool.fitsViewLeftMargin(1, view.findViewById(R.id.pFI_RLayout_RLayout_Music_SeekBar));		
@@ -175,6 +176,7 @@ public class MusicInfoViewSetting {
 		Bitmap myThumbO = Bitmap.createScaledBitmap(TKBTool.readBitMapInAssets(context, "phone/play_volume/base_icon.png"), TKBTool.getWidth(12), TKBTool.getWidth(14), false);
 		Drawable myThumb = new BitmapDrawable(context.getResources(),myThumbO);
 		((SeekBar)view.findViewById(R.id.pFI_RLayout_RLayout_Music_SeekBar)).setThumb(myThumb);
+		
 		//Total_TextView
 		TKBTool.fitsViewWidth(40, view.findViewById(R.id.pFI_RLayout_RLayout_Total_TextView));
 		view.findViewById(R.id.pFI_RLayout_RLayout_Total_TextView).getLayoutParams().height = TKBTool.getWidth(20);

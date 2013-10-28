@@ -34,10 +34,10 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.FAM.SETTING.FAM_ViewFlipper;
-import com.FS.SETTING.FS_VIEW_LISTNER;
-import com.FS.SETTING.FS_VIEW_SETTING;
+import com.FS.SETTING.MediaRenderListViewListener;
+import com.FS.SETTING.MRListViewSetting;
 import com.FS.SETTING.OptionButton;
+import com.alpha.mainfragment.FAM_ViewFlipper;
 import com.alpha.upnp.DeviceDisplay;
 import com.alpha.upnp.parser.GroupVO;
 import com.alpha.upnpui.MainFragmentActivity;
@@ -46,18 +46,19 @@ import com.alpha.util.DeviceProperty;
 import com.tkb.tool.TKBLog;
 import com.tkb.tool.TKBThreadReadBitMapInAssets;
 
+// Fragment_Speaker
 public class MediaRendererListFragement extends Fragment {
 	//VIEWS
-	private View Fragment_MainView;	
+	private View fragementMainView;	
 	private ExpandableListView FS_SPEAKER_EListView;
 	
 	//Fragment Manager
 	private FragmentManager fragmentManager = null;
 	//SETTING
-	private FS_VIEW_SETTING VIEW_SETTING;
-	private FS_VIEW_LISTNER VIEW_LISTNER;	
+	private MRListViewSetting settingView;
+	private MediaRenderListViewListener listenerView;	
 
-	private static String TAG = "Fragment_Speaker";
+	private static String tag = "MediaRendererListFragement";
 	private TKBLog mlog = new TKBLog();
 	private Context context;
 	private int device_size = 0;
@@ -65,7 +66,7 @@ public class MediaRendererListFragement extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		CreateProcess();		
-		Log.v(TAG, "onCreate");
+		Log.v(tag, "onCreate");
 	}	
 	private void CreateProcess() {
 		this.context = this.getActivity();
@@ -74,151 +75,152 @@ public class MediaRendererListFragement extends Fragment {
 		fragmentManager = ((MainFragmentActivity)context).getSupportFragmentManager();
 		
 		//介面設定取得
-        this.VIEW_SETTING = new FS_VIEW_SETTING(this.context,this.device_size);
+        this.settingView = new MRListViewSetting(this.context, this.device_size);
       //動作設定取得
-        this.VIEW_LISTNER = new FS_VIEW_LISTNER(this.context,this.device_size,this.fragmentManager);
+        this.listenerView = new MediaRenderListViewListener(this.context, this.device_size, this.fragmentManager);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
 		if(DeviceProperty.isPhone()){
 			//手機
-			Fragment_MainView = (ViewGroup)inflater.inflate(R.layout.fragment_speaker_phone, null);
-			Fragment_MainView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-			Phone_findView();//介面設定
-			Phone_findViewListner();//動作設定
+			fragementMainView = (ViewGroup)inflater.inflate(R.layout.fragment_speaker_phone, null);
+			fragementMainView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+			initPhoneView();//介面設定
+			initPhoneViewListener();//動作設定
 		}else{	
 			//平板
-			Fragment_MainView = (ViewGroup)inflater.inflate(R.layout.fragment_speaker_pad, null);
-			Fragment_MainView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-			PAD_findView();//介面設定
-			PAD_findViewListner();//動作設定
+			fragementMainView = (ViewGroup)inflater.inflate(R.layout.fragment_speaker_pad, null);
+			fragementMainView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+			initPadView();//介面設定
+			initPadViewListener();//動作設定
 		}
-		return Fragment_MainView;
+		return fragementMainView;
 	}
-	private void Phone_findView() {
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout));		
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_TITLE2_RLayout));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_TITLE2_1_RLayout));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_TITLE3_RLayout));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_TITLE4_RLayout));
+	private void initPhoneView() {
+		this.settingView.setView(fragementMainView.findViewById(R.id.pFS_RLayout));		
+		this.settingView.setView(fragementMainView.findViewById(R.id.pFS_RLayout_TITLE2_RLayout));
+		this.settingView.setView(fragementMainView.findViewById(R.id.pFS_RLayout_TITLE2_1_RLayout));
+		this.settingView.setView(fragementMainView.findViewById(R.id.pFS_RLayout_TITLE3_RLayout));
+		this.settingView.setView(fragementMainView.findViewById(R.id.pFS_RLayout_TITLE4_RLayout));
 		//===========Speaker List===========
-		FS_SPEAKER_EListView = (ExpandableListView)Fragment_MainView.findViewById(R.id.pFS_RLayout_SPEAKER_EListView);
-		this.VIEW_SETTING.VIEWSET(FS_SPEAKER_EListView);	
+		FS_SPEAKER_EListView = (ExpandableListView)fragementMainView.findViewById(R.id.pFS_RLayout_SPEAKER_EListView);
+		this.settingView.setView(FS_SPEAKER_EListView);	
 		//===========Speaker===========		
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_Bottom_RLayout));
-		this.VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.pFS_RLayout_Bottom2_RLayout));
-		mlog.info(TAG, "findView OK");
+		this.settingView.setView(fragementMainView.findViewById(R.id.pFS_RLayout_Bottom_RLayout));
+		this.settingView.setView(fragementMainView.findViewById(R.id.pFS_RLayout_Bottom2_RLayout));
+		mlog.info(tag, "findView OK");
 	}
-	private void Phone_findViewListner() {
+	private void initPhoneViewListener() {
+		
 		//切換NowPlaying 按鈕
-		this.VIEW_LISTNER.NowPlaying_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Nowplaying_Button));
+		this.listenerView.NowPlaying_Button_LISTNER((Button)fragementMainView.findViewById(R.id.pFS_RLayout_RLayout_Nowplaying_Button));
 		//切換Music 按鈕
-		this.VIEW_LISTNER.Music_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Music_Button));
+		this.listenerView.Music_Button_LISTNER((Button)fragementMainView.findViewById(R.id.pFS_RLayout_RLayout_Music_Button));
 		//Close
-		this.VIEW_LISTNER.Close_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Close_Button),
+		this.listenerView.Close_Button_LISTNER((Button)fragementMainView.findViewById(R.id.pFS_RLayout_RLayout_Close_Button),
 												this);
 		//Done
-		this.VIEW_LISTNER.Done_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Done_Button),
+		this.listenerView.Done_Button_LISTNER((Button)fragementMainView.findViewById(R.id.pFS_RLayout_RLayout_Done_Button),
 				this);
 		//聲音按鈕
-		this.VIEW_LISTNER.Sound_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Sound_IButton));
+		this.listenerView.Sound_IButton_LISTNER((ImageButton)fragementMainView.findViewById(R.id.pFS_RLayout_RLayout_Sound_IButton));
 		//播放器按鈕
-		this.VIEW_LISTNER.Previous_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Previous_IButton));
-		this.VIEW_LISTNER.Next_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Next_IButton));
-		this.VIEW_LISTNER.Play_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Play_IButton));
-		this.VIEW_LISTNER.SetTimeSeekLISTNER((TextView)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Current_TextView),
-												(SeekBar)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Music_SeekBar),
-												(TextView)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Total_TextView));
+		this.listenerView.Previous_IButton_LISTNER((ImageButton)fragementMainView.findViewById(R.id.pFS_RLayout_RLayout_Previous_IButton));
+		this.listenerView.Next_IButton_LISTNER((ImageButton)fragementMainView.findViewById(R.id.pFS_RLayout_RLayout_Next_IButton));
+		this.listenerView.setPlaybackButtonListener((ImageButton)fragementMainView.findViewById(R.id.pFS_RLayout_RLayout_Play_IButton));
+		this.listenerView.setTimeProgressListener((TextView)fragementMainView.findViewById(R.id.pFS_RLayout_RLayout_Current_TextView),
+												(SeekBar)fragementMainView.findViewById(R.id.pFS_RLayout_RLayout_Music_SeekBar),
+												(TextView)fragementMainView.findViewById(R.id.pFS_RLayout_RLayout_Total_TextView));
 		//PlayMode按鈕
-		this.VIEW_LISTNER.CycleRandom_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Cycle_IButton),
-														(ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Random_IButton));
+		this.listenerView.CycleRandom_IButton_LISTNER((ImageButton)fragementMainView.findViewById(R.id.pFS_RLayout_RLayout_Cycle_IButton),
+														(ImageButton)fragementMainView.findViewById(R.id.pFS_RLayout_RLayout_Random_IButton));
 		//PlayMode、TimeSeek 控制bar 開關
-		this.VIEW_LISTNER.ShowTITLE4_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_ShowTITLE4_IButton),
-														(RelativeLayout)Fragment_MainView.findViewById(R.id.pFS_RLayout_TITLE4_RLayout));
-		this.VIEW_LISTNER.Sound_SeekBarLISTNER((SeekBar)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Sound_SeekBar),
-												(ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Sound_IButton));
+		this.listenerView.ShowTITLE4_IButton_LISTNER((ImageButton)fragementMainView.findViewById(R.id.pFS_RLayout_RLayout_ShowTITLE4_IButton),
+														(RelativeLayout)fragementMainView.findViewById(R.id.pFS_RLayout_TITLE4_RLayout));
+		this.listenerView.Sound_SeekBarLISTNER((SeekBar)fragementMainView.findViewById(R.id.pFS_RLayout_RLayout_Sound_SeekBar),
+												(ImageButton)fragementMainView.findViewById(R.id.pFS_RLayout_RLayout_Sound_IButton));
 		//===========Speaker List===========
-		this.VIEW_LISTNER.SET_SPEAKER_EListView_Listner(FS_SPEAKER_EListView);
+		this.listenerView.SET_SPEAKER_EListView_Listner(FS_SPEAKER_EListView);
 		//===========Speaker===========
 		//設定按鈕
-		this.VIEW_LISTNER.Setting_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Setting_IButton));
-		this.VIEW_LISTNER.Setting_IButton_LISTNER((ImageButton)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_Setting2_IButton));
+		this.listenerView.Setting_IButton_LISTNER((ImageButton)fragementMainView.findViewById(R.id.pFS_RLayout_RLayout_Setting_IButton));
+		this.listenerView.Setting_IButton_LISTNER((ImageButton)fragementMainView.findViewById(R.id.pFS_RLayout_RLayout_Setting2_IButton));
 		//Select 按鈕
-		this.VIEW_LISTNER.SELECT_Button_LISTNER((Button)Fragment_MainView.findViewById(R.id.pFS_RLayout_RLayout_SELECT_Button),
+		this.listenerView.SELECT_Button_LISTNER((Button)fragementMainView.findViewById(R.id.pFS_RLayout_RLayout_SELECT_Button),
 													this);
 	}
 	
-	private void PAD_findView() {
-		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FS_RLayout));
-		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FS_RLayout_TITLE_RLayout));
+	private void initPadView() {
+		settingView.setView(fragementMainView.findViewById(R.id.FS_RLayout));
+		settingView.setView(fragementMainView.findViewById(R.id.FS_RLayout_TITLE_RLayout));
 //		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FS_RLayout_TITLE2_RLayout));
 		//===========Speaker List===========
-		FS_SPEAKER_EListView = (ExpandableListView)Fragment_MainView.findViewById(R.id.FS_RLayout_SPEAKER_EListView);
-		VIEW_SETTING.VIEWSET(Fragment_MainView.findViewById(R.id.FS_RLayout_SPEAKER_RLayout));
+		FS_SPEAKER_EListView = (ExpandableListView)fragementMainView.findViewById(R.id.FS_RLayout_SPEAKER_EListView);
+		settingView.setView(fragementMainView.findViewById(R.id.FS_RLayout_SPEAKER_RLayout));
 		//===========Speaker===========
 		
-		mlog.info(TAG, "findView OK");
+		mlog.info(tag, "findView OK");
 	}	
-	private void PAD_findViewListner() {
+	private void initPadViewListener() {
 		//===========Speaker List===========
-		VIEW_LISTNER.SET_SPEAKER_EListView_Listner(FS_SPEAKER_EListView);
+		listenerView.SET_SPEAKER_EListView_Listner(FS_SPEAKER_EListView);
 		//===========Speaker===========
 	}
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		Log.v(TAG, "onActivityCreated");
+		Log.v(tag, "onActivityCreated");
 	}
 	
 	@Override
 	public void onStart() {
 		super.onStart();
-		Log.v(TAG, "onStart");
+		Log.v(tag, "onStart");
 	}
 	
 	@Override
 	public void onResume() {
 		super.onResume();
-		Log.v(TAG, "onResume");
+		Log.v(tag, "onResume");
 		
 	}
 	
 	@Override
 	public void onPause() {
 		super.onPause();
-		Log.v(TAG, "onPause");
+		Log.v(tag, "onPause");
 	}
 	
 	@Override
 	public void onStop() {
 		super.onStop();
-		Log.v(TAG, "onStop");
+		Log.v(tag, "onStop");
 	}
 	
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();		
-		Log.v(TAG, "onDestroyView");
+		Log.v(tag, "onDestroyView");
 	}
 	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();		
-		Log.v(TAG, "onDestroy");
+		Log.v(tag, "onDestroy");
 	}
 	
 	@Override
 	public void onDetach() {
 		super.onDetach();
 		////////解決 Google SDK ViewFlipper API 問題////////////////
-		View ViewContent_ViewFlipper = this.Fragment_MainView.findViewById(R.id.pFS_RLayout_ViewContent_ViewFlipper);
+		View ViewContent_ViewFlipper = this.fragementMainView.findViewById(R.id.pFS_RLayout_ViewContent_ViewFlipper);
 		if(ViewContent_ViewFlipper!=null){
 			((FAM_ViewFlipper)ViewContent_ViewFlipper).onDetachedFromWindow_P();
 		}		
 		//////////////////////////////////////////////////////////
-		Log.v(TAG, "onDetach");
+		Log.v(tag, "onDetach");
 	}
 
 	@Override
@@ -229,7 +231,7 @@ public class MediaRendererListFragement extends Fragment {
 	private DeviceDisplay addDeviceDisplay;
 	//Phone Close Done Bar 顯示
 	public boolean CheckTITLE2_1_RLayoutIsShown(){
-		View TITLE2_1_RLayout = Fragment_MainView.findViewById(R.id.pFS_RLayout_TITLE2_1_RLayout);
+		View TITLE2_1_RLayout = fragementMainView.findViewById(R.id.pFS_RLayout_TITLE2_1_RLayout);
 		if(TITLE2_1_RLayout.isShown()){
 			return true;
 		}else{
@@ -238,7 +240,7 @@ public class MediaRendererListFragement extends Fragment {
 	}
 	//Phone Create AddList Item
 	public void SetOptionButtons(List<GroupVO> groupVOList){
-		LinearLayout ChooseScroll_LLayout = (LinearLayout)Fragment_MainView.findViewById(R.id.pFS_RLayout_ViewFlipper_ScrollView_ChooseScroll_LLayout);
+		LinearLayout ChooseScroll_LLayout = (LinearLayout)fragementMainView.findViewById(R.id.pFS_RLayout_ViewFlipper_ScrollView_ChooseScroll_LLayout);
 		ChooseScroll_LLayout.removeAllViews();
 		if(OptionButtonsList!=null){
 			OptionButtonsList.clear();
@@ -258,7 +260,7 @@ public class MediaRendererListFragement extends Fragment {
 	}
 	//Phone RendererList AddList 切換
 	public void ShowViewContent_ViewFlipperDisplay(int Page,int InAnimation,int OutAnimation){
-		View ViewContent_ViewFlipper = Fragment_MainView.findViewById(R.id.pFS_RLayout_ViewContent_ViewFlipper);
+		View ViewContent_ViewFlipper = fragementMainView.findViewById(R.id.pFS_RLayout_ViewContent_ViewFlipper);
 		if(ViewContent_ViewFlipper==null){
 			return;
 		}
@@ -273,8 +275,8 @@ public class MediaRendererListFragement extends Fragment {
 			((ViewFlipper)ViewContent_ViewFlipper).setOutAnimation(null);
 		}
 		
-		View TITLE2_1_RLayout = Fragment_MainView.findViewById(R.id.pFS_RLayout_TITLE2_1_RLayout);
-		View Bottom2_RLayout = Fragment_MainView.findViewById(R.id.pFS_RLayout_Bottom2_RLayout);
+		View TITLE2_1_RLayout = fragementMainView.findViewById(R.id.pFS_RLayout_TITLE2_1_RLayout);
+		View Bottom2_RLayout = fragementMainView.findViewById(R.id.pFS_RLayout_Bottom2_RLayout);
 		switch(Page){
 		case 0:				
 			//顯示AddView
@@ -337,17 +339,17 @@ public class MediaRendererListFragement extends Fragment {
 					}else{
 						values[1] =new ActionArgumentValue(RelationAction, "Remove");
 					}
-					mlog.info(TAG, "DeviceUDN  = "+values[0].toString());
-					mlog.info(TAG, "RelationAction = "+values[1].toString());
+					mlog.info(tag, "DeviceUDN  = "+values[0].toString());
+					mlog.info(tag, "RelationAction = "+values[1].toString());
 					ActionInvocation ai = new ActionInvocation(SetRelationWithMasterAction,values);
 					ActionCallback SetRelationWithMasterActionCallBack = new ActionCallback(ai){
 						@Override
 						public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
-							mlog.info(TAG, "SetRelationWithMasterActionCallBack failure = "+arg2);
+							mlog.info(tag, "SetRelationWithMasterActionCallBack failure = "+arg2);
 						}
 						@Override
 						public void success(ActionInvocation arg0) {									
-							mlog.info(TAG, "SetRelationWithMasterActionCallBack success");
+							mlog.info(tag, "SetRelationWithMasterActionCallBack success");
 						}											
 					};
 					upnpServer.getControlPoint().execute(SetRelationWithMasterActionCallBack);	

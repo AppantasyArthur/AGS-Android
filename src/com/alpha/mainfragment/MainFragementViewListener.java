@@ -1,4 +1,4 @@
-package com.FAM.SETTING;
+package com.alpha.mainfragment;
 
 import org.teleal.cling.android.AndroidUpnpService;
 import org.teleal.cling.controlpoint.ActionCallback;
@@ -33,6 +33,7 @@ import android.widget.TextView;
 
 import com.alpha.fragments.MediaRendererMusicInfoFragement;
 import com.alpha.upnp.DeviceDisplay;
+import com.alpha.upnp.value.AGSHandlerMessages;
 import com.alpha.upnpui.Fragment_SETTING;
 import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
@@ -43,17 +44,34 @@ import com.tkb.tool.TKBThreadReadBitMapInAssets;
 import com.tkb.tool.TKBThreadReadStateListInAssets;
 import com.tkb.tool.TKBTool;
 
-public class FAM_VIEW_LISTNER {
+// FAM_VIEW_LISTNER
+public class MainFragementViewListener {
+	
 	private Context context;
 	private TKBLog mlog = new TKBLog();
-	private static final String TAG = "FAM_VIEW_LISTNER";
+	private static final String tag = "MainFragementViewListener";
 	private int device_size = 0;
 	private FragmentManager fragmentManager;
 	
 	private SaveQueueListPopupWindow popupWindow;	
+	private Handler handlerMusicInfoViewListener = new Handler(){
+
+		@Override
+		public void handleMessage(Message msg) {
+			
+			if(msg.what == AGSHandlerMessages.CLOSE_GENERAL_PROGRESS){
+	
+				if(popupWindow != null)
+					popupWindow.dismiss();
+				
+			}
+			
+		}
+		
+	};
 	
 	private ProcessBarListner processBarListner;
-	public FAM_VIEW_LISTNER(Context context, int device_size,FragmentManager fragmentManager) {
+	public MainFragementViewListener(Context context, int device_size,FragmentManager fragmentManager) {
 		this.context = context;
 		this.mlog.switchLog = true;
 		this.device_size = device_size;
@@ -118,7 +136,7 @@ public class FAM_VIEW_LISTNER {
 			Clear_Button.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Log.i(TAG, "Clear_Button On Click");
+					Log.i(tag, "Clear_Button On Click");
 					//取得upnpServer
 					AndroidUpnpService upnpServer = ((MainFragmentActivity)context).getUPnPService();
 					//取得MR Device
@@ -145,11 +163,11 @@ public class FAM_VIEW_LISTNER {
 							ActionCallback RemoveAllTracksInQueueActionCallBack = new ActionCallback(ai){
 								@Override
 								public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
-									mlog.info(TAG, "RemoveAllTracksInQueueActionCallBack failure = "+arg2);
+									mlog.info(tag, "RemoveAllTracksInQueueActionCallBack failure = "+arg2);
 								}
 								@Override
 								public void success(ActionInvocation arg0) {									
-									mlog.info(TAG, "RemoveAllTracksInQueueActionCallBack success");
+									mlog.info(tag, "RemoveAllTracksInQueueActionCallBack success");
 								}											
 							};
 							upnpServer.getControlPoint().execute(RemoveAllTracksInQueueActionCallBack);
@@ -197,7 +215,7 @@ public class FAM_VIEW_LISTNER {
 				@Override
 				public void onClick(View v) {
 					if(popupWindow==null){
-						popupWindow = new SaveQueueListPopupWindow(context);
+						popupWindow = new SaveQueueListPopupWindow(context, handlerMusicInfoViewListener);
 					}
 					popupWindow.showPopupWindow(v.getRootView(), Gravity.CENTER, 0, 0);
 				}
@@ -267,7 +285,7 @@ public class FAM_VIEW_LISTNER {
 				@Override
 				public void onClick(View v) {
 					int Tag = (Integer)v.getTag();
-					Log.i(TAG, "Tag = "+Tag);
+					Log.i(tag, "Tag = "+Tag);
 					switch(Tag){
 					case 0:
 						SetPlayMode(1);
@@ -308,7 +326,7 @@ public class FAM_VIEW_LISTNER {
 								new TKBThreadReadBitMapInAssets(context, "pad/PlayBack/shuffle_f.png", Random_IButton, 2);
 								Cycle_IButton.setTag(3);
 							}
-							mlog.info(TAG, "SetPlay_IButton_State = "+MR_PlayMode);
+							mlog.info(tag, "SetPlay_IButton_State = "+MR_PlayMode);
 						}
 					});
 					
@@ -361,11 +379,11 @@ public class FAM_VIEW_LISTNER {
 				ActionCallback SetPlayModeActionCallBack = new ActionCallback(ai){
 					@Override
 					public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
-						mlog.info(TAG, "SetPlayModeActionCallBack failure = "+arg2);
+						mlog.info(tag, "SetPlayModeActionCallBack failure = "+arg2);
 					}
 					@Override
 					public void success(ActionInvocation arg0) {									
-						mlog.info(TAG, "SetPlayModeActionCallBack success");
+						mlog.info(tag, "SetPlayModeActionCallBack success");
 					}											
 				};
 				upnpServer.getControlPoint().execute(SetPlayModeActionCallBack);	
@@ -456,12 +474,12 @@ public class FAM_VIEW_LISTNER {
 							ActionCallback PreviousCallBack = new ActionCallback(ai){
 								@Override
 								public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
-									mlog.info(TAG, "PreviousCallBack failure = "+arg2);
+									mlog.info(tag, "PreviousCallBack failure = "+arg2);
 									PlayMusic();
 								}
 								@Override
 								public void success(ActionInvocation arg0) {									
-									mlog.info(TAG, "PreviousCallBack success");
+									mlog.info(tag, "PreviousCallBack success");
 									PlayMusic();
 								}											
 							};
@@ -513,12 +531,12 @@ public class FAM_VIEW_LISTNER {
 							ActionCallback NextCallBack = new ActionCallback(ai){
 								@Override
 								public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
-									mlog.info(TAG, "NextCallBack failure = "+arg2);
+									mlog.info(tag, "NextCallBack failure = "+arg2);
 									PlayMusic();
 								}
 								@Override
 								public void success(ActionInvocation arg0) {									
-									mlog.info(TAG, "NextCallBack success");
+									mlog.info(tag, "NextCallBack success");
 									PlayMusic();
 								}											
 							};
@@ -532,13 +550,14 @@ public class FAM_VIEW_LISTNER {
 	}
 	
 	
-	public void Play_IButton_LISTNER(final ImageButton Play_IButton) {
+	public void setPlaybackButtonListener(final ImageButton buttonPlayback) {
+		
 		if(DeviceProperty.isPhone()){
 			//***************************PHONE*********************************	
 			//***************************PHONE*********************************	
 		}else{
 			//***************************PAD*********************************
-			Play_IButton.setOnClickListener(new View.OnClickListener() {
+			buttonPlayback.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					int tag = (Integer)v.getTag();
@@ -555,32 +574,33 @@ public class FAM_VIEW_LISTNER {
 			});
 			//***************************PAD*********************************
 		}
-		Play_IButton_Listner PI_Listner = new Play_IButton_Listner(){
+		PlaybackButtonListener listenerPlayback = new PlaybackButtonListener(){
+			
 			@Override
-			public void SetPlay_IButton_State(String MR_State) {
-				if(MR_State.equals("STOPPED")){
-					Play_IButton.post(new Runnable(){
+			public void setPlaybackState(String stateMediaRenderPlayback) {
+				if(stateMediaRenderPlayback.equals("STOPPED")){
+					buttonPlayback.post(new Runnable(){
 						@Override
 						public void run() {
-							Play_IButton.setTag(0);
-							new TKBThreadReadStateListInAssets(context, "phone/play_volume/play_f.png","phone/play_volume/play_n.png", Play_IButton, 2);	
+							buttonPlayback.setTag(0);
+							new TKBThreadReadStateListInAssets(context, "phone/play_volume/play_f.png","phone/play_volume/play_n.png", buttonPlayback, 2);	
 						}
 					});
 					
-				}else if(MR_State.equals("PLAYING")){
-					Play_IButton.post(new Runnable(){
+				}else if(stateMediaRenderPlayback.equals("PLAYING")){
+					buttonPlayback.post(new Runnable(){
 						@Override
 						public void run() {
-							Play_IButton.setTag(1);
-							new TKBThreadReadStateListInAssets(context, "phone/play_volume/stop_f.png","phone/play_volume/stop_n.png", Play_IButton, 2);	
+							buttonPlayback.setTag(1);
+							new TKBThreadReadStateListInAssets(context, "phone/play_volume/stop_f.png","phone/play_volume/stop_n.png", buttonPlayback, 2);	
 						}
 					});
 				}
-				mlog.info(TAG, "SetPlay_IButton_State = "+MR_State);
+				mlog.info(tag, "SetPlay_IButton_State = " + stateMediaRenderPlayback);
 			}
 		};
 		//注測Play EVEN
-		((MainFragmentActivity)context).getDeviceDisplayList().setPlay_IButton_Listner(PI_Listner);
+		((MainFragmentActivity)context).getDeviceDisplayList().setPlaybackButtonListener4Pad(listenerPlayback);
 		
 	}
 	private void StopMusic(){
@@ -604,11 +624,11 @@ public class FAM_VIEW_LISTNER {
 			Stop ActionCallback = new Stop(instanceId,StopService){
 				@Override
 			    public void success(ActionInvocation invocation) {
-					mlog.info(TAG, "Stop success");
+					mlog.info(tag, "Stop success");
 				}
 				@Override
 				public void failure(ActionInvocation arg0,UpnpResponse arg1, String arg2) {
-					mlog.info(TAG, "Stop failure");							
+					mlog.info(tag, "Stop failure");							
 				}
 			};
 			upnpServer.getControlPoint().execute(ActionCallback);
@@ -635,50 +655,67 @@ public class FAM_VIEW_LISTNER {
 			Play ActionCallback = new Play(instanceId,PlayService){
 				@Override
 			    public void success(ActionInvocation invocation) {
-					mlog.info(TAG, "Play success");
+					mlog.info(tag, "Play success");
 				}
 				@Override
 				public void failure(ActionInvocation arg0,UpnpResponse arg1, String arg2) {
-					mlog.info(TAG, "Play failure");							
+					mlog.info(tag, "Play failure");							
 				}
 			};
 			upnpServer.getControlPoint().execute(ActionCallback);
 		}		
 	}
-	public void SetTimeSeekLISTNER(final TextView Current_TextView,final SeekBar Music_SeekBar,final TextView Total_TextView){
+	
+	public void setTimeProgressListener(final TextView viewElapsedTimeText, final SeekBar seekbarPlayback, final TextView viewTotalTimeText){
+		
 		final Handler seekHandler = new Handler(){
 			public void handleMessage (Message msg) {
 				switch(msg.what){
 				case 0:
-					Current_TextView.setText((String)msg.obj);
+					viewElapsedTimeText.setText((String)msg.obj);
 					break;
 				case 1:
-					Total_TextView.setText((String)msg.obj);
+					viewTotalTimeText.setText((String)msg.obj);
 					break;
 				}
 			}
 		};
-		Music_SeekBar_Listner music_SeekBar_Listner = new Music_SeekBar_Listner(){
+		
+		MusicPlaybackSeekBarListener listenerPlaybackSeekBar = new MusicPlaybackSeekBarListener(){
+			
 			@Override
-			public void SetSeek(Long secondTotal, Long secondRun, String stringTotal, String stringRun) {
-				if(Music_SeekBar.getMax()!=secondTotal.intValue()){
-					Music_SeekBar.setMax(secondTotal.intValue());
-				}
-				if(Music_SeekBar.getProgress()!=secondRun.intValue()){
-					Music_SeekBar.setProgress(secondRun.intValue());
-				}
-				if(!stringRun.equals(Current_TextView.getText().toString())){
-					seekHandler.obtainMessage(0, stringRun).sendToTarget();
-				}
+			public void setSeekTime(Long secondTotal, Long secondCurrent, String stringTotal, String stringCurrent) {
 				
-				if(stringTotal!=null&&!stringTotal.equals(Total_TextView.getText().toString())){
+				if(secondTotal != null
+				&& seekbarPlayback.getMax() != secondTotal.intValue()){
+					seekbarPlayback.setMax(secondTotal.intValue());
+				}
+				if(secondCurrent != null
+				&& seekbarPlayback.getProgress() != secondCurrent.intValue()){
+					seekbarPlayback.setProgress(secondCurrent.intValue());
+				}
+				if(stringCurrent != null
+				&& !stringCurrent.equals(viewElapsedTimeText.getText().toString())){
+					seekHandler.obtainMessage(0, stringCurrent).sendToTarget();
+				}
+				if(stringTotal != null 
+				&& !stringTotal.equals(viewTotalTimeText.getText().toString())){
 					seekHandler.obtainMessage(1, stringTotal).sendToTarget();
 				}
+			}
+			
+			@Override
+			public int getElapsedTime() {
 				
+				if(seekbarPlayback != null)
+					return seekbarPlayback.getProgress();
+				else
+					return -1;
 				
 			}
+			
 		};
-		((MainFragmentActivity)context).getDeviceDisplayList().setMusic_SeekBar_Listner(music_SeekBar_Listner);
+		((MainFragmentActivity)context).getDeviceDisplayList().setMusicPlaybackSeekBarListener4Pad(listenerPlaybackSeekBar);
 	}
 	public void Sound_SeekBarLISTNER(final SeekBar Sound_SeekBar,final ImageView Sound_ImageButton){
 		Sound_SeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){

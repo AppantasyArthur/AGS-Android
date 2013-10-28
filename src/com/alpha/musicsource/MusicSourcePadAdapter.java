@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.teleal.cling.android.AndroidUpnpService;
 import org.teleal.cling.model.action.ActionInvocation;
@@ -41,11 +42,12 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
+// FM_Music_ListView_BaseAdapter_PAD
+public class MusicSourcePadAdapter extends BaseAdapter {
 	
 	private Context context;
 	private TKBLog mlog = new TKBLog();
-	private static final String TAG = "FM_Music_ListView_BaseAdapter_PAD";	
+	private static final String tag = "MusicSourcePadAdapter";	
 
 	//==============類別清單================
 	private List<String> CategoryList;
@@ -56,10 +58,10 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 	private List<Item> MusicTrackList;
 	//====================================
 	//===========AGSPlayList==============
-	private List<String> LocalNameList;
+	private List<JSONObject> LocalNameList;
 	private List<TrackDO> LocalMusicTrackList;
 	//====================================
-	private FM_Music_ListView_BaseAdapter_Listner FMLBAListner;	
+	private MusicSourceAdapterListener FMLBAListner;	
 	private List<String> ParentID = new ArrayList<String>();
 	private Device chooseDevice;
 	private Handler handler = new Handler(){
@@ -69,7 +71,7 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 				if(DeviceList!=null){
 					DeviceList.add((DeviceDisplay)msg.obj);
 					if(ParentID.size()==1&&ParentID.get(0).equals("0")){
-						FM_Music_ListView_BaseAdapter_PAD.this.notifyDataSetChanged();
+						MusicSourcePadAdapter.this.notifyDataSetChanged();
 					}					
 				}
 				break;
@@ -77,39 +79,39 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 				if(DeviceList!=null){
 					DeviceList.remove((DeviceDisplay)msg.obj);
 					if(ParentID.size()==1&&ParentID.get(0).equals("0")){
-						FM_Music_ListView_BaseAdapter_PAD.this.notifyDataSetChanged();
+						MusicSourcePadAdapter.this.notifyDataSetChanged();
 					}	
 				}
 				break;	
 			case 2:
 				if(ParentID.size()==1&&ParentID.get(0).equals("1")){
-					FM_Music_ListView_BaseAdapter_PAD.this.notifyDataSetChanged();
+					MusicSourcePadAdapter.this.notifyDataSetChanged();
 				}
 				break;
 			case 10:				
-				FM_Music_ListView_BaseAdapter_PAD.this.notifyDataSetChanged();
+				MusicSourcePadAdapter.this.notifyDataSetChanged();
 				break;
 			case 11:
 				FileContent fileContent = (FileContent)msg.obj;
 				if(fileContent.ParentID!=null){
-					FM_Music_ListView_BaseAdapter_PAD.this.ParentID.add(fileContent.ParentID);
+					MusicSourcePadAdapter.this.ParentID.add(fileContent.ParentID);
 				}		
-				FM_Music_ListView_BaseAdapter_PAD.this.ContainerList.clear();
-				FM_Music_ListView_BaseAdapter_PAD.this.MusicTrackList.clear();
+				MusicSourcePadAdapter.this.ContainerList.clear();
+				MusicSourcePadAdapter.this.MusicTrackList.clear();
 				if(fileContent.ContainerList!=null){
 					for(int i=0;i<fileContent.ContainerList.size();i++){
-						FM_Music_ListView_BaseAdapter_PAD.this.ContainerList.add(fileContent.ContainerList.get(i));
+						MusicSourcePadAdapter.this.ContainerList.add(fileContent.ContainerList.get(i));
 					}
 				}
 				if(fileContent.Itemlist!=null){
 					for(int i=0;i<fileContent.Itemlist.size();i++){
 						Item item = fileContent.Itemlist.get(i);
 						if(item.getClass().getName().equals("org.teleal.cling.support.model.item.MusicTrack")||item.getClass().getName().equals("org.teleal.cling.support.model.item.AudioItem")){
-							FM_Music_ListView_BaseAdapter_PAD.this.MusicTrackList.add(item);
+							MusicSourcePadAdapter.this.MusicTrackList.add(item);
 						}
 					}
 				}	
-				FM_Music_ListView_BaseAdapter_PAD.this.notifyDataSetChanged();
+				MusicSourcePadAdapter.this.notifyDataSetChanged();
 				break;
 			case 13:
 				View view = (View)msg.obj;				
@@ -127,7 +129,7 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 			
 		}
 	};
-	public FM_Music_ListView_BaseAdapter_PAD(Context context){
+	public MusicSourcePadAdapter(Context context){
 		this.context = context;		
 		this.mlog.switchLog = true;
 		this.DeviceList = new ArrayList<DeviceDisplay>();
@@ -138,6 +140,7 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 	}
 	private void SetList(){
 		//?��??��? ?��??�差
+		
 		CategoryList = new ArrayList<String>();		
 		CategoryList.add("Media Server");
 		CategoryList.add("AGS PlayList");
@@ -152,30 +155,30 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 		GetLocalNameList();
 	}
 	private void SetListner(){
-		FMLBAListner = new FM_Music_ListView_BaseAdapter_Listner(){
+		FMLBAListner = new MusicSourceAdapterListener(){
 			@Override
 			public void AddMediaServer(DeviceDisplay deviceDisplay) {
 				handler.obtainMessage(0, deviceDisplay).sendToTarget();
-				mlog.info(TAG, "AddMediaServer");
+				mlog.info(tag, "AddMediaServer");
 			}
 
 			@Override
 			public void RemoveMediaServer(DeviceDisplay deviceDisplay) {
 				handler.obtainMessage(1, deviceDisplay).sendToTarget();
-				mlog.info(TAG, "RemoveMediaServer");
+				mlog.info(tag, "RemoveMediaServer");
 			}
 
 			@Override
 			public void LocalNameListChange() {
 				GetLocalNameList();
 				handler.obtainMessage(2).sendToTarget();
-				mlog.info(TAG, "LocalNameListChange");
+				mlog.info(tag, "LocalNameListChange");
 			}
 			
 		};
 		((MainFragmentActivity)context).getDeviceDisplayList().setMusicListner(FMLBAListner);
 	}
-	public FM_Music_ListView_BaseAdapter_Listner GetListner(){
+	public MusicSourceAdapterListener GetListner(){
 		return this.FMLBAListner;
 	}
 	@Override
@@ -272,20 +275,22 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 				break;			
 			case 1:
 				//AGS PlayList
-				viewHandler.cell_RLayout_Name_TextView.setText(this.LocalNameList.get(position));
+				viewHandler.cell_RLayout_Name_TextView.setText(this.LocalNameList.get(position).optString("Name"));
 				viewHandler.kindOfItme = 4;	
 				viewHandler.object = this.LocalNameList.get(position);
 				viewHandler.cell_RLayout_Image_ImageView.setVisibility(View.VISIBLE);
 				break;					
 			}					
 		}else{
-			//�?0 層顯�?			viewHandler.cell_RLayout_Name_TextView.setText(CategoryList.get(position));
+			//�?0 層顯�?			
+			
+			viewHandler.cell_RLayout_Name_TextView.setText(CategoryList.get(position));
 			viewHandler.kindOfItme = 0;	
 			viewHandler.object = position;
 			viewHandler.cell_RLayout_Image_ImageView.setVisibility(View.VISIBLE);
 		}
 		
-		mlog.info(TAG, "position = "+position);
+		mlog.info(tag, "position = "+position);
 		return convertView;
 	}
 	
@@ -333,21 +338,21 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 		if(ContainerList!=null){
 			for(int i =0;i<ContainerList.size();i++){
 				Container container = ContainerList.get(i);
-				mlog.info(TAG, "PID="+container.getParentID());
-				mlog.info(TAG, "ID="+container.getId());
-				mlog.info(TAG, "Title="+container.getTitle());
-				mlog.info(TAG, "CC"+container.getChildCount());
-				mlog.info(TAG, "S="+container.toString());
+				mlog.info(tag, "PID="+container.getParentID());
+				mlog.info(tag, "ID="+container.getId());
+				mlog.info(tag, "Title="+container.getTitle());
+				mlog.info(tag, "CC"+container.getChildCount());
+				mlog.info(tag, "S="+container.toString());
 			}		
 		}
 		if(Itemlist!=null){
 			for(int i =0;i<Itemlist.size();i++){
 				Item item = Itemlist.get(i);
-				mlog.info(TAG, "Item PID="+item.getParentID());
-				mlog.info(TAG, "Item ID="+item.getId());
-				mlog.info(TAG, "Item Title="+item.getTitle());
-				mlog.info(TAG, "RFID"+item.getRefID());
-				mlog.info(TAG, "Item S="+item.toString());
+				mlog.info(tag, "Item PID="+item.getParentID());
+				mlog.info(tag, "Item ID="+item.getId());
+				mlog.info(tag, "Item Title="+item.getTitle());
+				mlog.info(tag, "RFID"+item.getRefID());
+				mlog.info(tag, "Item S="+item.toString());
 			}
 		}		
 		handler.obtainMessage(11,new FileContent(ParentID,ContainerList,Itemlist)).sendToTarget();
@@ -359,15 +364,29 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 		if(this.LocalNameList!=null){
 			LocalNameList.clear();
 		}
-		this.LocalNameList = new ArrayList<String>();
+		this.LocalNameList = new ArrayList<JSONObject>();
 		SharedPreferences sharedPreferences = context.getSharedPreferences("LocalMusicList", Context.MODE_PRIVATE);
-		String strLocalMusicListName = sharedPreferences.getString("LocalMusicList", "{}");
-		JSONObject MusicList = TKBTool.StringToJSONObject(strLocalMusicListName);
-		Iterator Names = MusicList.keys();
-		while(Names.hasNext()){
-			String name = (String)Names.next();
-			this.LocalNameList.add(name);
+		String strLocalMusicListName = sharedPreferences.getString("LocalMusicList", "[]");
+		try {
+			
+			JSONArray MusicList = new JSONArray(strLocalMusicListName);
+			for(int i = 0;i < MusicList.length();i++){
+								
+				JSONObject o = MusicList.optJSONObject(i); // MusicList.get(i);
+				mlog.debug(tag, o.toString());
+				LocalNameList.add(o);
+				
+			}
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
 		}
+//		JSONObject MusicList = TKBTool.StringToJSONObject(strLocalMusicListName);
+//		Iterator Names = MusicList.keys();
+//		while(Names.hasNext()){
+//			String name = (String)Names.next();
+//			this.LocalNameList.add(name);
+//		}
 	}
 	public void ShowLocalFile(Button MusicBack_Button,String Name){
 		this.ParentID.add(""+Name);
@@ -438,25 +457,25 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 		Browse browse = new Browse(chooseDevice.findService(new UDAServiceType("ContentDirectory")), this.ParentID.get(ParentID.size()-1), BrowseFlag.DIRECT_CHILDREN, "", 0, 0l, null){
 			@Override
 			public void received(ActionInvocation arg0,	DIDLContent arg1) {
-				FM_Music_ListView_BaseAdapter_PAD.this.ParentID.remove(FM_Music_ListView_BaseAdapter_PAD.this.ParentID.size()-1);
+				MusicSourcePadAdapter.this.ParentID.remove(MusicSourcePadAdapter.this.ParentID.size()-1);
 				List<Container> listC = arg1.getContainers();
 				List<Item> listI = arg1.getItems();
-				FM_Music_ListView_BaseAdapter_PAD.this.ShowFile(MusicBack_Button,null, listC,listI);
+				MusicSourcePadAdapter.this.ShowFile(MusicBack_Button,null, listC,listI);
 				for(int i =0;i<listC.size();i++){
 					Container container = listC.get(i);
-					mlog.info(TAG, "PID="+container.getParentID());
-					mlog.info(TAG, "ID="+container.getId());
-					mlog.info(TAG, "Title="+container.getTitle());
-					mlog.info(TAG, "CC"+container.getChildCount());
-					mlog.info(TAG, "S="+container.toString());
+					mlog.info(tag, "PID="+container.getParentID());
+					mlog.info(tag, "ID="+container.getId());
+					mlog.info(tag, "Title="+container.getTitle());
+					mlog.info(tag, "CC"+container.getChildCount());
+					mlog.info(tag, "S="+container.toString());
 				}								
 				for(int i =0;i<listI.size();i++){
 					Item item = listI.get(i);
-					mlog.info(TAG, "Item PID="+item.getParentID());
-					mlog.info(TAG, "Item ID="+item.getId());
-					mlog.info(TAG, "Item Title="+item.getTitle());
-					mlog.info(TAG, "RFID"+item.getRefID());
-					mlog.info(TAG, "Item S="+item.toString());
+					mlog.info(tag, "Item PID="+item.getParentID());
+					mlog.info(tag, "Item ID="+item.getId());
+					mlog.info(tag, "Item Title="+item.getTitle());
+					mlog.info(tag, "RFID"+item.getRefID());
+					mlog.info(tag, "Item S="+item.toString());
 				}
 			}
 			@Override
@@ -464,7 +483,7 @@ public class FM_Music_ListView_BaseAdapter_PAD extends BaseAdapter {
 			}
 			@Override
 			public void failure(ActionInvocation arg0,UpnpResponse arg1, String arg2) {		
-				Log.i(TAG, "Container failure = "+arg2);
+				Log.i(tag, "Container failure = "+arg2);
 			}							
 		};			
 		upnpServer.getControlPoint().execute(browse);			

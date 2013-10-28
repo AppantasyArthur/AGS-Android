@@ -1,4 +1,4 @@
-package com.FAM.SETTING;
+package com.alpha.mainfragment;
 
 import java.io.IOException;
 import java.io.StringReader;

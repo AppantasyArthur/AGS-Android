@@ -23,7 +23,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.FAM.SETTING.FAM_ViewFlipper;
+import com.alpha.mainfragment.FAM_ViewFlipper;
 import com.alpha.musicinfo.FI_PointLiLayout;
 import com.alpha.musicinfo.MusicInfoListPadViewAdapter;
 import com.alpha.musicinfo.MusicInfoListPhoneViewAdapter;
@@ -113,7 +113,9 @@ public class MediaRendererMusicInfoFragement extends AGSFragment {
 		this.settingMusicInfoView.VIEWSET(fragementMainView.findViewById(R.id.pFI_RLayout_Bottom_RLayout));
 		this.settingMusicInfoView.VIEWSET(fragementMainView.findViewById(R.id.pFI_RLayout_Bottom2_RLayout));
 	}
+	
 	private void initPhoneViewListener() {
+		
 		//¤Á´«Speaker «ö¶s
 		this.listenerMusicInfoView.Speaker_Button_LISTNER((Button)fragementMainView.findViewById(R.id.pFI_RLayout_RLayout_Speaker_Button));
 		//¤Á´«Music «ö¶s
@@ -121,11 +123,12 @@ public class MediaRendererMusicInfoFragement extends AGSFragment {
 		//Án­µ«ö¶s
 		this.listenerMusicInfoView.Sound_IButton_LISTNER((ImageButton)fragementMainView.findViewById(R.id.pFI_RLayout_RLayout_Sound_IButton));
 		//¼½©ñ¾¹«ö¶s
-		this.listenerMusicInfoView.Previous_IButton_LISTNER((ImageButton)fragementMainView.findViewById(R.id.pFI_RLayout_RLayout_Previous_IButton));
-		this.listenerMusicInfoView.Next_IButton_LISTNER((ImageButton)fragementMainView.findViewById(R.id.pFI_RLayout_RLayout_Next_IButton));
-		this.listenerMusicInfoView.Play_IButton_LISTNER((ImageButton)fragementMainView.findViewById(R.id.pFI_RLayout_RLayout_Play_IButton));
+		this.listenerMusicInfoView.setPreviousButtonListener((ImageButton)fragementMainView.findViewById(R.id.pFI_RLayout_RLayout_Previous_IButton));
+		this.listenerMusicInfoView.setNextButtonListener((ImageButton)fragementMainView.findViewById(R.id.pFI_RLayout_RLayout_Next_IButton));
+		this.listenerMusicInfoView.setPlaybackButtonListener((ImageButton)fragementMainView.findViewById(R.id.pFI_RLayout_RLayout_Play_IButton));
+		
 		//TimeSeek
-		this.listenerMusicInfoView.SetTimeSeekLISTNER((TextView)fragementMainView.findViewById(R.id.pFI_RLayout_RLayout_Current_TextView),
+		this.listenerMusicInfoView.setTimeProgressListener((TextView)fragementMainView.findViewById(R.id.pFI_RLayout_RLayout_Current_TextView),
 												(SeekBar)fragementMainView.findViewById(R.id.pFI_RLayout_RLayout_Music_SeekBar),
 												(TextView)fragementMainView.findViewById(R.id.pFI_RLayout_RLayout_Total_TextView));
 		//PlayMode«ö¶s
@@ -144,7 +147,7 @@ public class MediaRendererMusicInfoFragement extends AGSFragment {
 		//PlayMode¡BTimeSeek ±±¨îbar ¶}Ãö
 		this.listenerMusicInfoView.ShowTITLE4_IButton_LISTNER((ImageButton)fragementMainView.findViewById(R.id.pFI_RLayout_RLayout_ShowTITLE4_IButton),
 														(RelativeLayout)fragementMainView.findViewById(R.id.pFI_RLayout_TITLE4_RLayout));
-		this.listenerMusicInfoView.Sound_SeekBarLISTNER((SeekBar)fragementMainView.findViewById(R.id.pFI_RLayout_RLayout_Sound_SeekBar),
+		this.listenerMusicInfoView.setSoundSeekBarListener((SeekBar)fragementMainView.findViewById(R.id.pFI_RLayout_RLayout_Sound_SeekBar),
 												(ImageButton)fragementMainView.findViewById(R.id.pFI_RLayout_RLayout_Sound_IButton));
 		//Queue
 		this.listenerMusicInfoView.setQueueListViewListener(viewMediaRenderQueueList);	

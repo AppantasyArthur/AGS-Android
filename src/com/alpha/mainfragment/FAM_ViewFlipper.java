@@ -1,4 +1,4 @@
-package com.FAM.SETTING;
+package com.alpha.mainfragment;
 
 import android.content.Context;
 import android.util.AttributeSet;

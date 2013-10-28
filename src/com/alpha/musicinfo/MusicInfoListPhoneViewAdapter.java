@@ -13,7 +13,20 @@ import org.teleal.cling.model.meta.ActionArgument;
 import org.teleal.cling.model.meta.Service;
 import org.teleal.cling.model.types.ServiceId;
 import org.teleal.cling.model.types.UDAServiceId;
-import org.teleal.cling.support.model.item.Item;
+
+import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.alpha.upnp.DeviceDisplay;
 import com.alpha.upnp.parser.TrackDO;
@@ -22,28 +35,13 @@ import com.alpha.upnpui.R;
 import com.tkb.tool.TKBLog;
 import com.tkb.tool.TKBThreadReadBitMapInAssets;
 import com.tkb.tool.TKBTool;
-import android.content.Context;
-import android.graphics.Color;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
+// FM_Queue_ListView_BaseAdapter
 public class MusicInfoListPhoneViewAdapter extends BaseAdapter {
 	
 	private Context context;
 	private TKBLog mlog = new TKBLog();
-	private static final String TAG = "FM_Queue_ListView_BaseAdapter";
+	private static final String TAG = "MusicInfoListPhoneViewAdapter";
 		
 	private boolean isEdit = false;
 	private int startDragPosition = -1;
@@ -85,7 +83,7 @@ public class MusicInfoListPhoneViewAdapter extends BaseAdapter {
 		this.context = context;		
 		this.mlog.switchLog = true;
 		
-		MusicInfoQueueListViewBaseAdapterListener queqe_listner = new MusicInfoQueueListViewBaseAdapterListener(){
+		MusicInfoQueueListViewAdapterListener queqe_listner = new MusicInfoQueueListViewAdapterListener(){
 			@Override
 			public void cleanQueueList() {				
 				handler.obtainMessage(0).sendToTarget();

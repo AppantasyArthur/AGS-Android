@@ -15,18 +15,18 @@ import com.tkb.tool.TKBThreadReadBitMapInAssets;
 import com.tkb.tool.TKBThreadReadStateListInAssets;
 import com.tkb.tool.TKBTool;
 
-public class FS_VIEW_SETTING {
+public class MRListViewSetting {
 	private Context context;
 	private TKBLog mlog = new TKBLog();
 	private static final String TAG = "FS_VIEW_SETTING";
 	private int device_size = 0;
 	
-	public FS_VIEW_SETTING(Context context,int device_size){
+	public MRListViewSetting(Context context,int device_size){
 		this.context = context;
 		this.mlog.switchLog = true;
 		this.device_size = device_size;
 	}
-	public void VIEWSET(View view){
+	public void setView(View view){
 		if(DeviceProperty.isPhone()){
 			switch(view.getId()){
 			case R.id.pFS_RLayout:

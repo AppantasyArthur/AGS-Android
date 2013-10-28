@@ -3,7 +3,7 @@
     android:id="@+id/pFAM_RLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-	<com.FAM.SETTING.FAM_ViewFlipper 
+	<com.alpha.mainfragment.FAM_ViewFlipper 
 	    android:id="@+id/pFAM_RLayout_ViewContent_ViewFlipper"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
@@ -23,7 +23,7 @@
 		    android:layout_width="match_parent"
 		    android:layout_height="match_parent"
 	        ></RelativeLayout>
-	</com.FAM.SETTING.FAM_ViewFlipper>
+	</com.alpha.mainfragment.FAM_ViewFlipper>
 	<FrameLayout 
 	     android:id="@+id/pFAM_RLayout_SETTING_FLayoutt"
 		 android:layout_width="match_parent"

@@ -1,8 +1,8 @@
 eclipse.preferences.version=1
 encoding//src/com/alpha/musicinfo/MusicInfoListPadViewAdapter.java=UTF-8
 encoding//src/com/alpha/musicinfo/MusicInfoListPhoneViewAdapter.java=UTF-8
-encoding//src/com/alpha/musicsource/FM_Music_ListView_BaseAdapter_PAD.java=UTF-8
-encoding//src/com/alpha/musicsource/FM_Music_ListView_BaseAdapter_Phone.java=UTF-8
+encoding//src/com/alpha/musicsource/MusicSourcePadAdapter.java=UTF-8
+encoding//src/com/alpha/musicsource/MusicSourcePhoneAdapter.java=UTF-8
 encoding//src/com/alpha/setting/alarm/musicbrowsing/AlarmSettingMusicBrowsingListViewPadAdapter.java=UTF-8
 encoding//src/com/alpha/setting/alarm/musicbrowsing/AlarmSettingMusicBrowsingListViewPhoneAdapter.java=UTF-8
 encoding//src/com/alpha/setting/firmwareupdate/FirmwareUpdateSettingViewListener.java=UTF-8

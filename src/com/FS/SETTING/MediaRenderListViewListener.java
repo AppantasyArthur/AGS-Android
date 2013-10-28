@@ -32,12 +32,12 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-import com.FAM.SETTING.FAM_PopupWindow;
-import com.FAM.SETTING.Music_SeekBar_Listner;
-import com.FAM.SETTING.PlayMode_IButton_Listner;
-import com.FAM.SETTING.Play_IButton_Listner;
-import com.FAM.SETTING.Sound_SeekBar_Listner;
 import com.alpha.fragments.MediaRendererListFragement;
+import com.alpha.mainfragment.FAM_PopupWindow;
+import com.alpha.mainfragment.MusicPlaybackSeekBarListener;
+import com.alpha.mainfragment.PlayMode_IButton_Listner;
+import com.alpha.mainfragment.PlaybackButtonListener;
+import com.alpha.mainfragment.Sound_SeekBar_Listner;
 import com.alpha.upnp.DeviceDisplay;
 import com.alpha.upnpui.Fragment_SETTING;
 import com.alpha.upnpui.MainFragmentActivity;
@@ -48,14 +48,15 @@ import com.tkb.tool.TKBThreadReadBitMapInAssets;
 import com.tkb.tool.TKBThreadReadStateListInAssets;
 import com.tkb.tool.TKBTool;
 
-
-public class FS_VIEW_LISTNER {
+// FS_VIEW_LISTNER
+public class MediaRenderListViewListener {
+	
 	private Context context;
 	private TKBLog mlog = new TKBLog();
-	private static final String TAG = "FS_VIEW_LISTNER";
+	private static final String tag = "MediaRenderListViewListener";
 	private int device_size = 0;
 	private FragmentManager fragmentManager;
-	public FS_VIEW_LISTNER(Context context, int device_size,FragmentManager fragmentManager) {
+	public MediaRenderListViewListener(Context context, int device_size,FragmentManager fragmentManager) {
 		this.context = context;
 		this.mlog.switchLog = true;
 		this.device_size = device_size;
@@ -151,12 +152,12 @@ public class FS_VIEW_LISTNER {
 						ActionCallback PreviousCallBack = new ActionCallback(ai){
 							@Override
 							public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
-								mlog.info(TAG, "PreviousCallBack failure = "+arg2);
+								mlog.info(tag, "PreviousCallBack failure = "+arg2);
 								PlayMusic();
 							}
 							@Override
 							public void success(ActionInvocation arg0) {									
-								mlog.info(TAG, "PreviousCallBack success");
+								mlog.info(tag, "PreviousCallBack success");
 								PlayMusic();
 							}											
 						};
@@ -201,12 +202,12 @@ public class FS_VIEW_LISTNER {
 						ActionCallback NextCallBack = new ActionCallback(ai){
 							@Override
 							public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
-								mlog.info(TAG, "NextCallBack failure = "+arg2);
+								mlog.info(tag, "NextCallBack failure = "+arg2);
 								PlayMusic();
 							}
 							@Override
 							public void success(ActionInvocation arg0) {									
-								mlog.info(TAG, "NextCallBack success");
+								mlog.info(tag, "NextCallBack success");
 								PlayMusic();
 							}											
 						};
@@ -217,7 +218,7 @@ public class FS_VIEW_LISTNER {
 		});			
 	}	
 	
-	public void Play_IButton_LISTNER(final ImageButton Play_IButton) {
+	public void setPlaybackButtonListener(final ImageButton Play_IButton) {
 		Play_IButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -233,9 +234,9 @@ public class FS_VIEW_LISTNER {
 				
 			}
 		});
-		Play_IButton_Listner PI_Listner = new Play_IButton_Listner(){
+		PlaybackButtonListener PI_Listner = new PlaybackButtonListener(){
 			@Override
-			public void SetPlay_IButton_State(String MR_State) {
+			public void setPlaybackState(String MR_State) {
 				if(MR_State.equals("STOPPED")){
 					Play_IButton.post(new Runnable(){
 						@Override
@@ -254,11 +255,11 @@ public class FS_VIEW_LISTNER {
 						}
 					});
 				}
-				mlog.info(TAG, "SetPlay_IButton_State = "+MR_State);
+				mlog.info(tag, "SetPlay_IButton_State = "+MR_State);
 			}
 		};
 		//注測Play EVEN
-		((MainFragmentActivity)context).getDeviceDisplayList().setPlay_IButton_Listner(PI_Listner);
+		((MainFragmentActivity)context).getDeviceDisplayList().setPlaybackButtonListener4Pad(PI_Listner);
 	}
 	private void StopMusic(){
 		//取得upnpServer
@@ -281,11 +282,11 @@ public class FS_VIEW_LISTNER {
 			Stop ActionCallback = new Stop(instanceId,StopService){
 				@Override
 			    public void success(ActionInvocation invocation) {
-					mlog.info(TAG, "Stop success");
+					mlog.info(tag, "Stop success");
 				}
 				@Override
 				public void failure(ActionInvocation arg0,UpnpResponse arg1, String arg2) {
-					mlog.info(TAG, "Stop failure");							
+					mlog.info(tag, "Stop failure");							
 				}
 			};
 			upnpServer.getControlPoint().execute(ActionCallback);
@@ -312,50 +313,69 @@ public class FS_VIEW_LISTNER {
 			Play ActionCallback = new Play(instanceId,PlayService){
 				@Override
 			    public void success(ActionInvocation invocation) {
-					mlog.info(TAG, "Play success");
+					mlog.info(tag, "Play success");
 				}
 				@Override
 				public void failure(ActionInvocation arg0,UpnpResponse arg1, String arg2) {
-					mlog.info(TAG, "Play failure");							
+					mlog.info(tag, "Play failure");							
 				}
 			};
 			upnpServer.getControlPoint().execute(ActionCallback);
 		}		
 	}
-	public void SetTimeSeekLISTNER(final TextView Current_TextView,final SeekBar Music_SeekBar,final TextView Total_TextView){
+	public void setTimeProgressListener(final TextView viewElapsedTimeText,final SeekBar seekbarPlayback,final TextView viewTotalTimeText){
+		
 		final Handler seekHandler = new Handler(){
 			public void handleMessage (Message msg) {
 				switch(msg.what){
 				case 0:
-					Current_TextView.setText((String)msg.obj);
+					viewElapsedTimeText.setText((String)msg.obj);
 					break;
 				case 1:
-					Total_TextView.setText((String)msg.obj);
+					viewTotalTimeText.setText((String)msg.obj);
 					break;
 				}
 			}
 		};
-		Music_SeekBar_Listner music_SeekBar_Listner = new Music_SeekBar_Listner(){
+		
+		MusicPlaybackSeekBarListener listenerPlaybackSeekBar = new MusicPlaybackSeekBarListener(){
+			
 			@Override
-			public void SetSeek(Long secondTotal, Long secondRun, String stringTotal, String stringRun) {
-				if(Music_SeekBar.getMax()!=secondTotal.intValue()){
-					Music_SeekBar.setMax(secondTotal.intValue());
+			public void setSeekTime(Long secondTotal, Long secondRun, String stringTotal, String stringRun) {
+				if(secondTotal != null
+				&& seekbarPlayback.getMax()!=secondTotal.intValue()){
+					seekbarPlayback.setMax(secondTotal.intValue());
 				}
-				if(Music_SeekBar.getProgress()!=secondRun.intValue()){
-					Music_SeekBar.setProgress(secondRun.intValue());
+				if(secondRun != null
+				&& seekbarPlayback.getProgress()!=secondRun.intValue()){
+					seekbarPlayback.setProgress(secondRun.intValue());
 				}
-				if(!stringRun.equals(Current_TextView.getText().toString())){
+				if(stringRun != null
+				&& !stringRun.equals(viewElapsedTimeText.getText().toString())){
 					seekHandler.obtainMessage(0, stringRun).sendToTarget();
 				}
 				
-				if(stringTotal!=null&&!stringTotal.equals(Total_TextView.getText().toString())){
+				if(stringTotal != null
+				&&!stringTotal.equals(viewTotalTimeText.getText().toString())){
 					seekHandler.obtainMessage(1, stringTotal).sendToTarget();
 				}
 				
+			}
+			
+			@Override
+			public int getElapsedTime() {
+				
+				if(seekbarPlayback != null)
+					return seekbarPlayback.getProgress();
+				else
+					return -1;
 				
 			}
+			
 		};
-		((MainFragmentActivity)context).getDeviceDisplayList().setMusic_SeekBar_Listner(music_SeekBar_Listner);
+		
+		((MainFragmentActivity)context).getDeviceDisplayList().setMusicPlaybackSeekBarListener4Pad(listenerPlaybackSeekBar);
+		
 	}
 	public void Sound_SeekBarLISTNER(final SeekBar Sound_SeekBar,final ImageView Sound_ImageButton){
 		Sound_SeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
@@ -417,7 +437,7 @@ public class FS_VIEW_LISTNER {
 			@Override
 			public void onClick(View v) {
 				int Tag = (Integer)v.getTag();
-				Log.i(TAG, "Tag = "+Tag);
+				Log.i(tag, "Tag = "+Tag);
 				switch(Tag){
 				case 0:
 					SetPlayMode(1);
@@ -457,7 +477,7 @@ public class FS_VIEW_LISTNER {
 							new TKBThreadReadBitMapInAssets(context, "phone/play_volume/shuffle_f.png", Random_IButton, 2);
 							Cycle_IButton.setTag(3);
 						}
-						mlog.info(TAG, "SetPlay_IButton_State = "+MR_PlayMode);
+						mlog.info(tag, "SetPlay_IButton_State = "+MR_PlayMode);
 					}
 				});
 				
@@ -509,11 +529,11 @@ public class FS_VIEW_LISTNER {
 				ActionCallback SetPlayModeActionCallBack = new ActionCallback(ai){
 					@Override
 					public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
-						mlog.info(TAG, "SetPlayModeActionCallBack failure = "+arg2);
+						mlog.info(tag, "SetPlayModeActionCallBack failure = "+arg2);
 					}
 					@Override
 					public void success(ActionInvocation arg0) {									
-						mlog.info(TAG, "SetPlayModeActionCallBack success");
+						mlog.info(tag, "SetPlayModeActionCallBack success");
 					}											
 				};
 				upnpServer.getControlPoint().execute(SetPlayModeActionCallBack);	
@@ -565,8 +585,8 @@ public class FS_VIEW_LISTNER {
 					if(groupPosition>=0){	
 						//取得deviceDisplay在畫面上Cell的位置
 						int position = fS_SPEAKER_EListView.getFlatListPosition(fS_SPEAKER_EListView.getPackedPositionForGroup(groupPosition));
-						mlog.info(TAG, "groupPosition = "+groupPosition);
-						mlog.info(TAG, "position = "+position);
+						mlog.info(tag, "groupPosition = "+groupPosition);
+						mlog.info(tag, "position = "+position);
 						//取得CellView
 						View groupView = fS_SPEAKER_EListView.getChildAt(position);						
 						if(groupView==null){
@@ -638,8 +658,8 @@ public class FS_VIEW_LISTNER {
 					if(groupPosition>=0){	
 						//取得deviceDisplay在畫面上Cell的位置
 						int position = fS_SPEAKER_EListView.getFlatListPosition(fS_SPEAKER_EListView.getPackedPositionForGroup(groupPosition));
-						mlog.info(TAG, "groupPosition = "+groupPosition);
-						mlog.info(TAG, "position = "+position);
+						mlog.info(tag, "groupPosition = "+groupPosition);
+						mlog.info(tag, "position = "+position);
 						//取得CellView
 						View groupView = fS_SPEAKER_EListView.getChildAt(position);						
 						if(groupView==null){
