@@ -233,8 +233,11 @@ public class AGSMediaServerContentDirectoryService extends
         
         String duration = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
         String bitrate = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_BITRATE);
+        Log.d(tag, "duration : " + duration.toString());
+        Log.d(tag, "bitrate : " + bitrate.toString());
         
         Res r = new Res(typeMIME, children.length(), duration, Long.valueOf(bitrate), getURL(uri.toString()));
+        //r.setDuration(duration);
         MusicTrack mt = new MusicTrack(
 				"-1", "-1", 
 				title,

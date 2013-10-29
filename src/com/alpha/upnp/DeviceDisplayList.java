@@ -48,7 +48,7 @@ import com.FS.SETTING.RunState_TextView_Listner2;
 import com.alpha.mainfragment.MusicPlaybackSeekBarListener;
 import com.alpha.mainfragment.PlayMode_IButton_Listner;
 import com.alpha.mainfragment.PlaybackButtonListener;
-import com.alpha.mainfragment.Sound_SeekBar_Listner;
+import com.alpha.mainfragment.VolumeSeekBarListner;
 import com.alpha.musicinfo.MusicInfoQueueListViewAdapterListener;
 import com.alpha.musicinfo.MusicInfo_Listner;
 import com.alpha.musicsource.MusicSourceAdapterListener;
@@ -96,8 +96,8 @@ public class DeviceDisplayList implements Parcelable  {
 	private RunState_TextView_Listner2 runState_TextView_Listner2;//Speaker 跑馬燈
 	private MusicPlaybackSeekBarListener listenerPlaybackSeekBar4Pad;//TiemSeek
 	private MusicPlaybackSeekBarListener listenerPlaybackSeekBar4Phone;//TiemSeek 
-	private Sound_SeekBar_Listner sound_SeekBar_Listner;//GroupSoundSeek
-	private Sound_SeekBar_Listner Info_Sound_SeekBar_Listner;//GroupSoundSeek
+	private VolumeSeekBarListner listenerVolumeSeekBar4Pad;//GroupSoundSeek
+	private VolumeSeekBarListner listenerVolumeSeekBar4Phone;//GroupSoundSeek
 	private MusicSourceAdapterListener FMLBAListner;//Music
 	private PlaybackButtonListener listenerPlaybackButton4Pad;//播放器 按鈕
 	private PlaybackButtonListener listenerPlaybackButton4Phone;//播放器 按鈕
@@ -259,11 +259,14 @@ public class DeviceDisplayList implements Parcelable  {
 		}
 		
 		//Group SoundSeekBar 歸零
-		if(sound_SeekBar_Listner!=null){
-			sound_SeekBar_Listner.SetSeek(0);
-			if(Info_Sound_SeekBar_Listner!=null){
-				Info_Sound_SeekBar_Listner.SetSeek(0);
+		if(listenerVolumeSeekBar4Pad != null){
+			
+			listenerVolumeSeekBar4Pad.setVolume(0);
+			
+			if(listenerVolumeSeekBar4Phone != null){
+				listenerVolumeSeekBar4Phone.setVolume(0);
 			}
+			
 		}
 		
 		//設定QueqeCallBack
@@ -477,11 +480,11 @@ public class DeviceDisplayList implements Parcelable  {
 	public void setMusicPlaybackSeekBarListener4Phone(MusicPlaybackSeekBarListener listenerPlaybackSeekBar) {
 		this.listenerPlaybackSeekBar4Phone = listenerPlaybackSeekBar;
 	}
-	public void setSound_SeekBar_Listner(Sound_SeekBar_Listner sound_SeekBar_Listner) {
-		this.sound_SeekBar_Listner = sound_SeekBar_Listner;
+	public void setSoundSeekBarListner4Pad(VolumeSeekBarListner sound_SeekBar_Listner) {
+		this.listenerVolumeSeekBar4Pad = sound_SeekBar_Listner;
 	}
-	public void setInfo_Sound_SeekBar_Listner(Sound_SeekBar_Listner info_Sound_SeekBar_Listner) {
-		this.Info_Sound_SeekBar_Listner = info_Sound_SeekBar_Listner;
+	public void setSoundSeekBarListner4Phone(VolumeSeekBarListner info_Sound_SeekBar_Listner) {
+		this.listenerVolumeSeekBar4Phone = info_Sound_SeekBar_Listner;
 	}
 	public void setMusicListner(MusicSourceAdapterListener FMLBAListner){
 		this.FMLBAListner = FMLBAListner;

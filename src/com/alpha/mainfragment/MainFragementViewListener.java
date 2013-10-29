@@ -1,5 +1,7 @@
 package com.alpha.mainfragment;
 
+import java.util.ArrayList;
+
 import org.teleal.cling.android.AndroidUpnpService;
 import org.teleal.cling.controlpoint.ActionCallback;
 import org.teleal.cling.model.action.ActionArgumentValue;
@@ -33,7 +35,12 @@ import android.widget.TextView;
 
 import com.alpha.fragments.MediaRendererMusicInfoFragement;
 import com.alpha.upnp.DeviceDisplay;
+import com.alpha.upnp.DeviceDisplayList;
+import com.alpha.upnp.service.AGSAVTransportService;
+import com.alpha.upnp.service.AGSRenderingControl;
 import com.alpha.upnp.value.AGSHandlerMessages;
+import com.alpha.upnp.value.AVTransportServiceValues;
+import com.alpha.upnp.value.RenderingControlValues;
 import com.alpha.upnpui.Fragment_SETTING;
 import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
@@ -45,6 +52,7 @@ import com.tkb.tool.TKBThreadReadStateListInAssets;
 import com.tkb.tool.TKBTool;
 
 // FAM_VIEW_LISTNER
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class MainFragementViewListener {
 	
 	private Context context;
@@ -120,7 +128,7 @@ public class MainFragementViewListener {
 	}
 	public void Sound_IButton_LISTNER(ImageButton Sound_IButton){
 		Sound_IButton.setOnClickListener(new View.OnClickListener() {
-			private FAM_PopupWindow fam_PopupWindow = new FAM_PopupWindow(context);
+			private MainFragementVolumeSettingPopupWindow fam_PopupWindow = new MainFragementVolumeSettingPopupWindow(context);
 			@Override
 			public void onClick(View view) {
 				fam_PopupWindow.showAsDropDown(view);
@@ -634,6 +642,7 @@ public class MainFragementViewListener {
 			upnpServer.getControlPoint().execute(ActionCallback);
 		}
 	}
+	
 	private void PlayMusic(){
 		//¨ú±oupnpServer
 		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).getUPnPService();
@@ -653,6 +662,7 @@ public class MainFragementViewListener {
 		//ÀË¬dStopService
 		if(PlayService!=null){
 			Play ActionCallback = new Play(instanceId,PlayService){
+				
 				@Override
 			    public void success(ActionInvocation invocation) {
 					mlog.info(tag, "Play success");
@@ -666,9 +676,10 @@ public class MainFragementViewListener {
 		}		
 	}
 	
+	private Handler seekHandler ;
 	public void setTimeProgressListener(final TextView viewElapsedTimeText, final SeekBar seekbarPlayback, final TextView viewTotalTimeText){
 		
-		final Handler seekHandler = new Handler(){
+		seekHandler = new Handler(){
 			public void handleMessage (Message msg) {
 				switch(msg.what){
 				case 0:
@@ -680,6 +691,65 @@ public class MainFragementViewListener {
 				}
 			}
 		};
+		
+		if(seekbarPlayback != null){
+			
+			seekbarPlayback.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
+
+				@Override
+				public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+					mlog.debug(tag, "onProgressChanged : " + progress);
+				}
+
+				@Override
+				public void onStartTrackingTouch(SeekBar seekBar) {
+					mlog.debug(tag, "onStartTrackingTouch");
+				}
+
+				@SuppressWarnings({ "rawtypes", "unchecked" })
+				@Override
+				public void onStopTrackingTouch(SeekBar seekBar) {
+					
+					mlog.debug(tag, "onStopTrackingTouch");
+					
+					Integer secondCurrent = seekBar.getProgress();
+					
+					long hh = secondCurrent / 60 / 60;
+					long mm = secondCurrent / 60 - hh * 60;
+					long ss = secondCurrent % 60;
+					
+					String stringCurrent = String.format("%d",hh)+":"+ String.format("%02d",mm)+":"+ String.format("%02d",ss);
+					
+					AGSAVTransportService service = new AGSAVTransportService(DeviceDisplayList.getChooseMediaRenderer().getDevice()
+							, MainFragmentActivity.getMessageHandler());
+					
+					Action action = service.getActionSeek();
+					if(action != null){
+						
+						ArrayList<ActionArgumentValue> values = new ArrayList<ActionArgumentValue>();
+						
+						ActionArgument argInstanceID = action.getInputArgument(AVTransportServiceValues.ACTION_SEEK_INPUT_INSTANCE_ID);
+						ActionArgumentValue valInstanceID = new ActionArgumentValue(argInstanceID, "0");
+						values.add(valInstanceID);
+						
+						ActionArgument argUnit = action.getInputArgument(AVTransportServiceValues.ACTION_SEEK_INPUT_UNIT);
+						ActionArgumentValue valUnit = new ActionArgumentValue(argUnit, "ABS_TIME");
+						values.add(valUnit);
+						
+						ActionArgument argTarget = action.getInputArgument(AVTransportServiceValues.ACTION_SEEK_INPUT_TARGET);
+						ActionArgumentValue valTarget = new ActionArgumentValue(argTarget, stringCurrent);
+						values.add(valTarget);
+						
+						service.actDumpAllTracksInQueue(values.toArray(new ActionArgumentValue[values.size()])
+								, null);
+						
+					}
+					
+				}
+				
+			});
+			
+		}
 		
 		MusicPlaybackSeekBarListener listenerPlaybackSeekBar = new MusicPlaybackSeekBarListener(){
 			
@@ -707,49 +777,51 @@ public class MainFragementViewListener {
 			@Override
 			public int getElapsedTime() {
 				
-				if(seekbarPlayback != null)
-					return seekbarPlayback.getProgress();
-				else
-					return -1;
+				return seekbarPlayback.getProgress();
 				
 			}
 			
 		};
 		((MainFragmentActivity)context).getDeviceDisplayList().setMusicPlaybackSeekBarListener4Pad(listenerPlaybackSeekBar);
 	}
-	public void Sound_SeekBarLISTNER(final SeekBar Sound_SeekBar,final ImageView Sound_ImageButton){
-		Sound_SeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-			int position = 0;
+	
+	public void setVolumeSeekBarListener(final SeekBar seekbarVolume, final ImageView imageVolumeButton){
+		
+		seekbarVolume.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
+//			int position = 0;
 			
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-				setSound_Image(progress,Sound_ImageButton);
+				mlog.debug(tag, "onProgressChanged : " + progress);
 			}					
 			@Override
-			public void onStartTrackingTouch(SeekBar seekBar) {				
-				this.position = seekBar.getProgress();
+			public void onStartTrackingTouch(SeekBar seekBar) {	
+				mlog.debug(tag, "onStartTrackingTouch");
+//				this.position = seekBar.getProgress();
 			}
-
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
-				int stopPosition = seekBar.getProgress();	
-				seekBar.setProgress(position);
-				this.position = 0;
+				mlog.debug(tag, "onStopTrackingTouch");
+//				int stopPosition = seekBar.getProgress();	
+//				seekBar.setProgress(position);
+//				this.position = 0;
 				
-				SetSoundPosition(stopPosition);
+				setVolumeImage(seekBar.getProgress(), imageVolumeButton);
+				setVolumePosition(seekBar.getProgress());
+				
 			}
 		});
-		Sound_SeekBar_Listner sound_SeekBar_Listner = new Sound_SeekBar_Listner(){
+		VolumeSeekBarListner listenerVolumeSeekBar = new VolumeSeekBarListner(){
 			@Override
-			public void SetSeek(int volume) {
-				mlog.error("SetSeek", "SetSeek = "+volume);
-				Sound_SeekBar.setProgress(volume);				
+			public void setVolume(int volume) {
+				mlog.info(tag, "setVolume = " + volume);
+				seekbarVolume.setProgress(volume);				
 			}
 		};
-		((MainFragmentActivity)context).getDeviceDisplayList().setSound_SeekBar_Listner(sound_SeekBar_Listner);
+		((MainFragmentActivity)context).getDeviceDisplayList().setSoundSeekBarListner4Pad(listenerVolumeSeekBar);
 	}
 	
-	private void setSound_Image(int Vol,ImageView Sound_ImageButton){
+	private void setVolumeImage(int Vol,ImageView Sound_ImageButton){
 		if(Vol ==0){
 			new TKBThreadReadBitMapInAssets(context, "pad/PlayBack/volumn_mute.png",Sound_ImageButton, 1);
 		}else if(Vol>=1&&Vol<=50){
@@ -761,13 +833,33 @@ public class MainFragementViewListener {
 		}		
 	}
 	
-	private void SetSoundPosition(int position){
-		//Group Sound Action
-//		DeviceDisplay deviceDisplay = ((FragmentActivity_Main)context).GETDeviceDisplayList().getChooseMediaRenderer();
-//		
-//		AndroidUpnpService upnpServer = ((FragmentActivity_Main)context).GETUPnPService();
-//		if(deviceDisplay!=null){
-//			
-//		}	
+	private void setVolumePosition(int position){
+		
+		AGSRenderingControl service = new AGSRenderingControl(DeviceDisplayList.getChooseMediaRenderer().getDevice()
+																, MainFragmentActivity.getMessageHandler());
+		
+		Action action = service.getActionSetVolume();
+		if(action != null){
+			
+			ArrayList<ActionArgumentValue> values = new ArrayList<ActionArgumentValue>();
+			
+			ActionArgument argInstanceID = action.getInputArgument(RenderingControlValues.ACTION_SET_VOLUME_INPUT_INSTANCE_ID);
+			ActionArgumentValue valInstanceID = new ActionArgumentValue(argInstanceID, "0");
+			values.add(valInstanceID);
+			
+			ActionArgument argChannel = action.getInputArgument(RenderingControlValues.ACTION_SET_VOLUME_INPUT_CHANNEL);
+			ActionArgumentValue valChannel = new ActionArgumentValue(argChannel, "Master");
+			values.add(valChannel);
+			
+			ActionArgument argVolume = action.getInputArgument(RenderingControlValues.ACTION_SET_VOLUME_INPUT_DESIRED_VOLUME);
+			ActionArgumentValue valVolume = new ActionArgumentValue(argVolume, position);
+			values.add(valVolume);
+			
+			service.actSetVolume(values.toArray(new ActionArgumentValue[values.size()])
+											, null);
+			
+		}
+
 	}
+	
 }

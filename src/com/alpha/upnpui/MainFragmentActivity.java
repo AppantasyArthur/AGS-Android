@@ -10,12 +10,15 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -27,6 +30,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.alpha.fragments.MediaRendererMusicInfoFragement;
@@ -38,6 +42,7 @@ import com.alpha.upnp.BrowseRegistryListener;
 import com.alpha.upnp.DeviceDisplayList;
 import com.alpha.upnp.UpnpServiceConnection;
 import com.alpha.upnp.device.AGSMediaServerDemand;
+import com.alpha.upnp.value.AGSHandlerMessages;
 import com.alpha.util.DeviceProperty;
 import com.tkb.UpnpOverride.AndroidUpnpServiceImpl;
 import com.tkb.tool.DeviceInformation;
@@ -51,6 +56,36 @@ public class MainFragmentActivity extends FragmentActivity {
 	private AGSMediaServerDemand msDemand = null;
 	public static int port = 55688;
 	public static String formatedIpAddress;
+	
+	protected static Handler handler; // = new Handler();
+	public static Handler getMessageHandler(){
+			
+		if(handler == null){
+			
+			handler = new Handler(){
+
+				@Override
+				public void handleMessage(Message msg) {
+					
+					if(msg.what == AGSHandlerMessages.SHOW_MESSAGE){
+						
+						String message = (String)msg.obj;
+								
+						Toast t = Toast.makeText(getContext(), message, Toast.LENGTH_SHORT);
+						t.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+						t.show();
+						
+					}
+					
+				}
+				
+			};
+			
+		}
+			
+		return handler;
+		
+	}
 	
 	//VIEWS
 	private View MainView;
@@ -82,7 +117,7 @@ public class MainFragmentActivity extends FragmentActivity {
 	//Device List
 	private static DeviceDisplayList deviceDisplayList;
 	
-	private static String TAG = "MainFragmentActivity";
+	private static String tag = "MainFragmentActivity";
 	private TKBLog mlog = new TKBLog();
 	private static Context context;
 	public static Context getContext(){
@@ -107,7 +142,7 @@ public class MainFragmentActivity extends FragmentActivity {
  	    .penaltyDeath()
 		.build()); 
 		super.onCreate(savedInstanceState);
-		Log.v(TAG,"onCreate");
+		Log.v(tag,"onCreate");
 		
 		this.context = this;
 		
@@ -153,9 +188,9 @@ public class MainFragmentActivity extends FragmentActivity {
 	    	msDemand = new AGSMediaServerDemand(formatedIpAddress, port);
 	    	try {
 				msDemand.start();
-				Log.i(TAG, "MediaServerDemand start success! - http://" + formatedIpAddress + ":" + port );
+				Log.i(tag, "MediaServerDemand start success! - http://" + formatedIpAddress + ":" + port );
 			} catch (IOException e) {
-				Log.d(TAG, "MediaServerDemand start faild!");
+				Log.d(tag, "MediaServerDemand start faild!");
 				e.printStackTrace();
 			}
 	    	
@@ -215,7 +250,7 @@ public class MainFragmentActivity extends FragmentActivity {
 											(TextView)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Total_TextView));
 		//Sound IButton LISTNER
 		this.listenerView.Sound_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Sound_IButton));
-		this.listenerView.Sound_SeekBarLISTNER((SeekBar)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Sound_SeekBar),
+		this.listenerView.setVolumeSeekBarListener((SeekBar)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Sound_SeekBar),
 												(ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Sound_IButton));
 		//Edit Button BISTNER
 		this.listenerView.Clear_Button_LISTNER((Button)MainView.findViewById(R.id.FAM_RLayout_RLayout_RLayout_Clear_Button),
@@ -262,32 +297,32 @@ public class MainFragmentActivity extends FragmentActivity {
 	@Override
 	protected void onRestart() {
 		super.onRestart();
-		Log.v(TAG,"onRestart");
+		Log.v(tag,"onRestart");
 	}
     
     @Override
 	protected void onStart() {
 		super.onStart();
-		Log.v(TAG,"onStart");
+		Log.v(tag,"onStart");
 	}
     
     @Override
 	protected void onResume() {
 		super.onResume();
 	
-		Log.v(TAG,"onResume");
+		Log.v(tag,"onResume");
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		Log.v(TAG,"onPause");
+		Log.v(tag,"onPause");
 	}
 	
 	@Override
 	protected void onStop() {
 		super.onStop();
-		Log.v(TAG,"onStop");
+		Log.v(tag,"onStop");
 	}
 	
 	@Override
@@ -296,7 +331,7 @@ public class MainFragmentActivity extends FragmentActivity {
 		MainFragmentActivity.this.deviceDisplayList.CancelAllListner();//清除所有Listner
 		MainFragmentActivity.this.unbindService(upnpServiceConnection);		
 //		FragmentActivity_Main.this.deviceDisplayList.cancelTimeSeekBarTimer();//關閉Timer
-		Log.v(TAG,"onDestroy");		
+		Log.v(tag,"onDestroy");		
 	}
 	
 	@Override

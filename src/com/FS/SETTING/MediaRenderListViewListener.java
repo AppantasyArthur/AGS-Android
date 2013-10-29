@@ -33,11 +33,11 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.alpha.fragments.MediaRendererListFragement;
-import com.alpha.mainfragment.FAM_PopupWindow;
+import com.alpha.mainfragment.MainFragementVolumeSettingPopupWindow;
 import com.alpha.mainfragment.MusicPlaybackSeekBarListener;
 import com.alpha.mainfragment.PlayMode_IButton_Listner;
 import com.alpha.mainfragment.PlaybackButtonListener;
-import com.alpha.mainfragment.Sound_SeekBar_Listner;
+import com.alpha.mainfragment.VolumeSeekBarListner;
 import com.alpha.upnp.DeviceDisplay;
 import com.alpha.upnpui.Fragment_SETTING;
 import com.alpha.upnpui.MainFragmentActivity;
@@ -111,7 +111,7 @@ public class MediaRenderListViewListener {
 	}
 	public void Sound_IButton_LISTNER(ImageButton Sound_IButton){
 		Sound_IButton.setOnClickListener(new View.OnClickListener() {
-			private FAM_PopupWindow fam_PopupWindow = new FAM_PopupWindow(context);
+			private MainFragementVolumeSettingPopupWindow fam_PopupWindow = new MainFragementVolumeSettingPopupWindow(context);
 			@Override
 			public void onClick(View view) {
 				fam_PopupWindow.showAsDropDown(view);
@@ -399,14 +399,14 @@ public class MediaRenderListViewListener {
 				SetSoundPosition(stopPosition);
 			}
 		});
-		Sound_SeekBar_Listner sound_SeekBar_Listner = new Sound_SeekBar_Listner(){
+		VolumeSeekBarListner sound_SeekBar_Listner = new VolumeSeekBarListner(){
 			@Override
-			public void SetSeek(int volume) {
+			public void setVolume(int volume) {
 				mlog.error("SetSeek", "SetSeek = "+volume);
 				Sound_SeekBar.setProgress(volume);				
 			}
 		};
-		((MainFragmentActivity)context).getDeviceDisplayList().setSound_SeekBar_Listner(sound_SeekBar_Listner);
+		((MainFragmentActivity)context).getDeviceDisplayList().setSoundSeekBarListner4Pad(sound_SeekBar_Listner);
 	}
 	
 	private void setSound_Image(int Vol,ImageView Sound_ImageButton){

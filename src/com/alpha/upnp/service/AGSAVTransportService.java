@@ -25,6 +25,31 @@ public class AGSAVTransportService {
 	private final Service serviceAVTransport;
 	
 	// action
+	private Action actionSeek;
+	public Action getActionSeek(){
+		
+		if(actionSeek == null){
+			
+			actionSeek = serviceAVTransport.getAction(AVTransportServiceValues.ACTION_SEEK);
+			if(actionSeek == null){
+				
+				String msgWarn = "seek action is null.";
+				
+				// warning
+				Log.i(tag, msgWarn);
+				
+				Message msg = handlerMessage.obtainMessage(AGSHandlerMessages.SHOW_MESSAGE);
+				msg.obj = msgWarn;
+				handlerMessage.sendMessage(msg);
+				
+			}
+			
+		}
+		
+		return actionSeek;
+		
+	}
+	
 	private Action actionAddDumpedTracksToQueue;
 	public Action getActionAddDumpedTracksToQueue() {
 		
@@ -120,6 +145,39 @@ public class AGSAVTransportService {
 			}
 			
 		}
+		
+	}
+	
+	public void actSeek(ActionArgumentValue[] values, final AGSActionSuccessCaller callerSuccessFunction){
+		
+		if(serviceAVTransport == null)
+			return;
+		
+		if(getActionSeek() == null)
+			return;
+		
+		ActionInvocation invocation = new ActionInvocation(getActionSeek() , values);
+		AGSActionCallback callback = new AGSActionCallback(invocation, tag, handlerMessage){
+
+			@Override
+			public void success(ActionInvocation ai) {
+				try {
+					
+					if(callerSuccessFunction != null){
+					
+						callerSuccessFunction.setActionInvocation(ai); // 
+						callerSuccessFunction.call();
+						
+					}
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			
+		};
+		
+		MainFragmentActivity.getServiceAndroidUPnP().getControlPoint().execute(callback);
 		
 	}
 	

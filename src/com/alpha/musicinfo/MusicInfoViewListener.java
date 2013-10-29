@@ -37,12 +37,12 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.alpha.fragments.MediaRendererMusicInfoFragement;
-import com.alpha.mainfragment.FAM_PopupWindow;
+import com.alpha.mainfragment.MainFragementVolumeSettingPopupWindow;
 import com.alpha.mainfragment.MusicPlaybackSeekBarListener;
 import com.alpha.mainfragment.PlayMode_IButton_Listner;
 import com.alpha.mainfragment.PlaybackButtonListener;
 import com.alpha.mainfragment.SaveQueueListPopupWindow;
-import com.alpha.mainfragment.Sound_SeekBar_Listner;
+import com.alpha.mainfragment.VolumeSeekBarListner;
 import com.alpha.upnp.DeviceDisplay;
 import com.alpha.upnp.parser.TrackDO;
 import com.alpha.upnp.value.AGSHandlerMessages;
@@ -277,7 +277,7 @@ public class MusicInfoViewListener {
 	}
 	public void Sound_IButton_LISTNER(ImageButton Sound_IButton){
 		Sound_IButton.setOnClickListener(new View.OnClickListener() {
-			private FAM_PopupWindow fam_PopupWindow = new FAM_PopupWindow(context);
+			private MainFragementVolumeSettingPopupWindow fam_PopupWindow = new MainFragementVolumeSettingPopupWindow(context);
 			@Override
 			public void onClick(View view) {
 				fam_PopupWindow.showAsDropDown(view);
@@ -678,14 +678,14 @@ public class MusicInfoViewListener {
 				SetSoundPosition(stopPosition);
 			}
 		});
-		Sound_SeekBar_Listner info_Sound_SeekBar_Listner = new Sound_SeekBar_Listner(){
+		VolumeSeekBarListner info_Sound_SeekBar_Listner = new VolumeSeekBarListner(){
 			@Override
-			public void SetSeek(int volume) {
+			public void setVolume(int volume) {
 				mlog.error("SetSeek", "SetSeek = "+volume);
 				Sound_SeekBar.setProgress(volume);				
 			}
 		};
-		((MainFragmentActivity)context).getDeviceDisplayList().setInfo_Sound_SeekBar_Listner(info_Sound_SeekBar_Listner);
+		((MainFragmentActivity)context).getDeviceDisplayList().setSoundSeekBarListner4Phone(info_Sound_SeekBar_Listner);
 	}
 	
 	private void setSound_Image(int Vol,ImageView Sound_ImageButton){

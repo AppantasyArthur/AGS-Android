@@ -24,4 +24,9 @@ public class AVTransportServiceValues extends ServiceValues {
 	public static final String ACTION_ADD_DUMPED_TRACKS_TO_QUEUE_INPUT_TRACK_NUMBER = "TrackNumber";
 	public static final String ACTION_ADD_DUMPED_TRACKS_TO_QUEUE_OUTPUT_NR_TRACKS_ADDED = "NrTracksAdded";
 	
+	public static final String ACTION_SEEK = "Seek";
+	public static final String ACTION_SEEK_INPUT_INSTANCE_ID = "InstanceID";
+	public static final String ACTION_SEEK_INPUT_UNIT = "Unit";
+	public static final String ACTION_SEEK_INPUT_TARGET = "Target";
+	
 }
