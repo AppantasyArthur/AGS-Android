@@ -390,12 +390,38 @@ public class FirmwareUpdateSettingViewListener {
 				
 				//FirmwareInfoVO vo = (FirmwareInfoVO)msg.obj;
 				
-				TextView newVersion = (TextView)fragmentMainView.findViewById(R.id.FiramwareUpgradeSettingNewVesrionNumber);
-				newVersion.setText(version);
-				
-				// FiramwareUpgradeSettingCurrentVesrionNumber
-				TextView currentVersion = (TextView)fragmentMainView.findViewById(R.id.FiramwareUpgradeSettingCurrentVesrionNumber);
-				currentVersion.setText(versionCur);
+				if(DeviceProperty.isPhone()){
+					
+					TextView newVersion = (TextView)fragmentMainView.findViewById(R.id.pFSF_RLayout_RLayout_RLayout_RNVision_TextView);
+					
+					if(version.trim().isEmpty()){
+						fragmentMainView.findViewById(R.id.pFSF_RLayout_RLayout_Update_Button).setEnabled(false);
+						version = "N/A";
+					}
+					
+					newVersion.setText(version);
+					
+					// FiramwareUpgradeSettingCurrentVesrionNumber
+					TextView currentVersion = (TextView)fragmentMainView.findViewById(R.id.pFSF_RLayout_RLayout_CVision_TextView);
+					currentVersion.setText("Current Vision : " + versionCur);
+					
+				}else{ // Pad
+					
+					TextView newVersion = (TextView)fragmentMainView.findViewById(R.id.FiramwareUpgradeSettingNewVesrionNumber);
+					
+					if(version.trim().isEmpty()){
+						fragmentMainView.findViewById(R.id.FSF_RLayout_RLayout_Update_Button).setEnabled(false);
+						version = "N/A";
+					}
+					
+					newVersion.setText(version);
+					
+					// FiramwareUpgradeSettingCurrentVesrionNumber
+					TextView currentVersion = (TextView)fragmentMainView.findViewById(R.id.FiramwareUpgradeSettingCurrentVesrionNumber);
+					currentVersion.setText("Current Vision : " + versionCur);
+					
+					
+				}
 				
 				super.handleMessage(msg);
 				

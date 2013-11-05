@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.teleal.cling.android.AndroidUpnpService;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -269,6 +270,8 @@ public class MainFragmentActivity extends FragmentActivity {
 		this.listenerView.Next_IButton_LISTNER((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Next_IButton));
 		this.listenerView.setPlaybackButtonListener((ImageButton)MainView.findViewById(R.id.FAM_RLayout_LLayout_RLayout_Play_IButton));
 	}
+	
+	@SuppressLint("CommitTransaction")
 	private void setPadViewFragment() {	
 		
 		fragmentMediaRendererList = new MediaRendererListFragement();		

@@ -87,6 +87,7 @@ public class FirmwareUpdateSettingFragment extends AGSFragment {
 												this.fragmentManager);
 		listenerView.setUpdateAllButtonListener((Button)fragmentMainView.findViewById(R.id.pFSF_RLayout_RLayout_Update_Button),
 													chooseDeviceDisplay);
+		listenerView.getNewFirmwareInfo(chooseDeviceDisplay, fragmentMainView);
 	}
 	
 	private void intiPadView() {

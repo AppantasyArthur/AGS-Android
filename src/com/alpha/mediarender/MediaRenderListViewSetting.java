@@ -1,4 +1,4 @@
-package com.FS.SETTING;
+package com.alpha.mediarender;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -15,13 +15,13 @@ import com.tkb.tool.TKBThreadReadBitMapInAssets;
 import com.tkb.tool.TKBThreadReadStateListInAssets;
 import com.tkb.tool.TKBTool;
 
-public class MRListViewSetting {
+public class MediaRenderListViewSetting {
 	private Context context;
 	private TKBLog mlog = new TKBLog();
 	private static final String TAG = "FS_VIEW_SETTING";
 	private int device_size = 0;
 	
-	public MRListViewSetting(Context context,int device_size){
+	public MediaRenderListViewSetting(Context context,int device_size){
 		this.context = context;
 		this.mlog.switchLog = true;
 		this.device_size = device_size;
@@ -193,7 +193,7 @@ public class MRListViewSetting {
 	}
 
 	private void pFS_RLayout_SPEAKER_EListView(View view) {
-		FS_SPEAKER_ExpandableListAdapter_Phone EBaseAdapter = new FS_SPEAKER_ExpandableListAdapter_Phone(context,(ExpandableListView)view);
+		MediaRenderExpandableListPhoneAdapter EBaseAdapter = new MediaRenderExpandableListPhoneAdapter(context,(ExpandableListView)view);
 		((ExpandableListView)view).setAdapter(EBaseAdapter);
 		((ExpandableListView)view).setItemsCanFocus(true);
 		((ExpandableListView)view).setGroupIndicator(null);

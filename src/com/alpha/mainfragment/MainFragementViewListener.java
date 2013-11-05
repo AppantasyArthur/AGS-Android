@@ -531,12 +531,12 @@ public class MainFragementViewListener {
 						//GET ActionArgument 
 						ActionArgument InstanceID = action.getInputArgument("InstanceID");						
 						//設定值
-						if(InstanceID!=null){
-							values[0] =new ActionArgumentValue(InstanceID, "0");							
+						if(InstanceID != null){
+							values[0] = new ActionArgumentValue(InstanceID, "0");							
 							
 							ActionInvocation ai = new ActionInvocation(action,values);
 							
-							ActionCallback NextCallBack = new ActionCallback(ai){
+							ActionCallback callbackNext = new ActionCallback(ai){
 								@Override
 								public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
 									mlog.info(tag, "NextCallBack failure = "+arg2);
@@ -548,7 +548,7 @@ public class MainFragementViewListener {
 									PlayMusic();
 								}											
 							};
-							upnpServer.getControlPoint().execute(NextCallBack);	
+							upnpServer.getControlPoint().execute(callbackNext);	
 						}
 					}								
 				}
@@ -611,6 +611,7 @@ public class MainFragementViewListener {
 		((MainFragmentActivity)context).getDeviceDisplayList().setPlaybackButtonListener4Pad(listenerPlayback);
 		
 	}
+	
 	private void StopMusic(){
 		//取得upnpServer
 		AndroidUpnpService upnpServer = ((MainFragmentActivity)context).getUPnPService();
@@ -628,7 +629,7 @@ public class MainFragementViewListener {
 			return;
 		}
 		//檢查StopService
-		if(StopService!=null){
+		if(StopService != null){
 			Stop ActionCallback = new Stop(instanceId,StopService){
 				@Override
 			    public void success(ActionInvocation invocation) {
@@ -653,7 +654,7 @@ public class MainFragementViewListener {
 		//取得service
 		Service PlayService = null;	
 		//檢查 MR_Device
-		if(MR_Device!=null){
+		if(MR_Device != null){
 			//取得device 的 "AVTransport" service
 			PlayService = MR_Device.getDevice().findService( new UDAServiceId("AVTransport"));
 		}else{
@@ -706,7 +707,6 @@ public class MainFragementViewListener {
 					mlog.debug(tag, "onStartTrackingTouch");
 				}
 
-				@SuppressWarnings({ "rawtypes", "unchecked" })
 				@Override
 				public void onStopTrackingTouch(SeekBar seekBar) {
 					
@@ -740,7 +740,7 @@ public class MainFragementViewListener {
 						ActionArgumentValue valTarget = new ActionArgumentValue(argTarget, stringCurrent);
 						values.add(valTarget);
 						
-						service.actDumpAllTracksInQueue(values.toArray(new ActionArgumentValue[values.size()])
+						service.actSeek(values.toArray(new ActionArgumentValue[values.size()])
 								, null);
 						
 					}

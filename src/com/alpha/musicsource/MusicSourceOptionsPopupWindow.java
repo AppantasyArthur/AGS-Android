@@ -72,12 +72,14 @@ public class MusicSourceOptionsPopupWindow extends PopupWindow {
 	private TrackDO trackDO;
 	//TrackDoList
 	private List<TrackDO> trackDOList;
+	// TrackMetaData
+	private JSONObject metadataTracks = null;
 	
 //	private int device_size = 0;
 	
 	private int ContentFlag =0;//1 = Item ,2 = TrackDO ,3 = TrackDoList
 
-	private JSONObject metadataTracks;
+	
 	public MusicSourceOptionsPopupWindow(Context context){
 		super(context);
 		this.mlog.switchLog = true;
@@ -105,6 +107,7 @@ public class MusicSourceOptionsPopupWindow extends PopupWindow {
 		
 	}
 	private void createPhoneViewContent() {
+		
 		this.contentView = LayoutInflater.from(context).inflate(R.layout.fm_popupwindow_context, null,true);		
 		//Content RLayout
 		TKBTool.fitsViewHeight(250, this.contentView.findViewById(R.id.FM_PopupWindow_Content_RLayout));
@@ -181,6 +184,14 @@ public class MusicSourceOptionsPopupWindow extends PopupWindow {
 		setPlayNextButtonListener(OPTION_Button_2);
 		setReplaceQueueButtonListener(OPTION_Button_3);
 		setAdd2QueueButtonListener(OPTION_Button_4);
+		
+		if(metadataTracks != null){
+			
+			OPTION_Button_2.setEnabled(false);
+			OPTION_Button_4.setEnabled(false);
+			
+		}
+		
 	}
 	
 	private void setOptionButtonViewSetting(Button btnOption,String str,int number){

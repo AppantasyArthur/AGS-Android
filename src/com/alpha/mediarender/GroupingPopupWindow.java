@@ -1,4 +1,4 @@
-package com.FS.SETTING;
+package com.alpha.mediarender;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,15 +30,17 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
-public class FS_PopupWindow extends PopupWindow {
+// FS_PopupWindow
+public class GroupingPopupWindow extends PopupWindow {
 	private View contentView;
 	
 	private Context context;
 	private TKBLog mlog = new TKBLog();
-	private static final String TAG = "FS_PopupWindow";
+	private static final String tag = "GroupingPopupWindow";
 	private List<OptionButton> OptionButtonsList;
 	private DeviceDisplay addDeviceDisplay;
-	public FS_PopupWindow(Context context){
+	public GroupingPopupWindow(Context context){
+		
 		super(context);
 		this.mlog.switchLog = true;
 		this.context = context;
@@ -104,7 +106,7 @@ public class FS_PopupWindow extends PopupWindow {
 		TKBTool.fitsViewBottomMargin(24, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_SelectALL_Button));
 		TKBTool.fitsViewTextSize(6, this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_SelectALL_Button));
 		new TKBThreadReadStateListInAssets(context, "pad/pop/unselect_f.png", "pad/pop/select_f.png", this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_SelectALL_Button), 4);
-		mlog.info(TAG, "CreateContentView");
+		mlog.info(tag, "CreateContentView");
 	}
 	public void ShowPopupWindow(View parent,int gravity,int x,int y){
 		this.showAtLocation(parent, gravity, x, y);
@@ -141,14 +143,14 @@ public class FS_PopupWindow extends PopupWindow {
 		this.contentView.findViewById(R.id.FS_PopupWindow_BackGround_RLayout).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				FS_PopupWindow.this.dismiss();	
+				GroupingPopupWindow.this.dismiss();	
 			}
 		});	
 		//Close Button Listener
 		this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_Close_Button).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				FS_PopupWindow.this.dismiss();				
+				GroupingPopupWindow.this.dismiss();				
 			}
 		});
 		//Done Button Listener
@@ -162,15 +164,15 @@ public class FS_PopupWindow extends PopupWindow {
 						SetRelationWithMaster(OptionButtonsList.get(i).groupVO.getUdn(),false);
 					}					
 				}
-				mlog.info(TAG, "Done");
-				FS_PopupWindow.this.dismiss();				
+				mlog.info(tag, "Done");
+				GroupingPopupWindow.this.dismiss();				
 			}
 		});	
 		//SelectAll Button Listener
 		this.contentView.findViewById(R.id.FS_PopupWindow_Content_RLayout_RLayout_SelectALL_Button).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				FS_PopupWindow.this.SetALLOptionButtonsSelect();
+				GroupingPopupWindow.this.SetALLOptionButtonsSelect();
 			}
 		});
 	}
@@ -198,17 +200,17 @@ public class FS_PopupWindow extends PopupWindow {
 					}else{
 						values[1] =new ActionArgumentValue(RelationAction, "Remove");
 					}
-					mlog.info(TAG, "DeviceUDN  = "+values[0].toString());
-					mlog.info(TAG, "RelationAction = "+values[1].toString());
+					mlog.info(tag, "DeviceUDN  = "+values[0].toString());
+					mlog.info(tag, "RelationAction = "+values[1].toString());
 					ActionInvocation ai = new ActionInvocation(SetRelationWithMasterAction,values);
 					ActionCallback SetRelationWithMasterActionCallBack = new ActionCallback(ai){
 						@Override
 						public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2) {
-							mlog.info(TAG, "SetRelationWithMasterActionCallBack failure = "+arg2);
+							mlog.info(tag, "SetRelationWithMasterActionCallBack failure = "+arg2);
 						}
 						@Override
 						public void success(ActionInvocation arg0) {									
-							mlog.info(TAG, "SetRelationWithMasterActionCallBack success");
+							mlog.info(tag, "SetRelationWithMasterActionCallBack success");
 						}											
 					};
 					upnpServer.getControlPoint().execute(SetRelationWithMasterActionCallBack);	

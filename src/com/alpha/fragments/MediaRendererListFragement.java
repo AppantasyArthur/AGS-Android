@@ -34,10 +34,10 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.FS.SETTING.MediaRenderListViewListener;
-import com.FS.SETTING.MRListViewSetting;
-import com.FS.SETTING.OptionButton;
 import com.alpha.mainfragment.FAM_ViewFlipper;
+import com.alpha.mediarender.MediaRenderListViewListener;
+import com.alpha.mediarender.MediaRenderListViewSetting;
+import com.alpha.mediarender.OptionButton;
 import com.alpha.upnp.DeviceDisplay;
 import com.alpha.upnp.parser.GroupVO;
 import com.alpha.upnpui.MainFragmentActivity;
@@ -55,7 +55,7 @@ public class MediaRendererListFragement extends Fragment {
 	//Fragment Manager
 	private FragmentManager fragmentManager = null;
 	//SETTING
-	private MRListViewSetting settingView;
+	private MediaRenderListViewSetting settingView;
 	private MediaRenderListViewListener listenerView;	
 
 	private static String tag = "MediaRendererListFragement";
@@ -75,7 +75,7 @@ public class MediaRendererListFragement extends Fragment {
 		fragmentManager = ((MainFragmentActivity)context).getSupportFragmentManager();
 		
 		//介面設定取得
-        this.settingView = new MRListViewSetting(this.context, this.device_size);
+        this.settingView = new MediaRenderListViewSetting(this.context, this.device_size);
       //動作設定取得
         this.listenerView = new MediaRenderListViewListener(this.context, this.device_size, this.fragmentManager);
 	}
@@ -114,9 +114,9 @@ public class MediaRendererListFragement extends Fragment {
 	private void initPhoneViewListener() {
 		
 		//切換NowPlaying 按鈕
-		this.listenerView.NowPlaying_Button_LISTNER((Button)fragementMainView.findViewById(R.id.pFS_RLayout_RLayout_Nowplaying_Button));
+		this.listenerView.setFlip2NowPlayingFragementButtonListener4Phone((Button)fragementMainView.findViewById(R.id.pFS_RLayout_RLayout_Nowplaying_Button));
 		//切換Music 按鈕
-		this.listenerView.Music_Button_LISTNER((Button)fragementMainView.findViewById(R.id.pFS_RLayout_RLayout_Music_Button));
+		this.listenerView.setFlip2MusicFragementButtonListener4Phone((Button)fragementMainView.findViewById(R.id.pFS_RLayout_RLayout_Music_Button));
 		//Close
 		this.listenerView.Close_Button_LISTNER((Button)fragementMainView.findViewById(R.id.pFS_RLayout_RLayout_Close_Button),
 												this);

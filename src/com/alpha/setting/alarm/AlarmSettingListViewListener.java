@@ -23,7 +23,7 @@ public class AlarmSettingListViewListener {
 	
 	private Context context;
 	private TKBLog mlog = new TKBLog();
-	private static final String TAG = "AlarmSettingListViewListener";
+	private static final String tag = "AlarmSettingListViewListener";
 	private int device_size = 0;
 	private DeviceDisplay chooseDeviceDisplay;
 	
@@ -108,7 +108,7 @@ public class AlarmSettingListViewListener {
 			viewAlarmList.setOnItemClickListener(new OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-					mlog.info(TAG, "AlarmSettingListView click position = " + position);
+					mlog.info(tag, "AlarmSettingListView click position = " + position);
 					AlarmSettingPhoneViewAdapter adapterPhoneView = (AlarmSettingPhoneViewAdapter)adapterAlarmSettingListView;
 					if(adapterPhoneView.isEdit()){
 						return;
@@ -123,7 +123,7 @@ public class AlarmSettingListViewListener {
 			viewAlarmList.setOnItemClickListener(new OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-					mlog.info(TAG, "AlarmSettingListView click position = " + position);
+					mlog.info(tag, "AlarmSettingListView click position = " + position);
 					AlarmSettingPadViewAdapter adapterPadView = (AlarmSettingPadViewAdapter)adapterAlarmSettingListView;
 					if(adapterPadView.isEdit()){ // in remove mode, Arthur
 						return;

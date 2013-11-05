@@ -43,12 +43,12 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.widget.SeekBar;
 
-import com.FS.SETTING.FS_SPEAKER_ExpandableListAdapter_Listner;
-import com.FS.SETTING.RunState_TextView_Listner2;
 import com.alpha.mainfragment.MusicPlaybackSeekBarListener;
 import com.alpha.mainfragment.PlayMode_IButton_Listner;
 import com.alpha.mainfragment.PlaybackButtonListener;
 import com.alpha.mainfragment.VolumeSeekBarListner;
+import com.alpha.mediarender.MediaRenderExpandableListAdapterListner;
+import com.alpha.mediarender.RunState_TextView_Listner2;
 import com.alpha.musicinfo.MusicInfoQueueListViewAdapterListener;
 import com.alpha.musicinfo.MusicInfo_Listner;
 import com.alpha.musicsource.MusicSourceAdapterListener;
@@ -92,7 +92,7 @@ public class DeviceDisplayList implements Parcelable  {
 	private GroupList groupList;//有Group Service 的  MediaRenderer List
 	private List<DeviceDisplay> MSList;//MediaServer List
 	//Listners
-	private FS_SPEAKER_ExpandableListAdapter_Listner FSELAListner;//Speaker
+	private MediaRenderExpandableListAdapterListner FSELAListner;//Speaker
 	private RunState_TextView_Listner2 runState_TextView_Listner2;//Speaker 跑馬燈
 	private MusicPlaybackSeekBarListener listenerPlaybackSeekBar4Pad;//TiemSeek
 	private MusicPlaybackSeekBarListener listenerPlaybackSeekBar4Phone;//TiemSeek 
@@ -468,7 +468,7 @@ public class DeviceDisplayList implements Parcelable  {
 	}
 	//=====================Device=============================
 	//===========Listner 設定================
-	public void setSpeakerListner(FS_SPEAKER_ExpandableListAdapter_Listner FSELAListner){
+	public void setSpeakerListner(MediaRenderExpandableListAdapterListner FSELAListner){
 		this.FSELAListner = FSELAListner;
 	}
 	public void setRunState_TextView_Listner2(RunState_TextView_Listner2 runState_TextView_Listner2){

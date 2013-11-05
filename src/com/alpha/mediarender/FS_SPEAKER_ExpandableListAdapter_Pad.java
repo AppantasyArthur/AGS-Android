@@ -1,4 +1,4 @@
-package com.FS.SETTING;
+package com.alpha.mediarender;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,9 +51,9 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 	private Drawable menu2;
 	private Drawable menu3;
 	
-	private FS_PopupWindow popupWindow;
+	private GroupingPopupWindow popupWindow;
 	
-	private FS_SPEAKER_ExpandableListAdapter_Listner FSELAListner;
+	private MediaRenderExpandableListAdapterListner FSELAListner;
 	
 	private List<DeviceDisplay> GroupList;	
 	
@@ -77,7 +77,7 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 		this.context = context;
 		this.EListView = EListView;
 		this.GroupList = GetGroupList();	
-		this.popupWindow = new FS_PopupWindow(this.context);
+		this.popupWindow = new GroupingPopupWindow(this.context);
 		LoadBitmap();
 		SetList();
 		SetListner();
@@ -97,7 +97,7 @@ public class FS_SPEAKER_ExpandableListAdapter_Pad extends BaseExpandableListAdap
 		}
 	}
 	private void SetListner(){
-		FSELAListner = new FS_SPEAKER_ExpandableListAdapter_Listner(){
+		FSELAListner = new MediaRenderExpandableListAdapterListner(){
 			@Override
 			public void SetPositionChange() {
 				handler.obtainMessage(0).sendToTarget();				

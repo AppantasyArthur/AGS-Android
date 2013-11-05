@@ -1,4 +1,6 @@
-package com.FS.SETTING;
+package com.alpha.mediarender;
+
+import java.util.ArrayList;
 
 import org.teleal.cling.android.AndroidUpnpService;
 import org.teleal.cling.controlpoint.ActionCallback;
@@ -39,6 +41,9 @@ import com.alpha.mainfragment.PlayMode_IButton_Listner;
 import com.alpha.mainfragment.PlaybackButtonListener;
 import com.alpha.mainfragment.VolumeSeekBarListner;
 import com.alpha.upnp.DeviceDisplay;
+import com.alpha.upnp.DeviceDisplayList;
+import com.alpha.upnp.service.AGSAVTransportService;
+import com.alpha.upnp.value.AVTransportServiceValues;
 import com.alpha.upnpui.Fragment_SETTING;
 import com.alpha.upnpui.MainFragmentActivity;
 import com.alpha.upnpui.R;
@@ -49,6 +54,8 @@ import com.tkb.tool.TKBThreadReadStateListInAssets;
 import com.tkb.tool.TKBTool;
 
 // FS_VIEW_LISTNER
+
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class MediaRenderListViewListener {
 	
 	private Context context;
@@ -76,7 +83,7 @@ public class MediaRenderListViewListener {
 			}
 		});
 	}
-	public void NowPlaying_Button_LISTNER(Button NowPlaying_Button){
+	public void setFlip2NowPlayingFragementButtonListener4Phone(Button NowPlaying_Button){
 		NowPlaying_Button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -84,7 +91,7 @@ public class MediaRenderListViewListener {
 			}
 		});
 	}
-	public void Music_Button_LISTNER(Button Music_Button){
+	public void setFlip2MusicFragementButtonListener4Phone(Button Music_Button){
 		Music_Button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -92,7 +99,7 @@ public class MediaRenderListViewListener {
 			}
 		});
 	}
-	public void Close_Button_LISTNER(Button Close_Button,final MediaRendererListFragement fragment_Speaker) {
+	public void Close_Button_LISTNER(Button Close_Button, final MediaRendererListFragement fragment_Speaker) {
 		Close_Button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {				
@@ -323,9 +330,11 @@ public class MediaRenderListViewListener {
 			upnpServer.getControlPoint().execute(ActionCallback);
 		}		
 	}
+	
+	private Handler seekHandler;
 	public void setTimeProgressListener(final TextView viewElapsedTimeText,final SeekBar seekbarPlayback,final TextView viewTotalTimeText){
 		
-		final Handler seekHandler = new Handler(){
+		seekHandler = new Handler(){
 			public void handleMessage (Message msg) {
 				switch(msg.what){
 				case 0:
@@ -337,6 +346,64 @@ public class MediaRenderListViewListener {
 				}
 			}
 		};
+		
+		if(seekbarPlayback != null){
+			
+			seekbarPlayback.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
+
+				@Override
+				public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+					mlog.debug(tag, "onProgressChanged : " + progress);
+				}
+
+				@Override
+				public void onStartTrackingTouch(SeekBar seekBar) {
+					mlog.debug(tag, "onStartTrackingTouch");
+				}
+
+				@Override
+				public void onStopTrackingTouch(SeekBar seekBar) {
+					
+					mlog.debug(tag, "onStopTrackingTouch");
+					
+					Integer secondCurrent = seekBar.getProgress();
+					
+					long hh = secondCurrent / 60 / 60;
+					long mm = secondCurrent / 60 - hh * 60;
+					long ss = secondCurrent % 60;
+					
+					String stringCurrent = String.format("%d",hh)+":"+ String.format("%02d",mm)+":"+ String.format("%02d",ss);
+					
+					AGSAVTransportService service = new AGSAVTransportService(DeviceDisplayList.getChooseMediaRenderer().getDevice()
+							, MainFragmentActivity.getMessageHandler());
+					
+					Action action = service.getActionSeek();
+					if(action != null){
+						
+						ArrayList<ActionArgumentValue> values = new ArrayList<ActionArgumentValue>();
+						
+						ActionArgument argInstanceID = action.getInputArgument(AVTransportServiceValues.ACTION_SEEK_INPUT_INSTANCE_ID);
+						ActionArgumentValue valInstanceID = new ActionArgumentValue(argInstanceID, "0");
+						values.add(valInstanceID);
+						
+						ActionArgument argUnit = action.getInputArgument(AVTransportServiceValues.ACTION_SEEK_INPUT_UNIT);
+						ActionArgumentValue valUnit = new ActionArgumentValue(argUnit, "ABS_TIME");
+						values.add(valUnit);
+						
+						ActionArgument argTarget = action.getInputArgument(AVTransportServiceValues.ACTION_SEEK_INPUT_TARGET);
+						ActionArgumentValue valTarget = new ActionArgumentValue(argTarget, stringCurrent);
+						values.add(valTarget);
+						
+						service.actSeek(values.toArray(new ActionArgumentValue[values.size()])
+								, null);
+						
+					}
+					
+				}
+				
+			});
+			
+		}
 		
 		MusicPlaybackSeekBarListener listenerPlaybackSeekBar = new MusicPlaybackSeekBarListener(){
 			
@@ -547,7 +614,7 @@ public class MediaRenderListViewListener {
 				@Override
 				public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
 					//設定GSELECTED					
-					((FS_SPEAKER_ExpandableListAdapter_Phone)parent.getExpandableListAdapter()).SET_GView_SELECTED(groupPosition);
+					((MediaRenderExpandableListPhoneAdapter)parent.getExpandableListAdapter()).SET_GView_SELECTED(groupPosition);
 					return true;
 				}			
 			});			
@@ -555,7 +622,7 @@ public class MediaRenderListViewListener {
 				@Override
 				public boolean onChildClick(ExpandableListView parent, View v,	int groupPosition, int childPosition, long id) {
 					//設定CSELECTED
-					((FS_SPEAKER_ExpandableListAdapter_Phone)parent.getExpandableListAdapter()).SET_CVIEW_SELECTED(groupPosition, childPosition);
+					((MediaRenderExpandableListPhoneAdapter)parent.getExpandableListAdapter()).SET_CVIEW_SELECTED(groupPosition, childPosition);
 					return true;
 				}					
 			});
@@ -579,7 +646,7 @@ public class MediaRenderListViewListener {
 			RunState_TextView_Listner2 runState_TextView_Listner2 = new RunState_TextView_Listner2(){
 				@Override
 				public void SetRunState_TextView_State(String playMode,	String MetaData_Title, DeviceDisplay deviceDisplay) {
-					final FS_SPEAKER_ExpandableListAdapter_Phone adapter = (FS_SPEAKER_ExpandableListAdapter_Phone)fS_SPEAKER_EListView.getExpandableListAdapter();	
+					final MediaRenderExpandableListPhoneAdapter adapter = (MediaRenderExpandableListPhoneAdapter)fS_SPEAKER_EListView.getExpandableListAdapter();	
 					//取得deviceDisplay在GroupList中的position
 					int groupPosition = adapter.getGroupPosition(deviceDisplay);					
 					if(groupPosition>=0){	

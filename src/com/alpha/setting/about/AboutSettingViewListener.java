@@ -12,10 +12,11 @@ import com.alpha.util.DeviceProperty;
 import com.tkb.tool.TKBLog;
 import com.tkb.tool.TKBTool;
 
+// FSM_VIEW_LISTNER
 public class AboutSettingViewListener {
 	private Context context;
 	private TKBLog mlog = new TKBLog();
-	private static final String TAG = "FSM_VIEW_LISTNER";
+	private static final String tag = "AboutSettingViewListener";
 	private int device_size = 0;
 	public AboutSettingViewListener(Context context, int device_size) {
 		this.context = context;

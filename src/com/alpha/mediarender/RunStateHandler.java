@@ -1,4 +1,4 @@
-package com.FS.SETTING;
+package com.alpha.mediarender;
 
 import android.widget.TextView;
 

@@ -1,4 +1,4 @@
-package com.FS.SETTING;
+package com.alpha.mediarender;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,8 @@ import com.tkb.tool.TKBLog;
 import com.tkb.tool.TKBThreadReadBitMapInAssets;
 import com.tkb.tool.TKBTool;
 
-public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAdapter {
+// FS_SPEAKER_ExpandableListAdapter_Phone
+public class MediaRenderExpandableListPhoneAdapter extends BaseExpandableListAdapter {
 	
 	private Context context;
 	private ExpandableListView EListView;
@@ -53,25 +54,25 @@ public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAd
 	
 //	private FS_PopupWindow popupWindow;
 	
-	private FS_SPEAKER_ExpandableListAdapter_Listner FSELAListner;
+	private MediaRenderExpandableListAdapterListner FSELAListner;
 	
 	private List<DeviceDisplay> GroupList;
-	private static String TAG = "FS_SPEAKER_ExpandableListAdapter_Phone";
+	private static String tag = "MediaRenderExpandableListPhoneAdapter";
 	private TKBLog mlog = new TKBLog();
 	
 	private Handler handler = new Handler(){
 		public void handleMessage (Message msg) {
 			switch(msg.what){			
 			case 0:
-				FS_SPEAKER_ExpandableListAdapter_Phone.this.GroupList.clear();
-				FS_SPEAKER_ExpandableListAdapter_Phone.this.GroupList = GetGroupList();
-				FS_SPEAKER_ExpandableListAdapter_Phone.this.notifyDataSetChanged();
+				MediaRenderExpandableListPhoneAdapter.this.GroupList.clear();
+				MediaRenderExpandableListPhoneAdapter.this.GroupList = GetGroupList();
+				MediaRenderExpandableListPhoneAdapter.this.notifyDataSetChanged();
 				break;			
 			}
 		}
 	};
 	
-	public FS_SPEAKER_ExpandableListAdapter_Phone(Context context,ExpandableListView EListView){
+	public MediaRenderExpandableListPhoneAdapter(Context context,ExpandableListView EListView){
 		this.mlog.switchLog = true;
 		this.context = context;
 		this.EListView = EListView;
@@ -96,11 +97,11 @@ public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAd
 		}
 	}
 	private void SetListner(){
-		FSELAListner = new FS_SPEAKER_ExpandableListAdapter_Listner(){
+		FSELAListner = new MediaRenderExpandableListAdapterListner(){
 			@Override
 			public void SetPositionChange() {
 				handler.obtainMessage(0).sendToTarget();
-				mlog.info(TAG, "SetPositionChange");
+				mlog.info(tag, "SetPositionChange");
 			}
 		};
 		((MainFragmentActivity)context).getDeviceDisplayList().setSpeakerListner(FSELAListner);
@@ -167,9 +168,9 @@ public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAd
 			
 			viewHandler.Name_TextView.setText(GroupList.get(groupPosition).getGroupVO().getGroup().getMembers().get(childPosition).getName());
 		}catch(Exception e){
-			Log.e(TAG, e.getMessage());
+			Log.e(tag, e.getMessage());
 		}
-		mlog.info(TAG, "Gposition = "+groupPosition+"childPosition = "+childPosition);
+		mlog.info(tag, "Gposition = "+groupPosition+"childPosition = "+childPosition);
 		return convertView;
 	}
 	private void basicSetChildView(CViewHandler viewHandler){
@@ -421,7 +422,7 @@ public class FS_SPEAKER_ExpandableListAdapter_Phone extends BaseExpandableListAd
 								}							
 							}
 						}
-						Log.i(TAG, "groupVOList size = "+groupVOList.size());
+						Log.i(tag, "groupVOList size = "+groupVOList.size());
 						
 						fragment_Speaker.SetOptionButtons(groupVOList);
 						fragment_Speaker.SetAddDeviceDisplay(GroupList.get(ClickListener.this.viewHandler.position));

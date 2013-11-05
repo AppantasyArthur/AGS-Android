@@ -1,5 +1,7 @@
 package com.alpha.musicinfo;
 
+import java.util.ArrayList;
+
 import org.teleal.cling.android.AndroidUpnpService;
 import org.teleal.cling.controlpoint.ActionCallback;
 import org.teleal.cling.model.action.ActionArgumentValue;
@@ -44,8 +46,11 @@ import com.alpha.mainfragment.PlaybackButtonListener;
 import com.alpha.mainfragment.SaveQueueListPopupWindow;
 import com.alpha.mainfragment.VolumeSeekBarListner;
 import com.alpha.upnp.DeviceDisplay;
+import com.alpha.upnp.DeviceDisplayList;
 import com.alpha.upnp.parser.TrackDO;
+import com.alpha.upnp.service.AGSAVTransportService;
 import com.alpha.upnp.value.AGSHandlerMessages;
+import com.alpha.upnp.value.AVTransportServiceValues;
 import com.alpha.upnp.value.AGSHandlerMessages.AGSMessageBody;
 import com.alpha.upnpui.Fragment_SETTING;
 import com.alpha.upnpui.MainFragmentActivity;
@@ -57,6 +62,7 @@ import com.tkb.tool.TKBThreadReadStateListInAssets;
 import com.tkb.tool.TKBTool;
 
 // FI_VIEW_LISTNER
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class MusicInfoViewListener {
 	
 	private Context context;
@@ -599,9 +605,10 @@ public class MusicInfoViewListener {
 		}
 	}	
 	
+	private Handler seekHandler ;
 	public void setTimeProgressListener(final TextView viewElapsedTimeText,final SeekBar seekbarPlayback,final TextView viewTotalTimeText){
 		
-		final Handler seekHandler = new Handler(){
+		seekHandler = new Handler(){
 			public void handleMessage (Message msg) {
 				switch(msg.what){
 				case 0:
@@ -613,6 +620,64 @@ public class MusicInfoViewListener {
 				}
 			}
 		};
+		
+		if(seekbarPlayback != null){
+			
+			seekbarPlayback.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
+
+				@Override
+				public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+					mlog.debug(tag, "onProgressChanged : " + progress);
+				}
+
+				@Override
+				public void onStartTrackingTouch(SeekBar seekBar) {
+					mlog.debug(tag, "onStartTrackingTouch");
+				}
+
+				@Override
+				public void onStopTrackingTouch(SeekBar seekBar) {
+					
+					mlog.debug(tag, "onStopTrackingTouch");
+					
+					Integer secondCurrent = seekBar.getProgress();
+					
+					long hh = secondCurrent / 60 / 60;
+					long mm = secondCurrent / 60 - hh * 60;
+					long ss = secondCurrent % 60;
+					
+					String stringCurrent = String.format("%d",hh)+":"+ String.format("%02d",mm)+":"+ String.format("%02d",ss);
+					
+					AGSAVTransportService service = new AGSAVTransportService(DeviceDisplayList.getChooseMediaRenderer().getDevice()
+							, MainFragmentActivity.getMessageHandler());
+					
+					Action action = service.getActionSeek();
+					if(action != null){
+						
+						ArrayList<ActionArgumentValue> values = new ArrayList<ActionArgumentValue>();
+						
+						ActionArgument argInstanceID = action.getInputArgument(AVTransportServiceValues.ACTION_SEEK_INPUT_INSTANCE_ID);
+						ActionArgumentValue valInstanceID = new ActionArgumentValue(argInstanceID, "0");
+						values.add(valInstanceID);
+						
+						ActionArgument argUnit = action.getInputArgument(AVTransportServiceValues.ACTION_SEEK_INPUT_UNIT);
+						ActionArgumentValue valUnit = new ActionArgumentValue(argUnit, "ABS_TIME");
+						values.add(valUnit);
+						
+						ActionArgument argTarget = action.getInputArgument(AVTransportServiceValues.ACTION_SEEK_INPUT_TARGET);
+						ActionArgumentValue valTarget = new ActionArgumentValue(argTarget, stringCurrent);
+						values.add(valTarget);
+						
+						service.actSeek(values.toArray(new ActionArgumentValue[values.size()])
+								, null);
+						
+					}
+					
+				}
+				
+			});
+			
+		}
 		
 		MusicPlaybackSeekBarListener listenerPlaybackSeekBar = new MusicPlaybackSeekBarListener(){
 			

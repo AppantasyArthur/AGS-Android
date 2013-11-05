@@ -87,7 +87,7 @@ public class FirmwareUpgradeSettingViewSetting {
 		TKBTool.fitsViewWidth(290, view.findViewById(R.id.pFSF_RLayout_RLayout_CVision_TextView));
 		TKBTool.fitsViewTopMargin(59, view.findViewById(R.id.pFSF_RLayout_RLayout_CVision_TextView));
 		TKBTool.fitsViewLeftMargin(15, view.findViewById(R.id.pFSF_RLayout_RLayout_CVision_TextView));
-		TKBTool.fitsViewTextSize(24, view.findViewById(R.id.pFSF_RLayout_RLayout_CVision_TextView));
+		TKBTool.fitsViewTextSize(16, view.findViewById(R.id.pFSF_RLayout_RLayout_CVision_TextView));
 		//NVision _RLayout
 		TKBTool.fitsViewHeight(30, view.findViewById(R.id.pFSF_RLayout_RLayout_NVision_RLayout));
 		TKBTool.fitsViewWidth(297, view.findViewById(R.id.pFSF_RLayout_RLayout_NVision_RLayout));
